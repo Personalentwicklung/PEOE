@@ -102,49 +102,54 @@
         <p id="result-text"></p>
     </div>
     <script>
-        function calculateResult() {
-            var form = document.getElementById('personality-test');
-            var answers = form.querySelectorAll('input[type="radio"]:checked');
-            var counts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+       function calculateResult() {
+    var form = document.getElementById('personality-test');
+    var answers = form.querySelectorAll('input[type="radio"]:checked');
+    var counts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
 
-            answers.forEach(function(answer) {
-                counts[answer.value]++;
-            });
+    answers.forEach(function(answer) {
+        counts[answer.value]++;
+    });
 
-            var maxCount = 0;
-            var maxLetter = '';
-            for (var letter in counts) {
-                if (counts[letter] > maxCount) {
-                    maxCount = counts[letter];
-                    maxLetter = letter;
-                }
-            }
+    var maxCount = 0;
+    var maxLetter = '';
+    for (var letter in counts) {
+        if (counts[letter] > maxCount) {
+            maxCount = counts[letter];
+            maxLetter = letter;
+        }
+    }
 
-            var resultText = '';
-            var resultSymbol = '';
-            switch (maxLetter) {
-                case 'A':
-                    resultText = 'Der Perfektionist – Du legst großen Wert auf Qualität und Genauigkeit. Dir entgeht kein Detail, aber manchmal verlierst du dich zu sehr in Perfektion.';
-                    resultSymbol = '🔍';
-                    break;
-                case 'B':
-                    resultText = 'Der Macher – Du bist zielstrebig und packst Aufgaben sofort an. Du willst Ergebnisse sehen, aber manchmal kannst du etwas zu direkt sein.';
-                    resultSymbol = '⚡';
-                    break;
-                case 'C':
-                    resultText = 'Der Kreative – Du liebst neue Ideen und originelle Ansätze. Du bringst frischen Wind ins Team, aber Routine kann dich schnell langweilen.';
-                    resultSymbol = '🎨';
-                    break;
-                case 'D':
-                    resultText = 'Der Analytiker – Du gehst logisch an Probleme heran und willst alles genau durchdenken. Entscheidungen müssen für dich gut begründet sein.';
-                    resultSymbol = '🧠';
-                    break;
-                case 'E':
-                    resultText = 'Der Teamplayer – Du bist kommunikativ, hilfsbereit und bringst Menschen zusammen. Du hältst das Team zusammen und sorgst für Harmonie.';
-                    resultSymbol = '🤝';
-                    break;
-            }
+    var resultText = '';
+    var resultSymbol = '';
+    switch (maxLetter) {
+        case 'A':
+            resultText = 'Der Perfektionist – Du legst großen Wert auf Qualität und Genauigkeit. Dir entgeht kein Detail, aber manchmal verlierst du dich zu sehr in Perfektion.';
+            resultSymbol = '🔍';
+            break;
+        case 'B':
+            resultText = 'Der Macher – Du bist zielstrebig und packst Aufgaben sofort an. Du willst Ergebnisse sehen, aber manchmal kannst du etwas zu direkt sein.';
+            resultSymbol = '⚡';
+            break;
+        case 'C':
+            resultText = 'Der Kreative – Du liebst neue Ideen und originelle Ansätze. Du bringst frischen Wind ins Team, aber Routine kann dich schnell langweilen.';
+            resultSymbol = '🎨';
+            break;
+        case 'D':
+            resultText = 'Der Analytiker – Du gehst logisch an Probleme heran und willst alles genau durchdenken. Entscheidungen müssen für dich gut begründet sein.';
+            resultSymbol = '🧠';
+            break;
+        case 'E':
+            resultText = 'Der Teamplayer – Du bist kommunikativ, hilfsbereit und bringst Menschen zusammen. Du hältst das Team zusammen und sorgst für Harmonie.';
+            resultSymbol = '🤝';
+            break;
+    }
 
+    document.getElementById('result-text').innerHTML = resultSymbol + ' ' + resultText;
+    document.getElementById('result').style.display = 'block';
+    // NEUE ZEILE HIER EINFÜGEN:
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+}
             document.getElementById('result-text').innerHTML = resultSymbol + ' ' + resultText;
             document.getElementById('result').style.display = 'block';
         }
