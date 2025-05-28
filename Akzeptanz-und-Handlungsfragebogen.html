@@ -8,235 +8,239 @@
     <style>
         /* Allgemeine Einstellungen für den Body */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modernere Schriftart */ [cite: 1, 2]
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modernere Schriftart */ [cite: 219]
             margin: 0;
-            padding: 40px 20px; /* Mehr Polsterung oben/unten */ [cite: 1, 3]
-            background-color: #f0f2f5; /* Heller Hintergrund */ [cite: 1, 4]
-            color: #333; /* Dunkler Text */ [cite: 1, 5]
+            padding: 40px 20px; /* Mehr Polsterung oben/unten */ [cite: 220, 221]
+            background-color: #f0f2f5; /* Heller Hintergrund */ [cite: 221, 222]
+            color: #333; /* Dunkler Text */ [cite: 222, 223]
             display: flex;
-            justify-content: center; /* Zentriert den Inhalt horizontal */ [cite: 1, 6]
-            align-items: flex-start; /* Hält den Inhalt oben, nicht mittig vertikal */ [cite: 1, 7]
-            min-height: 100vh; /* Mindesthöhe des Bodys */ [cite: 1, 8]
+            justify-content: center; /* Zentriert den Inhalt horizontal */ [cite: 223, 224]
+            align-items: flex-start; /* Hält den Inhalt oben, nicht mittig vertikal */ [cite: 224, 225]
+            min-height: 100vh; /* Mindesthöhe des Bodys */ [cite: 225, 226]
         }
         /* Container für den gesamten Test, um ihn zu zentrieren und zu stylen */
         .container {
-            background-color: #ffffff; /* Hintergrundfarbe des Containers */ [cite: 9]
-            padding: 40px; [cite: 9]
+            background-color: #ffffff; [cite: 226, 227]
+            padding: 40px; [cite: 227]
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sanfter Schatten */ [cite: 10]
-            max-width: 800px; /* Maximale Breite für bessere Lesbarkeit */ [cite: 11]
-            width: 100%; [cite: 12]
-            box-sizing: border-box; /* Polsterung innerhalb der Breite */ [cite: 12]
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sanfter Schatten */ [cite: 227, 228]
+            max-width: 800px; /* Maximale Breite für bessere Lesbarkeit */ [cite: 228, 229]
+            width: 100%; [cite: 229, 230]
+            box-sizing: border-box; /* Polsterung innerhalb der Breite */ [cite: 230]
         }
         h1 {
-            color: #0056b3; /* Dunkelblau für Überschrift */ [cite: 13]
+            color: #0056b3; /* Dunkelblau für Überschrift */ [cite: 230, 231]
             text-align: center;
-            margin-bottom: 30px; [cite: 14]
-            font-size: 2.2em; /* Größere Überschrift */ [cite: 14]
+            margin-bottom: 30px; [cite: 231, 232]
+            font-size: 2.2em; /* Größere Überschrift */ [cite: 232]
         }
         p {
-            font-size: 1.1em; [cite: 15]
-            line-height: 1.6; [cite: 15]
+            font-size: 1.1em; [cite: 233]
+            line-height: 1.6; [cite: 233]
             margin-bottom: 20px;
         }
         .question {
-            margin-bottom: 25px; /* Abstand NACH jeder Frage */ [cite: 16]
-            padding: 15px 0; /* Polsterung innerhalb der Frage-Box */ [cite: 17]
-            border-bottom: 1px solid #eee; /* Trennlinie zwischen Fragen */ [cite: 18]
+            margin-bottom: 25px; /* Abstand NACH jeder Frage */ [cite: 233, 234]
+            padding: 15px 0; /* Polsterung innerhalb der Frage-Box */ [cite: 234, 235]
+            border-bottom: 1px solid #eee; /* Trennlinie zwischen Fragen */ [cite: 235, 236]
         }
         .question:last-of-type {
-            border-bottom: none; /* Keine Trennlinie nach der letzten Frage */ [cite: 19]
+            border-bottom: none; /* Keine Trennlinie nach der letzten Frage */ [cite: 236, 237]
         }
         .question label:first-of-type { /* Für den Fragetext selbst */
-            font-weight: bold; [cite: 20]
-            margin-bottom: 15px; [cite: 20]
+            font-weight: bold; [cite: 237, 238]
+            margin-bottom: 15px; [cite: 238]
             font-size: 1.1em;
             color: #555;
             display: block;
         }
         .scale {
-            display: flex; [cite: 21]
-            justify-content: space-between; [cite: 21]
+            display: flex; [cite: 239]
+            justify-content: space-between; [cite: 239]
             background-color: #f9f9f9;
             border-radius: 8px;
             overflow: hidden; /* Für abgerundete Ecken der inneren Labels */
-            border: 1px solid #ddd; [cite: 22]
-            margin-top: 10px; /* Abstand zum Fragetext */ [cite: 22]
+            border: 1px solid #ddd; [cite: 239, 240]
+            margin-top: 10px; /* Abstand zum Fragetext */ [cite: 240]
+            gap: 1px; /* Fügt einen kleinen Spalt zwischen den Optionen hinzu, der die Trennlinien ersetzt */
         }
         .scale label {
-            flex: 1; [cite: 23]
-            text-align: center;
+            flex: 1; [cite: 241]
+            text-align: center; [cite: 241]
             font-size: 0.9em;
-            padding: 12px 5px; /* Innenabstand für Klickbereich */
-            cursor: pointer; [cite: 24]
-            transition: background-color 0.3s ease, border-color 0.3s ease; [cite: 24]
-            border-right: 1px solid #eee; /* Trennlinien zwischen den Optionen */ [cite: 25]
-            position: relative; /* Für die Radio-Buttons */ [cite: 26]
-            color: #666; [cite: 27]
+            padding: 12px 5px; /* Innenabstand für Klickbereich */ [cite: 241]
+            cursor: pointer; [cite: 241]
+            transition: background-color 0.3s ease, border-color 0.3s ease; [cite: 242]
+            /* border-right: 1px solid #eee; */ /* Trennlinien zwischen den Optionen - ENTFERNT, da gap verwendet wird */ [cite: 242, 243]
+            position: relative; /* Für die Radio-Buttons */ [cite: 243, 244]
+            color: #666; [cite: 244, 245]
+            background-color: #f9f9f9; /* Standardhintergrund für Labels */
+            box-sizing: border-box; /* Stellt sicher, dass Padding und Border in die Breite einbezogen werden */
         }
         .scale label:last-of-type {
-            border-right: none; /* Keine Linie nach der letzten Option */ [cite: 28]
+            /* border-right: none; */ /* Keine Linie nach der letzten Option - NICHT MEHR NÖTIG */ [cite: 246]
         }
         .scale label:hover {
-            background-color: #e9f0f9; /* Hellerer Hintergrund beim Hover */ [cite: 29]
+            background-color: #e9f0f9; /* Hellerer Hintergrund beim Hover */ [cite: 247]
         }
         .scale input[type="radio"] {
-            position: absolute; [cite: 30]
-            opacity: 0; /* Versteckt den eigentlichen Radio-Button */ [cite: 30]
-            pointer-events: none; /* Macht ihn nicht anklickbar direkt */ [cite: 31]
+            position: absolute; [cite: 247, 248]
+            opacity: 0; /* Versteckt den eigentlichen Radio-Button */ [cite: 248]
+            pointer-events: none; /* Macht ihn nicht anklickbar direkt */ [cite: 249]
+            display: block; /* Macht den Radio-Button zu einem Block-Element, um sicherzustellen, dass er keinen Platz einnimmt */
+            width: 0;
+            height: 0;
         }
         /* Stil für die ausgewählte Option */
         .scale input[type="radio"]:checked + span {
-            background-color: #007bff; /* Hintergrund, wenn ausgewählt */ [cite: 32]
+            background-color: #007bff; /* Hintergrund, wenn ausgewählt */ [cite: 250]
             color: white;
-            font-weight: bold; [cite: 33]
-            border-color: #007bff; [cite: 33]
+            font-weight: bold; [cite: 250, 251]
+            border-color: #007bff; [cite: 251]
         }
         /* Anpassung für die Ziffern in der Skala, besonders für die '1' */
-        .scale label span { /* Der sichtbare Teil der Auswahl */
-            display: block; [cite: 34]
-            width: 100%; [cite: 34]
+        .scale label span { /* Der sichtbare Teil der Auswahl */ [cite: 251]
+            display: flex; /* Verwende flexbox zur Zentrierung */ [cite: 252, 253]
+            width: 100%; [cite: 252]
             height: 100%;
-            position: absolute;
+            position: absolute; /* Überlagert das Label */ [cite: 252]
             top: 0;
             left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center; [cite: 35]
-            /* Optional: border-radius hier, wenn du keine Linien zwischen den Zahlen möchtest */
-            transition: background-color 0.3s ease, color 0.3s ease; [cite: 36]
-            font-size: 1.1em; /* Macht die Zahlen größer */ [cite: 36]
-            /* line-height: 1; HIER ENTFERNT, da flexbox die Zentrierung übernimmt */
+            align-items: center; /* Vertikale Zentrierung */ [cite: 253]
+            justify-content: center; /* Horizontale Zentrierung */ [cite: 253]
+            transition: background-color 0.3s ease, color 0.3s ease; [cite: 254]
+            font-size: 1.1em; /* Macht die Zahlen größer */ [cite: 254]
+            /* line-height: 1; */ /* Entfernt, da flexbox die Zentrierung übernimmt */ [cite: 255]
         }
         /* Styling für den Absenden-Button */
         button {
-            display: block; /* Button nimmt ganze Breite ein */ [cite: 38]
-            width: 100%; [cite: 39]
-            padding: 15px 20px; [cite: 39]
-            background-color: #28a745; /* Grün für "Absenden" */
-            color: white; [cite: 40]
-            border: none; [cite: 40]
+            display: block; /* Button nimmt ganze Breite ein */ [cite: 256]
+            width: 100%; [cite: 257]
+            padding: 15px 20px; [cite: 257]
+            background-color: #28a745; /* Grün für "Absenden" */ [cite: 257]
+            color: white; [cite: 258]
+            border: none; [cite: 258]
             border-radius: 5px;
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 30px; [cite: 41]
+            margin-top: 30px; [cite: 258, 259]
         }
         button:hover {
-            background-color: #218838; /* Dunkleres Grün beim Hover */ [cite: 42]
-            transform: translateY(-2px); [cite: 43]
+            background-color: #218838; /* Dunkleres Grün beim Hover */ [cite: 259, 260]
+            transform: translateY(-2px); [cite: 260, 261]
         }
         button:active {
-            transform: translateY(0); [cite: 44]
+            transform: translateY(0); [cite: 261, 262]
         }
         /* Styling für das Ergebnis-Feld */
         .result {
-            display: none; /* Bleibt unsichtbar bis zur Berechnung */ [cite: 45]
-            margin-top: 30px; [cite: 46]
-            padding: 25px; [cite: 46]
-            background-color: #e6f7ff; /* Sehr hellblau */
-            border: 1px solid #b3e0ff; /* Hellblauer Rahmen */ [cite: 47]
+            display: none; /* Bleibt unsichtbar bis zur Berechnung */ [cite: 262, 263]
+            margin-top: 30px; [cite: 263, 264]
+            padding: 25px; [cite: 264]
+            background-color: #e6f7ff; /* Sehr hellblau */ [cite: 264]
+            border: 1px solid #b3e0ff; /* Hellblauer Rahmen */ [cite: 265]
             border-radius: 8px;
-            text-align: center; [cite: 48]
-            font-size: 1.1em; [cite: 48]
+            text-align: center; [cite: 266]
+            font-size: 1.1em; [cite: 266]
             line-height: 1.6;
         }
         .result h2 {
-            color: #0056b3; [cite: 49]
-            margin-top: 0; [cite: 49]
+            color: #0056b3; [cite: 266, 267]
+            margin-top: 0; [cite: 267]
             font-size: 1.8em;
         }
         /* Styling für den detaillierten Ergebnisbereich mit Chart */
         #detailed-results {
-            margin-top: 20px; [cite: 50]
-            text-align: left; [cite: 50]
+            margin-top: 20px; [cite: 268]
+            text-align: left; [cite: 268]
             padding: 15px;
-            background-color: #f7fcff; /* Noch helleres Blau für diesen Bereich */
-            border-radius: 5px; [cite: 51]
-            border: 1px solid #cceeff; /* Leichterer Rand */ [cite: 51]
+            background-color: #f7fcff; /* Noch helleres Blau für diesen Bereich */ [cite: 268]
+            border-radius: 5px; [cite: 269]
+            border: 1px solid #cceeff; /* Leichterer Rand */ [cite: 269]
         }
         #detailed-results h3 {
-            color: #0056b3; [cite: 52]
-            margin-top: 0; [cite: 52]
+            color: #0056b3; [cite: 270]
+            margin-top: 0; [cite: 270]
             margin-bottom: 10px;
             font-size: 1.5em;
             text-align: center;
         }
         /* NEUE/ANGEPASSTE CSS-REGEL FÜR DAS CANVAS-ELEMENT */
         #aaqChart {
-            max-height: 350px; /* Begrenzt die Höhe des Diagramms */ [cite: 53]
-            width: 100% !important; /* Stellt sicher, dass es die volle Breite des Containers einnimmt */ [cite: 54]
-            height: auto !important; /* Lässt die Höhe proportional skalieren */ [cite: 55]
-            margin-top: 15px; [cite: 56]
-            margin-bottom: 20px; /* Abstand zur Interpretation */ [cite: 56]
+            max-height: 350px; /* Begrenzt die Höhe des Diagramms */ [cite: 271]
+            width: 100% !important; /* Stellt sicher, dass es die volle Breite des Containers einnimmt */ [cite: 272]
+            height: auto !important; /* Lässt die Höhe proportional skalieren */ [cite: 273]
+            margin-top: 15px; [cite: 274]
+            margin-bottom: 20px; /* Abstand zur Interpretation */ [cite: 274]
         }
         /* Stil für die einzelnen Score-Interpretationen */
         .score-interpretation-item {
-            margin-top: 20px; [cite: 57]
-            background-color: #fff; [cite: 57]
+            margin-top: 20px; [cite: 275]
+            background-color: #fff; [cite: 275]
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            text-align: left; [cite: 58]
+            text-align: left; [cite: 276]
         }
         .score-interpretation-item h4 {
-            color: #007bff; /* Blaue Farbe für Überschriften der Interpretationen */ [cite: 59]
-            margin-top: 0; [cite: 60]
-            margin-bottom: 10px; [cite: 60]
+            color: #007bff; /* Blaue Farbe für Überschriften der Interpretationen */ [cite: 277]
+            margin-top: 0; [cite: 278]
+            margin-bottom: 10px; [cite: 278]
             font-size: 1.5em;
             display: flex;
             align-items: center;
-            gap: 10px; /* Abstand zwischen Symbol und Text */ [cite: 61]
+            gap: 10px; /* Abstand zwischen Symbol und Text */ [cite: 279]
         }
         .score-interpretation-item .symbol {
-            font-size: 1.8em; /* Größeres Symbol */ [cite: 62]
+            font-size: 1.8em; /* Größeres Symbol */ [cite: 280]
         }
         .score-interpretation-item p {
-            font-size: 1.0em; /* Etwas kleinerer Text für die Erklärungen */ [cite: 63]
-            line-height: 1.5; [cite: 64]
-            color: #333; [cite: 64]
+            font-size: 1.0em; /* Etwas kleinerer Text für die Erklärungen */ [cite: 281]
+            line-height: 1.5; [cite: 282]
+            color: #333; [cite: 282]
             margin-bottom: 0; /* Keine zusätzliche Margin am Ende des p-Tags */
         }
         /* Media Queries für Responsivität auf kleineren Bildschirmen */
         @media (max-width: 768px) {
             body {
-                padding: 20px 10px; [cite: 65]
+                padding: 20px 10px; [cite: 283]
             }
             .container {
-                padding: 20px; [cite: 66]
-                box-shadow: none; /* Kein Schatten auf kleinen Geräten für bessere Performance */ [cite: 66]
+                padding: 20px; [cite: 284]
+                box-shadow: none; /* Kein Schatten auf kleinen Geräten für bessere Performance */ [cite: 284]
             }
             h1 {
-                font-size: 1.8em; [cite: 67]
+                font-size: 1.8em; [cite: 285]
             }
             .question label:first-of-type {
-                font-size: 1em; [cite: 68]
+                font-size: 1em; [cite: 286]
             }
             .scale label {
-                padding: 10px 3px; [cite: 69]
-                font-size: 0.85em; [cite: 69]
+                padding: 10px 3px; [cite: 287]
+                font-size: 0.85em; [cite: 287]
             }
             button {
-                font-size: 1.1em; [cite: 70]
-                padding: 12px 15px; [cite: 70]
+                font-size: 1.1em; [cite: 288]
+                padding: 12px 15px; [cite: 288]
             }
             .result h2 {
-                font-size: 1.5em; [cite: 71]
+                font-size: 1.5em; [cite: 289]
             }
             #detailed-results h3 {
-                font-size: 1.3em; [cite: 72]
+                font-size: 1.3em; [cite: 290]
             }
             #aaqChart {
-                max-height: 200px; /* Oder eine andere Höhe für kleinere Bildschirme */ [cite: 73]
+                max-height: 200px; /* Oder eine andere Höhe für kleinere Bildschirme */ [cite: 291]
             }
             .score-interpretation-item h4 {
-                font-size: 1.3em; [cite: 74]
+                font-size: 1.3em; [cite: 292]
             }
             .score-interpretation-item .symbol {
-                font-size: 1.5em; [cite: 75]
+                font-size: 1.5em; [cite: 293]
             }
             .score-interpretation-item p {
-                font-size: 0.9em; [cite: 76]
+                font-size: 0.9em; [cite: 294]
             }
         }
     </style>
@@ -244,258 +248,226 @@
 <body>
     <div class="container">
         <h1>AAQ-Rev-16 Fragebogen</h1>
-        <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button. [cite: 77]
+        <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button. [cite: 295]
         1 = nie zutreffend – 7 = immer zutreffend.</p>
         <form id="aaqForm">
             <div class="question">
-                <label for="q1">1. [cite: 78]
-                Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist. [cite: 79]
+                <label for="q1">1.
+                Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist. [cite: 296, 297]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q1" value="1"><span>1</span></label>
                     <label><input type="radio" name="q1" value="2"><span>2</span></label>
                     <label><input type="radio" name="q1" value="3"><span>3</span></label>
-              [cite: 80]
-                    <label><input type="radio" name="q1" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q1" value="4"><span>4</span></label> [cite: 298]
                     <label><input type="radio" name="q1" value="5"><span>5</span></label>
                     <label><input type="radio" name="q1" value="6"><span>6</span></label>
                     <label><input type="radio" name="q1" value="7"><span>7</span></label>
                 </div>
-      [cite: 81]
             </div>
             <div class="question">
-                <label for="q2">2. [cite: 82]
-                Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern. [cite: 83]
+                <label for="q2">2.
+                Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern. [cite: 300, 301]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q2" value="1"><span>1</span></label>
                     <label><input type="radio" name="q2" value="2"><span>2</span></label>
                     <label><input type="radio" name="q2" value="3"><span>3</span></label>
-              [cite: 84]
-                    <label><input type="radio" name="q2" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q2" value="4"><span>4</span></label> [cite: 302]
                     <label><input type="radio" name="q2" value="5"><span>5</span></label>
                     <label><input type="radio" name="q2" value="6"><span>6</span></label>
                     <label><input type="radio" name="q2" value="7"><span>7</span></label>
                 </div>
-      [cite: 85]
             </div>
             <div class="question">
-                <label for="q3">3. [cite: 86]
-                Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke. [cite: 87]
+                <label for="q3">3.
+                Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke. [cite: 304, 305]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q3" value="1"><span>1</span></label>
                     <label><input type="radio" name="q3" value="2"><span>2</span></label>
                     <label><input type="radio" name="q3" value="3"><span>3</span></label>
-              [cite: 88]
-                    <label><input type="radio" name="q3" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q3" value="4"><span>4</span></label> [cite: 306]
                     <label><input type="radio" name="q3" value="5"><span>5</span></label>
                     <label><input type="radio" name="q3" value="6"><span>6</span></label>
                     <label><input type="radio" name="q3" value="7"><span>7</span></label>
                 </div>
-      [cite: 89]
             </div>
             <div class="question">
-                <label for="q4">4. [cite: 90]
-                Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen. [cite: 91]
+                <label for="q4">4.
+                Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen. [cite: 308, 309]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q4" value="1"><span>1</span></label>
                     <label><input type="radio" name="q4" value="2"><span>2</span></label>
                     <label><input type="radio" name="q4" value="3"><span>3</span></label>
-              [cite: 92]
-                    <label><input type="radio" name="q4" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q4" value="4"><span>4</span></label> [cite: 310]
                     <label><input type="radio" name="q4" value="5"><span>5</span></label>
                     <label><input type="radio" name="q4" value="6"><span>6</span></label>
                     <label><input type="radio" name="q4" value="7"><span>7</span></label>
                 </div>
-      [cite: 93]
             </div>
             <div class="question">
-                <label for="q5">5. [cite: 94]
-                Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann. [cite: 95]
+                <label for="q5">5.
+                Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann. [cite: 312, 313]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q5" value="1"><span>1</span></label>
                     <label><input type="radio" name="q5" value="2"><span>2</span></label>
                     <label><input type="radio" name="q5" value="3"><span>3</span></label>
-              [cite: 96]
-                    <label><input type="radio" name="q5" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q5" value="4"><span>4</span></label> [cite: 314]
                     <label><input type="radio" name="q5" value="5"><span>5</span></label>
                     <label><input type="radio" name="q5" value="6"><span>6</span></label>
                     <label><input type="radio" name="q5" value="7"><span>7</span></label>
                 </div>
-      [cite: 97]
             </div>
             <div class="question">
-                <label for="q6">6. [cite: 98]
-                Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen. [cite: 99]
+                <label for="q6">6.
+                Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen. [cite: 316, 317]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q6" value="1"><span>1</span></label>
                     <label><input type="radio" name="q6" value="2"><span>2</span></label>
                     <label><input type="radio" name="q6" value="3"><span>3</span></label>
-              [cite: 100]
-                    <label><input type="radio" name="q6" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q6" value="4"><span>4</span></label> [cite: 318]
                     <label><input type="radio" name="q6" value="5"><span>5</span></label>
                     <label><input type="radio" name="q6" value="6"><span>6</span></label>
                     <label><input type="radio" name="q6" value="7"><span>7</span></label>
                 </div>
-      [cite: 101]
             </div>
             <div class="question">
-                <label for="q7">7. [cite: 102]
-                Ich habe keine Angst vor meinen Gefühlen. </label>
+                <label for="q7">7.
+                Ich habe keine Angst vor meinen Gefühlen. </label> [cite: 320]
                 <div class="scale">
                     <label><input type="radio" name="q7" value="1"><span>1</span></label>
                     <label><input type="radio" name="q7" value="2"><span>2</span></label>
                     <label><input type="radio" name="q7" value="3"><span>3</span></label>
-       [cite: 103]
-                    <label><input type="radio" name="q7" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q7" value="4"><span>4</span></label> [cite: 321]
                     <label><input type="radio" name="q7" value="5"><span>5</span></label>
                     <label><input type="radio" name="q7" value="6"><span>6</span></label>
                     <label><input type="radio" name="q7" value="7"><span>7</span></label>
-               [cite: 104]
                 </div>
             </div>
             <div class="question">
-                <label for="q8">8. [cite: 105]
-                Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen. [cite: 106]
+                <label for="q8">8.
+                Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen. [cite: 323, 324]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q8" value="1"><span>1</span></label>
                     <label><input type="radio" name="q8" value="2"><span>2</span></label>
                     <label><input type="radio" name="q8" value="3"><span>3</span></label>
-              [cite: 107]
-                    <label><input type="radio" name="q8" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q8" value="4"><span>4</span></label> [cite: 325]
                     <label><input type="radio" name="q8" value="5"><span>5</span></label>
                     <label><input type="radio" name="q8" value="6"><span>6</span></label>
                     <label><input type="radio" name="q8" value="7"><span>7</span></label>
                 </div>
-      [cite: 108]
             </div>
             <div class="question">
-                <label for="q9">9. [cite: 109]
-                Angst ist etwas Schlechtes. </label>
+                <label for="q9">9.
+                Angst ist etwas Schlechtes. </label> [cite: 327]
                 <div class="scale">
                     <label><input type="radio" name="q9" value="1"><span>1</span></label>
                     <label><input type="radio" name="q9" value="2"><span>2</span></label>
                     <label><input type="radio" name="q9" value="3"><span>3</span></label>
-          [cite: 110]
-                    <label><input type="radio" name="q9" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q9" value="4"><span>4</span></label> [cite: 328]
                     <label><input type="radio" name="q9" value="5"><span>5</span></label>
                     <label><input type="radio" name="q9" value="6"><span>6</span></label>
                     <label><input type="radio" name="q9" value="7"><span>7</span></label>
                 </div>
-  [cite: 111]
             </div>
             <div class="question">
-                <label for="q10">10. [cite: 112]
-                Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann. [cite: 113]
+                <label for="q10">10.
+                Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann. [cite: 330, 331]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q10" value="1"><span>1</span></label>
                     <label><input type="radio" name="q10" value="2"><span>2</span></label>
                     <label><input type="radio" name="q10" value="3"><span>3</span></label>
-              [cite: 114]
-                    <label><input type="radio" name="q10" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q10" value="4"><span>4</span></label> [cite: 332]
                     <label><input type="radio" name="q10" value="5"><span>5</span></label>
                     <label><input type="radio" name="q10" value="6"><span>6</span></label>
                     <label><input type="radio" name="q10" value="7"><span>7</span></label>
                 </div>
-      [cite: 115]
             </div>
             <div class="question">
-                <label for="q11">11. [cite: 116]
-                Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun. [cite: 117]
+                <label for="q11">11.
+                Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun. [cite: 334, 335]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q11" value="1"><span>1</span></label>
                     <label><input type="radio" name="q11" value="2"><span>2</span></label>
                     <label><input type="radio" name="q11" value="3"><span>3</span></label>
-              [cite: 118]
-                    <label><input type="radio" name="q11" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q11" value="4"><span>4</span></label> [cite: 336]
                     <label><input type="radio" name="q11" value="5"><span>5</span></label>
                     <label><input type="radio" name="q11" value="6"><span>6</span></label>
                     <label><input type="radio" name="q11" value="7"><span>7</span></label>
                 </div>
-      [cite: 119]
             </div>
             <div class="question">
-                <label for="q12">12. [cite: 120]
-                Ich habe mein Leben im Griff. </label>
+                <label for="q12">12.
+                Ich habe mein Leben im Griff. </label> [cite: 338]
                 <div class="scale">
                     <label><input type="radio" name="q12" value="1"><span>1</span></label>
                     <label><input type="radio" name="q12" value="2"><span>2</span></label>
                     <label><input type="radio" name="q12" value="3"><span>3</span></label>
-        [cite: 121]
-                    <label><input type="radio" name="q12" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q12" value="4"><span>4</span></label> [cite: 339]
                     <label><input type="radio" name="q12" value="5"><span>5</span></label>
                     <label><input type="radio" name="q12" value="6"><span>6</span></label>
                     <label><input type="radio" name="q12" value="7"><span>7</span></label>
-                [cite: 122]
                 </div>
             </div>
             <div class="question">
-                <label for="q13">13. [cite: 123]
-                Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen. [cite: 124]
+                <label for="q13">13.
+                Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen. [cite: 341, 342]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q13" value="1"><span>1</span></label>
                     <label><input type="radio" name="q13" value="2"><span>2</span></label>
                     <label><input type="radio" name="q13" value="3"><span>3</span></label>
-              [cite: 125]
-                    <label><input type="radio" name="q13" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q13" value="4"><span>4</span></label> [cite: 343]
                     <label><input type="radio" name="q13" value="5"><span>5</span></label>
                     <label><input type="radio" name="q13" value="6"><span>6</span></label>
                     <label><input type="radio" name="q13" value="7"><span>7</span></label>
                 </div>
-      [cite: 126]
             </div>
             <div class="question">
-                <label for="q14">14. [cite: 127]
-                Sorgen können meinem Erfolg im Wege stehen. </label>
+                <label for="q14">14.
+                Sorgen können meinem Erfolg im Wege stehen. </label> [cite: 345]
                 <div class="scale">
                     <label><input type="radio" name="q14" value="1"><span>1</span></label>
                     <label><input type="radio" name="q14" value="2"><span>2</span></label>
                     <label><input type="radio" name="q14" value="3"><span>3</span></label>
-       [cite: 128]
-                    <label><input type="radio" name="q14" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q14" value="4"><span>4</span></label> [cite: 346]
                     <label><input type="radio" name="q14" value="5"><span>5</span></label>
                     <label><input type="radio" name="q14" value="6"><span>6</span></label>
                     <label><input type="radio" name="q14" value="7"><span>7</span></label>
-               [cite: 129]
                 </div>
             </div>
             <div class="question">
-                <label for="q15">15. [cite: 130]
-                Ich sollte mich so verhalten, wie ich mich im Augenblick fühle. [cite: 131]
+                <label for="q15">15.
+                Ich sollte mich so verhalten, wie ich mich im Augenblick fühle. [cite: 348, 349]
                 </label>
                 <div class="scale">
                     <label><input type="radio" name="q15" value="1"><span>1</span></label>
                     <label><input type="radio" name="q15" value="2"><span>2</span></label>
                     <label><input type="radio" name="q15" value="3"><span>3</span></label>
-              [cite: 132]
-                    <label><input type="radio" name="q15" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q15" value="4"><span>4</span></label> [cite: 350]
                     <label><input type="radio" name="q15" value="5"><span>5</span></label>
                     <label><input type="radio" name="q15" value="6"><span>6</span></label>
                     <label><input type="radio" name="q15" value="7"><span>7</span></label>
                 </div>
-      [cite: 133]
             </div>
             <div class="question">
-                <label for="q16">16. [cite: 134]
-                Wenn ich verspreche, etwas zu tun, werde ich es tun, selbst wenn es mir später nicht danach sein sollte.</label>
+                <label for="q16">16.
+                Wenn ich verspreche, etwas zu tun, werde ich es tun, selbst wenn es mir später nicht danach sein sollte.</label> [cite: 352]
                 <div class="scale">
                     <label><input type="radio" name="q16" value="1"><span>1</span></label>
                     <label><input type="radio" name="q16" value="2"><span>2</span></label>
-                   [cite: 135]
-                    <label><input type="radio" name="q16" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q16" value="3"><span>3</span></label> [cite: 353]
                     <label><input type="radio" name="q16" value="4"><span>4</span></label>
                     <label><input type="radio" name="q16" value="5"><span>5</span></label>
                     <label><input type="radio" name="q16" value="6"><span>6</span></label>
                     <label><input type="radio" name="q16" value="7"><span>7</span></label>
-    [cite: 136]
                 </div>
             </div>
             <button type="button" onclick="calculateResults()">Absenden</button>
@@ -503,272 +475,260 @@
         <div id="result" class="result">
             <h2>Deine Ergebnisse:</h2>
             <div id="detailed-results">
-                <h3>Übersicht deiner [cite: 137] psychologischen Flexibilität:</h3>
+                <h3>Übersicht deiner psychologischen Flexibilität:</h3> [cite: 355]
                 <canvas id="aaqChart"></canvas>
                 
                 <div id="total-score-interpretation" class="score-interpretation-item">
-                    </div>
+                </div>
                 <div id="bereitschaft-score-interpretation" class="score-interpretation-item">
-          [cite: 138]
                 </div>
                 <div id="handlung-score-interpretation" class="score-interpretation-item">
-                    </div>
+                </div>
                 <p style="margin-top: 20px;">
-                    **Hinweis zur Interpretation der Scores:** Höhere Werte bedeuten eine höhere psychologische Flexibilität in den [cite: 139] jeweiligen Bereichen. Psychologische Flexibilität ist entscheidend für die Fähigkeit, ein erfülltes und werteorientiertes Leben zu führen, auch angesichts innerer und äußerer Herausforderungen. [cite: 140]
+                    **Hinweis zur Interpretation der Scores:** Höhere Werte bedeuten eine höhere psychologische Flexibilität in den jeweiligen Bereichen. [cite: 357] Psychologische Flexibilität ist entscheidend für die Fähigkeit, ein erfülltes und werteorientiertes Leben zu führen, auch angesichts innerer und äußerer Herausforderungen. [cite: 357, 358]
                 </p>
             </div>
         </div>
     </div>
     <script>
         // Eine globale Variable, um die Chart-Instanz zu speichern
-        let aaqChartInstance = null; [cite: 141]
+        let aaqChartInstance = null; [cite: 359]
 
         function calculateResults() {
-            const form = document.getElementById('aaqForm'); [cite: 142]
-            const questions = form.querySelectorAll('.question'); [cite: 142]
+            const form = document.getElementById('aaqForm'); [cite: 359, 360]
+            const questions = form.querySelectorAll('.question'); [cite: 360]
             let allAnswered = true;
             questions.forEach((q, index) => {
                 const radios = q.querySelectorAll(`input[name="q${index + 1}"]`);
                 let answered = false;
                 radios.forEach(radio => {
                     if (radio.checked) {
-         [cite: 143]
-                        answered = true;
+                        answered = true; [cite: 361]
                     }
                 });
                 if (!answered) {
-                    allAnswered = false;
-       [cite: 144]
+                    allAnswered = false; [cite: 362]
                 }
             });
-            if (!allAnswered) {
-                alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.'); [cite: 145]
-                return; [cite: 146]
+            if (!allAnswered) { [cite: 363]
+                alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.'); [cite: 363, 364]
+                return; [cite: 364]
             }
 
-            const formData = new FormData(form); [cite: 147]
-            let totalFlexibilityScore = 0; [cite: 147]
-            let bereitschaftScore = 0; [cite: 147]
-            let handlungScore = 0; [cite: 147]
+            const formData = new FormData(form); [cite: 365]
+            let totalFlexibilityScore = 0; [cite: 365]
+            let bereitschaftScore = 0;
+            let handlungScore = 0;
             const maxScorePerItem = 7;
-            const minScorePerItem = 1; [cite: 147]
-            const numberOfQuestions = 16; [cite: 148]
+            const minScorePerItem = 1; [cite: 365, 366]
+            const numberOfQuestions = 16; [cite: 366]
 
             // Offizielle Reversed items für AAQ-Rev-16: 2, 3, 6, 8, 9, 11, 14, 15
-            const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15]; [cite: 149]
+            const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15]; [cite: 366, 367]
 
             // Zuordnung der Fragen zu den Sub-Skalen, wie von dir definiert (nicht offizielle AAQ-Rev-16 Subskalen)
-            const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9]; [cite: 150] // 7 Fragen
-            const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16]; [cite: 151] // 9 Fragen
+            const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9]; // 7 Fragen [cite: 367, 368]
+            const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16]; // 9 Fragen [cite: 368, 369]
 
             for (let i = 1; i <= numberOfQuestions; i++) {
-                const score = parseInt(formData.get(`q${i}`)); [cite: 152]
+                const score = parseInt(formData.get(`q${i}`)); [cite: 369, 370]
                 let finalScore = score;
                 
                 // Anwenden des Reverse Scoring, falls die Frage in den reversedItems ist
                 if (reversedItems.includes(i)) {
-                    finalScore = (maxScorePerItem + minScorePerItem) - score; [cite: 153] // (7+1) - score
+                    finalScore = (maxScorePerItem + minScorePerItem) - score; // (7+1) - score [cite: 370, 371]
                 }
 
                 // Summe für den Gesamtscore
-                totalFlexibilityScore += finalScore; [cite: 154]
+                totalFlexibilityScore += finalScore; [cite: 371, 372]
 
                 // Summe für die Bereitschaftsskala (basierend auf deinen Indices)
                 if (bereitschaftIndices.includes(i)) {
-                    bereitschaftScore += finalScore; [cite: 155]
+                    bereitschaftScore += finalScore; [cite: 372, 373]
                 } 
                 // Summe für die Handlungsskala (basierend auf deinen Indices)
                 else if (handlungIndices.includes(i)) {
-                    handlungScore += finalScore; [cite: 156]
+                    handlungScore += finalScore; [cite: 373, 374]
                 }
             }
 
             // Maximale Punktzahlen für die Skalen
-            const maxPossibleTotalScore = numberOfQuestions * maxScorePerItem; [cite: 157] // 16 * 7 = 112
-            const maxBereitschaftScore = bereitschaftIndices.length * maxScorePerItem; [cite: 158] // 7 * 7 = 49
-            const maxHandlungScore = handlungIndices.length * maxScorePerItem; [cite: 159] // 9 * 7 = 63
+            const maxPossibleTotalScore = numberOfQuestions * maxScorePerItem; // 16 * 7 = 112 [cite: 374, 375]
+            const maxBereitschaftScore = bereitschaftIndices.length * maxScorePerItem; // 7 * 7 = 49 [cite: 375, 376]
+            const maxHandlungScore = handlungIndices.length * maxScorePerItem; // 9 * 7 = 63 [cite: 376, 377]
 
             // ----------- START: Ergebnis-Interpretation und Anzeige -----------
-            const totalScoreInterpretationDiv = document.getElementById('total-score-interpretation'); [cite: 160]
-            const bereitschaftInterpretationDiv = document.getElementById('bereitschaft-score-interpretation'); [cite: 160]
-            const handlungInterpretationDiv = document.getElementById('handlung-score-interpretation'); [cite: 160]
+            const totalScoreInterpretationDiv = document.getElementById('total-score-interpretation'); [cite: 377, 378]
+            const bereitschaftInterpretationDiv = document.getElementById('bereitschaft-score-interpretation'); [cite: 378]
+            const handlungInterpretationDiv = document.getElementById('handlung-score-interpretation'); [cite: 378]
 
             // Interpretation für den Gesamtscore
-            let totalInterpretationText = ''; [cite: 161]
-            let totalInterpretationSymbol = ''; [cite: 161]
-            let totalInterpretationTitle = ''; [cite: 161]
-            const totalPercentage = (totalFlexibilityScore / maxPossibleTotalScore) * 100; [cite: 162]
+            let totalInterpretationText = ''; [cite: 379]
+            let totalInterpretationSymbol = ''; [cite: 379]
+            let totalInterpretationTitle = '';
+            const totalPercentage = (totalFlexibilityScore / maxPossibleTotalScore) * 100; [cite: 380]
 
-            if (totalPercentage >= 80) {
-                totalInterpretationTitle = 'Der psychologisch Flexible ✨ '; [cite: 163]
-                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** zeigt eine außergewöhnlich hohe psychologische Flexibilität. [cite: 164]
-Du bist sehr gut darin, unangenehme Gedanken und Gefühle zu akzeptieren und dennoch handlungsfähig zu bleiben, um ein werteorientiertes Leben zu führen. [cite: 165]
-Deine Anpassungsfähigkeit und Resilienz sind bemerkenswert.`;
-                totalInterpretationSymbol = ' 🌟 '; [cite: 166]
-            } else if (totalPercentage >= 50) {
-                totalInterpretationTitle = 'Auf dem Weg zur Flexibilität 🚶‍♀️ '; [cite: 167]
-                totalInterpretationText = `Mit einem Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** besitzt du eine gute psychologische Flexibilität. [cite: 168]
-Du bist in der Lage, mit inneren Herausforderungen umzugehen und dein Handeln meist nach deinen Werten auszurichten. [cite: 169]
-Es gibt Potential, deine Flexibilität weiter zu stärken, um noch effektiver mit Stress und Schwierigkeiten umzugehen.`;
-                totalInterpretationSymbol = ' 🌱 '; [cite: 170]
+            if (totalPercentage >= 80) { [cite: 380]
+                totalInterpretationTitle = 'Der psychologisch Flexible ✨ '; [cite: 381]
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** zeigt eine außergewöhnlich hohe psychologische Flexibilität. [cite: 381, 382]
+Du bist sehr gut darin, unangenehme Gedanken und Gefühle zu akzeptieren und dennoch handlungsfähig zu bleiben, um ein werteorientiertes Leben zu führen. [cite: 382, 383]
+Deine Anpassungsfähigkeit und Resilienz sind bemerkenswert.`; [cite: 383]
+                totalInterpretationSymbol = ' 🌟 '; [cite: 384]
+            } else if (totalPercentage >= 50) { [cite: 384]
+                totalInterpretationTitle = 'Auf dem Weg zur Flexibilität 🚶‍♀️ '; [cite: 385]
+                totalInterpretationText = `Mit einem Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** besitzt du eine gute psychologische Flexibilität. [cite: 385, 386]
+Du bist in der Lage, mit inneren Herausforderungen umzugehen und dein Handeln meist nach deinen Werten auszurichten. [cite: 386, 387]
+Es gibt Potential, deine Flexibilität weiter zu stärken, um noch effektiver mit Stress und Schwierigkeiten umzugehen.`; [cite: 387, 388]
+                totalInterpretationSymbol = ' 🌱 '; [cite: 388]
             } else {
-                totalInterpretationTitle = 'Herausforderung psychologische Flexibilität ⏳ '; [cite: 171]
-                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** deutet darauf hin, dass du derzeit möglicherweise Schwierigkeiten hast, psychologisch flexibel zu sein. [cite: 172]
-Du könntest dazu neigen, unangenehme Gedanken oder Gefühle zu vermeiden, was dein Handeln einschränken und es dir erschweren könnte, ein erfülltes Leben gemäß deiner Werte zu führen. [cite: 173]
-Dies ist eine Chance zur Entwicklung.`;
-                totalInterpretationSymbol = ' 🚧 '; [cite: 174]
+                totalInterpretationTitle = 'Herausforderung psychologische Flexibilität ⏳ '; [cite: 388, 389]
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** deutet darauf hin, dass du derzeit möglicherweise Schwierigkeiten hast, psychologisch flexibel zu sein. [cite: 389, 390]
+Du könntest dazu neigen, unangenehme Gedanken oder Gefühle zu vermeiden, was dein Handeln einschränken und es dir erschweren könnte, ein erfülltes Leben gemäß deiner Werte zu führen. [cite: 390, 391]
+Dies ist eine Chance zur Entwicklung.`; [cite: 391]
+                totalInterpretationSymbol = ' 🚧 '; [cite: 392]
             }
 
             totalScoreInterpretationDiv.innerHTML = `
                 <h4><span class="symbol">${totalInterpretationSymbol}</span> ${totalInterpretationTitle}</h4>
                 <p><strong>Gesamtscore: ${totalFlexibilityScore} / ${maxPossibleTotalScore} Punkte (${totalPercentage.toFixed(1)}%)</strong></p>
                 <p>${totalInterpretationText}</p>
-            `; [cite: 175]
+            `; [cite: 392, 393]
 
             // Interpretation für Bereitschaftsskala (DEINE Definition)
-            let bereitText = ''; [cite: 176]
-            let bereitSymbol = ''; [cite: 176]
-            let bereitTitle = ''; [cite: 176]
-            const bereitPercentage = (bereitschaftScore / maxBereitschaftScore) * 100; [cite: 177]
+            let bereitText = ''; [cite: 393, 394]
+            let bereitSymbol = ''; [cite: 394]
+            let bereitTitle = '';
+            const bereitPercentage = (bereitschaftScore / maxBereitschaftScore) * 100; [cite: 394, 395]
 
-            if (bereitPercentage >= 80) { // Beispiel: Über 80% des Max-Scores
-                bereitTitle = 'Offen für Erfahrungen 🧘‍♀️ '; [cite: 178]
-                bereitText = `Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch. [cite: 179]
-Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen, was dir hilft, dich nicht von ihnen beherrschen zu lassen.`;
-                bereitSymbol = ' 💡 '; [cite: 180] 
-            } else if (bereitPercentage >= 50) { // Beispiel: Zwischen 50% und 80%
-                bereitTitle = 'Annahme und Öffnung 💭 '; [cite: 181]
-                bereitText = `Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen. [cite: 182]
-Es gibt Raum für Wachstum, aber du bist auf einem guten Weg, eine akzeptierende Haltung zu entwickeln.`;
-                bereitSymbol = ' 🤔 '; [cite: 183]
+            if (bereitPercentage >= 80) { // Beispiel: Über 80% des Max-Scores [cite: 395]
+                bereitTitle = 'Offen für Erfahrungen 🧘‍♀️ '; [cite: 396]
+                bereitText = `Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch. [cite: 396, 397]
+Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen, was dir hilft, dich nicht von ihnen beherrschen zu lassen.`; [cite: 397, 398]
+                bereitSymbol = ' 💡 '; [cite: 398] 
+            } else if (bereitPercentage >= 50) { // Beispiel: Zwischen 50% und 80% [cite: 398]
+                bereitTitle = 'Annahme und Öffnung 💭 '; [cite: 399]
+                bereitText = `Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen. [cite: 399, 400]
+Es gibt Raum für Wachstum, aber du bist auf einem guten Weg, eine akzeptierende Haltung zu entwickeln.`; [cite: 400, 401]
+                bereitSymbol = ' 🤔 '; [cite: 401]
             } else {
-                bereitTitle = 'Vermeidungstendenzen 🛑 '; [cite: 184]
-                bereitText = `Du neigst dazu, unangenehme Gedanken und Gefühle zu unterdrücken oder zu vermeiden. [cite: 185]
-Dies kann dein Handeln einschränken und zu psychologischer Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.`;
-                bereitSymbol = ' 🛑 '; [cite: 186]
+                bereitTitle = 'Vermeidungstendenzen 🛑 '; [cite: 401, 402]
+                bereitText = `Du neigst dazu, unangenehme Gedanken und Gefühle zu unterdrücken oder zu vermeiden. [cite: 402, 403]
+Dies kann dein Handeln einschränken und zu psychologischer Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.`; [cite: 403, 404]
+                bereitSymbol = ' 🛑 '; [cite: 404]
             }
 
             bereitschaftInterpretationDiv.innerHTML = `
                 <h4><span class="symbol">${bereitSymbol}</span> ${bereitTitle}</h4>
                 <p><strong>Bereitschaftsskala: ${bereitschaftScore} / ${maxBereitschaftScore} Punkte (${bereitPercentage.toFixed(1)}%)</strong></p>
                 <p>${bereitText}</p>
-            `; [cite: 187]
+            `; [cite: 404, 405]
 
             // Interpretation für Handlungsskala (DEINE Definition)
-            let handlungText = ''; [cite: 188]
-            let handlungSymbol = ''; [cite: 188]
-            let handlungTitle = ''; [cite: 188]
-            const handlungPercentage = (handlungScore / maxHandlungScore) * 100; [cite: 189]
+            let handlungText = ''; [cite: 405, 406]
+            let handlungSymbol = ''; [cite: 406]
+            let handlungTitle = '';
+            const handlungPercentage = (handlungScore / maxHandlungScore) * 100; [cite: 406, 407]
 
-            if (handlungPercentage >= 80) { // Beispiel: Über 80% des Max-Scores
-                handlungTitle = 'Zielgerichteter Macher 🚀 '; [cite: 190]
-                handlungText = `Deine Handlungsflexibilität ist ausgezeichnet! Du bist in der Lage, auch unter schwierigen inneren Bedingungen zielgerichtet und werteorientiert zu handeln und deine Ziele zu verfolgen.`; [cite: 191]
-                handlungSymbol = ' 🎯 '; [cite: 191]
-            } else if (handlungPercentage >= 50) { // Beispiel: Zwischen 50% und 80%
-                handlungTitle = 'Werteorientiertes Handeln 👣 '; [cite: 192]
-                handlungText = `Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist. [cite: 193]
-Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern, um noch effektiver zu sein.`;
-                handlungSymbol = ' ➡️ '; [cite: 194]
+            if (handlungPercentage >= 80) { // Beispiel: Über 80% des Max-Scores [cite: 407]
+                handlungTitle = 'Zielgerichteter Macher 🚀 '; [cite: 408]
+                handlungText = `Deine Handlungsflexibilität ist ausgezeichnet! Du bist in der Lage, auch unter schwierigen inneren Bedingungen zielgerichtet und werteorientiert zu handeln und deine Ziele zu verfolgen.`; [cite: 408, 409]
+                handlungSymbol = ' 🎯 '; [cite: 409]
+            } else if (handlungPercentage >= 50) { // Beispiel: Zwischen 50% und 80% [cite: 409, 410]
+                handlungTitle = 'Werteorientiertes Handeln 👣 '; [cite: 410]
+                handlungText = `Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist. [cite: 410, 411]
+Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern, um noch effektiver zu sein.`; [cite: 411, 412]
+                handlungSymbol = ' ➡️ '; [cite: 412]
             } else {
-                handlungTitle = 'Blockiertes Handeln 🚧 '; [cite: 195]
-                handlungText = `Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen. [cite: 196]
-Dies kann zu Vermeidungsverhalten und Inaktivität führen.`;
-                handlungSymbol = ' ⛓️ '; [cite: 197]
+                handlungTitle = 'Blockiertes Handeln 🚧 '; [cite: 412, 413]
+                handlungText = `Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen. [cite: 413, 414]
+Dies kann zu Vermeidungsverhalten und Inaktivität führen.`; [cite: 414, 415]
+                handlungSymbol = ' ⛓️ '; [cite: 415]
             }
 
             handlungInterpretationDiv.innerHTML = `
                 <h4><span class="symbol">${handlungSymbol}</span> ${handlungTitle}</h4>
                 <p><strong>Handlungsskala: ${handlungScore} / ${maxHandlungScore} Punkte (${handlungPercentage.toFixed(1)}%)</strong></p>
                 <p>${handlungText}</p>
-            `; [cite: 198]
+            `; [cite: 415, 416]
 
-            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').style.display = 'block'; [cite: 416]
             // ----------- START: Chart.js Integration -----------
-            const ctx = document.getElementById('aaqChart').getContext('2d'); [cite: 199]
+            const ctx = document.getElementById('aaqChart').getContext('2d'); [cite: 416, 417]
 
             // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
-            if (aaqChartInstance) {
-                aaqChartInstance.destroy(); [cite: 200]
+            if (aaqChartInstance) { [cite: 417, 418]
+                aaqChartInstance.destroy(); [cite: 418]
             }
 
             // Daten für die drei Scores, als Prozentsatz
-            const chartLabels = ['Gesamtscore', 'Bereitschaftsskala', 'Handlungsskala']; [cite: 201]
-            const chartData = [totalPercentage, bereitPercentage, handlungPercentage]; [cite: 201]
+            const chartLabels = ['Gesamtscore', 'Bereitschaftsskala', 'Handlungsskala']; [cite: 418, 419]
+            const chartData = [totalPercentage, bereitPercentage, handlungPercentage]; [cite: 419]
             const backgroundColors = [
                 'rgba(75, 192, 192, 0.7)',  // Grün-Türkis für Gesamtscore
                 'rgba(54, 162, 235, 0.7)',  // Blau für Bereitschaft
                 'rgba(255, 159, 64, 0.7)'   // Orange für Handlung
-            ]; [cite: 202]
+            ]; [cite: 419, 420]
             const borderColors = [
                 'rgba(75, 192, 192, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 159, 64, 1)'
-            ]; [cite: 203]
+            ]; [cite: 420, 421]
 
             aaqChartInstance = new Chart(ctx, {
                 type: 'bar', // Balkendiagramm
                 data: {
                     labels: chartLabels,
                     datasets: [{
-                  [cite: 204]
-                        label: 'Anteil in % der maximalen Punktzahl',
+                        label: 'Anteil in % der maximalen Punktzahl', [cite: 422]
                         data: chartData,
                         backgroundColor: backgroundColors,
                         borderColor: borderColors,
-             [cite: 205]
-                        borderWidth: 1
+                        borderWidth: 1 [cite: 423]
                     }]
                 },
                 options: {
-                    responsive: true,
-              [cite: 206]
-                    maintainAspectRatio: false, [cite: 206]
+                    responsive: true, [cite: 424]
+                    maintainAspectRatio: false, [cite: 424, 425]
                     scales: {
                         y: {
-                            beginAtZero: true,
-                  [cite: 207]
-                            max: 100, // Maximale Punktzahl ist 100%
+                            beginAtZero: true, [cite: 425]
+                            max: 100, // Maximale Punktzahl ist 100% [cite: 425]
                             title: {
-                                display: true,
-                      [cite: 208]
-                                text: 'Anteil in %'
+                                display: true, [cite: 426]
+                                text: 'Anteil in %' [cite: 426]
                             }
                         },
                         x: {
-          [cite: 209]
                             grid: {
-                                display: false
+                                display: false [cite: 427]
                             }
-                    [cite: 210]
                         }
                     },
                     plugins: {
                         legend: {
-                            display: true, [cite: 211]
-                            position: 'top' [cite: 211]
+                            display: true, [cite: 429]
+                            position: 'top'
                         },
                         tooltip: {
-                [cite: 212]
                             callbacks: {
                                 label: function(context) {
-                                    let label = context.dataset.label || ''; [cite: 213]
+                                    let label = context.dataset.label || ''; [cite: 431]
                                     if (label) {
-                                        label += ': '; [cite: 214]
+                                        label += ': '; [cite: 432]
                                     }
                                     if (context.parsed.y !== null) {
-                                        label += context.parsed.y.toFixed(1) + '%'; [cite: 215]
+                                        label += context.parsed.y.toFixed(1) + '%'; [cite: 433]
                                     }
-                                    return label; [cite: 216]
+                                    return label; [cite: 434]
                                 }
                             }
                         }
                     }
-                [cite: 217]
-            });
+                }
+            }); [cite: 435]
             // ----------- END: Chart.js Integration -----------
-
             // Autoscroll zum Ergebnis
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' }); [cite: 218]
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' }); [cite: 436]
         }
     </script>
 </body>
