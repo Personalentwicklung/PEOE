@@ -79,7 +79,6 @@
         .scale label:hover {
             background-color: #e9f0f9;
         }
-
         /* Versteckt den eigentlichen Radio-Button, ohne das Layout zu beeinflussen */
         .scale input[type="radio"] {
             position: absolute;
@@ -92,7 +91,6 @@
             clip: rect(0, 0, 0, 0);
             border: 0;
         }
-
         /* Stil für die Ziffern im Label */
         .scale label span {
             display: flex; /* Flexbox für Zentrierung */
@@ -102,13 +100,13 @@
             height: 100%;
             /* Wichtig: Entferne `position: absolute` hier, wenn es nicht unbedingt nötig ist,
                oder stelle sicher, dass es sich auf das umgebende Label bezieht.
-               Da das Label selbst `position: relative` hat, sollte es funktionieren. */
+               Da das Label selbst `position: relative` hat, sollte es funktionieren.
+            */
             top: 0; /* Stellt sicher, dass das Span ganz oben im Label beginnt */
             left: 0; /* Stellt sicher, dass das Span ganz links im Label beginnt */
             transition: background-color 0.3s ease, color 0.3s ease;
             font-size: 1.1em;
         }
-
         /* Stil für die ausgewählte Option */
         .scale input[type="radio"]:checked + span {
             background-color: #007bff;
@@ -116,7 +114,6 @@
             font-weight: bold;
             border-color: #007bff;
         }
-
         /* Styling für den Absenden-Button und Ergebnisse - unverändert */
         button {
             display: block;
@@ -214,6 +211,11 @@
             h1 {
                 font-size: 1.8em;
             }
+            /* Anpassung der Schriftgröße für den Einführungstext auf kleineren Bildschirmen */
+            p {
+                font-size: 1.0em; /* Reduziert die Schriftgröße für den p-Tag */
+                line-height: 1.5;
+            }
             .question label:first-of-type {
                 font-size: 1em;
             }
@@ -249,13 +251,10 @@
 <body>
     <div class="container">
         <h1>AAQ-Rev-16 Fragebogen</h1>
-        <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button.
-        1 = nie zutreffend – 7 = immer zutreffend.</p>
+        <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button. 1 = nie zutreffend – 7 = immer zutreffend.</p>
         <form id="aaqForm">
             <div class="question">
-                <label for="q1">1.
-                Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist.
-                </label>
+                <label for="q1">1. Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist.</label>
                 <div class="scale">
                     <label><input type="radio" name="q1" value="1"><span>1</span></label>
                     <label><input type="radio" name="q1" value="2"><span>2</span></label>
@@ -267,9 +266,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q2">2.
-                Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern.
-                </label>
+                <label for="q2">2. Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern.</label>
                 <div class="scale">
                     <label><input type="radio" name="q2" value="1"><span>1</span></label>
                     <label><input type="radio" name="q2" value="2"><span>2</span></label>
@@ -281,9 +278,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q3">3.
-                Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke.
-                </label>
+                <label for="q3">3. Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke.</label>
                 <div class="scale">
                     <label><input type="radio" name="q3" value="1"><span>1</span></label>
                     <label><input type="radio" name="q3" value="2"><span>2</span></label>
@@ -295,9 +290,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q4">4.
-                Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen.
-                </label>
+                <label for="q4">4. Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen.</label>
                 <div class="scale">
                     <label><input type="radio" name="q4" value="1"><span>1</span></label>
                     <label><input type="radio" name="q4" value="2"><span>2</span></label>
@@ -309,9 +302,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q5">5.
-                Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann.
-                </label>
+                <label for="q5">5. Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann.</label>
                 <div class="scale">
                     <label><input type="radio" name="q5" value="1"><span>1</span></label>
                     <label><input type="radio" name="q5" value="2"><span>2</span></label>
@@ -323,9 +314,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q6">6.
-                Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen.
-                </label>
+                <label for="q6">6. Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen.</label>
                 <div class="scale">
                     <label><input type="radio" name="q6" value="1"><span>1</span></label>
                     <label><input type="radio" name="q6" value="2"><span>2</span></label>
@@ -337,8 +326,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q7">7.
-                Ich habe keine Angst vor meinen Gefühlen. </label>
+                <label for="q7">7. Ich habe keine Angst vor meinen Gefühlen.</label>
                 <div class="scale">
                     <label><input type="radio" name="q7" value="1"><span>1</span></label>
                     <label><input type="radio" name="q7" value="2"><span>2</span></label>
@@ -350,9 +338,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q8">8.
-                Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen.
-                </label>
+                <label for="q8">8. Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen.</label>
                 <div class="scale">
                     <label><input type="radio" name="q8" value="1"><span>1</span></label>
                     <label><input type="radio" name="q8" value="2"><span>2</span></label>
@@ -364,8 +350,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q9">9.
-                Angst ist etwas Schlechtes. </label>
+                <label for="q9">9. Angst ist etwas Schlechtes.</label>
                 <div class="scale">
                     <label><input type="radio" name="q9" value="1"><span>1</span></label>
                     <label><input type="radio" name="q9" value="2"><span>2</span></label>
@@ -377,9 +362,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q10">10.
-                Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann.
-                </label>
+                <label for="q10">10. Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann.</label>
                 <div class="scale">
                     <label><input type="radio" name="q10" value="1"><span>1</span></label>
                     <label><input type="radio" name="q10" value="2"><span>2</span></label>
@@ -391,9 +374,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q11">11.
-                Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun.
-                </label>
+                <label for="q11">11. Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun.</label>
                 <div class="scale">
                     <label><input type="radio" name="q11" value="1"><span>1</span></label>
                     <label><input type="radio" name="q11" value="2"><span>2</span></label>
@@ -405,8 +386,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q12">12.
-                Ich habe mein Leben im Griff. </label>
+                <label for="q12">12. Ich habe mein Leben im Griff.</label>
                 <div class="scale">
                     <label><input type="radio" name="q12" value="1"><span>1</span></label>
                     <label><input type="radio" name="q12" value="2"><span>2</span></label>
@@ -418,9 +398,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q13">13.
-                Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen.
-                </label>
+                <label for="q13">13. Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen.</label>
                 <div class="scale">
                     <label><input type="radio" name="q13" value="1"><span>1</span></label>
                     <label><input type="radio" name="q13" value="2"><span>2</span></label>
@@ -432,8 +410,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q14">14.
-                Sorgen können meinem Erfolg im Wege stehen. </label>
+                <label for="q14">14. Sorgen können meinem Erfolg im Wege stehen.</label>
                 <div class="scale">
                     <label><input type="radio" name="q14" value="1"><span>1</span></label>
                     <label><input type="radio" name="q14" value="2"><span>2</span></label>
@@ -445,9 +422,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q15">15.
-                Ich sollte mich so verhalten, wie ich mich im Augenblick fühle.
-                </label>
+                <label for="q15">15. Ich sollte mich so verhalten, wie ich mich im Augenblick fühle.</label>
                 <div class="scale">
                     <label><input type="radio" name="q15" value="1"><span>1</span></label>
                     <label><input type="radio" name="q15" value="2"><span>2</span></label>
@@ -459,8 +434,7 @@
                 </div>
             </div>
             <div class="question">
-                <label for="q16">16.
-                Wenn ich verspreche, etwas zu tun, werde ich es tun, selbst wenn es mir später nicht danach sein sollte.</label>
+                <label for="q16">16. Wenn ich verspreche, etwas zu tun, werde ich es tun, selbst wenn es mir später nicht danach sein sollte.</label>
                 <div class="scale">
                     <label><input type="radio" name="q16" value="1"><span>1</span></label>
                     <label><input type="radio" name="q16" value="2"><span>2</span></label>
@@ -478,7 +452,7 @@
             <div id="detailed-results">
                 <h3>Übersicht deiner psychologischen Flexibilität:</h3>
                 <canvas id="aaqChart"></canvas>
-                
+
                 <div id="total-score-interpretation" class="score-interpretation-item">
                 </div>
                 <div id="bereitschaft-score-interpretation" class="score-interpretation-item">
@@ -494,7 +468,6 @@
     <script>
         // Eine globale Variable, um die Chart-Instanz zu speichern
         let aaqChartInstance = null;
-
         function calculateResults() {
             const form = document.getElementById('aaqForm');
             const questions = form.querySelectorAll('.question');
@@ -515,7 +488,6 @@
                 alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.');
                 return;
             }
-
             const formData = new FormData(form);
             let totalFlexibilityScore = 0;
             let bereitschaftScore = 0;
@@ -523,36 +495,30 @@
             const maxScorePerItem = 7;
             const minScorePerItem = 1;
             const numberOfQuestions = 16;
-
             // Offizielle Reversed items für AAQ-Rev-16: 2, 3, 6, 8, 9, 11, 14, 15
             const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15];
-
             // Zuordnung der Fragen zu den Sub-Skalen, wie von dir definiert (nicht offizielle AAQ-Rev-16 Subskalen)
             const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9]; // 7 Fragen
             const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16]; // 9 Fragen
-
             for (let i = 1; i <= numberOfQuestions; i++) {
                 const score = parseInt(formData.get(`q${i}`));
                 let finalScore = score;
-                
+
                 // Anwenden des Reverse Scoring, falls die Frage in den reversedItems ist
                 if (reversedItems.includes(i)) {
                     finalScore = (maxScorePerItem + minScorePerItem) - score; // (7+1) - score
                 }
-
                 // Summe für den Gesamtscore
                 totalFlexibilityScore += finalScore;
-
                 // Summe für die Bereitschaftsskala (basierend auf deinen Indices)
                 if (bereitschaftIndices.includes(i)) {
                     bereitschaftScore += finalScore;
-                } 
+                }
                 // Summe für die Handlungsskala (basierend auf deinen Indices)
                 else if (handlungIndices.includes(i)) {
                     handlungScore += finalScore;
                 }
             }
-
             // Maximale Punktzahlen für die Skalen
             const maxPossibleTotalScore = numberOfQuestions * maxScorePerItem; // 16 * 7 = 112
             const maxBereitschaftScore = bereitschaftIndices.length * maxScorePerItem; // 7 * 7 = 49
@@ -568,27 +534,19 @@
             let totalInterpretationSymbol = '';
             let totalInterpretationTitle = '';
             const totalPercentage = (totalFlexibilityScore / maxPossibleTotalScore) * 100;
-
             if (totalPercentage >= 80) {
-                totalInterpretationTitle = 'Der psychologisch Flexible ✨ ';
-                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** zeigt eine außergewöhnlich hohe psychologische Flexibilität.
-Du bist sehr gut darin, unangenehme Gedanken und Gefühle zu akzeptieren und dennoch handlungsfähig zu bleiben, um ein werteorientiertes Leben zu führen.
-Deine Anpassungsfähigkeit und Resilienz sind bemerkenswert.`;
-                totalInterpretationSymbol = ' 🌟 ';
+                totalInterpretationTitle = 'Der psychologisch Flexible ✨';
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** zeigt eine außergewöhnlich hohe psychologische Flexibilität. Du bist sehr gut darin, unangenehme Gedanken und Gefühle zu akzeptieren und dennoch handlungsfähig zu bleiben, um ein werteorientiertes Leben zu führen. Deine Anpassungsfähigkeit und Resilienz sind bemerkenswert.`;
+                totalInterpretationSymbol = '🌟';
             } else if (totalPercentage >= 50) {
-                totalInterpretationTitle = 'Auf dem Weg zur Flexibilität 🚶‍♀️ ';
-                totalInterpretationText = `Mit einem Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** besitzt du eine gute psychologische Flexibilität.
-Du bist in der Lage, mit inneren Herausforderungen umzugehen und dein Handeln meist nach deinen Werten auszurichten.
-Es gibt Potential, deine Flexibilität weiter zu stärken, um noch effektiver mit Stress und Schwierigkeiten umzugehen.`;
-                totalInterpretationSymbol = ' 🌱 ';
+                totalInterpretationTitle = 'Auf dem Weg zur Flexibilität 🚶‍♀️';
+                totalInterpretationText = `Mit einem Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** besitzt du eine gute psychologische Flexibilität. Du bist in der Lage, mit inneren Herausforderungen umzugehen und dein Handeln meist nach deinen Werten auszurichten. Es gibt Potential, deine Flexibilität weiter zu stärken, um noch effektiver mit Stress und Schwierigkeiten umzugehen.`;
+                totalInterpretationSymbol = '🌱';
             } else {
-                totalInterpretationTitle = 'Herausforderung psychologische Flexibilität ⏳ ';
-                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** deutet darauf hin, dass du derzeit möglicherweise Schwierigkeiten hast, psychologisch flexibel zu sein.
-Du könntest dazu neigen, unangenehme Gedanken oder Gefühle zu vermeiden, was dein Handeln einschränken und es dir erschweren könnte, ein erfülltes Leben gemäß deiner Werte zu führen.
-Dies ist eine Chance zur Entwicklung.`;
-                totalInterpretationSymbol = ' 🚧 ';
+                totalInterpretationTitle = 'Herausforderung psychologische Flexibilität ⏳';
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** deutet darauf hin, dass du derzeit möglicherweise Schwierigkeiten hast, psychologisch flexibel zu sein. Du könntest dazu neigen, unangenehme Gedanken oder Gefühle zu vermeiden, was dein Handeln einschränken und es dir erschweren könnte, ein erfülltes Leben gemäß deiner Werte zu führen. Dies ist eine Chance zur Entwicklung.`;
+                totalInterpretationSymbol = '🚧';
             }
-
             totalScoreInterpretationDiv.innerHTML = `
                 <h4><span class="symbol">${totalInterpretationSymbol}</span> ${totalInterpretationTitle}</h4>
                 <p><strong>Gesamtscore: ${totalFlexibilityScore} / ${maxPossibleTotalScore} Punkte (${totalPercentage.toFixed(1)}%)</strong></p>
@@ -600,24 +558,19 @@ Dies ist eine Chance zur Entwicklung.`;
             let bereitSymbol = '';
             let bereitTitle = '';
             const bereitPercentage = (bereitschaftScore / maxBereitschaftScore) * 100;
-
             if (bereitPercentage >= 80) {
-                bereitTitle = 'Offen für Erfahrungen 🧘‍♀️ ';
-                bereitText = `Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch.
-Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen, was dir hilft, dich nicht von ihnen beherrschen zu lassen.`;
-                bereitSymbol = ' 💡 ';
+                bereitTitle = 'Offen für Erfahrungen 🧘‍♀️';
+                bereitText = `Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch. Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen, was dir hilft, dich nicht von ihnen beherrschen zu lassen.`;
+                bereitSymbol = '💡';
             } else if (bereitPercentage >= 50) {
-                bereitTitle = 'Annahme und Öffnung 💭 ';
-                bereitText = `Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen.
-Es gibt Raum für Wachstum, aber du bist auf einem guten Weg, eine akzeptierende Haltung zu entwickeln.`;
-                bereitSymbol = ' 🤔 ';
+                bereitTitle = 'Annahme und Öffnung 💭';
+                bereitText = `Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen. Es gibt Raum für Wachstum, aber du bist auf einem guten Weg, eine akzeptierende Haltung zu entwickeln.`;
+                bereitSymbol = '🤔';
             } else {
-                bereitTitle = 'Vermeidungstendenzen 🛑 ';
-                bereitText = `Du neigst dazu, unangenehme Gedanken und Gefühle zu unterdrücken oder zu vermeiden.
-Dies kann dein Handeln einschränken und zu psychologischer Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.`;
-                bereitSymbol = ' 🛑 ';
+                bereitTitle = 'Vermeidungstendenzen 🛑';
+                bereitText = `Du neigst dazu, unangenehme Gedanken und Gefühle zu unterdrücken oder zu vermeiden. Dies kann dein Handeln einschränken und zu psychologischer Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.`;
+                bereitSymbol = '🛑';
             }
-
             bereitschaftInterpretationDiv.innerHTML = `
                 <h4><span class="symbol">${bereitSymbol}</span> ${bereitTitle}</h4>
                 <p><strong>Bereitschaftsskala: ${bereitschaftScore} / ${maxBereitschaftScore} Punkte (${bereitPercentage.toFixed(1)}%)</strong></p>
@@ -629,23 +582,19 @@ Dies kann dein Handeln einschränken und zu psychologischer Starrheit führen. E
             let handlungSymbol = '';
             let handlungTitle = '';
             const handlungPercentage = (handlungScore / maxHandlungScore) * 100;
-
             if (handlungPercentage >= 80) {
-                handlungTitle = 'Zielgerichteter Macher 🚀 ';
+                handlungTitle = 'Zielgerichteter Macher 🚀';
                 handlungText = `Deine Handlungsflexibilität ist ausgezeichnet! Du bist in der Lage, auch unter schwierigen inneren Bedingungen zielgerichtet und werteorientiert zu handeln und deine Ziele zu verfolgen.`;
-                handlungSymbol = ' 🎯 ';
+                handlungSymbol = '🎯';
             } else if (handlungPercentage >= 50) {
-                handlungTitle = 'Werteorientiertes Handeln 👣 ';
-                handlungText = `Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist.
-Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern, um noch effektiver zu sein.`;
-                handlungSymbol = ' ➡️ ';
+                handlungTitle = 'Werteorientiertes Handeln 👣';
+                handlungText = `Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist. Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern, um noch effektiver zu sein.`;
+                handlungSymbol = '➡️';
             } else {
-                handlungTitle = 'Blockiertes Handeln 🚧 ';
-                handlungText = `Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen.
-Dies kann zu Vermeidungsverhalten und Inaktivität führen.`;
-                handlungSymbol = ' ⛓️ ';
+                handlungTitle = 'Blockiertes Handeln 🚧';
+                handlungText = `Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen. Dies kann zu Vermeidungsverhalten und Inaktivität führen.`;
+                handlungSymbol = '⛓️';
             }
-
             handlungInterpretationDiv.innerHTML = `
                 <h4><span class="symbol">${handlungSymbol}</span> ${handlungTitle}</h4>
                 <p><strong>Handlungsskala: ${handlungScore} / ${maxHandlungScore} Punkte (${handlungPercentage.toFixed(1)}%)</strong></p>
@@ -653,14 +602,13 @@ Dies kann zu Vermeidungsverhalten und Inaktivität führen.`;
             `;
 
             document.getElementById('result').style.display = 'block';
+
             // ----------- START: Chart.js Integration -----------
             const ctx = document.getElementById('aaqChart').getContext('2d');
-
             // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
             if (aaqChartInstance) {
                 aaqChartInstance.destroy();
             }
-
             // Daten für die drei Scores, als Prozentsatz
             const chartLabels = ['Gesamtscore', 'Bereitschaftsskala', 'Handlungsskala'];
             const chartData = [totalPercentage, bereitPercentage, handlungPercentage];
@@ -728,6 +676,7 @@ Dies kann zu Vermeidungsverhalten und Inaktivität führen.`;
                 }
             });
             // ----------- END: Chart.js Integration -----------
+
             // Autoscroll zum Ergebnis
             document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
