@@ -98,6 +98,7 @@
             pointer-events: none; /* Macht ihn nicht anklickbar direkt */
         }
 
+        /* Stil für die ausgewählte Option */
         .scale input[type="radio"]:checked + span {
             background-color: #007bff; /* Hintergrund, wenn ausgewählt */
             color: white;
@@ -105,6 +106,7 @@
             border-color: #007bff;
         }
 
+        /* Anpassung für die Ziffern in der Skala, besonders für die '1' */
         .scale label span { /* Der sichtbare Teil der Auswahl */
             display: block;
             width: 100%;
@@ -115,14 +117,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px; /* Nur wenn es keine Linien gibt */
+            /* Optional: border-radius hier, wenn du keine Linien zwischen den Zahlen möchtest */
             transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-
-        /* Spezielles Styling für die Zahlendarstellung in der Skala */
-        .scale label input[type="radio"] + span {
             font-size: 1.1em; /* Macht die Zahlen größer */
+            line-height: 1; /* Stellt sicher, dass die Zahl zentriert ist */
         }
 
 
@@ -201,6 +199,30 @@
             width: 100% !important; /* Stellt sicher, dass es die volle Breite des Containers einnimmt */
             height: auto !important; /* Lässt die Höhe proportional skalieren */
             margin-top: 15px;
+        }
+
+        /* Stil für die einzelnen Skalenergebnisse im Textformat */
+        .scale-result-item {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+
+        .scale-result-item h4 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scale-result-item .symbol {
+            font-size: 1.5em;
         }
 
         /* Media Queries für Responsivität auf kleineren Bildschirmen */
@@ -459,10 +481,13 @@
         <div id="result" class="result">
             <h2>Deine Ergebnisse:</h2>
             <div id="detailed-results">
-                <h3>Deine psychologische Flexibilität:</h3>
+                <h3>Übersicht der Skalenwerte:</h3>
                 <canvas id="aaqChart"></canvas>
-                <p id="total-score"></p>
-                <p>Hohe Werte stehen für hohe psychologische Flexibilität (guter Prädiktor für Joberfolg und psychische Gesundheit).</p>
+                
+                <div id="bereitschaft-result" class="scale-result-item"></div>
+                <div id="handlung-result" class="scale-result-item"></div>
+
+                <p style="margin-top: 20px;">Hohe Werte stehen für hohe psychologische Flexibilität.</p>
             </div>
         </div>
     </div>
@@ -493,33 +518,83 @@
             }
 
             const formData = new FormData(form);
-            let totalFlexibilityScore = 0;
+            let bereitschaftScore = 0;
+            let handlungScore = 0;
 
-            // Reversed items for AAQ-Rev-16: 2, 3, 6, 8, 9, 11, 14, 15
-            const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15];
             const maxScorePerItem = 7;
             const minScorePerItem = 1;
-            const numberOfQuestions = 16;
-            const maxPossibleScore = numberOfQuestions * maxScorePerItem;
 
-            for (let i = 1; i <= numberOfQuestions; i++) {
-                const score = parseInt(formData.get(`q${i}`)); // Direkt den Wert holen
-                
+            // Die reversedItems sind die Fragen, deren Wert umgekehrt werden muss.
+            // Dies ist Standard für den AAQ-Rev-16 (Items 2, 3, 6, 8, 9, 11, 14, 15).
+            const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15];
+
+            // Zuordnung der Fragen zu den ursprünglichen Skalen, wie von dir angegeben.
+            // BEACHTE: Dies sind NICHT die offiziellen Subskalen des AAQ-Rev-16,
+            // sondern die Einteilung, die du ursprünglich verwendet hast.
+            const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9]; // 7 Fragen
+            const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16]; // 9 Fragen
+
+            for (let i = 1; i <= 16; i++) {
+                const score = parseInt(formData.get(`q${i}`));
+                let finalScore = score;
+
+                // Anwenden des Reverse Scoring, falls die Frage in den reversedItems ist
                 if (reversedItems.includes(i)) {
-                    // Reverse scoring for a 7-point scale: (MaxScore + MinScore) - YourScore
-                    // In diesem Fall: (7 + 1) - YourScore = 8 - YourScore
-                    totalFlexibilityScore += (maxScorePerItem + minScorePerItem) - score;
-                } else {
-                    totalFlexibilityScore += score;
+                    finalScore = (maxScorePerItem + minScorePerItem) - score; // (7+1) - score
+                }
+
+                if (bereitschaftIndices.includes(i)) {
+                    bereitschaftScore += finalScore;
+                } else if (handlungIndices.includes(i)) {
+                    handlungScore += finalScore;
                 }
             }
-            
-            document.getElementById('total-score').innerText = `Gesamtscore: ${totalFlexibilityScore} / ${maxPossibleScore}`;
 
+            // Maximale Punktzahlen für die Skalen basierend auf deiner Item-Zuweisung
+            const maxBereitschaftScore = bereitschaftIndices.length * maxScorePerItem; // 7 * 7 = 49
+            const maxHandlungScore = handlungIndices.length * maxScorePerItem;     // 9 * 7 = 63
+
+            // ----------- Start: Ergebnis-Interpretation und Anzeige -----------
+            const bereitschaftResultDiv = document.getElementById('bereitschaft-result');
+            const handlungResultDiv = document.getElementById('handlung-result');
+
+            let bereitText = '';
+            let bereitSymbol = '';
+            let handlungText = '';
+            let handlungSymbol = '';
+
+            // Interpretation für Bereitschaftsskala (Beispielwerte)
+            // Die Grenzwerte sind hier fiktiv und sollten durch wissenschaftlich fundierte Cutoffs ersetzt werden.
+            if (bereitschaftScore >= 40) { // Angenommen > 80% des Max-Scores
+                bereitText = 'Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch. Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen.';
+                bereitSymbol = '🧘‍♀️'; // Oder ein anderes passendes Symbol
+            } else if (bereitschaftScore >= 25) { // Angenommen > 50%
+                bereitText = 'Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen. Es gibt Raum für Wachstum, aber du bist auf einem guten Weg.';
+                bereitSymbol = '💭';
+            } else {
+                bereitText = 'Du neigst dazu, unangenehme Gedanken und Gefühle zu vermeiden. Dies kann dein Handeln einschränken und zu Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.';
+                bereitSymbol = '🚧';
+            }
+
+            // Interpretation für Handlungsskala (Beispielwerte)
+            // Die Grenzwerte sind hier fiktiv und sollten durch wissenschaftlich fundierte Cutoffs ersetzt werden.
+            if (handlungScore >= 50) { // Angenommen > 80% des Max-Scores
+                handlungText = 'Deine Handlungsflexibilität ist ausgezeichnet! Du bist in der Lage, auch unter schwierigen inneren Bedingungen zielgerichtet und werteorientiert zu handeln.';
+                handlungSymbol = '🚀';
+            } else if (handlungScore >= 35) { // Angenommen > 50%
+                handlungText = 'Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist. Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern.';
+                handlungSymbol = '👣';
+            } else {
+                handlungText = 'Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen. Dies kann zu Vermeidungsverhalten führen.';
+                handlungSymbol = '⚓';
+            }
+            
+            bereitschaftResultDiv.innerHTML = `<h4><span class="symbol">${bereitSymbol}</span> Bereitschaftsskala: ${bereitschaftScore} / ${maxBereitschaftScore}</h4><p>${bereitText}</p>`;
+            handlungResultDiv.innerHTML = `<h4><span class="symbol">${handlungSymbol}</span> Handlungsskala: ${handlungScore} / ${maxHandlungScore}</h4><p>${handlungText}</p>`;
 
             document.getElementById('result').style.display = 'block';
 
-            // ----------- START: Chart.js Integration -----------
+            // ----------- Start: Chart.js Integration -----------
             const ctx = document.getElementById('aaqChart').getContext('2d');
 
             // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
@@ -527,22 +602,28 @@
                 aaqChartInstance.destroy();
             }
 
-            const percentageScore = (totalFlexibilityScore / maxPossibleScore) * 100;
+            // Daten für die Skalen, als Prozentsatz
+            const bereitschaftPercentage = (bereitschaftScore / maxBereitschaftScore) * 100;
+            const handlungPercentage = (handlungScore / maxHandlungScore) * 100;
+
+            const chartData = [bereitschaftPercentage, handlungPercentage];
 
             const backgroundColors = [
-                'rgba(75, 192, 192, 0.7)' // Grün-Türkis für Gesamtscore
+                'rgba(54, 162, 235, 0.7)', // Blau für Bereitschaft
+                'rgba(255, 159, 64, 0.7)'  // Orange für Handlung
             ];
             const borderColors = [
-                'rgba(75, 192, 192, 1)'
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 159, 64, 1)'
             ];
 
             aaqChartInstance = new Chart(ctx, {
                 type: 'bar', // Balkendiagramm
                 data: {
-                    labels: ['Psychologische Flexibilität'],
+                    labels: ['Bereitschaftsskala', 'Handlungsskala'],
                     datasets: [{
-                        label: 'Dein Ergebnis',
-                        data: [percentageScore], // Nur ein Wert für den Gesamtscore
+                        label: 'Anteil in % der maximalen Punktzahl',
+                        data: chartData,
                         backgroundColor: backgroundColors,
                         borderColor: borderColors,
                         borderWidth: 1
@@ -557,7 +638,7 @@
                             max: 100, // Maximale Punktzahl ist 100%
                             title: {
                                 display: true,
-                                text: 'Anteil in % der maximalen Flexibilität'
+                                text: 'Anteil in %'
                             }
                         },
                         x: {
@@ -568,7 +649,8 @@
                     },
                     plugins: {
                         legend: {
-                            display: false // Legende ist bei nur einem Balken nicht nötig
+                            display: true, // Hier könnte eine Legende nützlich sein
+                            position: 'top'
                         },
                         tooltip: {
                             callbacks: {
