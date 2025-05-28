@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -167,15 +166,6 @@
             font-size: 1.8em;
         }
 
-        .result p {
-            font-size: 1.1em; /* Etwas kleiner als der Haupt-Ergebnistext */
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .result p:last-of-type {
-            margin-bottom: 0;
-        }
-
         /* Styling für den detaillierten Ergebnisbereich mit Chart */
         #detailed-results {
             margin-top: 20px;
@@ -195,34 +185,42 @@
 
         /* NEUE/ANGEPASSTE CSS-REGEL FÜR DAS CANVAS-ELEMENT */
         #aaqChart {
-            max-height: 300px; /* Begrenzt die Höhe des Diagramms */
+            max-height: 350px; /* Begrenzt die Höhe des Diagramms */
             width: 100% !important; /* Stellt sicher, dass es die volle Breite des Containers einnimmt */
             height: auto !important; /* Lässt die Höhe proportional skalieren */
             margin-top: 15px;
+            margin-bottom: 20px; /* Abstand zur Interpretation */
         }
 
-        /* Stil für die einzelnen Skalenergebnisse im Textformat */
-        .scale-result-item {
+        /* Stil für die einzelnen Score-Interpretationen */
+        .score-interpretation-item {
             margin-top: 20px;
             background-color: #fff;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             text-align: left;
         }
 
-        .scale-result-item h4 {
-            color: #007bff;
+        .score-interpretation-item h4 {
+            color: #007bff; /* Blaue Farbe für Überschriften der Interpretationen */
             margin-top: 0;
             margin-bottom: 10px;
-            font-size: 1.3em;
+            font-size: 1.5em;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 10px; /* Abstand zwischen Symbol und Text */
         }
 
-        .scale-result-item .symbol {
-            font-size: 1.5em;
+        .score-interpretation-item .symbol {
+            font-size: 1.8em; /* Größeres Symbol */
+        }
+
+        .score-interpretation-item p {
+            font-size: 1.0em; /* Etwas kleinerer Text für die Erklärungen */
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 0; /* Keine zusätzliche Margin am Ende des p-Tags */
         }
 
         /* Media Queries für Responsivität auf kleineren Bildschirmen */
@@ -251,14 +249,20 @@
             .result h2 {
                 font-size: 1.5em;
             }
-            .result p {
-                font-size: 1em;
-            }
             #detailed-results h3 {
                 font-size: 1.3em;
             }
             #aaqChart {
                 max-height: 200px; /* Oder eine andere Höhe für kleinere Bildschirme */
+            }
+            .score-interpretation-item h4 {
+                font-size: 1.3em;
+            }
+            .score-interpretation-item .symbol {
+                font-size: 1.5em;
+            }
+            .score-interpretation-item p {
+                font-size: 0.9em;
             }
         }
     </style>
@@ -481,13 +485,21 @@
         <div id="result" class="result">
             <h2>Deine Ergebnisse:</h2>
             <div id="detailed-results">
-                <h3>Übersicht der Skalenwerte:</h3>
+                <h3>Übersicht deiner psychologischen Flexibilität:</h3>
                 <canvas id="aaqChart"></canvas>
                 
-                <div id="bereitschaft-result" class="scale-result-item"></div>
-                <div id="handlung-result" class="scale-result-item"></div>
+                <div id="total-score-interpretation" class="score-interpretation-item">
+                    </div>
 
-                <p style="margin-top: 20px;">Hohe Werte stehen für hohe psychologische Flexibilität.</p>
+                <div id="bereitschaft-score-interpretation" class="score-interpretation-item">
+                    </div>
+
+                <div id="handlung-score-interpretation" class="score-interpretation-item">
+                    </div>
+
+                <p style="margin-top: 20px;">
+                    **Hinweis zur Interpretation der Scores:** Höhere Werte bedeuten eine höhere psychologische Flexibilität in den jeweiligen Bereichen. Psychologische Flexibilität ist entscheidend für die Fähigkeit, ein erfülltes und werteorientiertes Leben zu führen, auch angesichts innerer und äußerer Herausforderungen.
+                </p>
             </div>
         </div>
     </div>
@@ -518,23 +530,22 @@
             }
 
             const formData = new FormData(form);
+            let totalFlexibilityScore = 0;
             let bereitschaftScore = 0;
             let handlungScore = 0;
 
             const maxScorePerItem = 7;
             const minScorePerItem = 1;
+            const numberOfQuestions = 16;
 
-            // Die reversedItems sind die Fragen, deren Wert umgekehrt werden muss.
-            // Dies ist Standard für den AAQ-Rev-16 (Items 2, 3, 6, 8, 9, 11, 14, 15).
+            // Offizielle Reversed items für AAQ-Rev-16: 2, 3, 6, 8, 9, 11, 14, 15
             const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15];
 
-            // Zuordnung der Fragen zu den ursprünglichen Skalen, wie von dir angegeben.
-            // BEACHTE: Dies sind NICHT die offiziellen Subskalen des AAQ-Rev-16,
-            // sondern die Einteilung, die du ursprünglich verwendet hast.
+            // Zuordnung der Fragen zu den Sub-Skalen, wie von dir definiert (nicht offizielle AAQ-Rev-16 Subskalen)
             const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9]; // 7 Fragen
             const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16]; // 9 Fragen
 
-            for (let i = 1; i <= 16; i++) {
+            for (let i = 1; i <= numberOfQuestions; i++) {
                 const score = parseInt(formData.get(`q${i}`));
                 let finalScore = score;
 
@@ -543,58 +554,109 @@
                     finalScore = (maxScorePerItem + minScorePerItem) - score; // (7+1) - score
                 }
 
+                // Summe für den Gesamtscore
+                totalFlexibilityScore += finalScore;
+
+                // Summe für die Bereitschaftsskala (basierend auf deinen Indices)
                 if (bereitschaftIndices.includes(i)) {
                     bereitschaftScore += finalScore;
-                } else if (handlungIndices.includes(i)) {
+                } 
+                // Summe für die Handlungsskala (basierend auf deinen Indices)
+                else if (handlungIndices.includes(i)) {
                     handlungScore += finalScore;
                 }
             }
 
-            // Maximale Punktzahlen für die Skalen basierend auf deiner Item-Zuweisung
+            // Maximale Punktzahlen für die Skalen
+            const maxPossibleTotalScore = numberOfQuestions * maxScorePerItem; // 16 * 7 = 112
             const maxBereitschaftScore = bereitschaftIndices.length * maxScorePerItem; // 7 * 7 = 49
             const maxHandlungScore = handlungIndices.length * maxScorePerItem;     // 9 * 7 = 63
 
-            // ----------- Start: Ergebnis-Interpretation und Anzeige -----------
-            const bereitschaftResultDiv = document.getElementById('bereitschaft-result');
-            const handlungResultDiv = document.getElementById('handlung-result');
 
+            // ----------- START: Ergebnis-Interpretation und Anzeige -----------
+            const totalScoreInterpretationDiv = document.getElementById('total-score-interpretation');
+            const bereitschaftInterpretationDiv = document.getElementById('bereitschaft-score-interpretation');
+            const handlungInterpretationDiv = document.getElementById('handlung-score-interpretation');
+
+            // Interpretation für den Gesamtscore
+            let totalInterpretationText = '';
+            let totalInterpretationSymbol = '';
+            let totalInterpretationTitle = '';
+            const totalPercentage = (totalFlexibilityScore / maxPossibleTotalScore) * 100;
+
+            if (totalPercentage >= 80) {
+                totalInterpretationTitle = 'Der psychologisch Flexible ✨';
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** zeigt eine außergewöhnlich hohe psychologische Flexibilität. Du bist sehr gut darin, unangenehme Gedanken und Gefühle zu akzeptieren und dennoch handlungsfähig zu bleiben, um ein werteorientiertes Leben zu führen. Deine Anpassungsfähigkeit und Resilienz sind bemerkenswert.`;
+                totalInterpretationSymbol = '🌟';
+            } else if (totalPercentage >= 50) {
+                totalInterpretationTitle = 'Auf dem Weg zur Flexibilität 🚶‍♀️';
+                totalInterpretationText = `Mit einem Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** besitzt du eine gute psychologische Flexibilität. Du bist in der Lage, mit inneren Herausforderungen umzugehen und dein Handeln meist nach deinen Werten auszurichten. Es gibt Potential, deine Flexibilität weiter zu stärken, um noch effektiver mit Stress und Schwierigkeiten umzugehen.`;
+                totalInterpretationSymbol = '🌱';
+            } else {
+                totalInterpretationTitle = 'Herausforderung psychologische Flexibilität ⏳';
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** deutet darauf hin, dass du derzeit möglicherweise Schwierigkeiten hast, psychologisch flexibel zu sein. Du könntest dazu neigen, unangenehme Gedanken oder Gefühle zu vermeiden, was dein Handeln einschränken und es dir erschweren könnte, ein erfülltes Leben gemäß deiner Werte zu führen. Dies ist eine Chance zur Entwicklung.`;
+                totalInterpretationSymbol = '🚧';
+            }
+            totalScoreInterpretationDiv.innerHTML = `
+                <h4><span class="symbol">${totalInterpretationSymbol}</span> ${totalInterpretationTitle}</h4>
+                <p><strong>Gesamtscore: ${totalFlexibilityScore} / ${maxPossibleTotalScore} Punkte (${totalPercentage.toFixed(1)}%)</strong></p>
+                <p>${totalInterpretationText}</p>
+            `;
+
+
+            // Interpretation für Bereitschaftsskala (DEINE Definition)
             let bereitText = '';
             let bereitSymbol = '';
+            let bereitTitle = '';
+            const bereitPercentage = (bereitschaftScore / maxBereitschaftScore) * 100;
+
+            if (bereitPercentage >= 80) { // Beispiel: Über 80% des Max-Scores
+                bereitTitle = 'Offen für Erfahrungen 🧘‍♀️';
+                bereitText = `Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch. Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen, was dir hilft, dich nicht von ihnen beherrschen zu lassen.`;
+                bereitSymbol = '💡'; 
+            } else if (bereitPercentage >= 50) { // Beispiel: Zwischen 50% und 80%
+                bereitTitle = 'Annahme und Öffnung 💭';
+                bereitText = `Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen. Es gibt Raum für Wachstum, aber du bist auf einem guten Weg, eine akzeptierende Haltung zu entwickeln.`;
+                bereitSymbol = '🤔';
+            } else {
+                bereitTitle = 'Vermeidungstendenzen 🛑';
+                bereitText = `Du neigst dazu, unangenehme Gedanken und Gefühle zu unterdrücken oder zu vermeiden. Dies kann dein Handeln einschränken und zu psychologischer Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.`;
+                bereitSymbol = '🛑';
+            }
+            bereitschaftInterpretationDiv.innerHTML = `
+                <h4><span class="symbol">${bereitSymbol}</span> ${bereitTitle}</h4>
+                <p><strong>Bereitschaftsskala: ${bereitschaftScore} / ${maxBereitschaftScore} Punkte (${bereitPercentage.toFixed(1)}%)</strong></p>
+                <p>${bereitText}</p>
+            `;
+
+            // Interpretation für Handlungsskala (DEINE Definition)
             let handlungText = '';
             let handlungSymbol = '';
+            let handlungTitle = '';
+            const handlungPercentage = (handlungScore / maxHandlungScore) * 100;
 
-            // Interpretation für Bereitschaftsskala (Beispielwerte)
-            // Die Grenzwerte sind hier fiktiv und sollten durch wissenschaftlich fundierte Cutoffs ersetzt werden.
-            if (bereitschaftScore >= 40) { // Angenommen > 80% des Max-Scores
-                bereitText = 'Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch. Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen.';
-                bereitSymbol = '🧘‍♀️'; // Oder ein anderes passendes Symbol
-            } else if (bereitschaftScore >= 25) { // Angenommen > 50%
-                bereitText = 'Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen. Es gibt Raum für Wachstum, aber du bist auf einem guten Weg.';
-                bereitSymbol = '💭';
+            if (handlungPercentage >= 80) { // Beispiel: Über 80% des Max-Scores
+                handlungTitle = 'Zielgerichteter Macher 🚀';
+                handlungText = `Deine Handlungsflexibilität ist ausgezeichnet! Du bist in der Lage, auch unter schwierigen inneren Bedingungen zielgerichtet und werteorientiert zu handeln und deine Ziele zu verfolgen.`;
+                handlungSymbol = '🎯';
+            } else if (handlungPercentage >= 50) { // Beispiel: Zwischen 50% und 80%
+                handlungTitle = 'Werteorientiertes Handeln 👣';
+                handlungText = `Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist. Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern, um noch effektiver zu sein.`;
+                handlungSymbol = '➡️';
             } else {
-                bereitText = 'Du neigst dazu, unangenehme Gedanken und Gefühle zu vermeiden. Dies kann dein Handeln einschränken und zu Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.';
-                bereitSymbol = '🚧';
+                handlungTitle = 'Blockiertes Handeln 🚧';
+                handlungText = `Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen. Dies kann zu Vermeidungsverhalten und Inaktivität führen.`;
+                handlungSymbol = '⛓️';
             }
-
-            // Interpretation für Handlungsskala (Beispielwerte)
-            // Die Grenzwerte sind hier fiktiv und sollten durch wissenschaftlich fundierte Cutoffs ersetzt werden.
-            if (handlungScore >= 50) { // Angenommen > 80% des Max-Scores
-                handlungText = 'Deine Handlungsflexibilität ist ausgezeichnet! Du bist in der Lage, auch unter schwierigen inneren Bedingungen zielgerichtet und werteorientiert zu handeln.';
-                handlungSymbol = '🚀';
-            } else if (handlungScore >= 35) { // Angenommen > 50%
-                handlungText = 'Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist. Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern.';
-                handlungSymbol = '👣';
-            } else {
-                handlungText = 'Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen. Dies kann zu Vermeidungsverhalten führen.';
-                handlungSymbol = '⚓';
-            }
-            
-            bereitschaftResultDiv.innerHTML = `<h4><span class="symbol">${bereitSymbol}</span> Bereitschaftsskala: ${bereitschaftScore} / ${maxBereitschaftScore}</h4><p>${bereitText}</p>`;
-            handlungResultDiv.innerHTML = `<h4><span class="symbol">${handlungSymbol}</span> Handlungsskala: ${handlungScore} / ${maxHandlungScore}</h4><p>${handlungText}</p>`;
+            handlungInterpretationDiv.innerHTML = `
+                <h4><span class="symbol">${handlungSymbol}</span> ${handlungTitle}</h4>
+                <p><strong>Handlungsskala: ${handlungScore} / ${maxHandlungScore} Punkte (${handlungPercentage.toFixed(1)}%)</strong></p>
+                <p>${handlungText}</p>
+            `;
 
             document.getElementById('result').style.display = 'block';
 
-            // ----------- Start: Chart.js Integration -----------
+            // ----------- START: Chart.js Integration -----------
             const ctx = document.getElementById('aaqChart').getContext('2d');
 
             // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
@@ -602,17 +664,17 @@
                 aaqChartInstance.destroy();
             }
 
-            // Daten für die Skalen, als Prozentsatz
-            const bereitschaftPercentage = (bereitschaftScore / maxBereitschaftScore) * 100;
-            const handlungPercentage = (handlungScore / maxHandlungScore) * 100;
-
-            const chartData = [bereitschaftPercentage, handlungPercentage];
+            // Daten für die drei Scores, als Prozentsatz
+            const chartLabels = ['Gesamtscore', 'Bereitschaftsskala', 'Handlungsskala'];
+            const chartData = [totalPercentage, bereitPercentage, handlungPercentage];
 
             const backgroundColors = [
-                'rgba(54, 162, 235, 0.7)', // Blau für Bereitschaft
-                'rgba(255, 159, 64, 0.7)'  // Orange für Handlung
+                'rgba(75, 192, 192, 0.7)',  // Grün-Türkis für Gesamtscore
+                'rgba(54, 162, 235, 0.7)',  // Blau für Bereitschaft
+                'rgba(255, 159, 64, 0.7)'   // Orange für Handlung
             ];
             const borderColors = [
+                'rgba(75, 192, 192, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 159, 64, 1)'
             ];
@@ -620,7 +682,7 @@
             aaqChartInstance = new Chart(ctx, {
                 type: 'bar', // Balkendiagramm
                 data: {
-                    labels: ['Bereitschaftsskala', 'Handlungsskala'],
+                    labels: chartLabels,
                     datasets: [{
                         label: 'Anteil in % der maximalen Punktzahl',
                         data: chartData,
@@ -649,7 +711,7 @@
                     },
                     plugins: {
                         legend: {
-                            display: true, // Hier könnte eine Legende nützlich sein
+                            display: true, // Legende ist bei mehreren Balken sinnvoll
                             position: 'top'
                         },
                         tooltip: {
