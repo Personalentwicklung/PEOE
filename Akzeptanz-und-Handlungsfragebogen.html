@@ -459,11 +459,10 @@
         <div id="result" class="result">
             <h2>Deine Ergebnisse:</h2>
             <div id="detailed-results">
-                <h3>Übersicht der Skalenwerte:</h3>
+                <h3>Deine psychologische Flexibilität:</h3>
                 <canvas id="aaqChart"></canvas>
-                <p id="bereitschaft"></p>
-                <p id="handlung"></p>
-                <p>Hohe Werte stehen für hohe Flexibilität (guter Prädiktor für Joberfolg und psychische Gesundheit).</p>
+                <p id="total-score"></p>
+                <p>Hohe Werte stehen für hohe psychologische Flexibilität (guter Prädiktor für Joberfolg und psychische Gesundheit).</p>
             </div>
         </div>
     </div>
@@ -494,74 +493,29 @@
             }
 
             const formData = new FormData(form);
-            let bereitschaft = 0;
-            let handlung = 0;
-
-            // Indizes für die bereitschaftsskala (Fragen 2, 3, 4, 5, 6, 7, 9)
-            // Beachte: Die Fragen sind 1-basiert, aber im Code q1, q2 etc.
-            // Die bereitschaftIndices sollten die q-Nummern sein, also q2, q3 etc.
-            // Frage 4, 5, 7 sind "reverse-scored" im originalen AAQ-II.
-            // Im AAQ-Rev-16 sind die Items 2, 3, 6, 8, 9, 11, 14, 15 "reversed"
-            // Dies ist eine kritische Anpassung, basierend auf Standard-AAQ-Rev-16-Scoring.
-            // Die bereitschaftIndices sind die Items, die *nicht* umgepolt werden (items 1, 4, 5, 7, 10, 12, 13, 16)
-            // Die handlungIndices (invers) sind die Items, die umgepolt werden (items 2, 3, 6, 8, 9, 11, 14, 15)
-
-            const rawScores = {};
-            for (let [key, value] of formData.entries()) {
-                const questionNumber = parseInt(key.substring(1));
-                rawScores[questionNumber] = parseInt(value);
-            }
+            let totalFlexibilityScore = 0;
 
             // Reversed items for AAQ-Rev-16: 2, 3, 6, 8, 9, 11, 14, 15
             const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15];
+            const maxScorePerItem = 7;
+            const minScorePerItem = 1;
+            const numberOfQuestions = 16;
+            const maxPossibleScore = numberOfQuestions * maxScorePerItem;
 
-            for (let i = 1; i <= 16; i++) {
-                let score = rawScores[i];
+            for (let i = 1; i <= numberOfQuestions; i++) {
+                const score = parseInt(formData.get(`q${i}`)); // Direkt den Wert holen
+                
                 if (reversedItems.includes(i)) {
-                    score = 8 - score; // Reverse scoring for a 7-point scale (1->7, 2->6, ..., 7->1)
-                }
-
-                // Annahme: Es gibt keine getrennten Skalen "Bereitschaft" und "Handlung" mehr,
-                // sondern nur einen Gesamtscore der psychologischen Flexibilität.
-                // Der AAQ-Rev-16 ergibt einen Gesamtscore.
-                // Wenn du explizit Bereitschaft und Handlung *separat* auswerten möchtest,
-                // musst du die entsprechenden Items den Skalen zuordnen, basierend auf der genauen
-                // Definition der AAQ-Rev-16 Subskalen, falls diese überhaupt existieren.
-                // Für den Standard-AAQ-Rev-16 ist ein Gesamtscore üblich.
-
-                // Für den Fall, dass du doch zwei Skalen wie im Originalcode wolltest,
-                // müsste die Zuordnung der Items zu den Skalen *basierend auf der wissenschaftlichen Definition*
-                // des AAQ-Rev-16 erfolgen, die ich nicht habe.
-                // Ich werde jetzt einen Gesamtscore berechnen, da die Item-Reihenfolge
-                // und die Reverse-Items genau dem Standard-AAQ-Rev-16 entsprechen.
-
-                // Falls du auf getrennten Skalen bestehst, müsstest du mir die
-                // genaue Zuordnung der 16 Fragen zu diesen beiden Skalen geben.
-
-                // Die originalen BereitschaftIndices [2, 3, 4, 5, 6, 7, 9] und
-                // handlungIndices [1, 8, 10, 11, 12, 13, 14, 15, 16] aus deinem Code
-                // scheinen nicht den Standard-AAQ-Rev-16 Subskalen zu entsprechen,
-                // noch berücksichtigen sie das Reverse-Scoring korrekt.
-
-                // Daher berechne ich hier den Gesamtscore für den AAQ-Rev-16
-                // und passe die Labels im Ergebnis an.
-
-                // Hier ist eine *Annahme*, wie die ursprünglichen "Bereitschaft" und "Handlung"
-                // im Kontext des AAQ-Rev-16 gedacht sein könnten, wenn es keine offiziellen Subskalen sind.
-                // Ich nehme die originalen bereitschaftIndices und handlungIndices an und wende das Reverse-Scoring an.
-                const originalBereitschaftItems = [2, 3, 4, 5, 6, 7, 9]; // Aus deinem Code
-                const originalHandlungItems = [1, 8, 10, 11, 12, 13, 14, 15, 16]; // Aus deinem Code
-
-                if (originalBereitschaftItems.includes(i)) {
-                    bereitschaft += score;
-                } else if (originalHandlungItems.includes(i)) {
-                    handlung += score;
+                    // Reverse scoring for a 7-point scale: (MaxScore + MinScore) - YourScore
+                    // In diesem Fall: (7 + 1) - YourScore = 8 - YourScore
+                    totalFlexibilityScore += (maxScorePerItem + minScorePerItem) - score;
+                } else {
+                    totalFlexibilityScore += score;
                 }
             }
+            
+            document.getElementById('total-score').innerText = `Gesamtscore: ${totalFlexibilityScore} / ${maxPossibleScore}`;
 
-
-            document.getElementById('bereitschaft').innerText = `Bereitschaftsskala: ${bereitschaft} / ${originalBereitschaftItems.length * 7}`;
-            document.getElementById('handlung').innerText = `Handlungsskala: ${handlung} / ${originalHand HandlungItems.length * 7}`;
 
             document.getElementById('result').style.display = 'block';
 
@@ -573,27 +527,22 @@
                 aaqChartInstance.destroy();
             }
 
-            const chartData = [
-                (bereitschaft / (originalBereitschaftItems.length * 7)) * 100,
-                (handlung / (originalHandlungItems.length * 7)) * 100
-            ];
+            const percentageScore = (totalFlexibilityScore / maxPossibleScore) * 100;
 
             const backgroundColors = [
-                'rgba(54, 162, 235, 0.7)', // Blau für Bereitschaft
-                'rgba(255, 159, 64, 0.7)'  // Orange für Handlung
+                'rgba(75, 192, 192, 0.7)' // Grün-Türkis für Gesamtscore
             ];
             const borderColors = [
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 159, 64, 1)'
+                'rgba(75, 192, 192, 1)'
             ];
 
             aaqChartInstance = new Chart(ctx, {
-                type: 'bar',
+                type: 'bar', // Balkendiagramm
                 data: {
-                    labels: ['Bereitschaftsskala', 'Handlungsskala'],
+                    labels: ['Psychologische Flexibilität'],
                     datasets: [{
-                        label: 'Ergebnis in % der maximalen Punktzahl',
-                        data: chartData,
+                        label: 'Dein Ergebnis',
+                        data: [percentageScore], // Nur ein Wert für den Gesamtscore
                         backgroundColor: backgroundColors,
                         borderColor: borderColors,
                         borderWidth: 1
@@ -605,10 +554,10 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 100,
+                            max: 100, // Maximale Punktzahl ist 100%
                             title: {
                                 display: true,
-                                text: 'Anteil in %'
+                                text: 'Anteil in % der maximalen Flexibilität'
                             }
                         },
                         x: {
@@ -619,8 +568,7 @@
                     },
                     plugins: {
                         legend: {
-                            display: true, // Hier könnte eine Legende nützlich sein
-                            position: 'top'
+                            display: false // Legende ist bei nur einem Balken nicht nötig
                         },
                         tooltip: {
                             callbacks: {
