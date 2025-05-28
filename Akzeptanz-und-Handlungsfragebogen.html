@@ -29,7 +29,6 @@
         }
         .question label {
             display: block;
-            margin-bottom: 10px;
         }
         .scale {
             display: flex;
@@ -38,6 +37,7 @@
         .scale label {
             flex: 1;
             text-align: center;
+            font-size: 14px;
         }
         .scale input {
             margin: 0 5px;
@@ -57,6 +57,7 @@
 <body>
     <div class="container">
         <h1>AAQ-Rev-16 Fragebogen</h1>
+        <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button. 1 = nie zutreffend – 7 = immer zutreffend.</p>
         <form id="aaqForm">
 
             <div class="question">
@@ -285,6 +286,7 @@
             <h2>Ergebnisse</h2>
             <p id="bereitschaft"></p>
             <p id="handlung"></p>
+            <p>Hohe Werte stehen für hohe Flexibilität (guter Prädiktor für Joberfolg und psychische Gesundheit).</p>
         </div>
     </div>
     <script>
@@ -293,15 +295,20 @@
             const formData = new FormData(form);
             let bereitschaft = 0;
             let handlung = 0;
-            const scales = [0, nan, nan, nan, 0, nan, nan, nan, 0, nan, 0, 0, 0, 0, 0, 0];
+
+            const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9];
+            const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16];
+
             for (let [key, value] of formData.entries()) {
-                const index = parseInt(key.substring(1)) - 1;
-                if (scales[index] === 0) {
-                    handlung += parseInt(value);
-                } else {
-                    bereitschaft += parseInt(value);
+                const questionNumber = parseInt(key.substring(1));
+                const score = parseInt(value);
+                if (bereitschaftIndices.includes(questionNumber)) {
+                    bereitschaft += score;
+                } else if (handlungIndices.includes(questionNumber)) {
+                    handlung += score;
                 }
             }
+
             document.getElementById('bereitschaft').innerText = 'Bereitschaftsskala: ' + bereitschaft + ' / 49';
             document.getElementById('handlung').innerText = 'Handlungsskala: ' + handlung + ' / 63';
             document.getElementById('result').style.display = 'block';
