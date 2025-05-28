@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Persönlichkeitstest</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Allgemeine Einstellungen für den Body */
         body {
@@ -133,11 +134,14 @@
             margin-top: 0;
             margin-bottom: 10px;
             font-size: 1.3em;
+            text-align: center; /* Zentriert die Überschrift im Detailbereich */
         }
+        /* Diese p-Tags sind jetzt optional, da die Infos im Diagramm sind */
         #detailed-results p {
             font-size: 1em;
             margin-bottom: 5px;
             color: #444;
+            display: none; /* Diese Zeilen ausblenden, da das Diagramm die Info anzeigt */
         }
 
 
@@ -181,67 +185,67 @@
         <form id="personality-test">
             <div class="question">
                 <p>1. Wie gehst du an neue Aufgaben heran?</p>
-                <label><input type="radio" name="q1" value="A"> A) Ich erstelle eine detaillierte Planung und achte auf jedes Detail.</label><br>
-                <label><input type="radio" name="q1" value="B"> B) Ich packe direkt an und setze die Aufgabe sofort um.</label><br>
-                <label><input type="radio" name="q1" value="C"> C) Ich überlege kreative Lösungswege und probiere verschiedene Ideen aus.</label><br>
-                <label><input type="radio" name="q1" value="D"> D) Ich analysiere erst alles gründlich, bevor ich starte.</label><br>
-                <label><input type="radio" name="q1" value="E"> E) Ich bespreche mich mit anderen und finde gemeinsam die beste Lösung.</label>
+                <label><input type="radio" name="q1" value="A"> Ich erstelle eine detaillierte Planung und achte auf jedes Detail.</label><br>
+                <label><input type="radio" name="q1" value="B"> Ich packe direkt an und setze die Aufgabe sofort um.</label><br>
+                <label><input type="radio" name="q1" value="C"> Ich überlege kreative Lösungswege und probiere verschiedene Ideen aus.</label><br>
+                <label><input type="radio" name="q1" value="D"> Ich analysiere erst alles gründlich, bevor ich starte.</label><br>
+                <label><input type="radio" name="q1" value="E"> Ich bespreche mich mit anderen und finde gemeinsam die beste Lösung.</label>
             </div>
             <div class="question">
                 <p>2. Wie reagierst du, wenn du ein Problem im Team siehst?</p>
-                <label><input type="radio" name="q2" value="A"> A) Ich versuche, eine perfekte Lösung zu finden, bevor ich etwas unternehme.</label><br>
-                <label><input type="radio" name="q2" value="B"> B) Ich spreche es direkt an und schlage eine schnelle Lösung vor.</label><br>
-                <label><input type="radio" name="q2" value="C"> C) Ich überlege, ob man es kreativ angehen kann.</label><br>
-                <label><input type="radio" name="q2" value="D"> D) Ich analysiere das Problem genau und prüfe, was die beste Lösung ist.</label><br>
-                <label><input type="radio" name="q2" value="E"> E) Ich versuche, das Team zusammenzubringen und eine Lösung gemeinsam zu erarbeiten.</label>
+                <label><input type="radio" name="q2" value="A"> Ich versuche, eine perfekte Lösung zu finden, bevor ich etwas unternehme.</label><br>
+                <label><input type="radio" name="q2" value="B"> Ich spreche es direkt an und schlage eine schnelle Lösung vor.</label><br>
+                <label><input type="radio" name="q2" value="C"> Ich überlege, ob man es kreativ angehen kann.</label><br>
+                <label><input type="radio" name="q2" value="D"> Ich analysiere das Problem genau und prüfe, was die beste Lösung ist.</label><br>
+                <label><input type="radio" name="q2" value="E"> Ich versuche, das Team zusammenzubringen und eine Lösung gemeinsam zu erarbeiten.</label>
             </div>
             <div class="question">
                 <p>3. Was ist dir bei deiner Arbeit am wichtigsten?</p>
-                <label><input type="radio" name="q3" value="A"> A) Qualität – es muss einfach perfekt sein.</label><br>
-                <label><input type="radio" name="q3" value="B"> B) Effizienz – Dinge müssen schnell erledigt werden.</label><br>
-                <label><input type="radio" name="q3" value="C"> C) Kreativität – ich will mich entfalten können.</label><br>
-                <label><input type="radio" name="q3" value="D"> D) Logik – klare Prozesse und Fakten sind entscheidend.</label><br>
-                <label><input type="radio" name="q3" value="E"> E) Teamgeist – gute Zusammenarbeit ist mir am wichtigsten.</label>
+                <label><input type="radio" name="q3" value="A"> Qualität – es muss einfach perfekt sein.</label><br>
+                <label><input type="radio" name="q3" value="B"> Effizienz – Dinge müssen schnell erledigt werden.</label><br>
+                <label><input type="radio" name="q3" value="C"> Kreativität – ich will mich entfalten können.</label><br>
+                <label><input type="radio" name="q3" value="D"> Logik – klare Prozesse und Fakten sind entscheidend.</label><br>
+                <label><input type="radio" name="q3" value="E"> Teamgeist – gute Zusammenarbeit ist mir am wichtigsten.</label>
             </div>
             <div class="question">
                 <p>4. Wie verhältst du dich in Meetings?</p>
-                <label><input type="radio" name="q4" value="A"> A) Ich bin gut vorbereitet und achte darauf, dass keine Fehler passieren.</label><br>
-                <label><input type="radio" name="q4" value="B"> B) Ich bringe schnelle Lösungen ein und will direkt loslegen.</label><br>
-                <label><input type="radio" name="q4" value="C"> C) Ich bringe kreative Ideen ein und denke „out of the box“.</label><br>
-                <label><input type="radio" name="q4" value="D"> D) Ich höre genau zu und stelle analytische Fragen.</label><br>
-                <label><input type="radio" name="q4" value="E"> E) Ich motiviere das Team und achte darauf, dass jeder gehört wird.</label>
+                <label><input type="radio" name="q4" value="A"> Ich bin gut vorbereitet und achte darauf, dass keine Fehler passieren.</label><br>
+                <label><input type="radio" name="q4" value="B"> Ich bringe schnelle Lösungen ein und will direkt loslegen.</label><br>
+                <label><input type="radio" name="q4" value="C"> Ich bringe kreative Ideen ein und denke „out of the box“.</label><br>
+                <label><input type="radio" name="q4" value="D"> Ich höre genau zu und stelle analytische Fragen.</label><br>
+                <label><input type="radio" name="q4" value="E"> Ich motiviere das Team und achte darauf, dass jeder gehört wird.</label>
             </div>
             <div class="question">
                 <p>5. Wie gehst du mit Stress um?</p>
-                <label><input type="radio" name="q5" value="A"> A) Ich arbeite noch genauer und versuche, Fehler zu vermeiden.</label><br>
-                <label><input type="radio" name="q5" value="B"> B) Ich ziehe das Tempo an und arbeite noch schneller.</label><br>
-                <label><input type="radio" name="q5" value="C"> C) Ich suche kreative Wege, um mit dem Stress umzugehen.</label><br>
-                <label><input type="radio" name="q5" value="D"> D) Ich analysiere die Situation und finde eine rationale Lösung.</label><br>
-                <label><input type="radio" name="q5" value="E"> E) Ich spreche mit meinen Kollegen und finde Unterstützung.</label>
+                <label><input type="radio" name="q5" value="A"> Ich arbeite noch genauer und versuche, Fehler zu vermeiden.</label><br>
+                <label><input type="radio" name="q5" value="B"> Ich ziehe das Tempo an und arbeite noch schneller.</label><br>
+                <label><input type="radio" name="q5" value="C"> Ich suche kreative Wege, um mit dem Stress umzugehen.</label><br>
+                <label><input type="radio" name="q5" value="D"> Ich analysiere die Situation und finde eine rationale Lösung.</label><br>
+                <label><input type="radio" name="q5" value="E"> Ich spreche mit meinen Kollegen und finde Unterstützung.</label>
             </div>
             <div class="question">
                 <p>6. Wie gehst du mit Feedback um?</p>
-                <label><input type="radio" name="q6" value="A"> A) Ich nehme es ernst und arbeite daran, alles zu verbessern.</label><br>
-                <label><input type="radio" name="q6" value="B"> B) Ich setze es direkt um und mache weiter.</label><br>
-                <label><input type="radio" name="q6" value="C"> C) Ich überlege, ob ich kreative Alternativen ausprobieren kann.</label><br>
-                <label><input type="radio" name="q6" value="D"> D) Ich analysiere, ob das Feedback logisch und sinnvoll ist.</label><br>
-                <label><input type="radio" name="q6" value="E"> E) Ich bespreche es mit anderen, um gemeinsam Lösungen zu finden.</label>
+                <label><input type="radio" name="q6" value="A"> Ich nehme es ernst und arbeite daran, alles zu verbessern.</label><br>
+                <label><input type="radio" name="q6" value="B"> Ich setze es direkt um und mache weiter.</label><br>
+                <label><input type="radio" name="q6" value="C"> Ich überlege, ob ich kreative Alternativen ausprobieren kann.</label><br>
+                <label><input type="radio" name="q6" value="D"> Ich analysiere, ob das Feedback logisch und sinnvoll ist.</label><br>
+                <label><input type="radio" name="q6" value="E"> Ich bespreche es mit anderen, um gemeinsam Lösungen zu finden.</label>
             </div>
             <div class="question">
                 <p>7. Was motiviert dich am meisten bei der Arbeit?</p>
-                <label><input type="radio" name="q7" value="A"> A) Perfekte Ergebnisse und Anerkennung für meine Genauigkeit.</label><br>
-                <label><input type="radio" name="q7" value="B"> B) Schnelle Fortschritte und sichtbare Erfolge.</label><br>
-                <label><input type="radio" name="q7" value="C"> C) Die Freiheit, kreativ zu sein und neue Ideen umzusetzen.</label><br>
-                <label><input type="radio" name="q7" value="D"> D) Klare Strukturen und logische Abläufe.</label><br>
-                <label><input type="radio" name="q7" value="E"> E) Ein starkes Team und gute Zusammenarbeit.</label>
+                <label><input type="radio" name="q7" value="A"> Perfekte Ergebnisse und Anerkennung für meine Genauigkeit.</label><br>
+                <label><input type="radio" name="q7" value="B"> Schnelle Fortschritte und sichtbare Erfolge.</label><br>
+                <label><input type="radio" name="q7" value="C"> Die Freiheit, kreativ zu sein und neue Ideen umzusetzen.</label><br>
+                <label><input type="radio" name="q7" value="D"> Klare Strukturen und logische Abläufe.</label><br>
+                <label><input type="radio" name="q7" value="E"> Ein starkes Team und gute Zusammenarbeit.</label>
             </div>
             <div class="question">
                 <p>8. Wie gehst du mit Konflikten im Team um?</p>
-                <label><input type="radio" name="q8" value="A"> A) Ich versuche, eine perfekte Lösung zu finden, die alle zufriedenstellt.</label><br>
-                <label><input type="radio" name="q8" value="B"> B) Ich spreche das Problem direkt an und schlage eine schnelle Lösung vor.</label><br>
-                <label><input type="radio" name="q8" value="C"> C) Ich suche nach kreativen Wegen, um den Konflikt zu lösen.</label><br>
-                <label><input type="radio" name="q8" value="D"> D) Ich analysiere die Situation und finde eine rationale Lösung.</label><br>
-                <label><input type="radio" name="q8" value="E"> E) Ich vermittle zwischen den Beteiligten und fördere den Teamgeist.</label>
+                <label><input type="radio" name="q8" value="A"> Ich versuche, eine perfekte Lösung zu finden, die alle zufriedenstellt.</label><br>
+                <label><input type="radio" name="q8" value="B"> Ich spreche das Problem direkt an und schlage eine schnelle Lösung vor.</label><br>
+                <label><input type="radio" name="q8" value="C"> Ich suche nach kreativen Wegen, um den Konflikt zu lösen.</label><br>
+                <label><input type="radio" name="q8" value="D"> Ich analysiere die Situation und finde eine rationale Lösung.</label><br>
+                <label><input type="radio" name="q8" value="E"> Ich vermittle zwischen den Beteiligten und fördere den Teamgeist.</label>
             </div>
             <button type="button" onclick="calculateResult()">Ergebnis anzeigen</button>
         </form>
@@ -250,6 +254,7 @@
             <p id="result-text"></p>
             <div id="detailed-results">
                 <h3>Deine Verteilung der Antworten:</h3>
+                <canvas id="myPersonalityChart"></canvas>
                 <p id="result-a"></p>
                 <p id="result-b"></p>
                 <p id="result-c"></p>
@@ -259,6 +264,9 @@
         </div>
     </div>
     <script>
+        // Eine globale Variable, um die Chart-Instanz zu speichern, damit wir sie aktualisieren oder zerstören können
+        let myChartInstance = null;
+
         function calculateResult() {
             var form = document.getElementById('personality-test');
             var answers = form.querySelectorAll('input[type="radio"]:checked');
@@ -282,9 +290,8 @@
                     maxCount = counts[letter];
                     maxLetter = letter;
                 } else if (counts[letter] === maxCount && maxLetter !== '') {
-                    // Falls es ein Gleichstand gibt, kann eine zufällige Auswahl oder eine vordefinierte Präferenz getroffen werden.
-                    // Für jetzt belassen wir es beim ersten gefundenen Buchstaben bei Gleichstand.
-                    // Du könntest hier komplexere Logik einfügen, z.B. einen zweiten Typsymbol anzeigen
+                    // Falls es ein Gleichstand gibt, behalten wir den ersten gefundenen Buchstaben.
+                    // Bei Bedarf könnte man hier komplexere Logik einfügen (z.B. zufällige Auswahl).
                 }
             }
 
@@ -319,15 +326,96 @@
             document.getElementById('result-text').innerHTML = resultSymbol + ' ' + resultText;
             document.getElementById('result').style.display = 'block';
 
-            // Berechne und zeige die Prozentwerte an
-            document.getElementById('result-a').innerHTML = 'Perfektionist (A): ' + ((counts.A / totalQuestions) * 100).toFixed(1) + '% (' + counts.A + '/' + totalQuestions + ')';
-            document.getElementById('result-b').innerHTML = 'Macher (B): ' + ((counts.B / totalQuestions) * 100).toFixed(1) + '% (' + counts.B + '/' + totalQuestions + ')';
-            document.getElementById('result-c').innerHTML = 'Kreativer (C): ' + ((counts.C / totalQuestions) * 100).toFixed(1) + '% (' + counts.C + '/' + totalQuestions + ')';
-            document.getElementById('result-d').innerHTML = 'Analytiker (D): ' + ((counts.D / totalQuestions) * 100).toFixed(1) + '% (' + counts.D + '/' + totalQuestions + ')';
-            document.getElementById('result-e').innerHTML = 'Teamplayer (E): ' + ((counts.E / totalQuestions) * 100).toFixed(1) + '% (' + counts.E + '/' + totalQuestions + ')';
-            document.getElementById('detailed-results').style.display = 'block'; // Sicherstellen, dass der Detailbereich sichtbar ist
+            // ----------- START: Chart.js Integration -----------
+            const ctx = document.getElementById('myPersonalityChart').getContext('2d');
 
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth' }); // Autoscroll hinzugefügt
+            // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
+            if (myChartInstance) {
+                myChartInstance.destroy();
+            }
+
+            const chartData = [
+                (counts.A / totalQuestions) * 100,
+                (counts.B / totalQuestions) * 100,
+                (counts.C / totalQuestions) * 100,
+                (counts.D / totalQuestions) * 100,
+                (counts.E / totalQuestions) * 100
+            ];
+
+            const backgroundColors = [
+                'rgba(255, 99, 132, 0.7)', // A - Rot
+                'rgba(54, 162, 235, 0.7)', // B - Blau
+                'rgba(255, 206, 86, 0.7)', // C - Gelb
+                'rgba(75, 192, 192, 0.7)', // D - Grün
+                'rgba(153, 102, 255, 0.7)' // E - Lila
+            ];
+            const borderColors = [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+            ];
+
+            myChartInstance = new Chart(ctx, {
+                type: 'bar', // Typ des Diagramms: 'bar' (Balken), 'pie' (Kreis), 'radar' etc.
+                data: {
+                    labels: ['Perfektionist', 'Macher', 'Kreativer', 'Analytiker', 'Teamplayer'], // Beschriftungen für die X-Achse
+                    datasets: [{
+                        label: 'Deine Antworten in %',
+                        data: chartData,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true, // Macht das Diagramm responsiv
+                    maintainAspectRatio: false, // Wichtig für responsive Layouts
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100, // Y-Achse geht bis 100%
+                            title: {
+                                display: true,
+                                text: 'Anteil in %'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Persönlichkeitstyp'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Legende ist bei Balkendiagramm oft nicht nötig, da Labels direkt da sind
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(1) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            // ----------- END: Chart.js Integration -----------
+
+            // Stellen Sie sicher, dass der detaillierte Ergebnisbereich sichtbar ist
+            document.getElementById('detailed-results').style.display = 'block';
+
+            // Autoscroll zum Ergebnis
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
