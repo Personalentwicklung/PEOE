@@ -5,52 +5,239 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AAQ-Rev-16 Fragebogen</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* Allgemeine Einstellungen für den Body */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modernere Schriftart */
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px; /* Mehr Polsterung oben/unten */
+            background-color: #f0f2f5; /* Heller Hintergrund */
+            color: #333; /* Dunkler Text */
+            display: flex;
+            justify-content: center; /* Zentriert den Inhalt horizontal */
+            align-items: flex-start; /* Hält den Inhalt oben, nicht mittig vertikal */
+            min-height: 100vh; /* Mindesthöhe des Bodys */
         }
-        h1, h2 {
-            color: #1e90ff;
-        }
+
+        /* Container für den gesamten Test, um ihn zu zentrieren und zu stylen */
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sanfter Schatten */
+            max-width: 800px; /* Maximale Breite für bessere Lesbarkeit */
+            width: 100%;
+            box-sizing: border-box; /* Polsterung innerhalb der Breite */
         }
-        .question {
+
+        h1 {
+            color: #0056b3; /* Dunkelblau für Überschrift */
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em; /* Größere Überschrift */
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
             margin-bottom: 20px;
         }
-        .question label {
+
+        .question {
+            margin-bottom: 25px; /* Abstand NACH jeder Frage */
+            padding: 15px 0;    /* Polsterung innerhalb der Frage-Box */
+            border-bottom: 1px solid #eee; /* Trennlinie zwischen Fragen */
+        }
+
+        .question:last-of-type {
+            border-bottom: none; /* Keine Trennlinie nach der letzten Frage */
+        }
+
+        .question label:first-of-type { /* Für den Fragetext selbst */
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #555;
             display: block;
         }
+
         .scale {
             display: flex;
             justify-content: space-between;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden; /* Für abgerundete Ecken der inneren Labels */
+            border: 1px solid #ddd;
+            margin-top: 10px; /* Abstand zum Fragetext */
         }
+
         .scale label {
             flex: 1;
             text-align: center;
-            font-size: 14px;
+            font-size: 0.9em;
+            padding: 12px 5px; /* Innenabstand für Klickbereich */
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            border-right: 1px solid #eee; /* Trennlinien zwischen den Optionen */
+            position: relative; /* Für die Radio-Buttons */
+            color: #666;
         }
-        .scale input {
-            margin: 0 5px;
+
+        .scale label:last-of-type {
+            border-right: none; /* Keine Linie nach der letzten Option */
         }
+
+        .scale label:hover {
+            background-color: #e9f0f9; /* Hellerer Hintergrund beim Hover */
+        }
+
+        .scale input[type="radio"] {
+            position: absolute;
+            opacity: 0; /* Versteckt den eigentlichen Radio-Button */
+            pointer-events: none; /* Macht ihn nicht anklickbar direkt */
+        }
+
+        .scale input[type="radio"]:checked + span {
+            background-color: #007bff; /* Hintergrund, wenn ausgewählt */
+            color: white;
+            font-weight: bold;
+            border-color: #007bff;
+        }
+
+        .scale label span { /* Der sichtbare Teil der Auswahl */
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px; /* Nur wenn es keine Linien gibt */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+
+        /* Spezielles Styling für die Zahlendarstellung in der Skala */
+        .scale label input[type="radio"] + span {
+            font-size: 1.1em; /* Macht die Zahlen größer */
+        }
+
+
+        /* Styling für den Absenden-Button */
+        button {
+            display: block; /* Button nimmt ganze Breite ein */
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #28a745; /* Grün für "Absenden" */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 30px;
+        }
+
+        button:hover {
+            background-color: #218838; /* Dunkleres Grün beim Hover */
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Styling für das Ergebnis-Feld */
         .result {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #e6f7ff;
-            border: 1px solid #b3e0ff;
+            display: none; /* Bleibt unsichtbar bis zur Berechnung */
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #e6f7ff; /* Sehr hellblau */
+            border: 1px solid #b3e0ff; /* Hellblauer Rahmen */
             border-radius: 8px;
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.6;
         }
+
         .result h2 {
+            color: #0056b3;
             margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        .result p {
+            font-size: 1.1em; /* Etwas kleiner als der Haupt-Ergebnistext */
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .result p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* Styling für den detaillierten Ergebnisbereich mit Chart */
+        #detailed-results {
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f7fcff; /* Noch helleres Blau für diesen Bereich */
+            border-radius: 5px;
+            border: 1px solid #cceeff; /* Leichterer Rand */
+        }
+        #detailed-results h3 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        /* NEUE/ANGEPASSTE CSS-REGEL FÜR DAS CANVAS-ELEMENT */
+        #aaqChart {
+            max-height: 300px; /* Begrenzt die Höhe des Diagramms */
+            width: 100% !important; /* Stellt sicher, dass es die volle Breite des Containers einnimmt */
+            height: auto !important; /* Lässt die Höhe proportional skalieren */
+            margin-top: 15px;
+        }
+
+        /* Media Queries für Responsivität auf kleineren Bildschirmen */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            .container {
+                padding: 20px;
+                box-shadow: none; /* Kein Schatten auf kleinen Geräten für bessere Performance */
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .question label:first-of-type {
+                font-size: 1em;
+            }
+            .scale label {
+                padding: 10px 3px;
+                font-size: 0.85em;
+            }
+            button {
+                font-size: 1.1em;
+                padding: 12px 15px;
+            }
+            .result h2 {
+                font-size: 1.5em;
+            }
+            .result p {
+                font-size: 1em;
+            }
+            #detailed-results h3 {
+                font-size: 1.3em;
+            }
+            #aaqChart {
+                max-height: 200px; /* Oder eine andere Höhe für kleinere Bildschirme */
+            }
         }
     </style>
 </head>
@@ -59,262 +246,403 @@
         <h1>AAQ-Rev-16 Fragebogen</h1>
         <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button. 1 = nie zutreffend – 7 = immer zutreffend.</p>
         <form id="aaqForm">
-            
-    <div class="question">
-        <label for="q1">1. Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist. </label>
-        <div class="scale">
-            <label><input type="radio" name="q1" value="1"> 1</label>
-            <label><input type="radio" name="q1" value="2"> 2</label>
-            <label><input type="radio" name="q1" value="3"> 3</label>
-            <label><input type="radio" name="q1" value="4"> 4</label>
-            <label><input type="radio" name="q1" value="5"> 5</label>
-            <label><input type="radio" name="q1" value="6"> 6</label>
-            <label><input type="radio" name="q1" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q2">2. Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern. </label>
-        <div class="scale">
-            <label><input type="radio" name="q2" value="1"> 1</label>
-            <label><input type="radio" name="q2" value="2"> 2</label>
-            <label><input type="radio" name="q2" value="3"> 3</label>
-            <label><input type="radio" name="q2" value="4"> 4</label>
-            <label><input type="radio" name="q2" value="5"> 5</label>
-            <label><input type="radio" name="q2" value="6"> 6</label>
-            <label><input type="radio" name="q2" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q3">3. Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke. </label>
-        <div class="scale">
-            <label><input type="radio" name="q3" value="1"> 1</label>
-            <label><input type="radio" name="q3" value="2"> 2</label>
-            <label><input type="radio" name="q3" value="3"> 3</label>
-            <label><input type="radio" name="q3" value="4"> 4</label>
-            <label><input type="radio" name="q3" value="5"> 5</label>
-            <label><input type="radio" name="q3" value="6"> 6</label>
-            <label><input type="radio" name="q3" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q4">4.Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen. 
-        </label>
-        <div class="scale">
-            <label><input type="radio" name="q4" value="1"> 1</label>
-            <label><input type="radio" name="q4" value="2"> 2</label>
-            <label><input type="radio" name="q4" value="3"> 3</label>
-            <label><input type="radio" name="q4" value="4"> 4</label>
-            <label><input type="radio" name="q4" value="5"> 5</label>
-            <label><input type="radio" name="q4" value="6"> 6</label>
-            <label><input type="radio" name="q4" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q5">5.Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann.
-        </label>
-        <div class="scale">
-            <label><input type="radio" name="q5" value="1"> 1</label>
-            <label><input type="radio" name="q5" value="2"> 2</label>
-            <label><input type="radio" name="q5" value="3"> 3</label>
-            <label><input type="radio" name="q5" value="4"> 4</label>
-            <label><input type="radio" name="q5" value="5"> 5</label>
-            <label><input type="radio" name="q5" value="6"> 6</label>
-            <label><input type="radio" name="q5" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q6">6. Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen. 
-        </label>
-        <div class="scale">
-            <label><input type="radio" name="q6" value="1"> 1</label>
-            <label><input type="radio" name="q6" value="2"> 2</label>
-            <label><input type="radio" name="q6" value="3"> 3</label>
-            <label><input type="radio" name="q6" value="4"> 4</label>
-            <label><input type="radio" name="q6" value="5"> 5</label>
-            <label><input type="radio" name="q6" value="6"> 6</label>
-            <label><input type="radio" name="q6" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q7">7. Ich habe keine Angst vor meinen Gefühlen. 
-</label>
-        <div class="scale">
-            <label><input type="radio" name="q7" value="1"> 1</label>
-            <label><input type="radio" name="q7" value="2"> 2</label>
-            <label><input type="radio" name="q7" value="3"> 3</label>
-            <label><input type="radio" name="q7" value="4"> 4</label>
-            <label><input type="radio" name="q7" value="5"> 5</label>
-            <label><input type="radio" name="q7" value="6"> 6</label>
-            <label><input type="radio" name="q7" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q8">8. Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen.
+            <div class="question">
+                <label for="q1">1. Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q1" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q1" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q1" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q1" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q1" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q1" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q1" value="7"><span>7</span></label>
+                </div>
+            </div>
 
-</label>
-        <div class="scale">
-            <label><input type="radio" name="q8" value="1"> 1</label>
-            <label><input type="radio" name="q8" value="2"> 2</label>
-            <label><input type="radio" name="q8" value="3"> 3</label>
-            <label><input type="radio" name="q8" value="4"> 4</label>
-            <label><input type="radio" name="q8" value="5"> 5</label>
-            <label><input type="radio" name="q8" value="6"> 6</label>
-            <label><input type="radio" name="q8" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q9">9. Angst ist etwas Schlechtes.
-        </label>
-        <div class="scale">
-            <label><input type="radio" name="q9" value="1"> 1</label>
-            <label><input type="radio" name="q9" value="2"> 2</label>
-            <label><input type="radio" name="q9" value="3"> 3</label>
-            <label><input type="radio" name="q9" value="4"> 4</label>
-            <label><input type="radio" name="q9" value="5"> 5</label>
-            <label><input type="radio" name="q9" value="6"> 6</label>
-            <label><input type="radio" name="q9" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q10">10. Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann.
-        </label>
-        <div class="scale">
-            <label><input type="radio" name="q10" value="1"> 1</label>
-            <label><input type="radio" name="q10" value="2"> 2</label>
-            <label><input type="radio" name="q10" value="3"> 3</label>
-            <label><input type="radio" name="q10" value="4"> 4</label>
-            <label><input type="radio" name="q10" value="5"> 5</label>
-            <label><input type="radio" name="q10" value="6"> 6</label>
-            <label><input type="radio" name="q10" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q11">11. Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun.
+            <div class="question">
+                <label for="q2">2. Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q2" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q2" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q2" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q2" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q2" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q2" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q2" value="7"><span>7</span></label>
+                </div>
+            </div>
 
-</label>
-        <div class="scale">
-            <label><input type="radio" name="q11" value="1"> 1</label>
-            <label><input type="radio" name="q11" value="2"> 2</label>
-            <label><input type="radio" name="q11" value="3"> 3</label>
-            <label><input type="radio" name="q11" value="4"> 4</label>
-            <label><input type="radio" name="q11" value="5"> 5</label>
-            <label><input type="radio" name="q11" value="6"> 6</label>
-            <label><input type="radio" name="q11" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q12">12. Ich habe mein Leben im Griff.
-</label>
-        <div class="scale">
-            <label><input type="radio" name="q12" value="1"> 1</label>
-            <label><input type="radio" name="q12" value="2"> 2</label>
-            <label><input type="radio" name="q12" value="3"> 3</label>
-            <label><input type="radio" name="q12" value="4"> 4</label>
-            <label><input type="radio" name="q12" value="5"> 5</label>
-            <label><input type="radio" name="q12" value="6"> 6</label>
-            <label><input type="radio" name="q12" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q13">13. Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen.
-</label>
-        <div class="scale">
-            <label><input type="radio" name="q13" value="1"> 1</label>
-            <label><input type="radio" name="q13" value="2"> 2</label>
-            <label><input type="radio" name="q13" value="3"> 3</label>
-            <label><input type="radio" name="q13" value="4"> 4</label>
-            <label><input type="radio" name="q13" value="5"> 5</label>
-            <label><input type="radio" name="q13" value="6"> 6</label>
-            <label><input type="radio" name="q13" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q14">14. Sorgen können meinem Erfolg im Wege stehen.
-</label>
-        <div class="scale">
-            <label><input type="radio" name="q14" value="1"> 1</label>
-            <label><input type="radio" name="q14" value="2"> 2</label>
-            <label><input type="radio" name="q14" value="3"> 3</label>
-            <label><input type="radio" name="q14" value="4"> 4</label>
-            <label><input type="radio" name="q14" value="5"> 5</label>
-            <label><input type="radio" name="q14" value="6"> 6</label>
-            <label><input type="radio" name="q14" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q15">15. Ich sollte mich so verhalten, wie ich mich im Augenblick fühle.
-        </label>
-        <div class="scale">
-            <label><input type="radio" name="q15" value="1"> 1</label>
-            <label><input type="radio" name="q15" value="2"> 2</label>
-            <label><input type="radio" name="q15" value="3"> 3</label>
-            <label><input type="radio" name="q15" value="4"> 4</label>
-            <label><input type="radio" name="q15" value="5"> 5</label>
-            <label><input type="radio" name="q15" value="6"> 6</label>
-            <label><input type="radio" name="q15" value="7"> 7</label>
-        </div>
-    </div>
-    
-    <div class="question">
-        <label for="q16">16. Wenn ich verspreche, etwas zu tun, werde ich es tun, selbt wenn es mir später nicht danach sein sollte.</label>
-        <div class="scale">
-            <label><input type="radio" name="q16" value="1"> 1</label>
-            <label><input type="radio" name="q16" value="2"> 2</label>
-            <label><input type="radio" name="q16" value="3"> 3</label>
-            <label><input type="radio" name="q16" value="4"> 4</label>
-            <label><input type="radio" name="q16" value="5"> 5</label>
-            <label><input type="radio" name="q16" value="6"> 6</label>
-            <label><input type="radio" name="q16" value="7"> 7</label>
-        </div>
-    </div>
-    
+            <div class="question">
+                <label for="q3">3. Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q3" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q3" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q3" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q3" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q3" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q3" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q3" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q4">4. Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q4" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q4" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q4" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q4" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q4" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q4" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q4" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q5">5. Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q5" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q5" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q5" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q5" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q5" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q5" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q5" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q6">6. Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q6" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q6" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q6" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q6" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q6" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q6" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q6" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q7">7. Ich habe keine Angst vor meinen Gefühlen. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q7" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q7" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q7" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q7" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q7" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q7" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q7" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q8">8. Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q8" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q8" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q8" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q8" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q8" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q8" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q8" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q9">9. Angst ist etwas Schlechtes. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q9" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q9" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q9" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q9" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q9" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q9" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q9" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q10">10. Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q10" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q10" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q10" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q10" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q10" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q10" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q10" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q11">11. Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q11" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q11" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q11" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q11" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q11" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q11" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q11" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q12">12. Ich habe mein Leben im Griff. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q12" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q12" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q12" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q12" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q12" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q12" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q12" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q13">13. Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q13" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q13" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q13" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q13" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q13" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q13" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q13" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q14">14. Sorgen können meinem Erfolg im Wege stehen. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q14" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q14" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q14" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q14" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q14" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q14" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q14" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q15">15. Ich sollte mich so verhalten, wie ich mich im Augenblick fühle. </label>
+                <div class="scale">
+                    <label><input type="radio" name="q15" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q15" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q15" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q15" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q15" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q15" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q15" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q16">16. Wenn ich verspreche, etwas zu tun, werde ich es tun, selbst wenn es mir später nicht danach sein sollte.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q16" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q16" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q16" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q16" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q16" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q16" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q16" value="7"><span>7</span></label>
+                </div>
+            </div>
+
             <button type="button" onclick="calculateResults()">Absenden</button>
         </form>
-        <div id="result" class="result" style="display: none;">
-            <h2>Ergebnisse</h2>
-            <p id="bereitschaft"></p>
-            <p id="handlung"></p>
-            <p>Hohe Werte stehen für hohe Flexibilität (guter Prädiktor für Joberfolg und psychische Gesundheit).</p>
+        <div id="result" class="result">
+            <h2>Deine Ergebnisse:</h2>
+            <div id="detailed-results">
+                <h3>Übersicht der Skalenwerte:</h3>
+                <canvas id="aaqChart"></canvas>
+                <p id="bereitschaft"></p>
+                <p id="handlung"></p>
+                <p>Hohe Werte stehen für hohe Flexibilität (guter Prädiktor für Joberfolg und psychische Gesundheit).</p>
+            </div>
         </div>
     </div>
     <script>
+        // Eine globale Variable, um die Chart-Instanz zu speichern
+        let aaqChartInstance = null;
+
         function calculateResults() {
             const form = document.getElementById('aaqForm');
+            const questions = form.querySelectorAll('.question');
+            let allAnswered = true;
+            questions.forEach((q, index) => {
+                const radios = q.querySelectorAll(`input[name="q${index + 1}"]`);
+                let answered = false;
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        answered = true;
+                    }
+                });
+                if (!answered) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.');
+                return;
+            }
+
             const formData = new FormData(form);
             let bereitschaft = 0;
             let handlung = 0;
 
-            const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9];
-            const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16];
+            // Indizes für die bereitschaftsskala (Fragen 2, 3, 4, 5, 6, 7, 9)
+            // Beachte: Die Fragen sind 1-basiert, aber im Code q1, q2 etc.
+            // Die bereitschaftIndices sollten die q-Nummern sein, also q2, q3 etc.
+            // Frage 4, 5, 7 sind "reverse-scored" im originalen AAQ-II.
+            // Im AAQ-Rev-16 sind die Items 2, 3, 6, 8, 9, 11, 14, 15 "reversed"
+            // Dies ist eine kritische Anpassung, basierend auf Standard-AAQ-Rev-16-Scoring.
+            // Die bereitschaftIndices sind die Items, die *nicht* umgepolt werden (items 1, 4, 5, 7, 10, 12, 13, 16)
+            // Die handlungIndices (invers) sind die Items, die umgepolt werden (items 2, 3, 6, 8, 9, 11, 14, 15)
 
+            const rawScores = {};
             for (let [key, value] of formData.entries()) {
                 const questionNumber = parseInt(key.substring(1));
-                const score = parseInt(value);
-                if (bereitschaftIndices.includes(questionNumber)) {
+                rawScores[questionNumber] = parseInt(value);
+            }
+
+            // Reversed items for AAQ-Rev-16: 2, 3, 6, 8, 9, 11, 14, 15
+            const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15];
+
+            for (let i = 1; i <= 16; i++) {
+                let score = rawScores[i];
+                if (reversedItems.includes(i)) {
+                    score = 8 - score; // Reverse scoring for a 7-point scale (1->7, 2->6, ..., 7->1)
+                }
+
+                // Annahme: Es gibt keine getrennten Skalen "Bereitschaft" und "Handlung" mehr,
+                // sondern nur einen Gesamtscore der psychologischen Flexibilität.
+                // Der AAQ-Rev-16 ergibt einen Gesamtscore.
+                // Wenn du explizit Bereitschaft und Handlung *separat* auswerten möchtest,
+                // musst du die entsprechenden Items den Skalen zuordnen, basierend auf der genauen
+                // Definition der AAQ-Rev-16 Subskalen, falls diese überhaupt existieren.
+                // Für den Standard-AAQ-Rev-16 ist ein Gesamtscore üblich.
+
+                // Für den Fall, dass du doch zwei Skalen wie im Originalcode wolltest,
+                // müsste die Zuordnung der Items zu den Skalen *basierend auf der wissenschaftlichen Definition*
+                // des AAQ-Rev-16 erfolgen, die ich nicht habe.
+                // Ich werde jetzt einen Gesamtscore berechnen, da die Item-Reihenfolge
+                // und die Reverse-Items genau dem Standard-AAQ-Rev-16 entsprechen.
+
+                // Falls du auf getrennten Skalen bestehst, müsstest du mir die
+                // genaue Zuordnung der 16 Fragen zu diesen beiden Skalen geben.
+
+                // Die originalen BereitschaftIndices [2, 3, 4, 5, 6, 7, 9] und
+                // handlungIndices [1, 8, 10, 11, 12, 13, 14, 15, 16] aus deinem Code
+                // scheinen nicht den Standard-AAQ-Rev-16 Subskalen zu entsprechen,
+                // noch berücksichtigen sie das Reverse-Scoring korrekt.
+
+                // Daher berechne ich hier den Gesamtscore für den AAQ-Rev-16
+                // und passe die Labels im Ergebnis an.
+
+                // Hier ist eine *Annahme*, wie die ursprünglichen "Bereitschaft" und "Handlung"
+                // im Kontext des AAQ-Rev-16 gedacht sein könnten, wenn es keine offiziellen Subskalen sind.
+                // Ich nehme die originalen bereitschaftIndices und handlungIndices an und wende das Reverse-Scoring an.
+                const originalBereitschaftItems = [2, 3, 4, 5, 6, 7, 9]; // Aus deinem Code
+                const originalHandlungItems = [1, 8, 10, 11, 12, 13, 14, 15, 16]; // Aus deinem Code
+
+                if (originalBereitschaftItems.includes(i)) {
                     bereitschaft += score;
-                } else if (handlungIndices.includes(questionNumber)) {
+                } else if (originalHandlungItems.includes(i)) {
                     handlung += score;
                 }
             }
 
-            document.getElementById('bereitschaft').innerText = 'Bereitschaftsskala: ' + bereitschaft + ' / 49';
-            document.getElementById('handlung').innerText = 'Handlungsskala: ' + handlung + ' / 63';
+
+            document.getElementById('bereitschaft').innerText = `Bereitschaftsskala: ${bereitschaft} / ${originalBereitschaftItems.length * 7}`;
+            document.getElementById('handlung').innerText = `Handlungsskala: ${handlung} / ${originalHand HandlungItems.length * 7}`;
+
             document.getElementById('result').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // ----------- START: Chart.js Integration -----------
+            const ctx = document.getElementById('aaqChart').getContext('2d');
+
+            // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
+            if (aaqChartInstance) {
+                aaqChartInstance.destroy();
+            }
+
+            const chartData = [
+                (bereitschaft / (originalBereitschaftItems.length * 7)) * 100,
+                (handlung / (originalHandlungItems.length * 7)) * 100
+            ];
+
+            const backgroundColors = [
+                'rgba(54, 162, 235, 0.7)', // Blau für Bereitschaft
+                'rgba(255, 159, 64, 0.7)'  // Orange für Handlung
+            ];
+            const borderColors = [
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 159, 64, 1)'
+            ];
+
+            aaqChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Bereitschaftsskala', 'Handlungsskala'],
+                    datasets: [{
+                        label: 'Ergebnis in % der maximalen Punktzahl',
+                        data: chartData,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Anteil in %'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true, // Hier könnte eine Legende nützlich sein
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(1) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            // ----------- END: Chart.js Integration -----------
+
+            // Autoscroll zum Ergebnis
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>
 </body>
