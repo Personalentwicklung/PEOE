@@ -144,6 +144,13 @@
             display: none; /* Diese Zeilen ausblenden, da das Diagramm die Info anzeigt */
         }
 
+        /* NEUE/ANGEPASSTE CSS-REGEL FÜR DAS CANVAS-ELEMENT */
+        #myPersonalityChart {
+            max-height: 350px; /* Begrenzt die Höhe des Diagramms */
+            width: 100% !important; /* Stellt sicher, dass es die volle Breite des Containers einnimmt */
+            height: auto !important; /* Lässt die Höhe proportional skalieren */
+        }
+
 
         /* Media Queries für Responsivität auf kleineren Bildschirmen */
         @media (max-width: 768px) {
@@ -175,6 +182,10 @@
             }
             #detailed-results h3 {
                 font-size: 1.2em;
+            }
+            /* Bei kleineren Bildschirmen kann das Diagramm evtl. noch höher sein, hier ggf. weitere Anpassung */
+            #myPersonalityChart {
+                max-height: 250px; /* Oder eine andere Höhe für kleinere Bildschirme */
             }
         }
     </style>
@@ -254,7 +265,7 @@
             <p id="result-text"></p>
             <div id="detailed-results">
                 <h3>Deine Verteilung der Antworten:</h3>
-                <canvas id="myPersonalityChart"></canvas>
+                <canvas id="myPersonalityChart" width="400" height="250"></canvas>
                 <p id="result-a"></p>
                 <p id="result-b"></p>
                 <p id="result-c"></p>
