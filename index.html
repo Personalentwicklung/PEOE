@@ -37,10 +37,10 @@
         }
 
         .question {
-    margin-bottom: 5px;
-            padding: 10px 0;    
-    border-bottom: 1px solid #eee;
-}
+            margin-bottom: 15px; /* Abstand NACH jeder Frage */
+            padding: 10px 0;    /* Polsterung innerhalb der Frage-Box */
+            border-bottom: 1px solid #eee; /* Trennlinie zwischen Fragen */
+        }
 
         .question:last-of-type {
             border-bottom: none; /* Keine Trennlinie nach der letzten Frage */
@@ -69,7 +69,6 @@
 
         input[type="radio"] {
             margin-right: 10px;
-            /* Custom Radio Buttons (optional, erfordert mehr CSS) */
         }
 
         /* Styling für den Ergebnis-Button */
@@ -120,6 +119,28 @@
             color: #333;
         }
 
+        /* Styling für den detaillierten Ergebnisbereich */
+        #detailed-results {
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f7fcff; /* Noch helleres Blau für diesen Bereich */
+            border-radius: 5px;
+            border: 1px solid #cceeff; /* Leichterer Rand */
+        }
+        #detailed-results h3 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        #detailed-results p {
+            font-size: 1em;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+
         /* Media Queries für Responsivität auf kleineren Bildschirmen */
         @media (max-width: 768px) {
             body {
@@ -147,6 +168,9 @@
             }
             .result p {
                 font-size: 1em;
+            }
+            #detailed-results h3 {
+                font-size: 1.2em;
             }
         }
     </style>
@@ -224,6 +248,14 @@
         <div id="result" class="result">
             <h2>Dein Ergebnis:</h2>
             <p id="result-text"></p>
+            <div id="detailed-results">
+                <h3>Deine Verteilung der Antworten:</h3>
+                <p id="result-a"></p>
+                <p id="result-b"></p>
+                <p id="result-c"></p>
+                <p id="result-d"></p>
+                <p id="result-e"></p>
+            </div>
         </div>
     </div>
     <script>
@@ -231,11 +263,12 @@
             var form = document.getElementById('personality-test');
             var answers = form.querySelectorAll('input[type="radio"]:checked');
             var counts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+            var totalQuestions = 8; // Die Gesamtzahl der Fragen
 
             // Überprüfen, ob alle Fragen beantwortet wurden
-            if (answers.length < 8) { // Annahme: Du hast 8 Fragen
+            if (answers.length < totalQuestions) {
                 alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.');
-                return; // Funktion beenden, wenn nicht alle Fragen beantwortet wurden
+                return;
             }
 
             answers.forEach(function(answer) {
@@ -285,6 +318,15 @@
 
             document.getElementById('result-text').innerHTML = resultSymbol + ' ' + resultText;
             document.getElementById('result').style.display = 'block';
+
+            // Berechne und zeige die Prozentwerte an
+            document.getElementById('result-a').innerHTML = 'Perfektionist (A): ' + ((counts.A / totalQuestions) * 100).toFixed(1) + '% (' + counts.A + '/' + totalQuestions + ')';
+            document.getElementById('result-b').innerHTML = 'Macher (B): ' + ((counts.B / totalQuestions) * 100).toFixed(1) + '% (' + counts.B + '/' + totalQuestions + ')';
+            document.getElementById('result-c').innerHTML = 'Kreativer (C): ' + ((counts.C / totalQuestions) * 100).toFixed(1) + '% (' + counts.C + '/' + totalQuestions + ')';
+            document.getElementById('result-d').innerHTML = 'Analytiker (D): ' + ((counts.D / totalQuestions) * 100).toFixed(1) + '% (' + counts.D + '/' + totalQuestions + ')';
+            document.getElementById('result-e').innerHTML = 'Teamplayer (E): ' + ((counts.E / totalQuestions) * 100).toFixed(1) + '% (' + counts.E + '/' + totalQuestions + ')';
+            document.getElementById('detailed-results').style.display = 'block'; // Sicherstellen, dass der Detailbereich sichtbar ist
+
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' }); // Autoscroll hinzugefügt
         }
     </script>
