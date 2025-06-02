@@ -38,7 +38,7 @@
             border: 1px solid #e0e0e0;
         }
         .question {
-            margin-bottom: 30px;
+            margin-bottom: 15px; /* Abstand zwischen den Fragen reduziert */
             padding: 20px;
             background-color: #f7f9fc;
             border-left: 5px solid #3498db; /* Akzentfarbe */
@@ -139,7 +139,6 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             border: 1px solid #eee;
         }
-        /* Wenn Sie Balken- und Kreisdiagramm anbieten, brauchen Sie zwei Canvas-Elemente */
         .chart-container canvas {
             max-height: 400px; /* Maximale Höhe für das Diagramm */
         }
@@ -165,9 +164,9 @@
         <div class="question">
             <h3>3. Wie organisieren Sie Ihre Arbeit?</h3>
             <label><input type="radio" name="q3" value="D"> Ich setze klare Ziele und Deadlines.</label><br>
-            <label><input type="radio" name="q3" value="I"> b) Ich arbeite gerne im Team und motiviere andere.</label><br>
-            <label><input type="radio" name="q3" value="S"> c) Ich arbeite ruhig und methodisch.</label><br>
-            <label><input type="radio" name="q3" value="C"> d) Ich plane sorgfältig und achte auf Details.</label>
+            <label><input type="radio" name="q3" value="I"> Ich arbeite gerne im Team und motiviere andere.</label><br>
+            <label><input type="radio" name="q3" value="S"> Ich arbeite ruhig und methodisch.</label><br>
+            <label><input type="radio" name="q3" value="C"> Ich plane sorgfältig und achte auf Details.</label>
         </div>
         <div class="question">
             <h3>4. Wie reagieren Sie auf Veränderungen?</h3>
@@ -253,6 +252,29 @@
         let barChartInstance = null; // Variable, um Diagramm-Instanzen zu speichern
         let pieChartInstance = null;
 
+        /**
+         * Setzt alle Radio-Buttons im Formular zurück.
+         */
+        function resetForm() {
+            const form = document.getElementById('disc-test');
+            form.reset(); // Setzt alle Formularfelder auf ihren Ursprungswert zurück
+
+            // Ergebnisbereich ausblenden und ggf. alte Diagramme zerstören
+            document.getElementById('result').classList.remove('show');
+            if (barChartInstance) {
+                barChartInstance.destroy();
+                barChartInstance = null;
+            }
+            if (pieChartInstance) {
+                pieChartInstance.destroy();
+                pieChartInstance = null;
+            }
+        }
+
+        // Führt den Reset aus, wenn die Seite geladen wird
+        window.addEventListener('load', resetForm);
+
+
         function calculateResult() {
             const form = document.forms['disc-test'];
             const answers = {
@@ -280,7 +302,7 @@
             const resultDescription = document.getElementById('result-description');
 
             if (!allQuestionsAnswered) {
-                resultDiv.classList.remove('show'); // Ergebnisbereich vorerst ausblenden
+                resultDiv.classList.remove('show');
                 resultDiv.classList.add('error');
                 resultTitle.innerText = 'Fehler: Nicht alle Fragen beantwortet!';
                 resultDescription.innerHTML = '<p>Bitte beantworten Sie **alle** Fragen, um Ihr Ergebnis zu erhalten.</p>';
@@ -289,15 +311,16 @@
                 if (barChartInstance) barChartInstance.destroy();
                 if (pieChartInstance) pieChartInstance.destroy();
 
-                resultDiv.classList.add('show'); // Fehlerbereich anzeigen
+                resultDiv.classList.add('show');
+                
+                // Zum Fehlerbereich scrollen
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 return;
             }
 
-            // Setzen Sie die Klasse zurück und zeigen Sie den Ergebnisbereich an
             resultDiv.classList.remove('error');
             resultDiv.classList.add('show');
             
-            // Ermitteln des Typs mit den meisten Punkten
             const dominantType = Object.keys(answers).reduce((a, b) => answers[a] > answers[b] ? a : b);
             
             const typeDescriptions = {
@@ -354,7 +377,7 @@
 
             // Balkendiagramm
             const barCtx = document.getElementById('barChart').getContext('2d');
-            if (barChartInstance) { // Zerstöre vorherige Instanz, falls vorhanden
+            if (barChartInstance) {
                 barChartInstance.destroy();
             }
             barChartInstance = new Chart(barCtx, {
@@ -376,17 +399,17 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                precision: 0 // Nur ganze Zahlen auf der Y-Achse
+                                precision: 0
                             }
                         }
                     },
                     plugins: {
                         legend: {
-                            display: false // Keine Legende nötig, da Labels direkt angezeigt werden
+                            display: false
                         },
                         title: {
                             display: true,
-                            text: 'Verteilung Ihrer Antworten',
+                            text: 'Verteilung Ihrer Antworten (Punkte)',
                             font: {
                                 size: 16
                             }
@@ -397,7 +420,7 @@
 
             // Kreisdiagramm
             const pieCtx = document.getElementById('pieChart').getContext('2d');
-            if (pieChartInstance) { // Zerstöre vorherige Instanz, falls vorhanden
+            if (pieChartInstance) {
                 pieChartInstance.destroy();
             }
             pieChartInstance = new Chart(pieCtx, {
@@ -417,7 +440,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'right', // Legende rechts anzeigen
+                            position: 'right',
                             labels: {
                                 font: {
                                     size: 14
@@ -431,7 +454,7 @@
                                 size: 16
                             }
                         },
-                        tooltip: { // Tooltips für genaue Prozentangaben
+                        tooltip: {
                             callbacks: {
                                 label: function(context) {
                                     let label = context.label || '';
@@ -450,6 +473,9 @@
                     }
                 }
             });
+
+            // Nach der Ergebnisberechnung zum Ergebnisbereich scrollen
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>
 </body>
