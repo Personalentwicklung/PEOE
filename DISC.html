@@ -4,94 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DISC Persönlichkeitstest</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
             line-height: 1.6;
             color: #333;
-            background-color: #f4f4f4;
+            background: linear-gradient(to right, #ece9e6, #ffffff); /* Heller, weicher Farbverlauf */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 700;
         }
         form {
             background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            margin: 0 auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto 30px auto;
+            border: 1px solid #e0e0e0;
         }
         .question {
-            margin-bottom: 25px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fcfcfc;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f7f9fc;
+            border-left: 5px solid #3498db; /* Akzentfarbe */
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         .question h3 {
             margin-top: 0;
             color: #34495e;
-            font-size: 1.1em;
-            margin-bottom: 15px;
+            font-size: 1.25em;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
         .question label {
-            display: block;
-            margin-bottom: 10px;
+            display: flex; /* Für bessere Ausrichtung von Radio und Text */
+            align-items: center;
+            margin-bottom: 12px;
             cursor: pointer;
+            font-size: 1.05em;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .question label:hover {
+            background-color: #e9f5fd; /* Leichter Hover-Effekt */
         }
         .question input[type="radio"] {
-            margin-right: 8px;
-            transform: scale(1.1);
+            margin-right: 12px;
+            transform: scale(1.2); /* Radio-Buttons etwas größer */
+            accent-color: #3498db; /* Akzentfarbe für Radio-Button */
         }
         button {
             display: block;
             width: 100%;
-            padding: 12px 20px;
-            background-color: #3498db;
+            padding: 15px 25px;
+            background-color: #2ecc71; /* Grüner Button für Aktion */
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
         }
         button:hover {
-            background-color: #2980b9;
+            background-color: #27ae60;
+            transform: translateY(-2px);
         }
+        button:active {
+            transform: translateY(0);
+        }
+
         .result {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 8px;
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: 12px;
             background-color: #e8f5e9; /* Light green for success */
             border: 1px solid #c8e6c9;
-            font-weight: bold;
             color: #2e7d32; /* Darker green */
-            max-width: 800px;
-            margin: 20px auto;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             font-size: 1.1em;
+            line-height: 1.8;
+            display: none; /* Initial versteckt */
+        }
+        .result.show {
+            display: block; /* Bei Anzeige einblenden */
         }
         .result.error {
             background-color: #ffebee; /* Light red for error */
             border: 1px solid #ffcdd2;
             color: #d32f2f; /* Darker red */
         }
-        .score-distribution {
-            margin-top: 20px;
-            border-top: 1px dashed #ccc;
-            padding-top: 15px;
+        .result h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
         }
-        .score-distribution p {
-            margin: 5px 0;
-            font-weight: normal;
+        .result p {
+            margin-bottom: 10px;
         }
-        .score-distribution strong {
+        .result strong {
             color: #333;
+        }
+
+        /* Diagramm-Container */
+        .chart-container {
+            width: 100%;
+            max-width: 600px; /* Begrenzung der Diagrammgröße */
+            margin: 30px auto 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eee;
+        }
+        /* Wenn Sie Balken- und Kreisdiagramm anbieten, brauchen Sie zwei Canvas-Elemente */
+        .chart-container canvas {
+            max-height: 400px; /* Maximale Höhe für das Diagramm */
         }
     </style>
 </head>
@@ -100,93 +150,109 @@
     <form id="disc-test">
         <div class="question">
             <h3>1. Wie reagieren Sie in einer neuen Gruppe?</h3>
-            <label><input type="radio" name="q1" value="D"> a) Ich übernehme schnell die Führung.</label><br>
-            <label><input type="radio" name="q1" value="I"> b) Ich bringe gute Stimmung rein.</label><br>
-            <label><input type="radio" name="q1" value="S"> c) Ich beobachte erst mal ruhig.</label><br>
-            <label><input type="radio" name="q1" value="C"> d) Ich analysiere die Situation genau.</label>
+            <label><input type="radio" name="q1" value="D"> Ich übernehme schnell die Führung.</label><br>
+            <label><input type="radio" name="q1" value="I"> Ich bringe gute Stimmung rein.</label><br>
+            <label><input type="radio" name="q1" value="S"> Ich beobachte erst mal ruhig.</label><br>
+            <label><input type="radio" name="q1" value="C"> Ich analysiere die Situation genau.</label>
         </div>
         <div class="question">
             <h3>2. Wie gehen Sie mit Konflikten um?</h3>
-            <label><input type="radio" name="q2" value="D"> a) Ich konfrontiere das Problem direkt.</label><br>
-            <label><input type="radio" name="q2" value="I"> b) Ich versuche, die Stimmung zu heben.</label><br>
-            <label><input type="radio" name="q2" value="S"> c) Ich versuche, den Konflikt zu vermeiden.</label><br>
-            <label><input type="radio" name="q2" value="C"> d) Ich analysiere die Ursachen des Konflikts.</label>
+            <label><input type="radio" name="q2" value="D"> Ich konfrontiere das Problem direkt.</label><br>
+            <label><input type="radio" name="q2" value="I"> Ich versuche, die Stimmung zu heben.</label><br>
+            <label><input type="radio" name="q2" value="S"> Ich versuche, den Konflikt zu vermeiden.</label><br>
+            <label><input type="radio" name="q2" value="C"> Ich analysiere die Ursachen des Konflikts.</label>
         </div>
         <div class="question">
             <h3>3. Wie organisieren Sie Ihre Arbeit?</h3>
-            <label><input type="radio" name="q3" value="D"> a) Ich setze klare Ziele und Deadlines.</label><br>
+            <label><input type="radio" name="q3" value="D"> Ich setze klare Ziele und Deadlines.</label><br>
             <label><input type="radio" name="q3" value="I"> b) Ich arbeite gerne im Team und motiviere andere.</label><br>
             <label><input type="radio" name="q3" value="S"> c) Ich arbeite ruhig und methodisch.</label><br>
             <label><input type="radio" name="q3" value="C"> d) Ich plane sorgfältig und achte auf Details.</label>
         </div>
         <div class="question">
             <h3>4. Wie reagieren Sie auf Veränderungen?</h3>
-            <label><input type="radio" name="q4" value="D"> a) Ich sehe Veränderungen als Herausforderung.</label><br>
-            <label><input type="radio" name="q4" value="I"> b) Ich begrüße Veränderungen mit Begeisterung.</label><br>
-            <label><input type="radio" name="q4" value="S"> c) Ich bin vorsichtig und abwartend.</label><br>
-            <label><input type="radio" name="q4" value="C"> d) Ich analysiere die Veränderungen gründlich.</label>
+            <label><input type="radio" name="q4" value="D"> Ich sehe Veränderungen als Herausforderung.</label><br>
+            <label><input type="radio" name="q4" value="I"> Ich begrüße Veränderungen mit Begeisterung.</label><br>
+            <label><input type="radio" name="q4" value="S"> Ich bin vorsichtig und abwartend.</label><br>
+            <label><input type="radio" name="q4" value="C"> Ich analysiere die Veränderungen gründlich.</label>
         </div>
         <div class="question">
             <h3>5. Wie treffen Sie Entscheidungen?</h3>
-            <label><input type="radio" name="q5" value="D"> a) Ich treffe schnelle und entschlossene Entscheidungen.</label><br>
-            <label><input type="radio" name="q5" value="I"> b) Ich beziehe andere in meine Entscheidungen ein.</label><br>
-            <label><input type="radio" name="q5" value="S"> c) Ich überlege gründlich und vermeide Risiken.</label><br>
-            <label><input type="radio" name="q5" value="C"> d) Ich analysiere alle verfügbaren Informationen.</label>
+            <label><input type="radio" name="q5" value="D"> Ich treffe schnelle und entschlossene Entscheidungen.</label><br>
+            <label><input type="radio" name="q5" value="I"> Ich beziehe andere in meine Entscheidungen ein.</label><br>
+            <label><input type="radio" name="q5" value="S"> Ich überlege gründlich und vermeide Risiken.</label><br>
+            <label><input type="radio" name="q5" value="C"> Ich analysiere alle verfügbaren Informationen.</label>
         </div>
         <div class="question">
             <h3>6. Wie gehen Sie mit Stress um?</h3>
-            <label><input type="radio" name="q6" value="D"> a) Ich bleibe fokussiert und handle schnell.</label><br>
-            <label><input type="radio" name="q6" value="I"> b) Ich suche Unterstützung und Motivation bei anderen.</label><br>
-            <label><input type="radio" name="q6" value="S"> c) Ich bleibe ruhig und gelassen.</label><br>
-            <label><input type="radio" name="q6" value="C"> d) Ich analysiere die Ursachen des Stresses.</label>
+            <label><input type="radio" name="q6" value="D"> Ich bleibe fokussiert und handle schnell.</label><br>
+            <label><input type="radio" name="q6" value="I"> Ich suche Unterstützung und Motivation bei anderen.</label><br>
+            <label><input type="radio" name="q6" value="S"> Ich bleibe ruhig und gelassen.</label><br>
+            <label><input type="radio" name="q6" value="C"> Ich analysiere die Ursachen des Stresses.</label>
         </div>
         <div class="question">
             <h3>7. Wie gehen Sie mit Kritik um?</h3>
-            <label><input type="radio" name="q7" value="D"> a) Ich nehme Kritik als Ansporn zur Verbesserung.</label><br>
-            <label><input type="radio" name="q7" value="I"> b) Ich versuche, die Kritik positiv zu sehen.</label><br>
-            <label><input type="radio" name="q7" value="S"> c) Ich nehme Kritik ruhig und gelassen an.</label><br>
-            <label><input type="radio" name="q7" value="C"> d) Ich analysiere die Kritik und ziehe Schlüsse daraus.</label>
+            <label><input type="radio" name="q7" value="D"> Ich nehme Kritik als Ansporn zur Verbesserung.</label><br>
+            <label><input type="radio" name="q7" value="I"> Ich versuche, die Kritik positiv zu sehen.</label><br>
+            <label><input type="radio" name="q7" value="S"> Ich nehme Kritik ruhig und gelassen an.</label><br>
+            <label><input type="radio" name="q7" value="C"> Ich analysiere die Kritik und ziehe Schlüsse daraus.</label>
         </div>
         <div class="question">
             <h3>8. Wie motivieren Sie sich selbst?</h3>
-            <label><input type="radio" name="q8" value="D"> a) Ich setze mir ehrgeizige Ziele.</label><br>
-            <label><input type="radio" name="q8" value="I"> b) Ich suche nach neuen und aufregenden Herausforderungen.</label><br>
-            <label><input type="radio" name="q8" value="S"> c) Ich arbeite kontinuierlich und methodisch.</label><br>
-            <label><input type="radio" name="q8" value="C"> d) Ich analysiere meine Fortschritte und passe meine Strategie an.</label>
+            <label><input type="radio" name="q8" value="D"> Ich setze mir ehrgeizige Ziele.</label><br>
+            <label><input type="radio" name="q8" value="I"> Ich suche nach neuen und aufregenden Herausforderungen.</label><br>
+            <label><input type="radio" name="q8" value="S"> Ich arbeite kontinuierlich und methodisch.</label><br>
+            <label><input type="radio" name="q8" value="C"> Ich analysiere meine Fortschritte und passe meine Strategie an.</label>
         </div>
         <div class="question">
             <h3>9. Wie gehen Sie mit Fehlern um?</h3>
-            <label><input type="radio" name="q9" value="D"> a) Ich lerne schnell aus meinen Fehlern und mache weiter.</label><br>
-            <label><input type="radio" name="q9" value="I"> b) Ich versuche, die Fehler positiv zu sehen und daraus zu lernen.</label><br>
-            <label><input type="radio" name="q9" value="S"> c) Ich nehme Fehler ruhig und gelassen an.</label><br>
-            <label><input type="radio" name="q9" value="C"> d) Ich analysiere die Fehler gründlich und ziehe Schlüsse daraus.</label>
+            <label><input type="radio" name="q9" value="D"> Ich lerne schnell aus meinen Fehlern und mache weiter.</label><br>
+            <label><input type="radio" name="q9" value="I"> Ich versuche, die Fehler positiv zu sehen und daraus zu lernen.</label><br>
+            <label><input type="radio" name="q9" value="S"> Ich nehme Fehler ruhig und gelassen an.</label><br>
+            <label><input type="radio" name="q9" value="C"> Ich analysiere die Fehler gründlich und ziehe Schlüsse daraus.</label>
         </div>
         <div class="question">
             <h3>10. Wie gehen Sie mit neuen Aufgaben um?</h3>
-            <label><input type="radio" name="q10" value="D"> a) Ich nehme neue Aufgaben als Herausforderung an.</label><br>
-            <label><input type="radio" name="q10" value="I"> b) Ich begrüße neue Aufgaben mit Begeisterung.</label><br>
-            <label><input type="radio" name="q10" value="S"> c) Ich gehe neue Aufgaben ruhig und methodisch an.</label><br>
-            <label><input type="radio" name="q10" value="C"> d) Ich analysiere die neuen Aufgaben gründlich.</label>
+            <label><input type="radio" name="q10" value="D"> Ich nehme neue Aufgaben als Herausforderung an.</label><br>
+            <label><input type="radio" name="q10" value="I"> Ich begrüße neue Aufgaben mit Begeisterung.</label><br>
+            <label><input type="radio" name="q10" value="S"> Ich gehe neue Aufgaben ruhig und methodisch an.</label><br>
+            <label><input type="radio" name="q10" value="C"> Ich analysiere die neuen Aufgaben gründlich.</label>
         </div>
         <div class="question">
             <h3>11. Wie gehen Sie mit Unsicherheit um?</h3>
-            <label><input type="radio" name="q11" value="D"> a) Ich bleibe fokussiert und handle schnell.</label><br>
-            <label><input type="radio" name="q11" value="I"> b) Ich suche Unterstützung und Motivation bei anderen.</label><br>
-            <label><input type="radio" name="q11" value="S"> c) Ich bleibe ruhig und gelassen.</label><br>
-            <label><input type="radio" name="q11" value="C"> d) Ich analysiere die Ursachen der Unsicherheit.</label>
+            <label><input type="radio" name="q11" value="D"> Ich bleibe fokussiert und handle schnell.</label><br>
+            <label><input type="radio" name="q11" value="I"> Ich suche Unterstützung und Motivation bei anderen.</label><br>
+            <label><input type="radio" name="q11" value="S"> Ich bleibe ruhig und gelassen.</label><br>
+            <label><input type="radio" name="q11" value="C"> Ich analysiere die Ursachen der Unsicherheit.</label>
         </div>
         <div class="question">
             <h3>12. Wie gehen Sie mit Teamarbeit um?</h3>
-            <label><input type="radio" name="q12" value="D"> a) Ich übernehme schnell die Führung.</label><br>
-            <label><input type="radio" name="q12" value="I"> b) Ich bringe gute Stimmung ins Team.</label><br>
-            <label><input type="radio" name="q12" value="S"> c) Ich arbeite ruhig und methodisch im Team.</label><br>
-            <label><input type="radio" name="q12" value="C"> d) Ich analysiere die Teamdynamik gründlich.</label>
+            <label><input type="radio" name="q12" value="D"> Ich übernehme schnell die Führung.</label><br>
+            <label><input type="radio" name="q12" value="I"> Ich bringe gute Stimmung ins Team.</label><br>
+            <label><input type="radio" name="q12" value="S"> Ich arbeite ruhig und methodisch im Team.</label><br>
+            <label><input type="radio" name="q12" value="C"> Ich analysiere die Teamdynamik gründlich.</label>
         </div>
         <button type="button" onclick="calculateResult()">Ergebnis anzeigen</button>
     </form>
-    <div id="result" class="result"></div>
+
+    <div id="result" class="result">
+        <h2 id="result-title"></h2>
+        <div id="result-description"></div>
+        
+        <div class="chart-container">
+            <h3>Punkteverteilung (Balkendiagramm)</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="chart-container" style="margin-top: 20px;">
+            <h3>Punkteverteilung (Kreisdiagramm)</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
 
     <script>
+        let barChartInstance = null; // Variable, um Diagramm-Instanzen zu speichern
+        let pieChartInstance = null;
+
         function calculateResult() {
             const form = document.forms['disc-test'];
             const answers = {
@@ -195,59 +261,66 @@
                 S: 0,
                 C: 0
             };
-            let allQuestionsAnswered = true; // Flag für die Validierung
+            let allQuestionsAnswered = true;
             const totalQuestions = 12;
 
             for (let i = 1; i <= totalQuestions; i++) {
                 const questionName = 'q' + i;
-                // form.elements[questionName] gibt die NodeList der Radio-Buttons zurück
-                // .value davon gibt den Wert des *ausgewählten* Radio-Buttons zurück
                 const selectedOption = form.elements[questionName].value;
                 
                 if (!selectedOption) {
-                    allQuestionsAnswered = false; // Eine Frage wurde nicht beantwortet
-                    break; // Schleife abbrechen
+                    allQuestionsAnswered = false;
+                    break;
                 }
                 answers[selectedOption]++;
             }
 
             const resultDiv = document.getElementById('result');
+            const resultTitle = document.getElementById('result-title');
+            const resultDescription = document.getElementById('result-description');
 
             if (!allQuestionsAnswered) {
-                resultDiv.innerHTML = 'Bitte beantworten Sie **alle** Fragen, um Ihr Ergebnis zu erhalten.';
-                resultDiv.className = 'result error'; // Klasse für Fehlermeldung
-                return; // Funktion beenden
+                resultDiv.classList.remove('show'); // Ergebnisbereich vorerst ausblenden
+                resultDiv.classList.add('error');
+                resultTitle.innerText = 'Fehler: Nicht alle Fragen beantwortet!';
+                resultDescription.innerHTML = '<p>Bitte beantworten Sie **alle** Fragen, um Ihr Ergebnis zu erhalten.</p>';
+                
+                // Diagramme leeren/zerstören, falls sie existieren
+                if (barChartInstance) barChartInstance.destroy();
+                if (pieChartInstance) pieChartInstance.destroy();
+
+                resultDiv.classList.add('show'); // Fehlerbereich anzeigen
+                return;
             }
 
-            // Setzen Sie die Klasse zurück, falls zuvor ein Fehler war
-            resultDiv.className = 'result';
+            // Setzen Sie die Klasse zurück und zeigen Sie den Ergebnisbereich an
+            resultDiv.classList.remove('error');
+            resultDiv.classList.add('show');
             
             // Ermitteln des Typs mit den meisten Punkten
-            // Findet den Schlüssel (D, I, S, C), dessen Wert im 'answers' Objekt am höchsten ist.
             const dominantType = Object.keys(answers).reduce((a, b) => answers[a] > answers[b] ? a : b);
             
-            // Definitionen für die detaillierte Ergebnisbeschreibung
             const typeDescriptions = {
                 D: {
-                    name: 'Dominant (D) – Rot',
+                    name: 'Dominant (D)',
                     merkmale: 'Durchsetzungsstark, zielorientiert, entscheidungsfreudig',
                     verhalten: 'Direkt, liebt Herausforderungen, will Ergebnisse sehen',
                     kommunikation: 'Klar, knapp, ergebnisorientiert'
                 },
                 I: {
-                    name: 'Initiativ (I) – Gelb',
+                    name: 'Initiativ (I)',
                     merkmale: 'Begeisterungsfähig, kontaktfreudig, optimistisch',
                     verhalten: 'Inspirierend, redet gern, motiviert andere',
                     kommunikation: 'Emotional, offen, überzeugend'
                 },
                 S: {
-                    name: 'Stetig (S) – Grün',
+                    name: 'Stetig (S)',
                     merkmale: 'Geduldig, hilfsbereit, zuverlässig',
                     verhalten: 'Teamorientiert, hört gut zu, vermeidet Konflikte',
                     kommunikation: 'Ruhig, freundlich, unterstützend'
                 },
                 C: {
-                    name: 'Conform (C) – Blau',
+                    name: 'Conform (C)',
                     merkmale: 'Analytisch, genau, qualitätsbewusst',
                     verhalten: 'Plant sorgfältig, achtet auf Details, liebt Regeln',
                     kommunikation: 'Sachlich, strukturiert, faktenbasiert'
@@ -255,21 +328,128 @@
             };
 
             const currentType = typeDescriptions[dominantType];
-            let resultHtml = `
-                <p>Ihr dominantester Persönlichkeitstyp ist: <strong>${currentType.name}</strong></p>
+            
+            resultTitle.innerText = `Ihr dominantester Persönlichkeitstyp ist: ${currentType.name}`;
+            resultDescription.innerHTML = `
                 <p><strong>Merkmale:</strong> ${currentType.merkmale}</p>
                 <p><strong>Typisches Verhalten:</strong> ${currentType.verhalten}</p>
                 <p><strong>Kommunikationsstil:</strong> ${currentType.kommunikation}</p>
-                <div class="score-distribution">
-                    <p><strong>Punkteverteilung:</strong></p>
-                    <p>Dominant (D): ${answers.D}</p>
-                    <p>Initiativ (I): ${answers.I}</p>
-                    <p>Stetig (S): ${answers.S}</p>
-                    <p>Conform (C): ${answers.C}</p>
-                </div>
             `;
 
-            resultDiv.innerHTML = resultHtml;
+            // --- Diagramme erstellen ---
+            const labels = ['Dominant (D)', 'Initiativ (I)', 'Stetig (S)', 'Conform (C)'];
+            const data = [answers.D, answers.I, answers.S, answers.C];
+            const backgroundColors = [
+                'rgba(231, 76, 60, 0.8)',  // Rot für Dominant
+                'rgba(241, 196, 15, 0.8)', // Gelb für Initiativ
+                'rgba(46, 204, 113, 0.8)', // Grün für Stetig
+                'rgba(52, 152, 219, 0.8)'  // Blau für Conform
+            ];
+            const borderColors = [
+                'rgba(231, 76, 60, 1)',
+                'rgba(241, 196, 15, 1)',
+                'rgba(46, 204, 113, 1)',
+                'rgba(52, 152, 219, 1)'
+            ];
+
+            // Balkendiagramm
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            if (barChartInstance) { // Zerstöre vorherige Instanz, falls vorhanden
+                barChartInstance.destroy();
+            }
+            barChartInstance = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Anzahl der Antworten',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0 // Nur ganze Zahlen auf der Y-Achse
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Keine Legende nötig, da Labels direkt angezeigt werden
+                        },
+                        title: {
+                            display: true,
+                            text: 'Verteilung Ihrer Antworten',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Kreisdiagramm
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            if (pieChartInstance) { // Zerstöre vorherige Instanz, falls vorhanden
+                pieChartInstance.destroy();
+            }
+            pieChartInstance = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Anteil der Antworten',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right', // Legende rechts anzeigen
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Prozentuale Verteilung Ihrer Antworten',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: { // Tooltips für genaue Prozentangaben
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        let total = context.dataset.data.reduce((sum, current) => sum + current, 0);
+                                        let percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
+                                        label += context.parsed + ' Punkte (' + percentage + ')';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>
