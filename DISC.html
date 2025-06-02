@@ -46,8 +46,10 @@
             border-radius: 12px;
             padding: 25px 30px; /* Innenabstand für den Text */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
+            overflow: hidden; /* Wichtig für float, um den Container um das gefloatete Element zu umschließen */
         }
-        /* Styling für das Bild INNERHALB der introduction-box */
+        
+        /* Styling für das Bild INNERHALB der introduction-box (Standard-Platzierung, falls nicht gefloatet) */
         .introduction-box .introduction-model-image {
             max-width: 80%; /* Bild ist 80% der Box-Breite */
             height: auto;
@@ -56,6 +58,27 @@
             border: 1px solid #cceeff; /* Leichter Rahmen */
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* NEUE CSS-Regeln für das umfließende Bild */
+        .disc-float-right {
+            float: right; /* Bild nach rechts floatten lassen */
+            margin: 0 0 15px 25px; /* Abstand: oben 0, rechts 0, unten 15px, links 25px zum Text */
+            max-width: 40%; /* Bild soll maximal 40% der Breite der Box einnehmen */
+            height: auto; /* Höhe automatisch anpassen */
+            border-radius: 8px; /* Leicht abgerundete Ecken */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
+            border: 1px solid #ddd;
+        }
+
+        .disc-float-left {
+            float: left; /* Bild nach links floatten lassen */
+            margin: 0 25px 15px 0; /* Abstand: oben 0, rechts 25px, unten 15px, links 0 zum Text */
+            max-width: 40%; /* Bild soll maximal 40% der Breite der Box einnehmen */
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #ddd;
         }
 
         .introduction-box p { /* Absätze innerhalb der Box stylen */
@@ -221,7 +244,8 @@
     
     <div class="introduction-box">
         <p>Willkommen zum DISC Persönlichkeitstest!</p>
-        <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/213618654/450141372-8a91bce0-be82-49eb-ab2c-9d6870f64867.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250602%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250602T112135Z&X-Amz-Expires=300&X-Amz-Signature=610529f54b5156180a3d412e49d8e6c20e03f0c5a59bf60335f60fbd699886a6&X-Amz-SignedHeaders=host" alt="DISC Modell" class="introduction-model-image">
+        
+        <img src="https://github.com/user-attachments/assets/8a91bce0-be82-49eb-ab2c-9d6870f64867" alt="DISC Modell" class="disc-float-right">
         
         <p>Dieses kurze Quiz hilft Ihnen, erste Einblicke in Ihr Verhaltensprofil gemäß dem etablierten DISC-Modell zu gewinnen.</p>
         <p>Das Modell unterteilt menschliches Verhalten in vier grundlegende Dimensionen:</p>
