@@ -23,10 +23,21 @@
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px; /* Abstand nach dem Titel */
             font-size: 2.5em;
             font-weight: 700;
         }
+        /* Dieses Bild ist NICHT in der introduction-box, falls es am ganz oberen Rand des Bodys sein sollte */
+        .disc-model-image { /* Styling für das DISC-Bild */
+            max-width: 300px; /* Maximale Breite des Bildes */
+            height: auto;
+            display: block; /* Zentrierung ermöglichen */
+            margin: 0 auto 40px auto; /* Zentrieren und Abstand nach unten */
+            border: 1px solid #ddd; /* Leichter Rahmen, optional */
+            border-radius: 8px; /* Leicht abgerundete Ecken, optional */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Leichter Schatten, optional */
+        }
+
         .introduction-box { /* Neuer Container für den Einführungstext */
             max-width: 900px; /* Anpassung an die Formularbreite */
             margin-bottom: 30px; /* Abstand zum Formular */
@@ -35,8 +46,18 @@
             border-radius: 12px;
             padding: 25px 30px; /* Innenabstand für den Text */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
-            /* text-align: center;  Diesen entfernen wir, um die Zentrierung von Absätzen/Listen zu kontrollieren */
         }
+        /* Styling für das Bild INNERHALB der introduction-box */
+        .introduction-box .introduction-model-image {
+            max-width: 80%; /* Bild ist 80% der Box-Breite */
+            height: auto;
+            display: block; /* Für Zentrierung */
+            margin: 20px auto 25px auto; /* Abstand oben/unten und zentrieren */
+            border: 1px solid #cceeff; /* Leichter Rahmen */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
         .introduction-box p { /* Absätze innerhalb der Box stylen */
             font-size: 1.1em;
             color: #444;
@@ -50,27 +71,30 @@
         .introduction-box ul { /* Styling für die Liste innerhalb der Box */
             list-style-type: none; /* Aufzählungszeichen entfernen */
             padding: 0; /* Standard-Padding entfernen */
-            margin: 15px 0 25px 0; /* Abstand über und unter der Liste, kein seitlicher Abstand */
-            text-align: center; /* Liste zentrieren */
+            margin: 15px auto 25px auto; /* Abstand über und unter der Liste, automatische Seitenränder für Zentrierung */
+            max-width: fit-content; /* Liste zentrieren, indem sie nur so breit wie ihr Inhalt ist */
+            text-align: left; /* Text innerhalb der Liste linksbündig */
         }
         .introduction-box ul li {
             font-size: 1.1em;
             color: #444;
             margin-bottom: 8px; /* Kleiner Abstand zwischen Listenelementen */
             line-height: 1.5;
+            position: relative; /* Für absolute Positionierung des ::before Elements */
+            padding-left: 1.5em; /* Platz für das benutzerdefinierte Aufzählungszeichen */
         }
         .introduction-box ul li strong {
-            display: inline-block; /* Für einheitlichen Abstand der Listeneinträge */
-            min-width: 90px; /* Mindestbreite, damit die Beschreibungen besser ausgerichtet sind */
-            text-align: left; /* Text innerhalb des strong-Tags linksbündig */
+            /* Keine spezifische Breite mehr, da die Einrückung über padding-left des li gesteuert wird */
         }
         .introduction-box ul li::before { /* Eigenes Aufzählungszeichen hinzufügen */
             content: "•"; /* Das Aufzählungszeichen */
             color: #3498db; /* Farbe des Aufzählungszeichens (z.B. Blau) */
             font-weight: bold;
             display: inline-block;
+            position: absolute; /* Absolut positionieren */
+            left: 0; /* Am linken Rand des li-Elements */
+            top: 0; /* Oben im li-Element */
             width: 1em; /* Breite des Aufzählungszeichens */
-            margin-left: -1em; /* Negativer Rand, um es links vom Text zu platzieren */
             text-align: right; /* An den rechten Rand des vorgesehenen Platzes ausrichten */
             padding-right: 0.3em; /* Abstand zwischen Aufzählungszeichen und Text */
         }
@@ -197,19 +221,19 @@
     
     <div class="introduction-box">
         <p>Willkommen zum DISC Persönlichkeitstest!</p>
-            <p>Dieses kurze Quiz hilft Ihnen, erste Einblicke in Ihr Verhaltensprofil gemäß dem etablierten DISC-Modell zu gewinnen.
-    </p>
+        <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/213618654/450141372-8a91bce0-be82-49eb-ab2c-9d6870f64867.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250602%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250602T112135Z&X-Amz-Expires=300&X-Amz-Signature=610529f54b5156180a3d412e49d8e6c20e03f0c5a59bf60335f60fbd699886a6&X-Amz-SignedHeaders=host" alt="DISC Modell" class="introduction-model-image">
         
+        <p>Dieses kurze Quiz hilft Ihnen, erste Einblicke in Ihr Verhaltensprofil gemäß dem etablierten DISC-Modell zu gewinnen.</p>
         <p>Das Modell unterteilt menschliches Verhalten in vier grundlegende Dimensionen:</p>
         <ul>
             <li><strong>D (Dominanz):</strong> Wie Sie Herausforderungen angehen und Probleme lösen.</li>
             <li><strong>I (Initiative):</strong> Wie Sie Menschen beeinflussen und kommunizieren.</li>
             <li><strong>S (Stetigkeit):</strong> Wie Sie mit Veränderungen umgehen und Ihre Aufgaben organisieren.</li>
-            <li><strong>C (Conformität):</strong> Wie Sie auf Regeln reagieren und Ihre Arbeitsqualität sichern.</li>
+            <li><strong>C (Conform):</strong> Wie Sie auf Regeln reagieren und Ihre Arbeitsqualität sichern.</li>
         </ul>
         <p>Bitte beantworten Sie die folgenden 12 Fragen intuitiv. Bedenken Sie, dass dieser Test eine vereinfachte Momentaufnahme ist und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. 
             Er dient als nützliche Orientierungshilfe zur Selbstreflexion und zum besseren Verständnis Ihrer Interaktionen mit anderen.</p>
-            <p></p>Es werden keine Daten gespeichert und ist 100% anonym.</p>
+        <p>Es werden keine Daten gespeichert und ist 100% anonym.</p>
     </div>
 
     <form id="disc-test">
