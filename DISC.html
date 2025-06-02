@@ -35,16 +35,44 @@
             border-radius: 12px;
             padding: 25px 30px; /* Innenabstand für den Text */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
-            text-align: center; /* Text zentrieren */
+            /* text-align: center;  Diesen entfernen wir, um die Zentrierung von Absätzen/Listen zu kontrollieren */
         }
         .introduction-box p { /* Absätze innerhalb der Box stylen */
             font-size: 1.1em;
             color: #444;
             margin-bottom: 15px; /* Abstand zwischen Absätzen */
             line-height: 1.7; /* Besseres Zeilenabstand für Lesbarkeit */
+            text-align: center; /* Absätze zentrieren */
         }
         .introduction-box p:last-child {
             margin-bottom: 0; /* Kein Abstand nach dem letzten Absatz */
+        }
+        .introduction-box ul { /* Styling für die Liste innerhalb der Box */
+            list-style-type: none; /* Aufzählungszeichen entfernen */
+            padding: 0; /* Standard-Padding entfernen */
+            margin: 15px 0 25px 0; /* Abstand über und unter der Liste, kein seitlicher Abstand */
+            text-align: center; /* Liste zentrieren */
+        }
+        .introduction-box ul li {
+            font-size: 1.1em;
+            color: #444;
+            margin-bottom: 8px; /* Kleiner Abstand zwischen Listenelementen */
+            line-height: 1.5;
+        }
+        .introduction-box ul li strong {
+            display: inline-block; /* Für einheitlichen Abstand der Listeneinträge */
+            min-width: 90px; /* Mindestbreite, damit die Beschreibungen besser ausgerichtet sind */
+            text-align: left; /* Text innerhalb des strong-Tags linksbündig */
+        }
+        .introduction-box ul li::before { /* Eigenes Aufzählungszeichen hinzufügen */
+            content: "•"; /* Das Aufzählungszeichen */
+            color: #3498db; /* Farbe des Aufzählungszeichens (z.B. Blau) */
+            font-weight: bold;
+            display: inline-block;
+            width: 1em; /* Breite des Aufzählungszeichens */
+            margin-left: -1em; /* Negativer Rand, um es links vom Text zu platzieren */
+            text-align: right; /* An den rechten Rand des vorgesehenen Platzes ausrichten */
+            padding-right: 0.3em; /* Abstand zwischen Aufzählungszeichen und Text */
         }
 
         form {
