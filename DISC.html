@@ -1,1 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISC Persönlichkeitstest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question h3 {
+            margin-bottom: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>DISC Persönlichkeitstest</h1>
+    <form id="disc-test">
+        <div class="question">
+            <h3>1. Wie reagieren Sie in einer neuen Gruppe?</h3>
+            <label><input type="radio" name="q1" value="D"> a) Ich übernehme schnell die Führung.</label><br>
+            <label><input type="radio" name="q1" value="I"> b) Ich bringe gute Stimmung rein.</label><br>
+            <label><input type="radio" name="q1" value="S"> c) Ich beobachte erst mal ruhig.</label><br>
+            <label><input type="radio" name="q1" value="C"> d) Ich analysiere die Situation genau.</label>
+        </div>
+        <div class="question">
+            <h3>2. Wie gehen Sie mit Konflikten um?</h3>
+            <label><input type="radio" name="q2" value="D"> a) Ich konfrontiere das Problem direkt.</label><br>
+            <label><input type="radio" name="q2" value="I"> b) Ich versuche, die Stimmung zu heben.</label><br>
+            <label><input type="radio" name="q2" value="S"> c) Ich versuche, den Konflikt zu vermeiden.</label><br>
+            <label><input type="radio" name="q2" value="C"> d) Ich analysiere die Ursachen des Konflikts.</label>
+        </div>
+        <div class="question">
+            <h3>3. Wie organisieren Sie Ihre Arbeit?</h3>
+            <label><input type="radio" name="q3" value="D"> a) Ich setze klare Ziele und Deadlines.</label><br>
+            <label><input type="radio" name="q3" value="I"> b) Ich arbeite gerne im Team und motiviere andere.</label><br>
+            <label><input type="radio" name="q3" value="S"> c) Ich arbeite ruhig und methodisch.</label><br>
+            <label><input type="radio" name="q3" value="C"> d) Ich plane sorgfältig und achte auf Details.</label>
+        </div>
+        <div class="question">
+            <h3>4. Wie reagieren Sie auf Veränderungen?</h3>
+            <label><input type="radio" name="q4" value="D"> a) Ich sehe Veränderungen als Herausforderung.</label><br>
+            <label><input type="radio" name="q4" value="I"> b) Ich begrüße Veränderungen mit Begeisterung.</label><br>
+            <label><input type="radio" name="q4" value="S"> c) Ich bin vorsichtig und abwartend.</label><br>
+            <label><input type="radio" name="q4" value="C"> d) Ich analysiere die Veränderungen gründlich.</label>
+        </div>
+        <div class="question">
+            <h3>5. Wie treffen Sie Entscheidungen?</h3>
+            <label><input type="radio" name="q5" value="D"> a) Ich treffe schnelle und entschlossene Entscheidungen.</label><br>
+            <label><input type="radio" name="q5" value="I"> b) Ich beziehe andere in meine Entscheidungen ein.</label><br>
+            <label><input type="radio" name="q5" value="S"> c) Ich überlege gründlich und vermeide Risiken.</label><br>
+            <label><input type="radio" name="q5" value="C"> d) Ich analysiere alle verfügbaren Informationen.</label>
+        </div>
+        <div class="question">
+            <h3>6. Wie gehen Sie mit Stress um?</h3>
+            <label><input type="radio" name="q6" value="D"> a) Ich bleibe fokussiert und handle schnell.</label><br>
+            <label><input type="radio" name="q6" value="I"> b) Ich suche Unterstützung und Motivation bei anderen.</label><br>
+            <label><input type="radio" name="q6" value="S"> c) Ich bleibe ruhig und gelassen.</label><br>
+            <label><input type="radio" name="q6" value="C"> d) Ich analysiere die Ursachen des Stresses.</label>
+        </div>
+        <div class="question">
+            <h3>7. Wie gehen Sie mit Kritik um?</h3>
+            <label><input type="radio" name="q7" value="D"> a) Ich nehme Kritik als Ansporn zur Verbesserung.</label><br>
+            <label><input type="radio" name="q7" value="I"> b) Ich versuche, die Kritik positiv zu sehen.</label><br>
+            <label><input type="radio" name="q7" value="S"> c) Ich nehme Kritik ruhig und gelassen an.</label><br>
+            <label><input type="radio" name="q7" value="C"> d) Ich analysiere die Kritik und ziehe Schlüsse daraus.</label>
+        </div>
+        <div class="question">
+            <h3>8. Wie motivieren Sie sich selbst?</h3>
+            <label><input type="radio" name="q8" value="D"> a) Ich setze mir ehrgeizige Ziele.</label><br>
+            <label><input type="radio" name="q8" value="I"> b) Ich suche nach neuen und aufregenden Herausforderungen.</label><br>
+            <label><input type="radio" name="q8" value="S"> c) Ich arbeite kontinuierlich und methodisch.</label><br>
+            <label><input type="radio" name="q8" value="C"> d) Ich analysiere meine Fortschritte und passe meine Strategie an.</label>
+        </div>
+        <div class="question">
+            <h3>9. Wie gehen Sie mit Fehlern um?</h3>
+            <label><input type="radio" name="q9" value="D"> a) Ich lerne schnell aus meinen Fehlern und mache weiter.</label><br>
+            <label><input type="radio" name="q9" value="I"> b) Ich versuche, die Fehler positiv zu sehen und daraus zu lernen.</label><br>
+            <label><input type="radio" name="q9" value="S"> c) Ich nehme Fehler ruhig und gelassen an.</label><br>
+            <label><input type="radio" name="q9" value="C"> d) Ich analysiere die Fehler gründlich und ziehe Schlüsse daraus.</label>
+        </div>
+        <div class="question">
+            <h3>10. Wie gehen Sie mit neuen Aufgaben um?</h3>
+            <label><input type="radio" name="q10" value="D"> a) Ich nehme neue Aufgaben als Herausforderung an.</label><br>
+            <label><input type="radio" name="q10" value="I"> b) Ich begrüße neue Aufgaben mit Begeisterung.</label><br>
+            <label><input type="radio" name="q10" value="S"> c) Ich gehe neue Aufgaben ruhig und methodisch an.</label><br>
+            <label><input type="radio" name="q10" value="C"> d) Ich analysiere die neuen Aufgaben gründlich.</label>
+        </div>
+        <div class="question">
+            <h3>11. Wie gehen Sie mit Unsicherheit um?</h3>
+            <label><input type="radio" name="q11" value="D"> a) Ich bleibe fokussiert und handle schnell.</label><br>
+            <label><input type="radio" name="q11" value="I"> b) Ich suche Unterstützung und Motivation bei anderen.</label><br>
+            <label><input type="radio" name="q11" value="S"> c) Ich bleibe ruhig und gelassen.</label><br>
+            <label><input type="radio" name="q11" value="C"> d) Ich analysiere die Ursachen der Unsicherheit.</label>
+        </div>
+        <div class="question">
+            <h3>12. Wie gehen Sie mit Teamarbeit um?</h3>
+            <label><input type="radio" name="q12" value="D"> a) Ich übernehme schnell die Führung.</label><br>
+            <label><input type="radio" name="q12" value="I"> b) Ich bringe gute Stimmung ins Team.</label><br>
+            <label><input type="radio" name="q12" value="S"> c) Ich arbeite ruhig und methodisch im Team.</label><br>
+            <label><input type="radio" name="q12" value="C"> d) Ich analysiere die Teamdynamik gründlich.</label>
+        </div>
+        <button type="button" onclick="calculateResult()">Ergebnis anzeigen</button>
+    </form>
+    <div id="result" class="result"></div>
+
+    <script>
+        function calculateResult() {
+            const form = document.forms['disc-test'];
+            const answers = {
+                D: 0,
+                I: 0,
+                S: 0,
+                C: 0
+            };
+
+            for (let i = 1; i <= 12; i++) {
+                const answer = form['q' + i].value;
+                if (answer) {
+                    answers[answer]++;
+                }
+            }
+
+            const result = Object.keys(answers).reduce((a, b) => answers[a] > answers[b] ? a : b);
+            const resultText = {
+                D: 'Dominant (D) – Rot: Durchsetzungsstark, zielorientiert, entscheidungsfreudig',
+                I: 'Initiativ (I) – Gelb: Begeisterungsfähig, kontaktfreudig, optimistisch',
+                S: 'Stetig (S) – Grün: Geduldig, hilfsbereit, zuverlässig',
+                C: 'Conform (C) – Blau: Analytisch, genau, qualitätsbewusst'
+            };
+
+            document.getElementById('result').innerText = 'Ihr dominanter Persönlichkeitstyp ist: ' + resultText[result];
+        }
+    </script>
+</body>
+</html>
 
