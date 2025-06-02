@@ -23,18 +23,30 @@
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 20px; /* Etwas kleinerer Abstand für den Erklärungstext */
+            margin-bottom: 20px;
             font-size: 2.5em;
             font-weight: 700;
         }
-        .introduction-text {
+        .introduction-box { /* Neuer Container für den Einführungstext */
             max-width: 900px; /* Anpassung an die Formularbreite */
             margin-bottom: 30px; /* Abstand zum Formular */
-            text-align: center;
-            font-size: 1.1em;
-            color: #555;
-            padding: 0 15px; /* Etwas Padding an den Seiten */
+            background-color: #f0f8ff; /* Sehr helles Blau */
+            border: 1px solid #cceeff; /* Heller blauer Rand */
+            border-radius: 12px;
+            padding: 25px 30px; /* Innenabstand für den Text */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
+            text-align: center; /* Text zentrieren */
         }
+        .introduction-box p { /* Absätze innerhalb der Box stylen */
+            font-size: 1.1em;
+            color: #444;
+            margin-bottom: 15px; /* Abstand zwischen Absätzen */
+            line-height: 1.7; /* Besseres Zeilenabstand für Lesbarkeit */
+        }
+        .introduction-box p:last-child {
+            margin-bottom: 0; /* Kein Abstand nach dem letzten Absatz */
+        }
+
         form {
             background-color: #fff;
             padding: 40px;
@@ -155,11 +167,16 @@
 <body>
     <h1>DISC Persönlichkeitstest</h1>
     
-    <div class="introduction-text">
-        <p>Dieser Test basiert auf dem bewährten DISC-Modell, das menschliches Verhalten in vier grundlegende Dimensionen einteilt: Dominanz (D), Initiative (I), Stetigkeit (S) und Gewissenhaftigkeit (C).</p> 
-        <p>Durch die Beantwortung von 12 gezielten Fragen erhalten Sie eine erste Einschätzung Ihrer bevorzugten Verhaltensmuster. </p>
-            <p>Bitte beachten Sie, dass dieser Test eine vereinfachte Momentaufnahme darstellt und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. </p>
-            <p>Er dient als Orientierungshilfe zur Selbstreflexion und zum Verständnis Ihrer Interaktionen mit anderen.</p>
+    <div class="introduction-box">
+        <p>Willkommen zum DISC Persönlichkeitstest! Dieses kurze Quiz hilft Ihnen, erste Einblicke in Ihr Verhaltensprofil gemäß dem etablierten DISC-Modell zu gewinnen.</p>
+        <p>Das Modell unterteilt menschliches Verhalten in vier grundlegende Dimensionen:</p>
+        <ul>
+            <li><strong>D (Dominanz):</strong> Wie Sie Herausforderungen angehen und Probleme lösen.</li>
+            <li><strong>I (Initiative):</strong> Wie Sie Menschen beeinflussen und kommunizieren.</li>
+            <li><strong>S (Stetigkeit):</strong> Wie Sie mit Veränderungen umgehen und Ihre Aufgaben organisieren.</li>
+            <li><strong>C (Gewissenhaftigkeit):</strong> Wie Sie auf Regeln reagieren und Ihre Arbeitsqualität sichern.</li>
+        </ul>
+        <p>Bitte beantworten Sie die folgenden 12 Fragen intuitiv. Bedenken Sie, dass dieser Test eine vereinfachte Momentaufnahme ist und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. Er dient als nützliche Orientierungshilfe zur Selbstreflexion und zum besseren Verständnis Ihrer Interaktionen mit anderen.</p>
     </div>
 
     <form id="disc-test">
