@@ -8,19 +8,90 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
         }
         h1 {
-            color: #333;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
         }
         .question {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fcfcfc;
         }
         .question h3 {
+            margin-top: 0;
+            color: #34495e;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .question label {
+            display: block;
             margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .question input[type="radio"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #2980b9;
         }
         .result {
-            margin-top: 20px;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #e8f5e9; /* Light green for success */
+            border: 1px solid #c8e6c9;
             font-weight: bold;
+            color: #2e7d32; /* Darker green */
+            max-width: 800px;
+            margin: 20px auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            font-size: 1.1em;
+        }
+        .result.error {
+            background-color: #ffebee; /* Light red for error */
+            border: 1px solid #ffcdd2;
+            color: #d32f2f; /* Darker red */
+        }
+        .score-distribution {
+            margin-top: 20px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
+        .score-distribution p {
+            margin: 5px 0;
+            font-weight: normal;
+        }
+        .score-distribution strong {
+            color: #333;
         }
     </style>
 </head>
@@ -124,25 +195,82 @@
                 S: 0,
                 C: 0
             };
+            let allQuestionsAnswered = true; // Flag für die Validierung
+            const totalQuestions = 12;
 
-            for (let i = 1; i <= 12; i++) {
-                const answer = form['q' + i].value;
-                if (answer) {
-                    answers[answer]++;
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = 'q' + i;
+                // form.elements[questionName] gibt die NodeList der Radio-Buttons zurück
+                // .value davon gibt den Wert des *ausgewählten* Radio-Buttons zurück
+                const selectedOption = form.elements[questionName].value;
+                
+                if (!selectedOption) {
+                    allQuestionsAnswered = false; // Eine Frage wurde nicht beantwortet
+                    break; // Schleife abbrechen
                 }
+                answers[selectedOption]++;
             }
 
-            const result = Object.keys(answers).reduce((a, b) => answers[a] > answers[b] ? a : b);
-            const resultText = {
-                D: 'Dominant (D) – Rot: Durchsetzungsstark, zielorientiert, entscheidungsfreudig',
-                I: 'Initiativ (I) – Gelb: Begeisterungsfähig, kontaktfreudig, optimistisch',
-                S: 'Stetig (S) – Grün: Geduldig, hilfsbereit, zuverlässig',
-                C: 'Conform (C) – Blau: Analytisch, genau, qualitätsbewusst'
+            const resultDiv = document.getElementById('result');
+
+            if (!allQuestionsAnswered) {
+                resultDiv.innerHTML = 'Bitte beantworten Sie **alle** Fragen, um Ihr Ergebnis zu erhalten.';
+                resultDiv.className = 'result error'; // Klasse für Fehlermeldung
+                return; // Funktion beenden
+            }
+
+            // Setzen Sie die Klasse zurück, falls zuvor ein Fehler war
+            resultDiv.className = 'result';
+            
+            // Ermitteln des Typs mit den meisten Punkten
+            // Findet den Schlüssel (D, I, S, C), dessen Wert im 'answers' Objekt am höchsten ist.
+            const dominantType = Object.keys(answers).reduce((a, b) => answers[a] > answers[b] ? a : b);
+            
+            // Definitionen für die detaillierte Ergebnisbeschreibung
+            const typeDescriptions = {
+                D: {
+                    name: 'Dominant (D) – Rot',
+                    merkmale: 'Durchsetzungsstark, zielorientiert, entscheidungsfreudig',
+                    verhalten: 'Direkt, liebt Herausforderungen, will Ergebnisse sehen',
+                    kommunikation: 'Klar, knapp, ergebnisorientiert'
+                },
+                I: {
+                    name: 'Initiativ (I) – Gelb',
+                    merkmale: 'Begeisterungsfähig, kontaktfreudig, optimistisch',
+                    verhalten: 'Inspirierend, redet gern, motiviert andere',
+                    kommunikation: 'Emotional, offen, überzeugend'
+                },
+                S: {
+                    name: 'Stetig (S) – Grün',
+                    merkmale: 'Geduldig, hilfsbereit, zuverlässig',
+                    verhalten: 'Teamorientiert, hört gut zu, vermeidet Konflikte',
+                    kommunikation: 'Ruhig, freundlich, unterstützend'
+                },
+                C: {
+                    name: 'Conform (C) – Blau',
+                    merkmale: 'Analytisch, genau, qualitätsbewusst',
+                    verhalten: 'Plant sorgfältig, achtet auf Details, liebt Regeln',
+                    kommunikation: 'Sachlich, strukturiert, faktenbasiert'
+                }
             };
 
-            document.getElementById('result').innerText = 'Ihr dominanter Persönlichkeitstyp ist: ' + resultText[result];
+            const currentType = typeDescriptions[dominantType];
+            let resultHtml = `
+                <p>Ihr dominantester Persönlichkeitstyp ist: <strong>${currentType.name}</strong></p>
+                <p><strong>Merkmale:</strong> ${currentType.merkmale}</p>
+                <p><strong>Typisches Verhalten:</strong> ${currentType.verhalten}</p>
+                <p><strong>Kommunikationsstil:</strong> ${currentType.kommunikation}</p>
+                <div class="score-distribution">
+                    <p><strong>Punkteverteilung:</strong></p>
+                    <p>Dominant (D): ${answers.D}</p>
+                    <p>Initiativ (I): ${answers.I}</p>
+                    <p>Stetig (S): ${answers.S}</p>
+                    <p>Conform (C): ${answers.C}</p>
+                </div>
+            `;
+
+            resultDiv.innerHTML = resultHtml;
         }
     </script>
 </body>
 </html>
-
