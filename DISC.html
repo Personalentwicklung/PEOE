@@ -47,9 +47,11 @@
             padding: 25px 30px; /* Innenabstand für den Text */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
             overflow: hidden; /* Wichtig für float, um den Container um das gefloatete Element zu umschließen */
+            text-align: left; /* NEU: Standardtextausrichtung links */
         }
         
         /* Styling für das Bild INNERHALB der introduction-box (Standard-Platzierung, falls nicht gefloatet) */
+        /* Diese Regel wird durch disc-float-right/left überschrieben, wenn die Klasse im HTML gesetzt ist */
         .introduction-box .introduction-model-image {
             max-width: 80%; /* Bild ist 80% der Box-Breite */
             height: auto;
@@ -60,7 +62,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
-        /* NEUE CSS-Regeln für das umfließende Bild */
+        /* Regeln für das umfließende Bild (bevorzugt) */
         .disc-float-right {
             float: right; /* Bild nach rechts floatten lassen */
             margin: 0 0 15px 25px; /* Abstand: oben 0, rechts 0, unten 15px, links 25px zum Text */
@@ -86,40 +88,52 @@
             color: #444;
             margin-bottom: 15px; /* Abstand zwischen Absätzen */
             line-height: 1.7; /* Besseres Zeilenabstand für Lesbarkeit */
-            text-align: center; /* Absätze zentrieren */
+            text-align: left; /* NEU: Absätze linksbündig */
+        }
+        .introduction-box p:first-of-type {
+            text-align: center; /* Erster Absatz kann zentriert bleiben, wenn er als Überschrift dient */
+            margin-bottom: 25px; /* Etwas mehr Abstand nach dem ersten Absatz */
         }
         .introduction-box p:last-child {
             margin-bottom: 0; /* Kein Abstand nach dem letzten Absatz */
         }
+        /* Wenn das Bild floatet, stelle sicher, dass der Text vor dem Bild nach links ausgerichtet bleibt */
+        .introduction-box p:first-of-type + img + p {
+            /* Das erste p nach dem Bild, falls es gefloatet ist */
+            text-align: left;
+        }
+
+
         .introduction-box ul { /* Styling für die Liste innerhalb der Box */
-            list-style-type: none; /* Aufzählungszeichen entfernen */
-            padding: 0; /* Standard-Padding entfernen */
-            margin: 15px auto 25px auto; /* Abstand über und unter der Liste, automatische Seitenränder für Zentrierung */
-            max-width: fit-content; /* Liste zentrieren, indem sie nur so breit wie ihr Inhalt ist */
-            text-align: left; /* Text innerhalb der Liste linksbündig */
+            list-style-type: disc; /* NEU: Standard-Aufzählungszeichen wiederherstellen */
+            padding-left: 20px; /* NEU: Standard-Padding für Listenpunkte */
+            margin: 15px 0 25px 0; /* NEU: Margin für Listen */
+            /* max-width: fit-content; */ /* Entfernt: Liste nicht mehr zentrieren */
+            /* text-align: left; */ /* Entfernt: Standard ist linksbündig */
         }
         .introduction-box ul li {
             font-size: 1.1em;
             color: #444;
             margin-bottom: 8px; /* Kleiner Abstand zwischen Listenelementen */
             line-height: 1.5;
-            position: relative; /* Für absolute Positionierung des ::before Elements */
-            padding-left: 1.5em; /* Platz für das benutzerdefinierte Aufzählungszeichen */
+            /* position: relative; */ /* Entfernt, da wir die standard Listenpunkte nutzen */
+            /* padding-left: 1.5em; */ /* Entfernt */
         }
         .introduction-box ul li strong {
             /* Keine spezifische Breite mehr, da die Einrückung über padding-left des li gesteuert wird */
         }
-        .introduction-box ul li::before { /* Eigenes Aufzählungszeichen hinzufügen */
-            content: "•"; /* Das Aufzählungszeichen */
-            color: #3498db; /* Farbe des Aufzählungszeichens (z.B. Blau) */
-            font-weight: bold;
-            display: inline-block;
-            position: absolute; /* Absolut positionieren */
-            left: 0; /* Am linken Rand des li-Elements */
-            top: 0; /* Oben im li-Element */
-            width: 1em; /* Breite des Aufzählungszeichens */
-            text-align: right; /* An den rechten Rand des vorgesehenen Platzes ausrichten */
-            padding-right: 0.3em; /* Abstand zwischen Aufzählungszeichen und Text */
+        .introduction-box ul li::before { /* NEU: Diesen Stil entfernen, da wir den Standard-Listenpunkt wollen */
+            /* content: "•"; */ 
+            /* color: #3498db; */
+            /* font-weight: bold; */
+            /* display: inline-block; */
+            /* position: absolute; */
+            /* left: 0; */
+            /* top: 0; */
+            /* width: 1em; */
+            /* text-align: right; */
+            /* padding-right: 0.3em; */
+            display: none; /* Versteckt den benutzerdefinierten Punkt, falls er noch greifen sollte */
         }
 
         form {
@@ -244,11 +258,14 @@
     
     <div class="introduction-box">
         <p>Willkommen zum DISC Persönlichkeitstest!</p>
+                
         
+        
+        <img src="https://i.imgur.com/ITluETa.png"  alt="DISC Modell de" class="disc-float-right">
 
-        <img src="https://i.imgur.com/ITluETa.png"  alt="DISC Modell" class="disc-float-right">
 
-     
+
+        
         <p>Dieses kurze Quiz hilft Ihnen, erste Einblicke in Ihr Verhaltensprofil gemäß dem etablierten DISC-Modell zu gewinnen.</p>
         <p>Das Modell unterteilt menschliches Verhalten in vier grundlegende Dimensionen:</p>
         <ul>
