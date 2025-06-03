@@ -44,6 +44,13 @@
             padding: 15px 0;
             border-bottom: 1px solid #eee;
         }
+    .question-text { /* Neuer, spezifischerer Selektor */
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #555;
+    display: block;
+}
         .question:last-of-type {
             border-bottom: none;
         }
@@ -253,9 +260,10 @@
         <h1>AAQ-Rev-16 Fragebogen</h1>
         <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button. 1 = nie zutreffend – 7 = immer zutreffend.</p>
         <form id="aaqForm">
+
             <div class="question">
-                <label for="q1">1. Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist.</label>
-                <div class="scale">
+    <label for="q1" class="question-text">1. Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist.</label>
+    <div class="scale">
                     <label><input type="radio" name="q1" value="1"><span>1</span></label>
                     <label><input type="radio" name="q1" value="2"><span>2</span></label>
                     <label><input type="radio" name="q1" value="3"><span>3</span></label>
