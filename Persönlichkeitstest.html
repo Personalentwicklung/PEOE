@@ -6,356 +6,609 @@
     <title>Persönlichkeitstest</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Allgemeine Einstellungen für den Body */
+        /* Allgemeine Einstellungen */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modernere Schriftart */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 40px 20px; /* Mehr Polsterung oben/unten */
-            background-color: #f0f2f5; /* Heller Hintergrund */
-            color: #333; /* Dunkler Text */
+            padding: 40px 20px;
+            background-color: #f0f2f5;
+            color: #333;
             display: flex;
-            justify-content: center; /* Zentriert den Inhalt horizontal */
-            align-items: flex-start; /* Hält den Inhalt oben, nicht mittig vertikal */
-            min-height: 100vh; /* Mindesthöhe des Bodys */
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
         }
 
-        /* Container für den gesamten Test, um ihn zu zentrieren und zu stylen */
-        #personality-test-container {
+        /* Hauptcontainer des Tests */
+        #test-container {
             background-color: #ffffff;
             padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sanfter Schatten */
-            max-width: 800px; /* Maximale Breite für bessere Lesbarkeit */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
             width: 100%;
-            box-sizing: border-box; /* Polsterung innerhalb der Breite */
+            box-sizing: border-box;
+            margin-bottom: 20px; /* Abstand nach unten für mobiles Scrolling */
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
         h1 {
-            color: #0056b3; /* Dunkelblau für Überschrift */
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2em; /* Größere Überschrift */
+            font-size: 2.2em;
         }
 
-        .question {
-            margin-bottom: 15px; /* Abstand NACH jeder Frage */
-            padding: 10px 0;    /* Polsterung innerhalb der Frage-Box */
-            border-bottom: 1px solid #eee; /* Trennlinie zwischen Fragen */
+        h2 {
+            font-size: 1.8em;
+            margin-top: 30px;
         }
 
-        .question:last-of-type {
-            border-bottom: none; /* Keine Trennlinie nach der letzten Frage */
+        h3 {
+            font-size: 1.4em;
         }
 
-        .question p {
-            font-weight: bold;
+        p {
+            line-height: 1.7;
             margin-bottom: 15px;
-            font-size: 1.1em;
-            color: #555;
         }
 
-        label {
-            display: block; /* Jede Option in einer neuen Zeile */
-            margin-bottom: 10px;
-            cursor: pointer; /* Zeigt an, dass es klickbar ist */
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            transition: background-color 0.3s ease; /* Sanfter Übergang beim Hover */
+        /* Intro und Quiz Sektion */
+        #intro-section, #quiz-section {
+            text-align: center;
         }
 
-        label:hover {
-            background-color: #e9f0f9; /* Hellerer Hintergrund beim Hover */
-        }
-
-        input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        /* Styling für den Ergebnis-Button */
-        button {
-            display: block; /* Button nimmt ganze Breite ein */
-            width: 100%;
-            padding: 15px 20px;
-            background-color: #007bff; /* Blau */
+        #intro-section button {
+            background-color: #007bff; /* Blau für Start-Button */
             color: white;
+            padding: 12px 25px;
             border: none;
             border-radius: 5px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease; /* Übergänge für Hover/Klick */
-            margin-top: 30px;
-        }
-
-        button:hover {
-            background-color: #0056b3; /* Dunkleres Blau beim Hover */
-            transform: translateY(-2px); /* Leichter Hoch-Effekt */
-        }
-
-        button:active {
-            transform: translateY(0); /* Zurück beim Klick */
-        }
-
-        /* Styling für das Ergebnis-Feld */
-        .result {
-            display: none; /* Bleibt unsichtbar bis zur Berechnung */
-            margin-top: 30px;
-            padding: 25px;
-            background-color: #e6f7ff; /* Sehr hellblau */
-            border: 1px solid #b3e0ff; /* Hellblauer Rahmen */
-            border-radius: 8px;
-            text-align: center;
             font-size: 1.1em;
-            line-height: 1.6;
-        }
-
-        .result h2 {
-            color: #0056b3;
-            margin-top: 0;
-            font-size: 1.8em;
-        }
-
-        .result p {
-            font-size: 1.2em;
-            color: #333;
-        }
-
-        /* Styling für den detaillierten Ergebnisbereich */
-        #detailed-results {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
             margin-top: 20px;
+        }
+
+        #intro-section button:hover {
+            background-color: #0056b3;
+        }
+
+        #quiz-section {
+            display: none; /* Standardmäßig ausgeblendet, wird per JS eingeblendet */
+        }
+
+        .question-block {
+            background-color: #e9f5ff;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
             text-align: left;
-            padding: 15px;
-            background-color: #f7fcff; /* Noch helleres Blau für diesen Bereich */
-            border-radius: 5px;
-            border: 1px solid #cceeff; /* Leichterer Rand */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
-        #detailed-results h3 {
+
+        .question-block p {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 20px;
             color: #0056b3;
-            margin-top: 0;
+        }
+
+        .options-group label {
+            display: block;
+            background-color: #ffffff;
+            padding: 12px 15px;
             margin-bottom: 10px;
-            font-size: 1.3em;
-            text-align: center; /* Zentriert die Überschrift im Detailbereich */
-        }
-        /* Diese p-Tags sind jetzt optional, da die Infos im Diagramm sind */
-        #detailed-results p {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
             font-size: 1em;
-            margin-bottom: 5px;
-            color: #444;
-            display: none; /* Diese Zeilen ausblenden, da das Diagramm die Info anzeigt */
+            display: flex;
+            align-items: center;
         }
 
-        /* NEUE/ANGEPASSTE CSS-REGEL FÜR DAS CANVAS-ELEMENT */
-        #myPersonalityChart {
-            max-height: 350px; /* Begrenzt die Höhe des Diagramms */
-            width: 100% !important; /* Stellt sicher, dass es die volle Breite des Containers einnimmt */
-            height: auto !important; /* Lässt die Höhe proportional skalieren */
+        .options-group label:hover {
+            background-color: #f0f8ff;
+            border-color: #a3d3ff;
         }
 
+        .options-group input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.1); /* Größere Radio-Buttons */
+        }
 
-        /* Media Queries für Responsivität auf kleineren Bildschirmen */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .navigation-buttons button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .navigation-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .navigation-buttons button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Ergebnis-Sektion */
+        #result-section {
+            display: none; /* Standardmäßig ausgeblendet */
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+
+        #result-text {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #dc3545;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Chart Styling */
+        #chart-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fdfdfd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        /* Empfehlungen / Typen-Beschreibung */
+        .type-description {
+            margin-top: 35px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #007bff;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .type-description h3 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        /* Test neu starten Button */
+        #restart-button {
+            background-color: #6c757d;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 40px;
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #restart-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* Responsivität */
         @media (max-width: 768px) {
             body {
                 padding: 20px 10px;
             }
-            #personality-test-container {
-                padding: 20px;
-                box-shadow: none; /* Kein Schatten auf kleinen Geräten für bessere Performance */
+            #test-container {
+                padding: 25px;
             }
             h1 {
                 font-size: 1.8em;
             }
-            .question p {
-                font-size: 1em;
-            }
-            label {
-                font-size: 0.95em;
-            }
-            button {
-                font-size: 1.1em;
-                padding: 12px 15px;
-            }
-            .result h2 {
+            h2 {
                 font-size: 1.5em;
             }
-            .result p {
-                font-size: 1em;
+            .question-block {
+                padding: 15px;
             }
-            #detailed-results h3 {
-                font-size: 1.2em;
+            .options-group label {
+                padding: 10px;
             }
-            /* Bei kleineren Bildschirmen kann das Diagramm evtl. noch höher sein, hier ggf. weitere Anpassung */
-            #myPersonalityChart {
-                max-height: 250px; /* Oder eine andere Höhe für kleinere Bildschirme */
+            .navigation-buttons button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            #chart-container {
+                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="personality-test-container">
-        <h1>Welcher Typ bist du am Arbeitsplatz?</h1>
- <p>Wähle bei den 8 Fragen jeweils eine zutreffende Aussage!</p>
- <p>Dieser Test eine vereinfachte Momentaufnahme und kann nicht die Komplexität Deiner Persönlichkeit abbilden und dient lediglich als nützliche Orientierungshilfe</p>
- <p>Es werden keine Daten gespeichert und ist 100% anonym.</p>
-        
-        <form id="personality-test">
-            <div class="question">
-                <p>1. Wie gehst du an neue Aufgaben heran?</p>
-                 <label><input type="radio" name="q1" value="D"> Ich analysiere erst alles gründlich, bevor ich starte.</label><br>
-                 <label><input type="radio" name="q1" value="B"> Ich packe direkt an und setze die Aufgabe sofort um.</label><br>
-                 <label><input type="radio" name="q1" value="C"> Ich überlege kreative Lösungswege und probiere verschiedene Ideen aus.</label><br>
-                 <label><input type="radio" name="q1" value="A"> Ich erstelle eine detaillierte Planung und achte auf jedes Detail.</label><br>
-                 <label><input type="radio" name="q1" value="E"> Ich bespreche mich mit anderen und finde gemeinsam die beste Lösung.</label>
-            </div>
-            <div class="question">
-                <p>2. Wie reagierst du, wenn du ein Problem im Team siehst?</p>
-                <label><input type="radio" name="q2" value="E"> Ich versuche, das Team zusammenzubringen und eine Lösung gemeinsam zu erarbeiten.</label><br>
-                <label><input type="radio" name="q2" value="B"> Ich spreche es direkt an und schlage eine schnelle Lösung vor.</label><br>
-                <label><input type="radio" name="q2" value="A"> Ich versuche, eine perfekte Lösung zu finden, bevor ich etwas unternehme.</label><br>   
-                <label><input type="radio" name="q2" value="C"> Ich überlege, ob man es kreativ angehen kann.</label><br>
-                <label><input type="radio" name="q2" value="D"> Ich analysiere das Problem genau und prüfe, was die beste Lösung ist.</label>
-              </div> 
-            <div class="question">
-                <p>3. Was ist dir bei deiner Arbeit am wichtigsten?</p>
-                <label><input type="radio" name="q3" value="C"> Kreativität – ich will mich entfalten können.</label><br>
-                <label><input type="radio" name="q3" value="A"> Qualität – es muss einfach perfekt sein.</label><br>
-                <label><input type="radio" name="q3" value="D"> Logik – klare Prozesse und Fakten sind entscheidend.</label><br>
-                <label><input type="radio" name="q3" value="E"> Teamgeist – gute Zusammenarbeit ist mir am wichtigsten.</label><br>       
-                <label><input type="radio" name="q3" value="B"> Effizienz – Dinge müssen schnell erledigt werden.</label>
-            </div>
-            <div class="question">
-                <p>4. Wie verhältst du dich in Meetings?</p>
-                <label><input type="radio" name="q4" value="D"> Ich höre genau zu und stelle analytische Fragen.</label><br>
-                <label><input type="radio" name="q4" value="A"> Ich bin gut vorbereitet und achte darauf, dass keine Fehler passieren.</label><br>
-                <label><input type="radio" name="q4" value="B"> Ich bringe schnelle Lösungen ein und will direkt loslegen.</label><br>
-                <label><input type="radio" name="q4" value="C"> Ich bringe kreative Ideen ein und denke „out of the box“.</label><br>
-                <label><input type="radio" name="q4" value="E"> Ich motiviere das Team und achte darauf, dass jeder gehört wird.</label>
-            </div>
-            <div class="question">
-                <p>5. Wie gehst du mit Stress um?</p>
-                <label><input type="radio" name="q5" value="C"> Ich suche kreative Wege, um mit dem Stress umzugehen.</label><br>
-                <label><input type="radio" name="q5" value="E"> Ich spreche mit meinen Kollegen und finde Unterstützung.</label><br>
-                <label><input type="radio" name="q5" value="B"> Ich ziehe das Tempo an und arbeite noch schneller.</label><br>
-                <label><input type="radio" name="q5" value="A"> Ich arbeite noch genauer und versuche, Fehler zu vermeiden.</label><br>
-                <label><input type="radio" name="q5" value="D"> Ich analysiere die Situation und finde eine rationale Lösung.</label>
-            </div>
-            <div class="question">
-                <p>6. Wie gehst du mit Feedback um?</p>
-                <label><input type="radio" name="q6" value="A"> Ich nehme es ernst und arbeite daran, alles zu verbessern.</label><br>
-                <label><input type="radio" name="q6" value="B"> Ich setze es direkt um und mache weiter.</label><br>
-                <label><input type="radio" name="q6" value="C"> Ich überlege, ob ich kreative Alternativen ausprobieren kann.</label><br>
-                <label><input type="radio" name="q6" value="D"> Ich analysiere, ob das Feedback logisch und sinnvoll ist.</label><br>
-                <label><input type="radio" name="q6" value="E"> Ich bespreche es mit anderen, um gemeinsam Lösungen zu finden.</label>
-            </div>
-            <div class="question">
-                <p>7. Was motiviert dich am meisten bei der Arbeit?</p>
-                <label><input type="radio" name="q7" value="A"> Perfekte Ergebnisse und Anerkennung für meine Genauigkeit.</label><br>
-                <label><input type="radio" name="q7" value="B"> Schnelle Fortschritte und sichtbare Erfolge.</label><br>
-                <label><input type="radio" name="q7" value="C"> Die Freiheit, kreativ zu sein und neue Ideen umzusetzen.</label><br>
-                <label><input type="radio" name="q7" value="D"> Klare Strukturen und logische Abläufe.</label><br>
-                <label><input type="radio" name="q7" value="E"> Ein starkes Team und gute Zusammenarbeit.</label>
-            </div>
-            <div class="question">
-                <p>8. Wie gehst du mit Konflikten im Team um?</p>
-                <label><input type="radio" name="q8" value="C"> Ich suche nach kreativen Wegen, um den Konflikt zu lösen.</label><br>
-                <label><input type="radio" name="q8" value="B"> Ich spreche das Problem direkt an und schlage eine schnelle Lösung vor.</label><br>
-                <label><input type="radio" name="q8" value="E"> Ich vermittle zwischen den Beteiligten und fördere den Teamgeist.</label><br>
-                <label><input type="radio" name="q8" value="A"> Ich versuche, eine perfekte Lösung zu finden, die alle zufriedenstellt.</label><br>
-                <label><input type="radio" name="q8" value="D"> Ich analysiere die Situation und finde eine rationale Lösung.</label>
-           
-            </div>
-            <button type="button" onclick="calculateResult()">Ergebnis anzeigen</button>
-        </form>
-        <div id="result" class="result">
-            <h2>Dein Ergebnis:</h2>
-            <p id="result-text"></p>
-            <div id="detailed-results">
-                <h3>Deine Verteilung der Antworten:</h3>
-                <canvas id="myPersonalityChart" width="400" height="250"></canvas>
-                <p id="result-a"></p>
-                <p id="result-b"></p>
-                <p id="result-c"></p>
-                <p id="result-d"></p>
-                <p id="result-e"></p>
+    <div id="test-container">
+        <div id="intro-section">
+            <h1>Welcher Typ bist du am Arbeitsplatz?</h1>
+            <p>Willkommen zum Persönlichkeitstest! Dieser Test hilft dir dabei, deine Stärken und Tendenzen am Arbeitsplatz besser zu verstehen. Beantworte die folgenden Fragen ehrlich, indem du die Option wählst, die am ehesten auf dich zutrifft.</p>
+            <button id="start-test-button">Test starten</button>
+        </div>
+
+        <div id="quiz-section">
+            <h2 id="question-counter">Frage 1 von 8</h2>
+            <div id="question-display" class="question-block">
+                </div>
+            <div class="navigation-buttons">
+                <button id="prev-button" disabled>Zurück</button>
+                <button id="next-button">Nächste Frage</button>
+                <button id="submit-button" style="display: none;">Ergebnis anzeigen</button>
             </div>
         </div>
+
+        <div id="result-section">
+            <h2>Dein Testergebnis</h2>
+            <p style="text-align: center;">Basierend auf deinen Antworten ist dein dominantester Typ am Arbeitsplatz:</p>
+            <div id="result-text">
+                </div>
+
+            <h3>Deine Verteilung der Antworten:</h3>
+            <div id="chart-container">
+                <canvas id="myPersonalityChart"></canvas>
+            </div>
+
+            <div class="type-descriptions">
+                <h2>Was dein Typ bedeutet:</h2>
+                <div id="detailed-type-description">
+                    </div>
+            </div>
+            <button id="restart-button">Test wiederholen</button>
+        </div>
     </div>
+
     <script>
-        // Eine globale Variable, um die Chart-Instanz zu speichern, damit wir sie aktualisieren oder zerstören können
-        let myChartInstance = null;
+        // Fragen und Optionen wie in Ihrer Originaldatei
+        const questions = [
+            {
+                question: "Wie gehst du an neue Aufgaben heran?",
+                options: {
+                    A: "Ich erstelle eine detaillierte Planung und achte auf jedes Detail.",
+                    B: "Ich packe direkt an und setze die Aufgabe sofort um.",
+                    C: "Ich überlege kreative Lösungswege und probiere verschiedene Ideen aus.",
+                    D: "Ich analysiere erst alles gründlich, bevor ich starte.",
+                    E: "Ich bespreche mich mit anderen und finde gemeinsam die beste Lösung."
+                }
+            },
+            {
+                question: "Wie reagierst du, wenn du ein Problem im Team siehst?",
+                options: {
+                    A: "Ich versuche, eine perfekte Lösung zu finden, bevor ich etwas unternehme.",
+                    B: "Ich spreche es direkt an und schlage eine schnelle Lösung vor.",
+                    C: "Ich überlege, ob man es kreativ angehen kann.",
+                    D: "Ich analysiere das Problem genau und prüfe, was die beste Lösung ist.",
+                    E: "Ich versuche, das Team zusammenzubringen und eine Lösung gemeinsam zu erarbeiten."
+                }
+            },
+            {
+                question: "Was ist dir bei deiner Arbeit am wichtigsten?",
+                options: {
+                    A: "Qualität – es muss einfach perfekt sein.",
+                    B: "Effizienz – Dinge müssen schnell erledigt werden.",
+                    C: "Kreativität – ich will mich entfalten können.",
+                    D: "Logik – klare Prozesse und Fakten sind entscheidend.",
+                    E: "Teamgeist – gute Zusammenarbeit ist mir am wichtigsten."
+                }
+            },
+            {
+                question: "Wie verhältst du dich in Meetings?",
+                options: {
+                    A: "Ich bin gut vorbereitet und achte darauf, dass keine Fehler passieren.",
+                    B: "Ich bringe schnelle Lösungen ein und will direkt loslegen.",
+                    C: "Ich bringe kreative Ideen ein und denke „out of the box“.",
+                    D: "Ich höre genau zu und stelle analytische Fragen.",
+                    E: "Ich motiviere das Team und achte darauf, dass jeder gehört wird."
+                }
+            },
+            {
+                question: "Wie gehst du mit Stress um?",
+                options: {
+                    A: "Ich arbeite noch genauer und versuche, Fehler zu vermeiden.",
+                    B: "Ich ziehe das Tempo an und arbeite noch schneller.",
+                    C: "Ich suche kreative Wege, um mit dem Stress umzugehen.",
+                    D: "Ich analysiere die Situation und finde eine rationale Lösung.",
+                    E: "Ich spreche mit meinen Kollegen und finde Unterstützung."
+                }
+            },
+            {
+                question: "Wie gehst du mit Feedback um?",
+                options: {
+                    A: "Ich nehme es ernst und arbeite daran, alles zu verbessern.",
+                    B: "Ich setze es direkt um und mache weiter.",
+                    C: "Ich überlege, ob ich kreative Alternativen ausprobieren kann.",
+                    D: "Ich analysiere, ob das Feedback logisch und sinnvoll ist.",
+                    E: "Ich bespreche es mit anderen, um gemeinsam Lösungen zu finden."
+                }
+            },
+            {
+                question: "Was motiviert dich am meisten bei der Arbeit?",
+                options: {
+                    A: "Perfekte Ergebnisse und Anerkennung für meine Genauigkeit.",
+                    B: "Schnelle Fortschritte und sichtbare Erfolge.",
+                    C: "Die Freiheit, kreativ zu sein und neue Ideen umzusetzen.",
+                    D: "Klare Strukturen und logische Abläufe.",
+                    E: "Ein starkes Team und gute Zusammenarbeit."
+                }
+            },
+            {
+                question: "Wie gehst du mit Konflikten im Team um?",
+                options: {
+                    A: "Ich versuche, eine perfekte Lösung zu finden, die alle zufriedenstellt.",
+                    B: "Ich spreche das Problem direkt an und schlage eine schnelle Lösung vor.",
+                    C: "Ich suche nach kreativen Wegen, um den Konflikt zu lösen.",
+                    D: "Ich analysiere die Situation und finde eine rationale Lösung.",
+                    E: "Ich vermittle zwischen den Beteiligten und fördere den Teamgeist."
+                }
+            }
+        ];
+
+        // Beschreibungen für die Persönlichkeitstypen
+        const typeDescriptions = {
+            "A": {
+                name: "Der Perfektionist 🔍",
+                description: "Du legst großen Wert auf Qualität und Genauigkeit. Dir entgeht kein Detail, aber manchmal verlierst du dich zu sehr in Perfektion.",
+                details: `
+                    <div class="type-description">
+                        <h3>Der Perfektionist 🔍</h3>
+                        <p>Als Perfektionist strebst du stets nach makellosen Ergebnissen. Du bist extrem detailorientiert, sorgfältig und gewissenhaft. Es ist dir wichtig, dass die Arbeit fehlerfrei und von höchster Qualität ist. Deine Stärken liegen in der Präzision und dem tiefgehenden Verständnis für Prozesse. Du arbeitest strukturiert und bevorzugst klare Richtlinien. Manchmal kann dein Streben nach Perfektion jedoch dazu führen, dass du zu viel Zeit für Details aufwendest oder Schwierigkeiten hast, Aufgaben abzuschließen, wenn sie nicht deinen hohen Standards entsprechen.</p>
+                        <ul>
+                            <li>**Stärken:** Detailgenauigkeit, Gründlichkeit, hohe Qualitätsstandards, Zuverlässigkeit.</li>
+                            <li>**Herausforderungen:** Neigung zu Überanalyse, Schwierigkeiten beim Delegieren, Perfektionismusfalle.</li>
+                            <li>**Tipps:** Setze dir klare Deadlines und Prioritäten. Lerne, wann "gut genug" ausreichend ist. Übe, Aufgaben loszulassen, auch wenn sie nicht 100% perfekt sind.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            "B": {
+                name: "Der Macher ⚡",
+                description: "Du bist zielstrebig und packst Aufgaben sofort an. Du willst Ergebnisse sehen, aber manchmal kannst du etwas zu direkt sein.",
+                details: `
+                    <div class="type-description">
+                        <h3>Der Macher ⚡</h3>
+                        <p>Als Macher bist du ergebnisorientiert und direkt. Du liebst es, Dinge in die Tat umzusetzen und Fortschritte zu sehen. Zögern ist nicht deine Stärke; du packst an und handelst schnell. Du bist oft proaktiv und suchst nach effizienten Wegen, um Ziele zu erreichen. Deine Energie und dein Antrieb können ansteckend sein. Allerdings kann deine Direktheit manchmal als ungeduldig oder überstürzt wahrgenommen werden, und du könntest dazu neigen, Details zu übersehen, um schnell zum Ergebnis zu kommen.</p>
+                        <ul>
+                            <li>**Stärken:** Ergebnisorientierung, Tatkraft, Effizienz, Entschlussfreudigkeit, Proaktivität.</li>
+                            <li>**Herausforderungen:** Ungeduld, kann überstürzt wirken, neigt dazu, Details zu vernachlässigen.</li>
+                            <li>**Tipps:** Nimm dir bewusst Zeit für Planung und Reflexion. Höre aktiv zu und versuche, die Perspektiven anderer zu verstehen, bevor du handelst.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            "C": {
+                name: "Der Kreative 🎨",
+                description: "Du liebst neue Ideen und originelle Ansätze. Du bringst frischen Wind ins Team, aber Routine kann dich schnell langweilen.",
+                details: `
+                    <div class="type-description">
+                        <h3>Der Kreative 🎨</h3>
+                        <p>Als Kreativer sprudelst du vor neuen Ideen und unkonventionellen Ansätzen. Du denkst "out of the box" und liebst es, innovative Lösungen für Probleme zu finden. Du bringst frischen Wind und Inspiration ins Team und bist oft derjenige, der neue Perspektiven eröffnet. Deine Stärken liegen in deiner Vorstellungskraft und der Fähigkeit, Verbindungen zu sehen, wo andere keine sehen. Allerdings kann dich Routine schnell langweilen, und du könntest Schwierigkeiten haben, dich an starre Strukturen oder wiederholende Aufgaben anzupassen.</p>
+                        <ul>
+                            <li>**Stärken:** Innovationskraft, Vorstellungskraft, Problemlösung auf unkonventionelle Weise, Begeisterungsfähigkeit.</li>
+                            <li>**Herausforderungen:** Anfällig für Langeweile bei Routineaufgaben, kann Schwierigkeiten mit Struktur haben, manchmal realitätsfern.</li>
+                            <li>**Tipps:** Finde Wege, Kreativität auch in routinierten Aufgaben zu integrieren. Lerne, deine Ideen strukturiert zu präsentieren, um andere zu überzeugen.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            "D": {
+                name: "Der Analytiker 🧠",
+                description: "Du gehst logisch an Probleme heran und willst alles genau durchdenken. Entscheidungen müssen für dich gut begründet sein.",
+                details: `
+                    <div class="type-description">
+                        <h3>Der Analytiker 🧠</h3>
+                        <p>Als Analytiker näherst du dich Problemen mit Logik und rationalem Denken. Du liebst es, Daten zu sammeln, Sachverhalte gründlich zu prüfen und fundierte Entscheidungen zu treffen. Fakten und klare Prozesse sind dir wichtig. Du bist oft derjenige, der die kritischen Fragen stellt und sicherstellt, dass alle Aspekte berücksichtigt werden. Deine Stärken liegen in deiner Fähigkeit zur tiefgehenden Analyse und zur Problemlösung auf Basis von Beweisen. Manchmal könntest du jedoch als zu zögerlich oder übermäßig kritisch wahrgenommen werden, da du Zeit für die Analyse benötigst, bevor du handelst.</p>
+                        <ul>
+                            <li>**Stärken:** Logisches Denken, Gründlichkeit, Faktenorientierung, Problemlösungskompetenz, Objektivität.</li>
+                            <li>**Herausforderungen:** Kann als zögerlich oder zu kritisch wirken, braucht viel Zeit für Entscheidungen, weniger spontan.</li>
+                            <li>**Tipps:** Übe, auch unter Unsicherheit Entscheidungen zu treffen. Kommuniziere deine analytische Herangehensweise klar, um Missverständnisse zu vermeiden.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            "E": {
+                name: "Der Teamplayer 🤝",
+                description: "Du bist kommunikativ, hilfsbereit und bringst Menschen zusammen. Du hältst das Team zusammen und sorgst für Harmonie.",
+                details: `
+                    <div class="type-description">
+                        <h3>Der Teamplayer 🤝</h3>
+                        <p>Als Teamplayer bist du der Klebstoff, der Menschen zusammenhält. Du bist kommunikativ, kooperativ und legst großen Wert auf eine harmonische Arbeitsatmosphäre. Dir ist wichtig, dass sich alle im Team wohlfühlen und jeder gehört wird. Du bist oft der Mediator bei Konflikten und förderst die Zusammenarbeit. Deine Stärken liegen in deiner Empathie, deiner Fähigkeit zuzuhören und Konflikte zu lösen. Manchmal könntest du jedoch dazu neigen, deine eigenen Bedürfnisse zugunsten der Gruppendynamik zurückzustellen oder direkte Konfrontationen zu meiden.</p>
+                        <ul>
+                            <li>**Stärken:** Empathie, Kommunikationsstärke, Kooperationsbereitschaft, Konfliktlösung, harmonisches Arbeitsumfeld.</li>
+                            <li>**Herausforderungen:** Kann eigene Bedürfnisse zurückstellen, meidet eventuell direkte Konfrontationen, manchmal übermäßig anpassungsfähig.</li>
+                            <li>**Tipps:** Lerne, auch deine eigene Meinung zu vertreten und dich durchzusetzen. Setze Grenzen, um dich nicht zu überfordern.</li>
+                        </ul>
+                    </div>
+                `
+            }
+        };
+
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null); // Speichert die ausgewählte Antwort für jede Frage
+
+        // DOM-Elemente
+        const introSection = document.getElementById('intro-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestButton = document.getElementById('start-test-button');
+        const questionCounter = document.getElementById('question-counter');
+        const questionDisplay = document.getElementById('question-display');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const submitButton = document.getElementById('submit-button');
+        const resultTextDiv = document.getElementById('result-text');
+        const detailedTypeDescriptionDiv = document.getElementById('detailed-type-description');
+        const restartButton = document.getElementById('restart-button');
+
+        let myChartInstance = null; // Variable, um die Chart-Instanz zu speichern
+
+        // Event Listener
+        startTestButton.addEventListener('click', startTest);
+        nextButton.addEventListener('click', showNextQuestion);
+        prevButton.addEventListener('click', showPreviousQuestion);
+        submitButton.addEventListener('click', calculateResult);
+        restartButton.addEventListener('click', restartTest);
+
+        function startTest() {
+            introSection.style.display = 'none';
+            quizSection.style.display = 'block';
+            currentQuestionIndex = 0;
+            userAnswers.fill(null); // Reset answers
+            renderQuestion();
+            updateNavigationButtons();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            let optionsHtml = '';
+            for (const key in q.options) {
+                optionsHtml += `
+                    <label>
+                        <input type="radio" name="question-${currentQuestionIndex}" value="${key}" ${userAnswers[currentQuestionIndex] === key ? 'checked' : ''}>
+                        ${q.options[key]}
+                    </label>
+                `;
+            }
+
+            questionDisplay.innerHTML = `
+                <p><span>${currentQuestionIndex + 1}.</span> ${q.question}</p>
+                <div class="options-group">
+                    ${optionsHtml}
+                </div>
+            `;
+            // Listener für Radio-Buttons hinzufügen
+            document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]`).forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    userAnswers[currentQuestionIndex] = event.target.value;
+                    updateNavigationButtons(); // Enable next/submit button if an answer is selected
+                });
+            });
+            questionCounter.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            prevButton.disabled = currentQuestionIndex === 0;
+            const currentAnswered = userAnswers[currentQuestionIndex] !== null;
+
+            if (currentQuestionIndex === questions.length - 1) {
+                nextButton.style.display = 'none';
+                submitButton.style.display = currentAnswered ? 'inline-block' : 'none'; // Show submit only if last question answered
+                submitButton.disabled = !currentAnswered;
+            } else {
+                nextButton.style.display = 'inline-block';
+                submitButton.style.display = 'none';
+                nextButton.disabled = !currentAnswered;
+            }
+        }
+
+        function showNextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert("Bitte wähle eine Antwort, bevor du fortfährst.");
+                return;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                renderQuestion();
+            }
+        }
+
+        function showPreviousQuestion() {
+            currentQuestionIndex--;
+            renderQuestion();
+        }
 
         function calculateResult() {
-            var form = document.getElementById('personality-test');
-            var answers = form.querySelectorAll('input[type="radio"]:checked');
-            var counts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
-            var totalQuestions = 8; // Die Gesamtzahl der Fragen
-
-            // Überprüfen, ob alle Fragen beantwortet wurden
-            if (answers.length < totalQuestions) {
-                alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.');
+            if (userAnswers.some(answer => answer === null)) { // Prüfen, ob alle Fragen beantwortet sind
+                alert("Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.");
                 return;
             }
 
-            answers.forEach(function(answer) {
-                counts[answer.value]++;
+            const counts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+            userAnswers.forEach(answer => {
+                counts[answer]++;
             });
 
-            var maxCount = 0;
-            var maxLetter = '';
-            for (var letter in counts) {
-                if (counts[letter] > maxCount) {
-                    maxCount = counts[letter];
-                    maxLetter = letter;
-                } else if (counts[letter] === maxCount && maxLetter !== '') {
-                    // Falls es ein Gleichstand gibt, behalten wir den ersten gefundenen Buchstaben.
-                    // Bei Bedarf könnte man hier komplexere Logik einfügen (z.B. zufällige Auswahl).
+            let maxCount = 0;
+            let dominantTypes = []; // Array für dominante Typen bei Gleichstand
+            for (const type in counts) {
+                if (counts[type] > maxCount) {
+                    maxCount = counts[type];
+                    dominantTypes = [type]; // Neuen dominanten Typ setzen
+                } else if (counts[type] === maxCount && maxCount > 0) {
+                    dominantTypes.push(type); // Weiteren dominanten Typ hinzufügen
                 }
             }
 
-            var resultText = '';
-            var resultSymbol = '';
-            switch (maxLetter) {
-                case 'A':
-                    resultText = 'Der Perfektionist – Du legst großen Wert auf Qualität und Genauigkeit. Dir entgeht kein Detail, aber manchmal verlierst du dich zu sehr in Perfektion.';
-                    resultSymbol = '🔍';
-                    break;
-                case 'B':
-                    resultText = 'Der Macher – Du bist zielstrebig und packst Aufgaben sofort an. Du willst Ergebnisse sehen, aber manchmal kannst du etwas zu direkt sein.';
-                    resultSymbol = '⚡';
-                    break;
-                case 'C':
-                    resultText = 'Der Kreative – Du liebst neue Ideen und originelle Ansätze. Du bringst frischen Wind ins Team, aber Routine kann dich schnell langweilen.';
-                    resultSymbol = '🎨';
-                    break;
-                case 'D':
-                    resultText = 'Der Analytiker – Du gehst logisch an Probleme heran und willst alles genau durchdenken. Entscheidungen müssen für dich gut begründet sein.';
-                    resultSymbol = '🧠';
-                    break;
-                case 'E':
-                    resultText = 'Der Teamplayer – Du bist kommunikativ, hilfsbereit und bringst Menschen zusammen. Du hältst das Team zusammen und sorgst für Harmonie.';
-                    resultSymbol = '🤝';
-                    break;
-                default:
-                    resultText = 'Dein Persönlichkeitstyp konnte nicht eindeutig bestimmt werden. Bitte stellen Sie sicher, dass alle Fragen beantwortet wurden.';
-                    resultSymbol = '❓';
+            let resultHtml = '';
+            if (dominantTypes.length === 1) {
+                const typeKey = dominantTypes[0];
+                const typeInfo = typeDescriptions[typeKey];
+                resultHtml = `${typeInfo.name} – ${typeInfo.description}`;
+                detailedTypeDescriptionDiv.innerHTML = typeInfo.details;
+            } else if (dominantTypes.length > 1) {
+                // Bei Gleichstand: Alle dominanten Typen auflisten
+                resultHtml = 'Du hast mehrere dominante Tendenzen: ';
+                const dominantNames = dominantTypes.map(key => typeDescriptions[key].name.split(' ')[0]); // Nur den Namen, nicht das Symbol
+                resultHtml += dominantNames.join(', ') + '.';
+                resultHtml += '<br>Deine Stärken liegen in einer Kombination dieser Eigenschaften.';
+
+                detailedTypeDescriptionDiv.innerHTML = ''; // Leeren Sie den Bereich
+                dominantTypes.forEach(typeKey => {
+                    detailedTypeDescriptionDiv.innerHTML += typeDescriptions[typeKey].details;
+                });
+
+            } else {
+                resultHtml = 'Dein Persönlichkeitstyp konnte nicht eindeutig bestimmt werden. Bitte stelle sicher, dass alle Fragen beantwortet wurden.';
+                detailedTypeDescriptionDiv.innerHTML = '';
             }
 
-            document.getElementById('result-text').innerHTML = resultSymbol + ' ' + resultText;
-            document.getElementById('result').style.display = 'block';
+            resultTextDiv.innerHTML = resultHtml;
 
-            // ----------- START: Chart.js Integration -----------
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'block';
+
+            renderChart(counts);
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderChart(counts) {
             const ctx = document.getElementById('myPersonalityChart').getContext('2d');
 
-            // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
             if (myChartInstance) {
                 myChartInstance.destroy();
             }
 
-            const chartData = [
-                (counts.A / totalQuestions) * 100,
-                (counts.B / totalQuestions) * 100,
-                (counts.C / totalQuestions) * 100,
-                (counts.D / totalQuestions) * 100,
-                (counts.E / totalQuestions) * 100
+            const chartLabels = ['Perfektionist', 'Macher', 'Kreativer', 'Analytiker', 'Teamplayer'];
+            const chartDataValues = [
+                (counts.A / questions.length) * 100,
+                (counts.B / questions.length) * 100,
+                (counts.C / questions.length) * 100,
+                (counts.D / questions.length) * 100,
+                (counts.E / questions.length) * 100
             ];
 
             const backgroundColors = [
@@ -374,24 +627,24 @@
             ];
 
             myChartInstance = new Chart(ctx, {
-                type: 'bar', // Typ des Diagramms: 'bar' (Balken), 'pie' (Kreis), 'radar' etc.
+                type: 'bar',
                 data: {
-                    labels: ['Perfektionist', 'Macher', 'Kreativer', 'Analytiker', 'Teamplayer'], // Beschriftungen für die X-Achse
+                    labels: chartLabels,
                     datasets: [{
-                        label: 'Deine Antworten in %',
-                        data: chartData,
+                        label: 'Anteil deiner Antworten',
+                        data: chartDataValues,
                         backgroundColor: backgroundColors,
                         borderColor: borderColors,
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true, // Macht das Diagramm responsiv
-                    maintainAspectRatio: false, // Wichtig für responsive Layouts
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 100, // Y-Achse geht bis 100%
+                            max: 100,
                             title: {
                                 display: true,
                                 text: 'Anteil in %'
@@ -406,7 +659,7 @@
                     },
                     plugins: {
                         legend: {
-                            display: false // Legende ist bei Balkendiagramm oft nicht nötig, da Labels direkt da sind
+                            display: false
                         },
                         tooltip: {
                             callbacks: {
@@ -425,14 +678,30 @@
                     }
                 }
             });
-            // ----------- END: Chart.js Integration -----------
-
-            // Stellen Sie sicher, dass der detaillierte Ergebnisbereich sichtbar ist
-            document.getElementById('detailed-results').style.display = 'block';
-
-            // Autoscroll zum Ergebnis
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
         }
+
+        function restartTest() {
+            if (myChartInstance) {
+                myChartInstance.destroy();
+                myChartInstance = null;
+            }
+
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+
+            introSection.style.display = 'block';
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'none';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialisiere den Test beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', () => {
+            introSection.style.display = 'block';
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'none';
+        });
     </script>
 </body>
 </html>
