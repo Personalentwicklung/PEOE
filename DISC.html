@@ -53,10 +53,27 @@
         #intro-section {
             text-align: center;
         }
-        #intro-section p {
-            font-size: 1.1em;
-            margin-bottom: 25px;
+        .introduction-box { /* Diesen div beibehalten */
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left; /* Textausrichtung wie im Original */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
+        .introduction-box h2 { /* Hier auch eine Anpassung für die Überschrift im Intro */
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center; /* Zentriert die Überschrift im Intro */
+        }
+        .introduction-box p {
+            font-size: 1em; /* Passen Sie dies bei Bedarf an, ursprünglich 1.1em für den Start-Button P-Tag */
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
         #start-test-button {
             background-color: #007bff;
             color: white;
@@ -244,8 +261,18 @@
     <div id="test-container">
         <div id="intro-section">
             <h1>DISC Persönlichkeitstest</h1>
-            <p>Willkommen zu diesem Test! Dieser Test hilft Ihnen, Ihre Präferenzen und Verhaltensweisen in verschiedenen Situationen besser zu verstehen, basierend auf dem DISC-Modell.</p>
-            <p>Bitte wählen Sie bei jeder Frage die Option, die am besten zu Ihnen passt.</p>
+            <div class="introduction-box">
+                <h2>Was ist der DISC-Persönlichkeitstest?</h2>
+                <p>Der DISC-Persönlichkeitstest ist ein Selbstbewertungsinstrument, das dazu dient, Verhaltensweisen und Kommunikationsstile zu identifizieren und zu verstehen. Das Modell basiert auf der Arbeit von William Moulton Marston und kategorisiert Verhaltensweisen in vier Hauptstile:</p>
+                <ul>
+                    <li><strong>D (Dominance):</strong> Dominante Typen sind direkt, ergebnisorientiert und lieben Herausforderungen.</li>
+                    <li><strong>I (Influence):</strong> Einflussreiche Typen sind enthusiastisch, überzeugend und gesellig.</li>
+                    <li><strong>S (Steadiness):</strong> Stetige Typen sind geduldig, zuverlässig und unterstützend.</li>
+                    <li><strong>C (Conscientiousness):</strong> Gewissenhafte Typen sind analytisch, präzise und detailorientiert.</li>
+                </ul>
+                <p>Dieser Test gibt Ihnen Einblicke in Ihre bevorzugten Verhaltensweisen und wie diese Ihre Interaktionen mit anderen beeinflussen können. Er ist ein nützliches Werkzeug für die persönliche Entwicklung, Teamarbeit und Kommunikation.</p>
+                <p>Bitte wählen Sie bei jeder Frage die Option, die am besten zu Ihnen passt.</p>
+            </div>
             <button id="start-test-button">Test starten</button>
         </div>
 
@@ -550,7 +577,7 @@
                         <ul>
                             <li>**Stärken:** Genauigkeit, Analysefähigkeit, Logik, Systematik, Qualitätsbewusstsein.</li>
                             <li>**Herausforderungen:** Kann als zu kritisch oder langsam wirken, neigt zu Perfektionismus.</li>
-                            <li>**Kommunikationstipp:** Seien Sie präzise, faktenbasiert und bieten Sie detaillierte Informationen an. Achten Sie auf Logik und Struktur.</li>
+                            <li>**Tipps:** Seien Sie präzise, faktenbasiert und bieten Sie detaillierte Informationen an. Achten Sie auf Logik und Struktur.</li>
                         </ul>
                     </div>
                 `
