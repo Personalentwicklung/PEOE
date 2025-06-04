@@ -368,468 +368,471 @@
         </div>
     </div>
 
-    <script>
-        const questions = [
-            {
-                question: "1. Wie reagieren Sie in einer neuen Gruppe?",
-                options: {
-                    D: "Ich übernehme schnell die Führung.",
-                    I: "Ich bringe gute Stimmung rein.",
-                    C: "Ich analysiere die Situation genau.",
-                    S: "Ich beobachte erst mal ruhig."
-                }
-            },
-            {
-                question: "2. Wie gehen Sie mit Konflikten um?",
-                options: {
-                    C: "Ich analysiere die Ursachen des Konflikts.",
-                    D: "Ich konfrontiere das Problem direkt.",
-                    S: "Ich versuche, den Konflikt zu vermeiden.",
-                    I: "Ich versuche, die Stimmung zu heben."
-                }
-            },
-            {
-                question: "3. Wie organisieren Sie Ihre Arbeit?",
-                options: {
-                    D: "Ich setze klare Ziele und Deadlines.",
-                    C: "Ich plane sorgfältig und achte auf Details.",
-                    S: "Ich arbeite ruhig und methodisch.",
-                    I: "Ich arbeite gerne im Team und motiviere andere."
-                }
-            },
-            {
-                question: "4. Wie reagieren Sie auf Veränderungen?",
-                options: {
-                    I: "Ich begrüße Veränderungen mit Begeisterung.",
-                    D: "Ich sehe Veränderungen als Herausforderung.",
-                    C: "Ich analysiere die Veränderungen gründlich.",
-                    S: "Ich bin vorsichtig und abwartend."
-                }
-            },
-            {
-                question: "5. Wie treffen Sie Entscheidungen?",
-                options: {
-                    D: "Ich treffe schnelle und entschlossene Entscheidungen.",
-                    S: "Ich überlege gründlich und vermeide Risiken.",
-                    I: "Ich beziehe andere in meine Entscheidungen ein.",
-                    C: "Ich analysiere alle verfügbaren Informationen."
-                }
-            },
-            {
-                question: "6. Wie gehen Sie mit Stress um?",
-                options: {
-                    I: "Ich suche Unterstützung und Motivation bei anderen.",
-                    C: "Ich analysiere die Ursachen des Stresses.",
-                    D: "Ich bleibe fokussiert und handle schnell.",
-                    S: "Ich bleibe ruhig und gelassen."
-                }
-            },
-            {
-                question: "7. Wie gehen Sie mit Kritik um?",
-                options: {
-                    I: "Ich versuche, die Kritik positiv zu sehen.",
-                    D: "Ich nehme Kritik als Ansporn zur Verbesserung.",
-                    S: "Ich nehme Kritik ruhig und gelassen an.",
-                    C: "Ich analysiere die Kritik und ziehe Schlüsse daraus."
-                }
-            },
-            {
-                question: "8. Wie motivieren Sie sich selbst?",
-                options: {
-                    C: "Ich analysiere meine Fortschritte und passe meine Strategie an.",
-                    I: "Ich suche nach neuen und aufregenden Herausforderungen.",
-                    D: "Ich setze mir ehrgeizige Ziele.",
-                    S: "Ich arbeite kontinuierlich und methodisch."
-                }
-            },
-            {
-                question: "9. Wie gehen Sie mit Fehlern um?",
-                options: {
-                    D: "Ich lerne schnell aus meinen Fehlern und mache weiter.",
-                    I: "Ich versuche, die Fehler positiv zu sehen und daraus zu lernen.",
-                    S: "Ich nehme Fehler ruhig und gelassen an.",
-                    C: "Ich analysiere die Fehler gründlich und ziehe Schlüsse daraus."
-                }
-            },
-            {
-                question: "10. Wie gehen Sie mit neuen Aufgaben um?",
-                options: {
-                    S: "Ich gehe neue Aufgaben ruhig und methodisch an.",
-                    D: "Ich nehme neue Aufgaben als Herausforderung an.",
-                    C: "Ich analysiere die neuen Aufgaben gründlich.",
-                    I: "Ich begrüße neue Aufgaben mit Begeisterung."
-                }
-            },
-            {
-                question: "11. Wie gehen Sie mit Unsicherheit um?",
-                options: {
-                    C: "Ich analysiere die Ursachen der Unsicherheit.",
-                    D: "Ich bleibe fokussiert und handle schnell.",
-                    I: "Ich suche Unterstützung und Motivation bei anderen.",
-                    S: "Ich bleibe ruhig und gelassen."
-                }
-            },
-            {
-                question: "12. Wie gehen Sie mit Teamarbeit um?",
-                options: {
-                    D: "Ich gebe gerne den Ton an.",
-                    I: "Ich trage aktiv zu einer positiven Teamatmosphäre bei.",
-                    S: "Ich arbeite systematisch und zielgerichtet.",
-                    C: "Ich erfasse die Beziehungen und Interaktionen innerhalb des Teams."
-                }
+
+<script>
+    const questions = [
+        {
+            question: "1. Wie reagieren Sie in einer neuen Gruppe?",
+            options: {
+                D: "Ich übernehme schnell die Führung.",
+                I: "Ich bringe gute Stimmung rein.",
+                C: "Ich analysiere die Situation genau.",
+                S: "Ich beobachte erst mal ruhig."
             }
+        },
+        {
+            question: "2. Wie gehen Sie mit Konflikten um?",
+            options: {
+                C: "Ich analysiere die Ursachen des Konflikts.",
+                D: "Ich konfrontiere das Problem direkt.",
+                S: "Ich versuche, den Konflikt zu vermeiden.",
+                I: "Ich versuche, die Stimmung zu heben."
+            }
+        },
+        {
+            question: "3. Wie organisieren Sie Ihre Arbeit?",
+            options: {
+                D: "Ich setze klare Ziele und Deadlines.",
+                C: "Ich plane sorgfältig und achte auf Details.",
+                S: "Ich arbeite ruhig und methodisch.",
+                I: "Ich arbeite gerne im Team und motiviere andere."
+            }
+        },
+        {
+            question: "4. Wie reagieren Sie auf Veränderungen?",
+            options: {
+                I: "Ich begrüße Veränderungen mit Begeisterung.",
+                D: "Ich sehe Veränderungen als Herausforderung.",
+                C: "Ich analysiere die Veränderungen gründlich.",
+                S: "Ich bin vorsichtig und abwartend."
+            }
+        },
+        {
+            question: "5. Wie treffen Sie Entscheidungen?",
+            options: {
+                D: "Ich treffe schnelle und entschlossene Entscheidungen.",
+                S: "Ich überlege gründlich und vermeide Risiken.",
+                I: "Ich beziehe andere in meine Entscheidungen ein.",
+                C: "Ich analysiere alle verfügbaren Informationen."
+            }
+        },
+        {
+            question: "6. Wie gehen Sie mit Stress um?",
+            options: {
+                I: "Ich suche Unterstützung und Motivation bei anderen.",
+                C: "Ich analysiere die Ursachen des Stresses.",
+                D: "Ich bleibe fokussiert und handle schnell.",
+                S: "Ich bleibe ruhig und gelassen."
+            }
+        },
+        {
+            question: "7. Wie gehen Sie mit Kritik um?",
+            options: {
+                I: "Ich versuche, die Kritik positiv zu sehen.",
+                D: "Ich nehme Kritik als Ansporn zur Verbesserung.",
+                S: "Ich nehme Kritik ruhig und gelassen an.",
+                C: "Ich analysiere die Kritik und ziehe Schlüsse daraus."
+            }
+        },
+        {
+            question: "8. Wie motivieren Sie sich selbst?",
+            options: {
+                C: "Ich analysiere meine Fortschritte und passe meine Strategie an.",
+                I: "Ich suche nach neuen und aufregenden Herausforderungen.",
+                D: "Ich setze mir ehrgeizige Ziele.",
+                S: "Ich arbeite kontinuierlich und methodisch."
+            }
+        },
+        {
+            question: "9. Wie gehen Sie mit Fehlern um?",
+            options: {
+                D: "Ich lerne schnell aus meinen Fehlern und mache weiter.",
+                I: "Ich versuche, die Fehler positiv zu sehen und daraus zu lernen.",
+                S: "Ich nehme Fehler ruhig und gelassen an.",
+                C: "Ich analysiere die Fehler gründlich und ziehe Schlüsse daraus."
+            }
+        },
+        {
+            question: "10. Wie gehen Sie mit neuen Aufgaben um?",
+            options: {
+                S: "Ich gehe neue Aufgaben ruhig und methodisch an.",
+                D: "Ich nehme neue Aufgaben als Herausforderung an.",
+                C: "Ich analysiere die neuen Aufgaben gründlich.",
+                I: "Ich begrüße neue Aufgaben mit Begeisterung."
+            }
+        },
+        {
+            question: "11. Wie gehen Sie mit Unsicherheit um?",
+            options: {
+                C: "Ich analysiere die Ursachen der Unsicherheit.",
+                D: "Ich bleibe fokussiert und handle schnell.",
+                I: "Ich suche Unterstützung und Motivation bei anderen.",
+                S: "Ich bleibe ruhig und gelassen."
+            }
+        },
+        {
+            question: "12. Wie gehen Sie mit Teamarbeit um?",
+            options: {
+                D: "Ich gebe gerne den Ton an.",
+                I: "Ich trage aktiv zu einer positiven Teamatmosphäre bei.",
+                S: "Ich arbeite systematisch und zielgerichtet.",
+                C: "Ich erfasse die Beziehungen und Interaktionen innerhalb des Teams."
+            }
+        }
+    ];
+
+    const typeDescriptions = {
+        D: {
+            name: 'Dominant (D)',
+            description: `
+                <p><strong>Hauptmerkmale:</strong> Ihr Hauptmerkmal ist Ihre Durchsetzungsstärke, Zielorientierung und Entscheidungsfreudigkeit.</p>
+                <p><strong>Verhalten:</strong> Bei Ihrem Verhalten sind Sie direkt, lieben Herausforderungen und sind stets darauf bedacht, Ergebnisse zu sehen.</p>
+                <p><strong>Kommunikation:</strong> In der Kommunikation sind Sie klar, knapp und ergebnisorientiert.</p>
+            `
+        },
+        I: {
+            name: 'Initiativ (I)',
+            description: `
+                <p><strong>Hauptmerkmale:</strong> Ihre Hauptmerkmale sind Ihre Begeisterungsfähigkeit, Kontaktfreudigkeit und Ihr Optimismus.</p>
+                <p><strong>Verhalten:</strong> Bei Ihrem Verhalten sind Sie inspirierend, reden gerne und motivieren andere.</p>
+                <p><strong>Kommunikation:</strong> Ihre Kommunikation ist emotional, offen und überzeugend.</p>
+            `
+        },
+        S: {
+            name: 'Stetig (S)',
+            description: `
+                <p><strong>Hauptmerkmale:</strong> Ihre Hauptmerkmale sind Geduld, Hilfsbereitschaft und Zuverlässigkeit.</p>
+                <p><strong>Verhalten:</strong> Bei Ihrem Verhalten sind Sie teamorientiert, hören gut zu und versuchen, Konflikte zu vermeiden.</p>
+                <p><strong>Kommunikation:</strong> In der Kommunikation sind Sie ruhig, freundlich und unterstützend.</p>
+            `
+        },
+        C: {
+            name: 'Conform (C)',
+            description: `
+                <p><strong>Hauptmerkmale:</strong> Ihre Hauptmerkmale sind Ihre analytische Denkweise, Genauigkeit und Ihr Qualitätsbewusstsein.</p>
+                <p><strong>Verhalten:</strong> Bei Ihrem Verhalten planen Sie sorgfältig, achten auf Details und schätzen Regeln.</p>
+                <p><strong>Kommunikation:</strong> Ihre Kommunikation ist sachlich, strukturiert und faktenbasiert.</p>
+            `
+        }
+    };
+
+    let currentQuestionIndex = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+
+    // DOM-Elemente
+    const introSection = document.getElementById('intro-section');
+    const quizSection = document.getElementById('quiz-section');
+    const resultSection = document.getElementById('result-section');
+    const startTestButton = document.getElementById('start-test-button');
+    const questionCounter = document.getElementById('question-counter');
+    const questionDisplay = document.getElementById('question-display');
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    const submitButton = document.getElementById('submit-button');
+    const resultDescriptionDiv = document.getElementById('result-description');
+    const restartButton = document.getElementById('restart-button');
+
+    let barChartInstance = null;
+    let pieChartInstance = null;
+
+    // Event Listener
+    startTestButton.addEventListener('click', startTest);
+    nextButton.addEventListener('click', showNextQuestion);
+    prevButton.addEventListener('click', showPreviousQuestion);
+    submitButton.addEventListener('click', calculateResult);
+    restartButton.addEventListener('click', restartTest);
+
+    function startTest() {
+        introSection.style.display = 'none';
+        quizSection.style.display = 'block';
+        currentQuestionIndex = 0;
+        userAnswers.fill(null); // Reset answers
+        renderQuestion();
+        updateNavigationButtons();
+    }
+
+    function renderQuestion() {
+        const q = questions[currentQuestionIndex];
+        let optionsHtml = '';
+        for (const key in q.options) {
+            optionsHtml += `
+                <label>
+                    <input type="radio" name="question-${currentQuestionIndex}" value="${key}" ${userAnswers[currentQuestionIndex] === key ? 'checked' : ''}>
+                    ${q.options[key]}
+                </label>
+            `;
+        }
+
+        questionDisplay.innerHTML = `
+            <p>${q.question}</p>
+            <div class="options-group">
+                ${optionsHtml}
+            </div>
+        `;
+        // Listener für Radio-Buttons hinzufügen
+        document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]`).forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                userAnswers[currentQuestionIndex] = event.target.value;
+                updateNavigationButtons(); // Enable next/submit button if an answer is selected
+            });
+        });
+        questionCounter.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+        updateNavigationButtons();
+    }
+
+    function updateNavigationButtons() {
+        prevButton.disabled = currentQuestionIndex === 0;
+        const currentAnswered = userAnswers[currentQuestionIndex] !== null;
+
+        if (currentQuestionIndex === questions.length - 1) {
+            nextButton.style.display = 'none';
+            submitButton.style.display = currentAnswered ? 'inline-block' : 'none';
+            submitButton.disabled = !currentAnswered;
+        } else {
+            nextButton.style.display = 'inline-block';
+            submitButton.style.display = 'none';
+            nextButton.disabled = !currentAnswered;
+        }
+    }
+
+    function showNextQuestion() {
+        if (userAnswers[currentQuestionIndex] === null) {
+            alert("Bitte wählen Sie eine Antwort, bevor Sie fortfahren.");
+            return;
+        }
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            renderQuestion();
+        }
+    }
+
+    function showPreviousQuestion() {
+        currentQuestionIndex--;
+        renderQuestion();
+    }
+
+    function calculateResult() {
+        if (userAnswers.some(answer => answer === null)) {
+            alert("Bitte beantworten Sie alle Fragen, bevor Sie das Ergebnis anzeigen.");
+            return;
+        }
+
+        const counts = { D: 0, I: 0, S: 0, C: 0 };
+        userAnswers.forEach(answer => {
+            counts[answer]++;
+        });
+
+        let maxCount = 0;
+        let dominantTypes = [];
+        for (const type in counts) {
+            if (counts[type] > maxCount) {
+                maxCount = counts[type];
+                dominantTypes = [type];
+            } else if (counts[type] === maxCount && maxCount > 0) {
+                dominantTypes.push(type);
+            }
+        }
+
+        let resultHtml = '';
+        if (dominantTypes.length === 1) {
+            const typeKey = dominantTypes[0];
+            const typeInfo = typeDescriptions[typeKey];
+            resultHtml = `
+                <p><strong>Ihr dominantester Persönlichkeitstyp:</strong> ${typeInfo.name}</p>
+                ${typeInfo.description}
+            `;
+        } else if (dominantTypes.length > 1) {
+            resultHtml = '<p>Sie haben mehrere dominante Tendenzen: ';
+            const dominantNames = dominantTypes.map(key => typeDescriptions[key].name.split(' ')[0]);
+            resultHtml += dominantNames.join(', ') + '.</p>';
+            resultHtml += '<p>Ihre Stärken liegen in einer Kombination dieser Eigenschaften. Hier sind die Details für jeden dominanten Typ:</p>';
+            
+            dominantTypes.forEach(typeKey => {
+                const typeInfo = typeDescriptions[typeKey];
+                resultHtml += `
+                    <div style="margin-top: 20px; padding-top: 10px; border-top: 1px dashed #ccc;">
+                        <p><strong>Typ: ${typeInfo.name}</strong></p>
+                        ${typeInfo.description}
+                    </div>
+                `;
+            });
+        } else {
+            resultHtml = '<p>Ihr Persönlichkeitstyp konnte nicht eindeutig bestimmt werden. Bitte stellen Sie sicher, dass alle Fragen beantwortet wurden.</p>';
+        }
+
+        resultDescriptionDiv.innerHTML = resultHtml;
+
+        quizSection.style.display = 'none';
+        resultSection.style.display = 'block';
+
+        renderCharts(counts);
+        resultSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderCharts(counts) {
+        const labels = ['Dominant (D)', 'Initiativ (I)', 'Stetig (S)', 'Conform (C)'];
+        const data = [counts.D, counts.I, counts.S, counts.C];
+        const backgroundColors = [
+            'rgba(231, 76, 60, 0.8)',  // Rot für Dominant
+            'rgba(241, 196, 15, 0.8)', // Gelb für Initiativ
+            'rgba(46, 204, 113, 0.8)', // Grün für Stetig
+            'rgba(52, 152, 219, 0.8)'  // Blau für Conform
+        ];
+        const borderColors = [
+            'rgba(231, 76, 60, 1)',
+            'rgba(241, 196, 15, 1)',
+            'rgba(46, 204, 113, 1)',
+            'rgba(52, 152, 219, 1)'
         ];
 
-        const typeDescriptions = {
-            D: {
-                name: 'Dominant (D)',
-                merkmale: 'Durchsetzungsstark, zielorientiert, entscheidungsfreudig',
-                verhalten: 'Direkt, liebt Herausforderungen, will Ergebnisse sehen',
-                kommunikation: 'Klar, knapp, ergebnisorientiert'
+        // Balkendiagramm
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        if (barChartInstance) {
+            barChartInstance.destroy();
+        }
+        barChartInstance = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Anzahl der Antworten',
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }]
             },
-            I: {
-                name: 'Initiativ (I)',
-                merkmale: 'Begeisterungsfähig, kontaktfreudig, optimistisch',
-                verhalten: 'Inspirierend, redet gern, motiviert andere',
-                kommunikation: 'Emotional, offen, überzeugend'
-            },
-            S: {
-                name: 'Stetig (S)',
-                merkmale: 'Geduldig, hilfsbereit, zuverlässig',
-                verhalten: 'Teamorientiert, hört gut zu, vermeidet Konflikte',
-                kommunikation: 'Ruhig, freundlich, unterstützend'
-            },
-            C: {
-                name: 'Conform (C)',
-                merkmale: 'Analytisch, genau, qualitätsbewusst',
-                verhalten: 'Plant sorgfältig, achtet auf Details, liebt Regeln',
-                kommunikation: 'Sachlich, strukturiert, faktenbasiert'
-            }
-        };
-
-        let currentQuestionIndex = 0;
-        let userAnswers = new Array(questions.length).fill(null);
-
-        // DOM-Elemente
-        const introSection = document.getElementById('intro-section');
-        const quizSection = document.getElementById('quiz-section');
-        const resultSection = document.getElementById('result-section');
-        const startTestButton = document.getElementById('start-test-button');
-        const questionCounter = document.getElementById('question-counter');
-        const questionDisplay = document.getElementById('question-display');
-        const prevButton = document.getElementById('prev-button');
-        const nextButton = document.getElementById('next-button');
-        const submitButton = document.getElementById('submit-button');
-        const resultDescriptionDiv = document.getElementById('result-description');
-        const restartButton = document.getElementById('restart-button');
-
-        let barChartInstance = null;
-        let pieChartInstance = null;
-
-        // Event Listener
-        startTestButton.addEventListener('click', startTest);
-        nextButton.addEventListener('click', showNextQuestion);
-        prevButton.addEventListener('click', showPreviousQuestion);
-        submitButton.addEventListener('click', calculateResult);
-        restartButton.addEventListener('click', restartTest);
-
-        function startTest() {
-            introSection.style.display = 'none';
-            quizSection.style.display = 'block';
-            currentQuestionIndex = 0;
-            userAnswers.fill(null); // Reset answers
-            renderQuestion();
-            updateNavigationButtons();
-        }
-
-        function renderQuestion() {
-            const q = questions[currentQuestionIndex];
-            let optionsHtml = '';
-            for (const key in q.options) {
-                optionsHtml += `
-                    <label>
-                        <input type="radio" name="question-${currentQuestionIndex}" value="${key}" ${userAnswers[currentQuestionIndex] === key ? 'checked' : ''}>
-                        ${q.options[key]}
-                    </label>
-                `;
-            }
-
-            questionDisplay.innerHTML = `
-                <p>${q.question}</p>
-                <div class="options-group">
-                    ${optionsHtml}
-                </div>
-            `;
-            // Listener für Radio-Buttons hinzufügen
-            document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]`).forEach(radio => {
-                radio.addEventListener('change', (event) => {
-                    userAnswers[currentQuestionIndex] = event.target.value;
-                    updateNavigationButtons(); // Enable next/submit button if an answer is selected
-                });
-            });
-            questionCounter.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
-            updateNavigationButtons();
-        }
-
-        function updateNavigationButtons() {
-            prevButton.disabled = currentQuestionIndex === 0;
-            const currentAnswered = userAnswers[currentQuestionIndex] !== null;
-
-            if (currentQuestionIndex === questions.length - 1) {
-                nextButton.style.display = 'none';
-                submitButton.style.display = currentAnswered ? 'inline-block' : 'none';
-                submitButton.disabled = !currentAnswered;
-            } else {
-                nextButton.style.display = 'inline-block';
-                submitButton.style.display = 'none';
-                nextButton.disabled = !currentAnswered;
-            }
-        }
-
-        function showNextQuestion() {
-            if (userAnswers[currentQuestionIndex] === null) {
-                alert("Bitte wählen Sie eine Antwort, bevor Sie fortfahren.");
-                return;
-            }
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                renderQuestion();
-            }
-        }
-
-        function showPreviousQuestion() {
-            currentQuestionIndex--;
-            renderQuestion();
-        }
-
-        function calculateResult() {
-            if (userAnswers.some(answer => answer === null)) {
-                alert("Bitte beantworten Sie alle Fragen, bevor Sie das Ergebnis anzeigen.");
-                return;
-            }
-
-            const counts = { D: 0, I: 0, S: 0, C: 0 };
-            userAnswers.forEach(answer => {
-                counts[answer]++;
-            });
-
-            let maxCount = 0;
-            let dominantTypes = [];
-            for (const type in counts) {
-                if (counts[type] > maxCount) {
-                    maxCount = counts[type];
-                    dominantTypes = [type];
-                } else if (counts[type] === maxCount && maxCount > 0) {
-                    dominantTypes.push(type);
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        },
+                        title: {
+                            display: true,
+                            text: 'Anzahl der Punkte'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'DISC Typ'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Verteilung Ihrer Antworten (Punkte)',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + ' Punkte';
+                                }
+                                return label;
+                            }
+                        }
+                    }
                 }
             }
+        });
 
-            let resultHtml = '';
-            if (dominantTypes.length === 1) {
-                const typeKey = dominantTypes[0];
-                const typeInfo = typeDescriptions[typeKey];
-                resultHtml = `
-                    <p><strong>Ihr dominantester Persönlichkeitstyp:</strong> ${typeInfo.name}</p>
-                    <p><strong>Merkmale:</strong> ${typeInfo.merkmale}</p>
-                    <p><strong>Typisches Verhalten:</strong> ${typeInfo.verhalten}</p>
-                    <p><strong>Kommunikationsstil:</strong> ${typeInfo.kommunikation}</p>
-                `;
-            } else if (dominantTypes.length > 1) {
-                resultHtml = '<p>Sie haben mehrere dominante Tendenzen: ';
-                const dominantNames = dominantTypes.map(key => typeDescriptions[key].name.split(' ')[0]);
-                resultHtml += dominantNames.join(', ') + '.</p>';
-                resultHtml += '<p>Ihre Stärken liegen in einer Kombination dieser Eigenschaften. Hier sind die Details für jeden dominanten Typ:</p>';
-                
-                dominantTypes.forEach(typeKey => {
-                    const typeInfo = typeDescriptions[typeKey];
-                    resultHtml += `
-                        <div style="margin-top: 20px; padding-top: 10px; border-top: 1px dashed #ccc;">
-                            <p><strong>Typ: ${typeInfo.name}</strong></p>
-                            <p><strong>Merkmale:</strong> ${typeInfo.merkmale}</p>
-                            <p><strong>Typisches Verhalten:</strong> ${typeInfo.verhalten}</p>
-                            <p><strong>Kommunikationsstil:</strong> ${typeInfo.kommunikation}</p>
-                        </div>
-                    `;
-                });
-            } else {
-                resultHtml = '<p>Ihr Persönlichkeitstyp konnte nicht eindeutig bestimmt werden. Bitte stellen Sie sicher, dass alle Fragen beantwortet wurden.</p>';
-            }
-
-            resultDescriptionDiv.innerHTML = resultHtml;
-
-            quizSection.style.display = 'none';
-            resultSection.style.display = 'block';
-
-            renderCharts(counts);
-            resultSection.scrollIntoView({ behavior: 'smooth' });
+        // Kreisdiagramm
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        if (pieChartInstance) {
+            pieChartInstance.destroy();
         }
-
-        function renderCharts(counts) {
-            const labels = ['Dominant (D)', 'Initiativ (I)', 'Stetig (S)', 'Conform (C)'];
-            const data = [counts.D, counts.I, counts.S, counts.C];
-            const backgroundColors = [
-                'rgba(231, 76, 60, 0.8)',  // Rot für Dominant
-                'rgba(241, 196, 15, 0.8)', // Gelb für Initiativ
-                'rgba(46, 204, 113, 0.8)', // Grün für Stetig
-                'rgba(52, 152, 219, 0.8)'  // Blau für Conform
-            ];
-            const borderColors = [
-                'rgba(231, 76, 60, 1)',
-                'rgba(241, 196, 15, 1)',
-                'rgba(46, 204, 113, 1)',
-                'rgba(52, 152, 219, 1)'
-            ];
-
-            // Balkendiagramm
-            const barCtx = document.getElementById('barChart').getContext('2d');
-            if (barChartInstance) {
-                barChartInstance.destroy();
-            }
-            barChartInstance = new Chart(barCtx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Anzahl der Antworten',
-                        data: data,
-                        backgroundColor: backgroundColors,
-                        borderColor: borderColors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            },
-                            title: {
-                                display: true,
-                                text: 'Anzahl der Punkte'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'DISC Typ'
+        pieChartInstance = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Anteil der Antworten',
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                size: 14
                             }
                         }
                     },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Verteilung Ihrer Antworten (Punkte)',
-                            font: {
-                                size: 16
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += context.parsed.y + ' Punkte';
-                                    }
-                                    return label;
+                    title: {
+                        display: true,
+                        text: 'Prozentuale Verteilung Ihrer Antworten',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
                                 }
+                                if (context.parsed !== null) {
+                                    let total = context.dataset.data.reduce((sum, current) => sum + current, 0);
+                                    let percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
+                                    label += context.parsed + ' Punkte (' + percentage + ')';
+                                }
+                                return label;
                             }
                         }
                     }
                 }
-            });
-
-            // Kreisdiagramm
-            const pieCtx = document.getElementById('pieChart').getContext('2d');
-            if (pieChartInstance) {
-                pieChartInstance.destroy();
             }
-            pieChartInstance = new Chart(pieCtx, {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Anteil der Antworten',
-                        data: data,
-                        backgroundColor: backgroundColors,
-                        borderColor: borderColors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                font: {
-                                    size: 14
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Prozentuale Verteilung Ihrer Antworten',
-                            font: {
-                                size: 16
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed !== null) {
-                                        let total = context.dataset.data.reduce((sum, current) => sum + current, 0);
-                                        let percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
-                                        label += context.parsed + ' Punkte (' + percentage + ')';
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function restartTest() {
-            if (barChartInstance) {
-                barChartInstance.destroy();
-                barChartInstance = null;
-            }
-            if (pieChartInstance) {
-                pieChartInstance.destroy();
-                pieChartInstance = null;
-            }
-
-            currentQuestionIndex = 0;
-            userAnswers.fill(null);
-
-            introSection.style.display = 'block';
-            quizSection.style.display = 'none';
-            resultSection.style.display = 'none';
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Initialisiere den Test beim Laden der Seite
-        document.addEventListener('DOMContentLoaded', () => {
-            introSection.style.display = 'block';
-            quizSection.style.display = 'none';
-            resultSection.style.display = 'none';
         });
-    </script>
-</body>
-</html>
+    }
+
+    function restartTest() {
+        if (barChartInstance) {
+            barChartInstance.destroy();
+            barChartInstance = null;
+        }
+        if (pieChartInstance) {
+            pieChartInstance.destroy();
+            pieChartInstance = null;
+        }
+
+        currentQuestionIndex = 0;
+        userAnswers.fill(null);
+
+        introSection.style.display = 'block';
+        quizSection.style.display = 'none';
+        resultSection.style.display = 'none';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialisiere den Test beim Laden der Seite
+    document.addEventListener('DOMContentLoaded', () => {
+        introSection.style.display = 'block';
+        quizSection.style.display = 'none';
+        resultSection.style.display = 'none';
+    });
+</script>
