@@ -6,159 +6,228 @@
     <title>Akzeptanz- und Handlungsfragebogen, AAQ-Rev-16</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Allgemeine Einstellungen für den Body */
+        /* Import der Schriftart, wie im DISC Test */
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+        /* Allgemeine Einstellungen wie im DISC Test */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 40px 20px;
-            background-color: #f0f2f5;
+            background: linear-gradient(to right, #ece9e6, #ffffff); /* Hintergrund wie im DISC Test */
             color: #333;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
         }
-        /* Container für den gesamten Test, um ihn zu zentrieren und zu stylen */
-        .container {
+
+        /* Hauptcontainer des Tests wie im DISC Test, mit angepasster Breite */
+        #test-container { /* Geändert von .container zu #test-container für Konsistenz */
             background-color: #ffffff;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 900px; /* Angepasst auf 900px, wie gewünscht */
+            max-width: 900px; /* Breite wie gewünscht */
             width: 100%;
             box-sizing: border-box;
-            margin-bottom: 20px; /* Abstand nach unten für mobiles Scrolling */
-        }
-        h1 {
-            color: #0056b3;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-        }
-        h2 {
-            color: #0056b3;
-            text-align: center;
-            margin-top: 30px;
             margin-bottom: 20px;
-            font-size: 1.8em;
+            border: 1px solid #e0e0e0; /* Rand wie im DISC Test Formular */
         }
+
+        h1, h2, h3 {
+            color: #2c3e50; /* Farbe wie im DISC Test */
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700; /* Wie im DISC Test */
+        }
+
+        h1 {
+            font-size: 2.5em; /* Wie im DISC Test */
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 30px;
+        }
+
         h3 {
-            color: #0056b3;
-            margin-bottom: 15px;
             font-size: 1.4em;
         }
+
         p {
             line-height: 1.7;
             margin-bottom: 15px;
         }
-        /* Styling für die Anweisungen vor dem Test */
-        .instructions {
-            background-color: #e6f7ff;
-            border-left: 5px solid #2196f3;
+
+        /* Intro und Quiz Sektion */
+        #intro-section, #quiz-section {
+            text-align: center;
+        }
+
+        /* Introduction Box spezifisch für DISC Test */
+        .introduction-box {
+            max-width: 800px; /* Behält die interne Breite der Box, damit das Bild nicht zu weit herausragt, wenn die Box links und rechts gepaddet ist */
+            margin: 0 auto 30px auto; /* Zentriert die Box */
+            background-color: #f0f8ff; /* Hintergrund wie im DISC Test */
+            border: 1px solid #cceeff; /* Rand wie im DISC Test */
+            border-radius: 12px;
+            padding: 25px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            text-align: left;
+        }
+        
+        .introduction-box p {
+            font-size: 1.1em;
+            color: #444;
+            margin-bottom: 15px;
+            line-height: 1.7;
+            text-align: left;
+        }
+        .introduction-box p:first-of-type {
+            text-align: center; /* Erster Absatz bleibt zentriert */
+            margin-bottom: 25px;
+            font-weight: 600; /* Für die Begrüßung etwas stärker */
+        }
+        .introduction-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .introduction-box ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 15px 0 25px 0;
+        }
+        .introduction-box ul li {
+            font-size: 1.1em;
+            color: #444;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* Start Button wie im DISC Test */
+        #intro-section button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        #intro-section button:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        #intro-section button:active {
+            transform: translateY(0);
+        }
+
+        #quiz-section {
+            display: none;
+        }
+
+        /* Fragenblock wie im DISC Test */
+        .question-block {
+            background-color: #f7f9fc;
+            border-left: 5px solid #3498db; /* Akzentfarbe wie im DISC Test Frage */
+            border-radius: 8px;
             padding: 20px;
             margin-bottom: 30px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            color: #0d47a1;
             text-align: left;
-        }
-        .instructions p {
-            margin-bottom: 10px;
-        }
-        .instructions strong {
-            color: #0056b3;
-        }
-        .instructions ul {
-            list-style-type: disc;
-            padding-left: 25px;
-            margin-top: 10px;
-        }
-        .instructions li {
-            margin-bottom: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        /* Styling für Fragen */
-        .question-block {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
         .question-block p {
             font-weight: 600;
-            margin-bottom: 15px;
-            color: #555;
-            font-size: 1.1em;
+            font-size: 1.25em;
+            margin-bottom: 20px;
+            color: #34495e;
         }
 
-        /* Styling für Radio-Button-Gruppen */
+        /* Options-Gruppe und Labels wie im DISC Test */
         .options-group label {
-            display: block;
+            display: flex;
+            align-items: center;
             background-color: #ffffff;
-            padding: 10px 15px;
-            margin-bottom: 8px;
-            border: 1px solid #eee;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #e0e0e0;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s ease, border-color 0.2s ease;
-        }
-        .options-group label:hover {
-            background-color: #f0f8ff;
-            border-color: #a3d3ff;
-        }
-        .options-group input[type="radio"] {
-            margin-right: 10px;
-            transform: scale(1.1); /* Slightly larger radio buttons */
-            accent-color: #007bff; /* Custom color for radio button */
-        }
-        .options-group span {
-            font-size: 0.95em;
-            color: #666;
+            font-size: 1.05em;
         }
 
-        /* Buttons Styling */
-        .button-group {
+        .options-group label:hover {
+            background-color: #e9f5fd;
+            border-color: #a3d3ff;
+        }
+
+        .options-group input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #3498db;
+        }
+        .options-group label span { /* Für die Beschriftung der Skala (z.B. "Trifft nie zu") */
+            font-size: 0.95em;
+            color: #666;
+            margin-left: 5px; /* Abstand zum Zahlenwert */
+        }
+
+
+        /* Navigation Buttons wie im DISC Test */
+        .navigation-buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
         }
-        .button-group button {
+
+        .navigation-buttons button {
             background-color: #007bff;
             color: white;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             font-size: 1em;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        .button-group button:hover {
+
+        .navigation-buttons button:hover {
             background-color: #0056b3;
         }
-        .button-group button:disabled {
+
+        .navigation-buttons button:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
         }
 
-        /* Ergebnisbereich */
+        /* Ergebnis-Sektion wie im DISC Test */
         #result-section {
-            display: none; /* Standardmäßig ausgeblendet */
+            display: none;
             margin-top: 40px;
             padding: 30px;
-            border-radius: 10px;
-            background-color: #e0f7fa; /* Hellblau für Erfolg */
-            border: 1px solid #b2ebf2;
-            color: #006064;
+            border-radius: 12px;
+            background-color: #e3f2fd; /* Hellblau für Erfolg wie im DISC Test Result */
+            border: 1px solid #bbdefb; /* Rand wie im DISC Test Result */
+            color: #1565c0; /* Dunkleres Blau für den Text wie im DISC Test Result */
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             font-size: 1.1em;
             line-height: 1.8;
-            text-align: center;
         }
+
         #result-section h2 {
-            color: #0056b3;
+            color: #2c3e50;
+            font-size: 1.8em;
             margin-bottom: 20px;
+            text-align: center;
         }
         #result-section p {
             margin-bottom: 10px;
@@ -168,7 +237,7 @@
             color: #333;
         }
 
-        /* Chart Styling */
+        /* Chart Styling wie im DISC Test */
         .chart-container {
             width: 100%;
             max-width: 600px;
@@ -183,7 +252,7 @@
             max-height: 400px;
         }
 
-        /* Restart Button Styling */
+        /* Test neu starten Button wie im DISC Test */
         #restart-button {
             background-color: #6c757d;
             color: white;
@@ -199,16 +268,17 @@
             margin-left: auto;
             margin-right: auto;
         }
+
         #restart-button:hover {
             background-color: #5a6268;
         }
 
-        /* Responsivität */
+        /* Responsivität wie im DISC Test */
         @media (max-width: 768px) {
             body {
                 padding: 20px 10px;
             }
-            .container {
+            #test-container {
                 padding: 25px;
             }
             h1 {
@@ -221,24 +291,25 @@
                 padding: 15px;
             }
             .options-group label {
-                padding: 8px 10px;
+                padding: 10px;
             }
-            .button-group button {
-                padding: 10px 20px;
+            .navigation-buttons button {
+                padding: 8px 15px;
                 font-size: 0.9em;
             }
             .chart-container {
-                padding: 15px;
+                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div id="test-container">
         <div id="intro-section">
             <h1>Akzeptanz- und Handlungsfragebogen (AAQ-Rev-16)</h1>
-            <div class="instructions">
-                <p>Der Akzeptanz- und Handlungsfragebogen (AAQ-Rev-16) dient dazu, Ihre psychologische Flexibilität zu erfassen. Psychologische Flexibilität ist die Fähigkeit, in Kontakt mit dem gegenwärtigen Moment zu treten und sich selbst als Kontext wahrzunehmen, um dann im Einklang mit den eigenen Werten zu handeln, selbst wenn unangenehme Gedanken, Gefühle oder körperliche Empfindungen vorhanden sind.</p>
+            <div class="introduction-box">
+                <p>Willkommen zum Akzeptanz- und Handlungsfragebogen (AAQ-Rev-16)!</p>
+                <p>Dieser Fragebogen dient dazu, Ihre psychologische Flexibilität zu erfassen. Psychologische Flexibilität ist die Fähigkeit, in Kontakt mit dem gegenwärtigen Moment zu treten und sich selbst als Kontext wahrzunehmen, um dann im Einklang mit den eigenen Werten zu handeln, selbst wenn unangenehme Gedanken, Gefühle oder körperliche Empfindungen vorhanden sind.</p>
                 <p>Bitte bewerten Sie die folgenden 16 Aussagen danach, wie sehr sie auf Sie zutreffen. Es gibt keine "richtigen" oder "falschen" Antworten. Seien Sie ehrlich zu sich selbst, um ein aussagekräftiges Ergebnis zu erhalten.</p>
                 <p>Verwenden Sie die folgende Skala:</p>
                 <ul>
@@ -252,16 +323,14 @@
                 </ul>
                 <p>Ihre Antworten werden nicht gespeichert und sind 100% anonym.</p>
             </div>
-            <div style="text-align: center;">
-                <button id="start-test-button" class="button-group button">Test starten</button>
-            </div>
+            <button id="start-test-button">Test starten</button>
         </div>
 
         <div id="quiz-section" style="display: none;">
             <h2 id="question-counter">Frage 1 von 16</h2>
             <div id="question-display" class="question-block">
                 </div>
-            <div class="button-group">
+            <div class="navigation-buttons">
                 <button id="prev-button" disabled>Zurück</button>
                 <button id="next-button">Nächste Frage</button>
                 <button id="submit-button" style="display: none;">Ergebnis anzeigen</button>
@@ -431,7 +500,7 @@
                 optionsHtml += `
                     <label>
                         <input type="radio" name="question-${currentQuestionIndex}" value="${value}" ${userAnswers[currentQuestionIndex] === value ? 'checked' : ''}>
-                        ${value} = ${q.options[value]}
+                        ${value} <span class="option-text">= ${q.options[value]}</span>
                     </label>
                 `;
             }
@@ -501,9 +570,8 @@
             });
 
             let resultInterpretation = '';
-            let chartLabels = ['Geringe Flexibilität (0-28)', 'Moderate Flexibilität (29-42)', 'Hohe Flexibilität (43-112)'];
-            let chartData = [0, 0, 0];
-            let chartColors = ['#f44336', '#ffc107', '#4caf50']; // Rot, Gelb, Grün
+            // Da es ein einzelner Score ist, passen wir die Chart-Labels und Daten entsprechend an.
+            // Der Chart wird nur den Gesamtscore anzeigen und farblich hervorheben.
 
             if (totalScore >= 0 && totalScore <= 28) {
                 resultInterpretation = `
@@ -512,7 +580,6 @@
                     <p>Dies kann bedeuten, dass Sie möglicherweise Schwierigkeiten haben, mit unangenehmen Gedanken und Gefühlen umzugehen. Dies kann zu Vermeidungsverhalten führen und Sie daran hindern, ein Leben im Einklang mit Ihren Werten zu führen.</p>
                     <p>Es könnte hilfreich sein, Strategien zu erlernen, um Ihre Gedanken und Gefühle zu akzeptieren und dennoch werteorientiert zu handeln. Achtsamkeitsübungen und Techniken der kognitiven Umstrukturierung können hierbei unterstützend wirken.</p>
                 `;
-                chartData = [totalScore, 0, 0];
             } else if (totalScore >= 29 && totalScore <= 42) {
                 resultInterpretation = `
                     <p>Ihr Gesamtpunktwert ist <strong>${totalScore}</strong> von maximal 112.</p>
@@ -520,7 +587,6 @@
                     <p>Sie zeigen bereits eine gewisse Fähigkeit, mit unangenehmen Erfahrungen umzugehen, aber es gibt noch Raum für Wachstum. Es kann Situationen geben, in denen Sie sich von Ihren Gedanken und Gefühlen leiten lassen und dadurch von Ihren Zielen abweichen.</p>
                     <p>Weiteres Training in Akzeptanz- und Achtsamkeitsstrategien kann Ihnen helfen, Ihre psychologische Flexibilität weiter zu stärken und ein noch erfüllteres Leben zu führen.</p>
                 `;
-                chartData = [0, totalScore, 0];
             } else { // totalScore >= 43 && totalScore <= 112
                 resultInterpretation = `
                     <p>Ihr Gesamtpunktwert ist <strong>${totalScore}</strong> von maximal 112.</p>
@@ -528,41 +594,40 @@
                     <p>Sie sind gut in der Lage, sich von unangenehmen Gedanken und Gefühlen nicht einschränken zu lassen und können auch unter schwierigen Umständen werteorientiert handeln. Dies ermöglicht Ihnen ein flexibles und effektives Reagieren auf Herausforderungen.</p>
                     <p>Ihre Fähigkeit zur Akzeptanz und zum werteorientierten Handeln ist eine wertvolle Ressource, die Sie weiterhin pflegen und nutzen können, um Ihre Lebensqualität zu optimieren.</p>
                 `;
-                chartData = [0, 0, totalScore];
             }
 
             resultTextDiv.innerHTML = resultInterpretation;
             quizSection.style.display = 'none';
             resultSection.style.display = 'block';
 
-            renderChart(totalScore, chartLabels, chartData, chartColors);
+            renderChart(totalScore);
             resultSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function renderChart(score, labels, data, colors) {
+        function renderChart(score) {
             const ctx = document.getElementById('resultChart').getContext('2d');
             if (myChartInstance) {
                 myChartInstance.destroy();
             }
+
+            let barColor;
+            if (score <= 28) {
+                barColor = 'rgba(231, 76, 60, 0.8)'; // Rot für gering
+            } else if (score <= 42) {
+                barColor = 'rgba(241, 196, 15, 0.8)'; // Gelb für moderat
+            } else {
+                barColor = 'rgba(46, 204, 113, 0.8)'; // Grün für hoch
+            }
+
             myChartInstance = new Chart(ctx, {
-                type: 'bar', // Change to bar chart for clear score representation
+                type: 'bar',
                 data: {
-                    labels: ['Ihr Ergebnis'],
+                    labels: ['Ihr Score'],
                     datasets: [{
-                        label: 'Psychologische Flexibilität (AAQ-Rev-16)',
+                        label: 'Psychologische Flexibilität',
                         data: [score],
-                        backgroundColor: (ctx) => {
-                            const value = ctx.parsed.y;
-                            if (value <= 28) return colors[0];
-                            if (value <= 42) return colors[1];
-                            return colors[2];
-                        },
-                        borderColor: (ctx) => {
-                            const value = ctx.parsed.y;
-                            if (value <= 28) return colors[0];
-                            if (value <= 42) return colors[1];
-                            return colors[2];
-                        },
+                        backgroundColor: barColor,
+                        borderColor: barColor.replace('0.8)', '1)'),
                         borderWidth: 1
                     }]
                 },
@@ -572,7 +637,10 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 112, // Max possible score
+                            max: 112, // Maximal möglicher Score
+                            ticks: {
+                                precision: 0
+                            },
                             title: {
                                 display: true,
                                 text: 'Gesamtpunktwert'
