@@ -24,7 +24,7 @@
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 900px; /* Geändert von 800px auf 900px */
+            max-width: 900px; /* Bleibt bei 900px, wie ursprünglich gewünscht */
             width: 100%;
             box-sizing: border-box;
         }
@@ -40,7 +40,7 @@
             margin-bottom: 20px;
         }
 
-        /* NEU: Stil für den Intro-Kasten */
+        /* Stil für den Intro-Kasten - nur für den Einleitungstext */
         .intro-box {
             background-color: #f7fcff; /* Heller blauer Hintergrund wie im Bild */
             border: 1px solid #cceeff; /* Heller blauer Rand */
@@ -85,17 +85,16 @@
             border-bottom: none;
         }
 
-        /* --- KORREKTUR FÜR DIE ÜBERSCHRIFT (FRAGETEXT) --- */
-        /* Wählt das Label mit der Klasse 'question-text' aus und macht es fett */
+        /* KORREKTUR FÜR DIE ÜBERSCHRIFT (FRAGETEXT) */
         .question-text {
-            font-weight: bold; /* Macht die Überschrift fett */
+            font-weight: bold;
             margin-bottom: 15px;
             font-size: 1.1em;
             color: #555;
-            display: block; /* Stellt sicher, dass es eine eigene Zeile einnimmt */
+            display: block;
         }
 
-        /* --- KORREKTUR FÜR DIE SKALA-OPTIONEN (ZAHLEN) --- */
+        /* KORREKTUR FÜR DIE SKALA-OPTIONEN (ZAHLEN) */
         .scale {
             display: flex;
             justify-content: space-between;
@@ -104,31 +103,27 @@
             overflow: hidden;
             border: 1px solid #ddd;
             margin-top: 10px;
-            gap: 1px; /* Abstand zwischen den Optionen */
-            /* Füge hier align-items: center hinzu, um die vertikale Ausrichtung zu gewährleisten */
-            align-items: center; /* WICHTIG: Stellt sicher, dass alle Items vertikal zentriert sind */
+            gap: 1px;
+            align-items: center;
         }
 
         .scale label {
             flex: 1;
             text-align: center;
-            /* Vertikale Zentrierung wird bereits durch .scale mit align-items: center behandelt. */
-            /* Zusätzliche Padding oder Height hier könnten zu den "nach oben gerückt" Problemen führen. */
-            padding: 12px 5px; /* Behält dein bestehendes Padding bei */
+            padding: 12px 5px;
             cursor: pointer;
             transition: background-color 0.3s ease, border-color 0.3s ease;
             position: relative;
             color: #666;
             background-color: #f9f9f9;
             box-sizing: border-box;
-            font-weight: normal; /* WICHTIG: Stellt sicher, dass Zahlen standardmäßig nicht fett sind */
+            font-weight: normal;
         }
 
         .scale label:hover {
             background-color: #e9f0f9;
         }
 
-        /* Versteckt den eigentlichen Radio-Button */
         .scale input[type="radio"] {
             position: absolute;
             opacity: 0;
@@ -141,66 +136,23 @@
             border: 0;
         }
 
-        /* Stil für die Ziffern im Label */
         .scale label span {
-            display: flex; /* Flexbox für Zentrierung innerhalb des Span */
-            align-items: center; /* Vertikale Zentrierung innerhalb des Span */
-            justify-content: center; /* Horizontale Zentrierung innerhalb des Span */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
-            /* Entferne 'top: 0;' und 'left: 0;', da diese im Kontext von flexbox (im Eltern-Label)
-               nicht mehr benötigt werden und bei 'position: relative' des Labels ausreichen könnten
-               oder sogar Probleme verursachen könnten. */
-            transition: background-color 0.3s ease, color 0.3s ease;
-            font-size: 1.1em; /* Macht die Ziffern etwas größer */
-        }
-
-        /* Stil für die ausgewählte Option */
-        .scale input[type="radio"]:checked + span {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold; /* Macht die ausgewählte Zahl fett */
-            border-color: #007bff;
-        }
-
-        /* Styling für den Absenden-Button - unverändert */
-        button {
-            display: block;
-            width: 100%;
-            padding: 15px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 30px;
-        }
-        /* Stil für die Ziffern im Label */
-        .scale label span {
-            display: flex; /* Flexbox für Zentrierung */
-            align-items: center; /* Vertikale Zentrierung */
-            justify-content: center; /* Horizontale Zentrierung */
-            width: 100%;
-            height: 100%;
-            /* Wichtig: Entferne `position: absolute` hier, wenn es nicht unbedingt nötig ist,
-               oder stelle sicher, dass es sich auf das umgebende Label bezieht.
-               Da das Label selbst `position: relative` hat, sollte es funktionieren.
-            */
-            top: 0; /* Stellt sicher, dass das Span ganz oben im Label beginnt */
-            left: 0; /* Stellt sicher, dass das Span ganz links im Label beginnt */
             transition: background-color 0.3s ease, color 0.3s ease;
             font-size: 1.1em;
         }
-        /* Stil für die ausgewählte Option */
+
         .scale input[type="radio"]:checked + span {
             background-color: #007bff;
             color: white;
             font-weight: bold;
             border-color: #007bff;
         }
-        /* Styling für den Absenden-Button und Ergebnisse - unverändert */
+
         button {
             display: block;
             width: 100%;
@@ -297,9 +249,8 @@
             h1 {
                 font-size: 1.8em;
             }
-            /* Anpassung der Schriftgröße für den Einführungstext auf kleineren Bildschirmen */
             p {
-                font-size: 1.0em; /* Reduziert die Schriftgröße für den p-Tag */
+                font-size: 1.0em;
                 line-height: 1.5;
             }
             .question label:first-of-type {
@@ -332,10 +283,10 @@
                 font-size: 0.9em;
             }
             .intro-box {
-                flex-direction: column; /* Inhalt auf kleinen Bildschirmen vertikal stapeln */
+                flex-direction: column;
             }
             .intro-box-image {
-                width: 100%; /* Bild nimmt auf kleinen Bildschirmen die volle Breite ein */
+                width: 100%;
             }
         }
     </style>
@@ -346,15 +297,15 @@
 
         <div class="intro-box">
             <div class="intro-box-content">
-                <p>Dieser Fragebogen dient dazu, Ihre psychologische Flexibilität zu erfassen. </p>
+             <p>Dieser Fragebogen dient dazu, Ihre psychologische Flexibilität zu erfassen. </p>
                 <p>Psychologische Flexibilität ist die Fähigkeit, in Kontakt mit dem gegenwärtigen Moment zu treten und sich selbst als Kontext wahrzunehmen, 
                 um dann im Einklang mit den eigenen Werten zu handeln, selbst wenn unangenehme Gedanken, Gefühle oder körperliche Empfindungen vorhanden sind.</p>
                 <p>Bedenken Sie, dass dieser Test eine vereinfachte Momentaufnahme ist und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. Er dient als nützliche Orientierungshilfe und gibt eine Übersicht der physiologischen Flexibilität.</p>
                 <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button.</p>
                 <p>1 = nie zutreffend bis 7 = immer zutreffend.</p>  
                 <p>Es werden keine Daten gespeichert und ist 100% anonym.</p>
-            <div class="intro-box-image">
             </div>
+        
         </div>
         
         <form id="aaqForm">
