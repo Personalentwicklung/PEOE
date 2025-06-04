@@ -642,11 +642,11 @@
                 ${typeInfo.description}
             `;
         } else if (dominantTypes.length > 1) {
-            resultHtml = '<p><strong>Sie haben mehrere dominante Tendenzen:</strong></p> ';
+            resultHtml = '<p><strong>Sie haben mehrere dominante Tendenzen:</strong> ';
             const dominantNames = dominantTypes.map(key => typeDescriptions[key].name.split(' ')[0]);
             resultHtml += dominantNames.join(', ') + '.</p>';
-            resultHtml += '<p>Ihre Stärken liegen in einer Kombination dieser Eigenschaften.</p> 
-                <p><strong>Hier sind die Details für jeden dominanten Typ:</strong></p>';
+            resultHtml += '<p>Ihre Stärken liegen in einer Kombination dieser Eigenschaften.</p>'; // Added missing closing p tag here.
+            resultHtml += '<p><strong>Hier sind die Details für jeden dominanten Typ:</strong></p>';
             
             dominantTypes.forEach(typeKey => {
                 const typeInfo = typeDescriptions[typeKey];
@@ -658,8 +658,8 @@
                 `;
             });
         } else {
-            resultHtml = '<p><strong>Ihr Persönlichkeitstyp konnte nicht eindeutig bestimmt werden.</strong></p>
-                <p> Bitte stellen Sie sicher, dass alle Fragen beantwortet wurden.</p>';
+            resultHtml = '<p><strong>Ihr Persönlichkeitstyp konnte nicht eindeutig bestimmt werden.</strong></p>';
+            resultHtml += '<p>Bitte stellen Sie sicher, dass alle Fragen beantwortet wurden.</p>';
         }
 
         resultDescriptionDiv.innerHTML = resultHtml;
@@ -807,8 +807,7 @@
                         }
                     }
                 }
-            }
-        });
+            });
     }
 
     function restartTest() {
