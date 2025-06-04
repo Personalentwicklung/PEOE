@@ -6,241 +6,237 @@
     <title>DISC Persönlichkeitstest</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-
+        /* Allgemeine Einstellungen */
         body {
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Open Sans', sans-serif; /* Behält die Schriftart vom DISC Test bei */
             margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+            padding: 40px 20px;
+            background: linear-gradient(to right, #ece9e6, #ffffff); /* Hintergrund wie im DISC Test */
             color: #333;
-            background: linear-gradient(to right, #ece9e6, #ffffff); /* Heller, weicher Farbverlauf */
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            align-items: flex-start;
             min-height: 100vh;
         }
-        h1 {
+
+        /* Hauptcontainer des Tests */
+        #test-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px; /* Abstand nach unten für mobiles Scrolling */
+            border: 1px solid #e0e0e0; /* Rand wie im DISC Test Formular */
+        }
+
+        h1, h2, h3 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 30px; /* Abstand nach dem Titel */
-            font-size: 2.5em;
-            font-weight: 700;
-        }
-        /* Dieses Bild ist NICHT in der introduction-box, falls es am ganz oberen Rand des Bodys sein sollte */
-        .disc-model-image { /* Styling für das DISC-Bild */
-            max-width: 300px; /* Maximale Breite des Bildes */
-            height: auto;
-            display: block; /* Zentrierung ermöglichen */
-            margin: 0 auto 40px auto; /* Zentrieren und Abstand nach unten */
-            border: 1px solid #ddd; /* Leichter Rahmen, optional */
-            border-radius: 8px; /* Leicht abgerundete Ecken, optional */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Leichter Schatten, optional */
+            margin-bottom: 20px;
+            font-weight: 700; /* Wie im DISC Test */
         }
 
-        .introduction-box { /* Neuer Container für den Einführungstext */
-            max-width: 800px; /* Anpassung an die Formularbreite */
-            margin-bottom: 30px; /* Abstand zum Formular */
-            background-color: #f0f8ff; /* Sehr helles Blau */
-            border: 1px solid #cceeff; /* Heller blauer Rand */
+        h1 {
+            font-size: 2.5em; /* Wie im DISC Test */
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 30px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* Intro und Quiz Sektion */
+        #intro-section, #quiz-section {
+            text-align: center;
+        }
+
+        /* Introduction Box spezifisch für DISC Test */
+        .introduction-box {
+            max-width: 800px;
+            margin-bottom: 30px;
+            background-color: #f0f8ff;
+            border: 1px solid #cceeff;
             border-radius: 12px;
-            padding: 25px 30px; /* Innenabstand für den Text */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
-            overflow: hidden; /* Wichtig für float, um den Container um das gefloatete Element zu umschließen */
-            text-align: left; /* NEU: Standardtextausrichtung links */
+            padding: 25px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            text-align: left;
         }
         
-        /* Styling für das Bild INNERHALB der introduction-box (Standard-Platzierung, falls nicht gefloatet) */
-        /* Diese Regel wird durch disc-float-right/left überschrieben, wenn die Klasse im HTML gesetzt ist */
-        .introduction-box .introduction-model-image {
-            max-width: 80%; /* Bild ist 80% der Box-Breite */
-            height: auto;
-            display: block; /* Für Zentrierung */
-            margin: 20px auto 25px auto; /* Abstand oben/unten und zentrieren */
-            border: 1px solid #cceeff; /* Leichter Rahmen */
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Regeln für das umfließende Bild (bevorzugt) */
         .disc-float-right {
-            float: right; /* Bild nach rechts floatten lassen */
-            margin: 0 0 15px 25px; /* Abstand: oben 0, rechts 0, unten 15px, links 25px zum Text */
-            max-width: 40%; /* Bild soll maximal 40% der Breite der Box einnehmen */
-            height: auto; /* Höhe automatisch anpassen */
-            border-radius: 8px; /* Leicht abgerundete Ecken */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Leichter Schatten */
-            border: 1px solid #ddd;
-        }
-
-        .disc-float-left {
-            float: left; /* Bild nach links floatten lassen */
-            margin: 0 25px 15px 0; /* Abstand: oben 0, rechts 25px, unten 15px, links 0 zum Text */
-            max-width: 40%; /* Bild soll maximal 40% der Breite der Box einnehmen */
+            float: right;
+            margin: 0 0 15px 25px;
+            max-width: 40%;
             height: auto;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             border: 1px solid #ddd;
         }
 
-        .introduction-box p { /* Absätze innerhalb der Box stylen */
+        .introduction-box p {
             font-size: 1.1em;
             color: #444;
-            margin-bottom: 15px; /* Abstand zwischen Absätzen */
-            line-height: 1.7; /* Besseres Zeilenabstand für Lesbarkeit */
-            text-align: left; /* NEU: Absätze linksbündig */
-        }
-        .introduction-box p:first-of-type {
-            text-align: center; /* Erster Absatz kann zentriert bleiben, wenn er als Überschrift dient */
-            margin-bottom: 25px; /* Etwas mehr Abstand nach dem ersten Absatz */
-        }
-        .introduction-box p:last-child {
-            margin-bottom: 0; /* Kein Abstand nach dem letzten Absatz */
-        }
-        /* Wenn das Bild floatet, stelle sicher, dass der Text vor dem Bild nach links ausgerichtet bleibt */
-        .introduction-box p:first-of-type + img + p {
-            /* Das erste p nach dem Bild, falls es gefloatet ist */
+            margin-bottom: 15px;
+            line-height: 1.7;
             text-align: left;
         }
+        .introduction-box p:first-of-type {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .introduction-box p:last-child {
+            margin-bottom: 0;
+        }
 
-
-        .introduction-box ul { /* Styling für die Liste innerhalb der Box */
-            list-style-type: disc; /* NEU: Standard-Aufzählungszeichen wiederherstellen */
-            padding-left: 20px; /* NEU: Standard-Padding für Listenpunkte */
-            margin: 15px 0 25px 0; /* NEU: Margin für Listen */
-            /* max-width: fit-content; */ /* Entfernt: Liste nicht mehr zentrieren */
-            /* text-align: left; */ /* Entfernt: Standard ist linksbündig */
+        .introduction-box ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 15px 0 25px 0;
         }
         .introduction-box ul li {
             font-size: 1.1em;
             color: #444;
-            margin-bottom: 8px; /* Kleiner Abstand zwischen Listenelementen */
+            margin-bottom: 8px;
             line-height: 1.5;
-            /* position: relative; */ /* Entfernt, da wir die standard Listenpunkte nutzen */
-            /* padding-left: 1.5em; */ /* Entfernt */
-        }
-        .introduction-box ul li strong {
-            /* Keine spezifische Breite mehr, da die Einrückung über padding-left des li gesteuert wird */
-        }
-        .introduction-box ul li::before { /* NEU: Diesen Stil entfernen, da wir den Standard-Listenpunkt wollen */
-            /* content: "•"; */ 
-            /* color: #3498db; */
-            /* font-weight: bold; */
-            /* display: inline-block; */
-            /* position: absolute; */
-            /* left: 0; */
-            /* top: 0; */
-            /* width: 1em; */
-            /* text-align: right; */
-            /* padding-right: 0.3em; */
-            display: none; /* Versteckt den benutzerdefinierten Punkt, falls er noch greifen sollte */
         }
 
-        form {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto 30px auto;
-            border: 1px solid #e0e0e0;
-        }
-        .question {
-            margin-bottom: 10px; /* Abstand zwischen den FRAGEN (Blöcken) beibehalten */
-            padding: 20px;
-            background-color: #f7f9fc;
-            border-left: 5px solid #3498db; /* Akzentfarbe */
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        .question h3 {
-            margin-top: 0;
-            color: #34495e;
-            font-size: 1.25em;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        .question label {
-            display: flex; /* Für bessere Ausrichtung von Radio und Text */
-            align-items: center;
-            margin-bottom: 5px; /* Abstand zwischen Optionen verringert */
-            cursor: pointer;
-            font-size: 1.05em;
-            padding: 8px;
-            border-radius: 5px;
-            transition: background-color 0.2s ease;
-        }
-        .question label:hover {
-            background-color: #e9f5fd; /* Leichter Hover-Effekt */
-        }
-        .question input[type="radio"] {
-            margin-right: 12px;
-            transform: scale(1.2); /* Radio-Buttons etwas größer */
-            accent-color: #3498db; /* Akzentfarbe für Radio-Button */
-        }
-        button {
-            display: block;
-            width: 100%;
-            padding: 15px 25px;
-            background-color: #2ecc71; /* Grüner Button für Aktion */
+        #intro-section button {
+            background-color: #2ecc71; /* Grüner Button wie im DISC Test */
             color: white;
+            padding: 15px 25px; /* Größerer Padding wie im DISC Test Button */
             border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
+            border-radius: 8px; /* Größerer Radius wie im DISC Test Button */
+            font-size: 1.2em; /* Größere Schrift wie im DISC Test Button */
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 30px;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            margin-top: 30px; /* Abstand oben wie im DISC Test Button */
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4); /* Schatten wie im DISC Test Button */
         }
-        button:hover {
-            background-color: #27ae60;
-            transform: translateY(-2px);
+
+        #intro-section button:hover {
+            background-color: #27ae60; /* Hover-Farbe wie im DISC Test Button */
+            transform: translateY(-2px); /* Transform wie im DISC Test Button */
         }
-        button:active {
+        #intro-section button:active {
             transform: translateY(0);
         }
 
-        .result {
+        #quiz-section {
+            display: none; /* Standardmäßig ausgeblendet, wird per JS eingeblendet */
+        }
+
+        .question-block {
+            background-color: #f7f9fc; /* Hintergrund wie im DISC Test Frage */
+            border-left: 5px solid #3498db; /* Akzentfarbe wie im DISC Test Frage */
+            border-radius: 8px;
+            padding: 20px; /* Padding wie im DISC Test Frage */
+            margin-bottom: 30px; /* Abstand zwischen Fragen beibehalten */
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Schatten wie im DISC Test Frage */
+        }
+
+        .question-block p {
+            font-weight: 600;
+            font-size: 1.25em; /* Wie im DISC Test Frage h3 */
+            margin-bottom: 20px;
+            color: #34495e; /* Farbe wie im DISC Test Frage h3 */
+        }
+
+        .options-group label {
+            display: flex; /* Für bessere Ausrichtung von Radio und Text */
+            align-items: center;
+            background-color: #ffffff; /* Weißer Hintergrund für Optionen */
+            padding: 8px; /* Padding wie im DISC Test Label */
+            margin-bottom: 5px; /* Abstand zwischen Optionen wie im DISC Test */
+            border: 1px solid #e0e0e0; /* Leichter Rand für Optionen */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            font-size: 1.05em; /* Schriftgröße wie im DISC Test Label */
+        }
+
+        .options-group label:hover {
+            background-color: #e9f5fd; /* Hover-Effekt wie im DISC Test Label */
+            border-color: #a3d3ff;
+        }
+
+        .options-group input[type="radio"] {
+            margin-right: 12px; /* Abstand wie im DISC Test Radio */
+            transform: scale(1.2); /* Größere Radio-Buttons wie im DISC Test */
+            accent-color: #3498db; /* Akzentfarbe wie im DISC Test Radio */
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .navigation-buttons button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .navigation-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .navigation-buttons button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Ergebnis-Sektion */
+        #result-section {
+            display: none; /* Standardmäßig ausgeblendet */
             margin-top: 40px;
-            padding: 30px;
+            padding: 30px; /* Padding wie im DISC Test Result */
             border-radius: 12px;
-            background-color: #e3f2fd; /* Hellblau für Erfolg */
-            border: 1px solid #bbdefb; /* Etwas dunkleres Blau für den Rand */
-            color: #1565c0; /* Dunkleres Blau für den Text */
-            max-width: 800px;
-            width: 100%;
+            background-color: #e3f2fd; /* Hellblau für Erfolg wie im DISC Test Result */
+            border: 1px solid #bbdefb; /* Rand wie im DISC Test Result */
+            color: #1565c0; /* Dunkleres Blau für den Text wie im DISC Test Result */
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             font-size: 1.1em;
             line-height: 1.8;
-            display: none; /* Initial versteckt */
         }
-        .result.show {
-            display: block; /* Bei Anzeige einblenden */
-        }
-        .result.error {
-            background-color: #ffebee; /* Rot für Fehler beibehalten */
-            border: 1px solid #ffcdd2;
-            color: #d32f2f;
-        }
-        .result h2 {
-            color: #2c3e50; /* Titel bleibt dunkelgrau/blau */
+
+        #result-section h2 {
+            color: #2c3e50;
             font-size: 1.8em;
             margin-bottom: 20px;
             text-align: center;
         }
-        .result p {
+        #result-section p {
             margin-bottom: 10px;
+            text-align: left; /* Behält die linksbündige Ausrichtung bei */
         }
-        .result strong {
-            color: #333; /* Fette Schrift bleibt dunkelgrau */
+        #result-section strong {
+            color: #333;
         }
 
-        /* Diagramm-Container */
-        .chart-container {
+        /* Chart Styling */
+        .chart-container { /* Behält den Stil vom DISC Test Chart Container bei */
             width: 100%;
-            max-width: 600px; /* Begrenzung der Diagrammgröße */
+            max-width: 600px;
             margin: 30px auto 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -249,258 +245,421 @@
             border: 1px solid #eee;
         }
         .chart-container canvas {
-            max-height: 400px; /* Maximale Höhe für das Diagramm */
+            max-height: 400px;
+        }
+
+        /* Test neu starten Button */
+        #restart-button {
+            background-color: #6c757d;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 40px;
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #restart-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* Responsivität */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            #test-container {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .question-block {
+                padding: 15px;
+            }
+            .options-group label {
+                padding: 10px;
+            }
+            .navigation-buttons button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            .chart-container {
+                padding: 10px;
+            }
+            .disc-float-right {
+                float: none; /* Auf kleinen Bildschirmen das Floaten aufheben */
+                margin: 20px auto; /* Zentrieren */
+                max-width: 80%; /* Größer anzeigen */
+            }
+            .introduction-box p {
+                text-align: left; /* Sicherstellen, dass Absätze linksbündig bleiben */
+            }
+            .introduction-box p:first-of-type {
+                text-align: center; /* Erster Absatz bleibt zentriert */
+            }
         }
     </style>
 </head>
 <body>
-    <h1>DISC Persönlichkeitstest</h1>
-    
-    <div class="introduction-box">
-        <p>Willkommen zum DISC Persönlichkeitstest!</p>
-                
-        
-        
-        <img src="https://i.imgur.com/ITluETa.png"  alt="DISC Modell de" class="disc-float-right">
+    <div id="test-container">
+        <div id="intro-section">
+            <h1>DISC Persönlichkeitstest</h1>
+            <div class="introduction-box">
+                <p>Willkommen zum DISC Persönlichkeitstest!</p>
+                <img src="https://i.imgur.com/ITluETa.png" alt="DISC Modell de" class="disc-float-right">
+                <p>Dieses kurze Quiz hilft Ihnen, erste Einblicke in Ihr Verhaltensprofil gemäß dem etablierten DISC-Modell zu gewinnen.</p>
+                <p>Das Modell unterteilt menschliches Verhalten in vier grundlegende Dimensionen:</p>
+                <ul>
+                    <li><strong>D (Dominanz):</strong> Wie Sie Herausforderungen angehen und Probleme lösen.</li>
+                    <li><strong>I (Initiative):</strong> Wie Sie Menschen beeinflussen und kommunizieren.</li>
+                    <li><strong>S (Stetigkeit):</strong> Wie Sie mit Veränderungen umgehen und Ihre Aufgaben organisieren.</li>
+                    <li><strong>C (Conform):</strong> Wie Sie auf Regeln reagieren und Ihre Arbeitsqualität sichern.</li>
+                </ul>
+                <p>Bitte beantworten Sie die folgenden 12 Fragen intuitiv. Bedenken Sie, dass dieser Test eine vereinfachte Momentaufnahme ist und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. 
+                    Er dient als nützliche Orientierungshilfe zur Selbstreflexion und zum besseren Verständnis Ihrer Interaktionen mit anderen.</p>
+                <p>Es werden keine Daten gespeichert und ist 100% anonym.</p>
+            </div>
+            <button id="start-test-button">Test starten</button>
+        </div>
 
+        <div id="quiz-section">
+            <h2 id="question-counter">Frage 1 von 12</h2>
+            <div id="question-display" class="question-block">
+                </div>
+            <div class="navigation-buttons">
+                <button id="prev-button" disabled>Zurück</button>
+                <button id="next-button">Nächste Frage</button>
+                <button id="submit-button" style="display: none;">Ergebnis anzeigen</button>
+            </div>
+        </div>
 
-
-        
-        <p>Dieses kurze Quiz hilft Ihnen, erste Einblicke in Ihr Verhaltensprofil gemäß dem etablierten DISC-Modell zu gewinnen.</p>
-        <p>Das Modell unterteilt menschliches Verhalten in vier grundlegende Dimensionen:</p>
-        <ul>
-            <li><strong>D (Dominanz):</strong> Wie Sie Herausforderungen angehen und Probleme lösen.</li>
-            <li><strong>I (Initiative):</strong> Wie Sie Menschen beeinflussen und kommunizieren.</li>
-            <li><strong>S (Stetigkeit):</strong> Wie Sie mit Veränderungen umgehen und Ihre Aufgaben organisieren.</li>
-            <li><strong>C (Conform):</strong> Wie Sie auf Regeln reagieren und Ihre Arbeitsqualität sichern.</li>
-        </ul>
-        <p>Bitte beantworten Sie die folgenden 12 Fragen intuitiv. Bedenken Sie, dass dieser Test eine vereinfachte Momentaufnahme ist und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. 
-            Er dient als nützliche Orientierungshilfe zur Selbstreflexion und zum besseren Verständnis Ihrer Interaktionen mit anderen.</p>
-        <p>Es werden keine Daten gespeichert und ist 100% anonym.</p>
-    </div>
-
-    <form id="disc-test">
-        <div class="question">
-            <h3>1. Wie reagieren Sie in einer neuen Gruppe?</h3>
-            <label><input type="radio" name="q1" value="D"> Ich übernehme schnell die Führung.</label><br>
-            <label><input type="radio" name="q1" value="I"> Ich bringe gute Stimmung rein.</label><br>
-            <label><input type="radio" name="q1" value="C"> Ich analysiere die Situation genau.</label><br>
-            <label><input type="radio" name="q1" value="S"> Ich beobachte erst mal ruhig.</label>
-        </div>
-        <div class="question">
-            <h3>2. Wie gehen Sie mit Konflikten um?</h3>
-            <label><input type="radio" name="q2" value="C"> Ich analysiere die Ursachen des Konflikts.</label><br>
-            <label><input type="radio" name="q2" value="D"> Ich konfrontiere das Problem direkt.</label><br>
-            <label><input type="radio" name="q2" value="S"> Ich versuche, den Konflikt zu vermeiden.</label><br>
-            <label><input type="radio" name="q2" value="I"> Ich versuche, die Stimmung zu heben.</label>
-           
-         
-        </div>
-        <div class="question">
-            <h3>3. Wie organisieren Sie Ihre Arbeit?</h3>
-            <label><input type="radio" name="q3" value="D"> Ich setze klare Ziele und Deadlines.</label><br>
-            <label><input type="radio" name="q3" value="C"> Ich plane sorgfältig und achte auf Details.</label><br>
-            <label><input type="radio" name="q3" value="S"> Ich arbeite ruhig und methodisch.</label><br>
-            <label><input type="radio" name="q3" value="I"> Ich arbeite gerne im Team und motiviere andere.</label>
-        </div>
-        <div class="question">
-            <h3>4. Wie reagieren Sie auf Veränderungen?</h3>
-             <label><input type="radio" name="q4" value="I"> Ich begrüße Veränderungen mit Begeisterung.</label><br>
-             <label><input type="radio" name="q4" value="D"> Ich sehe Veränderungen als Herausforderung.</label><br>
-             <label><input type="radio" name="q4" value="C"> Ich analysiere die Veränderungen gründlich.</label><br>
-             <label><input type="radio" name="q4" value="S"> Ich bin vorsichtig und abwartend.</label>
-          
-        </div>
-        <div class="question">
-            <h3>5. Wie treffen Sie Entscheidungen?</h3>
-            <label><input type="radio" name="q5" value="D"> Ich treffe schnelle und entschlossene Entscheidungen.</label><br>
-               <label><input type="radio" name="q5" value="S"> Ich überlege gründlich und vermeide Risiken.</label><br>
-            <label><input type="radio" name="q5" value="I"> Ich beziehe andere in meine Entscheidungen ein.</label><br>
-            <label><input type="radio" name="q5" value="C"> Ich analysiere alle verfügbaren Informationen.</label>
-        </div>
-        <div class="question">
-            <h3>6. Wie gehen Sie mit Stress um?</h3>
-            <label><input type="radio" name="q6" value="I"> Ich suche Unterstützung und Motivation bei anderen.</label><br>
-            <label><input type="radio" name="q6" value="C"> Ich analysiere die Ursachen des Stresses.</label><br>
-            <label><input type="radio" name="q6" value="D"> Ich bleibe fokussiert und handle schnell.</label><br>  
-            <label><input type="radio" name="q6" value="S"> Ich bleibe ruhig und gelassen.</label>
-        </div>
-        <div class="question">
-            <h3>7. Wie gehen Sie mit Kritik um?</h3>
-            <label><input type="radio" name="q7" value="I"> Ich versuche, die Kritik positiv zu sehen.</label><br>
-            <label><input type="radio" name="q7" value="D"> Ich nehme Kritik als Ansporn zur Verbesserung.</label><br>
-            <label><input type="radio" name="q7" value="S"> Ich nehme Kritik ruhig und gelassen an.</label><br>
-            <label><input type="radio" name="q7" value="C"> Ich analysiere die Kritik und ziehe Schlüsse daraus.</label>
-        </div>
-        <div class="question">
-            <h3>8. Wie motivieren Sie sich selbst?</h3>
-           
-            <label><input type="radio" name="q8" value="C"> Ich analysiere meine Fortschritte und passe meine Strategie an.</label><br>
-            <label><input type="radio" name="q8" value="I"> Ich suche nach neuen und aufregenden Herausforderungen.</label><br> 
-            <label><input type="radio" name="q8" value="D"> Ich setze mir ehrgeizige Ziele.</label><br>
-            <label><input type="radio" name="q8" value="S"> Ich arbeite kontinuierlich und methodisch.</label>
+        <div id="result-section">
+            <h2>Ihr Testergebnis</h2>
+            <p style="text-align: center;">Basierend auf Ihren Antworten ist Ihr dominantester Typ:</p>
+            <div id="result-description">
+                </div>
             
-        </div>
-        <div class="question">
-            <h3>9. Wie gehen Sie mit Fehlern um?</h3>
-            <label><input type="radio" name="q9" value="D"> Ich lerne schnell aus meinen Fehlern und mache weiter.</label><br>
-            <label><input type="radio" name="q9" value="I"> Ich versuche, die Fehler positiv zu sehen und daraus zu lernen.</label><br>
-            <label><input type="radio" name="q9" value="S"> Ich nehme Fehler ruhig und gelassen an.</label><br>
-            <label><input type="radio" name="q9" value="C"> Ich analysiere die Fehler gründlich und ziehe Schlüsse daraus.</label>
-        </div>
-        <div class="question">
-            <h3>10. Wie gehen Sie mit neuen Aufgaben um?</h3>
-            <label><input type="radio" name="q10" value="S"> Ich gehe neue Aufgaben ruhig und methodisch an.</label><br>         
-            <label><input type="radio" name="q10" value="D"> Ich nehme neue Aufgaben als Herausforderung an.</label><br>
-            <label><input type="radio" name="q10" value="C"> Ich analysiere die neuen Aufgaben gründlich.</label><br>
-            <label><input type="radio" name="q10" value="I"> Ich begrüße neue Aufgaben mit Begeisterung.</label>
-        </div>
-        <div class="question">
-            <h3>11. Wie gehen Sie mit Unsicherheit um?</h3>
-            <label><input type="radio" name="q11" value="C"> Ich analysiere die Ursachen der Unsicherheit.</label><br>
-            <label><input type="radio" name="q11" value="D"> Ich bleibe fokussiert und handle schnell.</label><br>
-            <label><input type="radio" name="q11" value="I"> Ich suche Unterstützung und Motivation bei anderen.</label><br>
-            <label><input type="radio" name="q11" value="S"> Ich bleibe ruhig und gelassen.</label>
-         
-        </div>
-        <div class="question">
-            <h3>12. Wie gehen Sie mit Teamarbeit um?</h3>
-            <label><input type="radio" name="q12" value="D"> Ich gebe gerne den Ton an.</label><br>
-            <label><input type="radio" name="q12" value="I"> Ich trage aktiv zu einer positiven Teamatmosphäre bei.</label><br>
-            <label><input type="radio" name="q12" value="S"> Ich arbeite systematisch und zielgerichtet.</label><br>
-            <label><input type="radio" name="q12" value="C"> Ich erfasse die Beziehungen und Interaktionen innerhalb des Teams.</label>
-        </div>
-        <button type="button" onclick="calculateResult()">Ergebnis anzeigen</button>
-    </form>
-
-    <div id="result" class="result">
-        <h2 id="result-title"></h2>
-        <div id="result-description"></div>
-        
-        <div class="chart-container">
-            <h3>Punkteverteilung (Balkendiagramm)</h3>
-            <canvas id="barChart"></canvas>
-        </div>
-        <div class="chart-container" style="margin-top: 20px;">
-            <h3>Punkteverteilung (Kreisdiagramm)</h3>
-            <canvas id="pieChart"></canvas>
+            <div class="chart-container">
+                <h3>Punkteverteilung (Balkendiagramm)</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart-container" style="margin-top: 20px;">
+                <h3>Punkteverteilung (Kreisdiagramm)</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+            <button id="restart-button">Test wiederholen</button>
         </div>
     </div>
 
     <script>
-        let barChartInstance = null; // Variable, um Diagramm-Instanzen zu speichern
+        const questions = [
+            {
+                question: "1. Wie reagieren Sie in einer neuen Gruppe?",
+                options: {
+                    D: "Ich übernehme schnell die Führung.",
+                    I: "Ich bringe gute Stimmung rein.",
+                    C: "Ich analysiere die Situation genau.",
+                    S: "Ich beobachte erst mal ruhig."
+                }
+            },
+            {
+                question: "2. Wie gehen Sie mit Konflikten um?",
+                options: {
+                    C: "Ich analysiere die Ursachen des Konflikts.",
+                    D: "Ich konfrontiere das Problem direkt.",
+                    S: "Ich versuche, den Konflikt zu vermeiden.",
+                    I: "Ich versuche, die Stimmung zu heben."
+                }
+            },
+            {
+                question: "3. Wie organisieren Sie Ihre Arbeit?",
+                options: {
+                    D: "Ich setze klare Ziele und Deadlines.",
+                    C: "Ich plane sorgfältig und achte auf Details.",
+                    S: "Ich arbeite ruhig und methodisch.",
+                    I: "Ich arbeite gerne im Team und motiviere andere."
+                }
+            },
+            {
+                question: "4. Wie reagieren Sie auf Veränderungen?",
+                options: {
+                    I: "Ich begrüße Veränderungen mit Begeisterung.",
+                    D: "Ich sehe Veränderungen als Herausforderung.",
+                    C: "Ich analysiere die Veränderungen gründlich.",
+                    S: "Ich bin vorsichtig und abwartend."
+                }
+            },
+            {
+                question: "5. Wie treffen Sie Entscheidungen?",
+                options: {
+                    D: "Ich treffe schnelle und entschlossene Entscheidungen.",
+                    S: "Ich überlege gründlich und vermeide Risiken.",
+                    I: "Ich beziehe andere in meine Entscheidungen ein.",
+                    C: "Ich analysiere alle verfügbaren Informationen."
+                }
+            },
+            {
+                question: "6. Wie gehen Sie mit Stress um?",
+                options: {
+                    I: "Ich suche Unterstützung und Motivation bei anderen.",
+                    C: "Ich analysiere die Ursachen des Stresses.",
+                    D: "Ich bleibe fokussiert und handle schnell.",
+                    S: "Ich bleibe ruhig und gelassen."
+                }
+            },
+            {
+                question: "7. Wie gehen Sie mit Kritik um?",
+                options: {
+                    I: "Ich versuche, die Kritik positiv zu sehen.",
+                    D: "Ich nehme Kritik als Ansporn zur Verbesserung.",
+                    S: "Ich nehme Kritik ruhig und gelassen an.",
+                    C: "Ich analysiere die Kritik und ziehe Schlüsse daraus."
+                }
+            },
+            {
+                question: "8. Wie motivieren Sie sich selbst?",
+                options: {
+                    C: "Ich analysiere meine Fortschritte und passe meine Strategie an.",
+                    I: "Ich suche nach neuen und aufregenden Herausforderungen.",
+                    D: "Ich setze mir ehrgeizige Ziele.",
+                    S: "Ich arbeite kontinuierlich und methodisch."
+                }
+            },
+            {
+                question: "9. Wie gehen Sie mit Fehlern um?",
+                options: {
+                    D: "Ich lerne schnell aus meinen Fehlern und mache weiter.",
+                    I: "Ich versuche, die Fehler positiv zu sehen und daraus zu lernen.",
+                    S: "Ich nehme Fehler ruhig und gelassen an.",
+                    C: "Ich analysiere die Fehler gründlich und ziehe Schlüsse daraus."
+                }
+            },
+            {
+                question: "10. Wie gehen Sie mit neuen Aufgaben um?",
+                options: {
+                    S: "Ich gehe neue Aufgaben ruhig und methodisch an.",
+                    D: "Ich nehme neue Aufgaben als Herausforderung an.",
+                    C: "Ich analysiere die neuen Aufgaben gründlich.",
+                    I: "Ich begrüße neue Aufgaben mit Begeisterung."
+                }
+            },
+            {
+                question: "11. Wie gehen Sie mit Unsicherheit um?",
+                options: {
+                    C: "Ich analysiere die Ursachen der Unsicherheit.",
+                    D: "Ich bleibe fokussiert und handle schnell.",
+                    I: "Ich suche Unterstützung und Motivation bei anderen.",
+                    S: "Ich bleibe ruhig und gelassen."
+                }
+            },
+            {
+                question: "12. Wie gehen Sie mit Teamarbeit um?",
+                options: {
+                    D: "Ich gebe gerne den Ton an.",
+                    I: "Ich trage aktiv zu einer positiven Teamatmosphäre bei.",
+                    S: "Ich arbeite systematisch und zielgerichtet.",
+                    C: "Ich erfasse die Beziehungen und Interaktionen innerhalb des Teams."
+                }
+            }
+        ];
+
+        const typeDescriptions = {
+            D: {
+                name: 'Dominant (D)',
+                merkmale: 'Durchsetzungsstark, zielorientiert, entscheidungsfreudig',
+                verhalten: 'Direkt, liebt Herausforderungen, will Ergebnisse sehen',
+                kommunikation: 'Klar, knapp, ergebnisorientiert'
+            },
+            I: {
+                name: 'Initiativ (I)',
+                merkmale: 'Begeisterungsfähig, kontaktfreudig, optimistisch',
+                verhalten: 'Inspirierend, redet gern, motiviert andere',
+                kommunikation: 'Emotional, offen, überzeugend'
+            },
+            S: {
+                name: 'Stetig (S)',
+                merkmale: 'Geduldig, hilfsbereit, zuverlässig',
+                verhalten: 'Teamorientiert, hört gut zu, vermeidet Konflikte',
+                kommunikation: 'Ruhig, freundlich, unterstützend'
+            },
+            C: {
+                name: 'Conform (C)',
+                merkmale: 'Analytisch, genau, qualitätsbewusst',
+                verhalten: 'Plant sorgfältig, achtet auf Details, liebt Regeln',
+                kommunikation: 'Sachlich, strukturiert, faktenbasiert'
+            }
+        };
+
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        // DOM-Elemente
+        const introSection = document.getElementById('intro-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestButton = document.getElementById('start-test-button');
+        const questionCounter = document.getElementById('question-counter');
+        const questionDisplay = document.getElementById('question-display');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const submitButton = document.getElementById('submit-button');
+        const resultDescriptionDiv = document.getElementById('result-description');
+        const restartButton = document.getElementById('restart-button');
+
+        let barChartInstance = null;
         let pieChartInstance = null;
 
-        /**
-         * Setzt alle Radio-Buttons im Formular zurück.
-         */
-        function resetForm() {
-            const form = document.getElementById('disc-test');
-            form.reset(); // Setzt alle Formularfelder auf ihren Ursprungswert zurück
+        // Event Listener
+        startTestButton.addEventListener('click', startTest);
+        nextButton.addEventListener('click', showNextQuestion);
+        prevButton.addEventListener('click', showPreviousQuestion);
+        submitButton.addEventListener('click', calculateResult);
+        restartButton.addEventListener('click', restartTest);
 
-            // Ergebnisbereich ausblenden und ggf. alte Diagramme zerstören
-            document.getElementById('result').classList.remove('show');
-            if (barChartInstance) {
-                barChartInstance.destroy();
-                barChartInstance = null;
+        function startTest() {
+            introSection.style.display = 'none';
+            quizSection.style.display = 'block';
+            currentQuestionIndex = 0;
+            userAnswers.fill(null); // Reset answers
+            renderQuestion();
+            updateNavigationButtons();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            let optionsHtml = '';
+            for (const key in q.options) {
+                optionsHtml += `
+                    <label>
+                        <input type="radio" name="question-${currentQuestionIndex}" value="${key}" ${userAnswers[currentQuestionIndex] === key ? 'checked' : ''}>
+                        ${q.options[key]}
+                    </label>
+                `;
             }
-            if (pieChartInstance) {
-                pieChartInstance.destroy();
-                pieChartInstance = null;
+
+            questionDisplay.innerHTML = `
+                <p>${q.question}</p>
+                <div class="options-group">
+                    ${optionsHtml}
+                </div>
+            `;
+            // Listener für Radio-Buttons hinzufügen
+            document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]`).forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    userAnswers[currentQuestionIndex] = event.target.value;
+                    updateNavigationButtons(); // Enable next/submit button if an answer is selected
+                });
+            });
+            questionCounter.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            prevButton.disabled = currentQuestionIndex === 0;
+            const currentAnswered = userAnswers[currentQuestionIndex] !== null;
+
+            if (currentQuestionIndex === questions.length - 1) {
+                nextButton.style.display = 'none';
+                submitButton.style.display = currentAnswered ? 'inline-block' : 'none';
+                submitButton.disabled = !currentAnswered;
+            } else {
+                nextButton.style.display = 'inline-block';
+                submitButton.style.display = 'none';
+                nextButton.disabled = !currentAnswered;
             }
         }
 
-        // Führt den Reset aus, wenn die Seite geladen wird
-        window.addEventListener('load', resetForm);
+        function showNextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert("Bitte wählen Sie eine Antwort, bevor Sie fortfahren.");
+                return;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                renderQuestion();
+            }
+        }
 
+        function showPreviousQuestion() {
+            currentQuestionIndex--;
+            renderQuestion();
+        }
 
         function calculateResult() {
-            const form = document.forms['disc-test'];
-            const answers = {
-                D: 0,
-                I: 0,
-                S: 0,
-                C: 0
-            };
-            let allQuestionsAnswered = true;
-            const totalQuestions = 12;
-
-            for (let i = 1; i <= totalQuestions; i++) {
-                const questionName = 'q' + i;
-                const selectedOption = form.elements[questionName].value;
-                
-                if (!selectedOption) {
-                    allQuestionsAnswered = false;
-                    break;
-                }
-                answers[selectedOption]++;
-            }
-
-            const resultDiv = document.getElementById('result');
-            const resultTitle = document.getElementById('result-title');
-            const resultDescription = document.getElementById('result-description');
-
-            if (!allQuestionsAnswered) {
-                resultDiv.classList.remove('show');
-                resultDiv.classList.add('error');
-                resultTitle.innerText = 'Fehler: Nicht alle Fragen beantwortet!';
-                resultDescription.innerHTML = '<p>Bitte beantworten Sie **alle** Fragen, um Ihr Ergebnis zu erhalten.</p>';
-                
-                // Diagramme leeren/zerstören, falls sie existieren
-                if (barChartInstance) barChartInstance.destroy();
-                if (pieChartInstance) pieChartInstance.destroy();
-
-                resultDiv.classList.add('show');
-                
-                // Zum Fehlerbereich scrollen
-                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (userAnswers.some(answer => answer === null)) {
+                alert("Bitte beantworten Sie alle Fragen, bevor Sie das Ergebnis anzeigen.");
                 return;
             }
 
-            resultDiv.classList.remove('error');
-            resultDiv.classList.add('show');
-            
-            const dominantType = Object.keys(answers).reduce((a, b) => answers[a] > answers[b] ? a : b);
-            
-            const typeDescriptions = {
-                D: {
-                    name: 'Dominant (D)',
-                    merkmale: 'Durchsetzungsstark, zielorientiert, entscheidungsfreudig',
-                    verhalten: 'Direkt, liebt Herausforderungen, will Ergebnisse sehen',
-                    kommunikation: 'Klar, knapp, ergebnisorientiert'
-                },
-                I: {
-                    name: 'Initiativ (I)',
-                    merkmale: 'Begeisterungsfähig, kontaktfreudig, optimistisch',
-                    verhalten: 'Inspirierend, redet gern, motiviert andere',
-                    kommunikation: 'Emotional, offen, überzeugend'
-                },
-                S: {
-                    name: 'Stetig (S)',
-                    merkmale: 'Geduldig, hilfsbereit, zuverlässig',
-                    verhalten: 'Teamorientiert, hört gut zu, vermeidet Konflikte',
-                    kommunikation: 'Ruhig, freundlich, unterstützend'
-                },
-                C: {
-                    name: 'Conform (C)',
-                    merkmale: 'Analytisch, genau, qualitätsbewusst',
-                    verhalten: 'Plant sorgfältig, achtet auf Details, liebt Regeln',
-                    kommunikation: 'Sachlich, strukturiert, faktenbasiert'
+            const counts = { D: 0, I: 0, S: 0, C: 0 };
+            userAnswers.forEach(answer => {
+                counts[answer]++;
+            });
+
+            let maxCount = 0;
+            let dominantTypes = [];
+            for (const type in counts) {
+                if (counts[type] > maxCount) {
+                    maxCount = counts[type];
+                    dominantTypes = [type];
+                } else if (counts[type] === maxCount && maxCount > 0) {
+                    dominantTypes.push(type);
                 }
-            };
+            }
 
-            const currentType = typeDescriptions[dominantType];
-            
-            resultTitle.innerText = `Ihr dominantester Persönlichkeitstyp ist: ${currentType.name}`;
-            resultDescription.innerHTML = `
-                <p><strong>Merkmale:</strong> ${currentType.merkmale}</p>
-                <p><strong>Typisches Verhalten:</strong> ${currentType.verhalten}</p>
-                <p><strong>Kommunikationsstil:</strong> ${currentType.kommunikation}</p>
-            `;
+            let resultHtml = '';
+            if (dominantTypes.length === 1) {
+                const typeKey = dominantTypes[0];
+                const typeInfo = typeDescriptions[typeKey];
+                resultHtml = `
+                    <p><strong>Ihr dominantester Persönlichkeitstyp ist: ${typeInfo.name}</strong></p>
+                    <p><strong>Merkmale:</strong> ${typeInfo.merkmale}</p>
+                    <p><strong>Typisches Verhalten:</strong> ${typeInfo.verhalten}</p>
+                    <p><strong>Kommunikationsstil:</strong> ${typeInfo.kommunikation}</p>
+                `;
+            } else if (dominantTypes.length > 1) {
+                resultHtml = '<p>Sie haben mehrere dominante Tendenzen: ';
+                const dominantNames = dominantTypes.map(key => typeDescriptions[key].name.split(' ')[0]);
+                resultHtml += dominantNames.join(', ') + '.</p>';
+                resultHtml += '<p>Ihre Stärken liegen in einer Kombination dieser Eigenschaften. Hier sind die Details für jeden dominanten Typ:</p>';
+                
+                dominantTypes.forEach(typeKey => {
+                    const typeInfo = typeDescriptions[typeKey];
+                    resultHtml += `
+                        <div style="margin-top: 20px; padding-top: 10px; border-top: 1px dashed #ccc;">
+                            <p><strong>Typ: ${typeInfo.name}</strong></p>
+                            <p><strong>Merkmale:</strong> ${typeInfo.merkmale}</p>
+                            <p><strong>Typisches Verhalten:</strong> ${typeInfo.verhalten}</p>
+                            <p><strong>Kommunikationsstil:</strong> ${typeInfo.kommunikation}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                resultHtml = '<p>Ihr Persönlichkeitstyp konnte nicht eindeutig bestimmt werden. Bitte stellen Sie sicher, dass alle Fragen beantwortet wurden.</p>';
+            }
 
-            // --- Diagramme erstellen ---
+            resultDescriptionDiv.innerHTML = resultHtml;
+
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'block';
+
+            renderCharts(counts);
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderCharts(counts) {
             const labels = ['Dominant (D)', 'Initiativ (I)', 'Stetig (S)', 'Conform (C)'];
-            const data = [answers.D, answers.I, answers.S, answers.C];
+            const data = [counts.D, counts.I, counts.S, counts.C];
             const backgroundColors = [
                 'rgba(231, 76, 60, 0.8)',  // Rot für Dominant
                 'rgba(241, 196, 15, 0.8)', // Gelb für Initiativ
@@ -539,6 +698,16 @@
                             beginAtZero: true,
                             ticks: {
                                 precision: 0
+                            },
+                            title: {
+                                display: true,
+                                text: 'Anzahl der Punkte'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'DISC Typ'
                             }
                         }
                     },
@@ -551,6 +720,20 @@
                             text: 'Verteilung Ihrer Antworten (Punkte)',
                             font: {
                                 size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + ' Punkte';
+                                    }
+                                    return label;
+                                }
                             }
                         }
                     }
@@ -612,11 +795,34 @@
                     }
                 }
             });
-
-            // Nach der Ergebnisberechnung zum Ergebnisbereich scrollen
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+
+        function restartTest() {
+            if (barChartInstance) {
+                barChartInstance.destroy();
+                barChartInstance = null;
+            }
+            if (pieChartInstance) {
+                pieChartInstance.destroy();
+                pieChartInstance = null;
+            }
+
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+
+            introSection.style.display = 'block';
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'none';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialisiere den Test beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', () => {
+            introSection.style.display = 'block';
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'none';
+        });
     </script>
 </body>
 </html>
-
