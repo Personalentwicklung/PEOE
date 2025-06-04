@@ -88,11 +88,29 @@
         /* KORREKTUR FÜR DIE ÜBERSCHRIFT (FRAGETEXT) */
         .question-text {
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 15px; /* Erhöhter Abstand für die neuen Labels */
             font-size: 1.1em;
             color: #555;
             display: block;
         }
+
+        /* NEU: Stil für die beschreibenden Labels über den Zahlen */
+        .scale-description-labels {
+            display: flex;
+            justify-content: space-around; /* Gleichmäßige Verteilung */
+            margin-bottom: 8px; /* Abstand zu den Zahlen */
+            padding: 0 5px; /* Etwas seitlicher Freiraum */
+        }
+
+        .scale-description-labels span {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75em; /* Kleinere Schriftgröße */
+            color: #666; /* Etwas hellere Farbe */
+            padding: 0 2px; /* Kleiner Innenabstand für jedes Label */
+            line-height: 1.2; /* Hilft bei mehrzeiligen Labels auf kleinen Schirmen */
+        }
+
 
         /* KORREKTUR FÜR DIE SKALA-OPTIONEN (ZAHLEN) */
         .scale {
@@ -102,7 +120,7 @@
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid #ddd;
-            margin-top: 10px;
+            /* margin-top: 10px; Entfernt, da Abstand durch .scale-description-labels geregelt */
             gap: 1px;
             align-items: center;
         }
@@ -256,6 +274,13 @@
             .question label:first-of-type {
                 font-size: 1em;
             }
+
+            /* Anpassung für beschreibende Labels auf kleinen Bildschirmen */
+            .scale-description-labels span {
+                font-size: 0.65em; /* Noch kleinere Schrift für bessere Passform */
+                line-height: 1.1;
+            }
+
             .scale label {
                 padding: 10px 3px;
                 font-size: 0.85em;
@@ -298,19 +323,28 @@
         <div class="intro-box">
             <div class="intro-box-content">
              <p>Dieser Fragebogen dient dazu, Ihre psychologische Flexibilität zu erfassen. </p>
-                <p>Psychologische Flexibilität ist die Fähigkeit, in Kontakt mit dem gegenwärtigen Moment zu treten und sich selbst als Kontext wahrzunehmen, 
+                <p>Psychologische Flexibilität ist die Fähigkeit, in Kontakt mit dem gegenwärtigen Moment zu treten und sich selbst als Kontext wahrzunehmen,
                 um dann im Einklang mit den eigenen Werten zu handeln, selbst wenn unangenehme Gedanken, Gefühle oder körperliche Empfindungen vorhanden sind.</p>
                 <p>Bedenken Sie, dass dieser Test eine vereinfachte Momentaufnahme ist und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. Er dient als nützliche Orientierungshilfe und gibt eine Übersicht der physiologischen Flexibilität.</p>
                 <p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button.</p>
-                <p>1 = nie zutreffend bis 7 = immer zutreffend.</p>  
+                <p>1 = nie zutreffend bis 7 = immer zutreffend.</p>
                 <p>Es werden keine Daten gespeichert und ist 100% anonym.</p>
             </div>
-        
+
         </div>
-        
+
         <form id="aaqForm">
             <div class="question">
                 <label for="q1" class="question-text">1. Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist.</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q1" value="1"><span>1</span></label>
                     <label><input type="radio" name="q1" value="2"><span>2</span></label>
@@ -323,6 +357,15 @@
             </div>
             <div class="question">
                 <label for="q2" class="question-text">2. Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern.</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q2" value="1"><span>1</span></label>
                     <label><input type="radio" name="q2" value="2"><span>2</span></label>
@@ -335,6 +378,15 @@
             </div>
             <div class="question">
                 <label for="q3" class="question-text">3. Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q3" value="1"><span>1</span></label>
                     <label><input type="radio" name="q3" value="2"><span>2</span></label>
@@ -347,6 +399,15 @@
             </div>
             <div class="question">
                 <label for="q4" class="question-text">4. Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q4" value="1"><span>1</span></label>
                     <label><input type="radio" name="q4" value="2"><span>2</span></label>
@@ -359,6 +420,15 @@
             </div>
             <div class="question">
                 <label for="q5" class="question-text">5. Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q5" value="1"><span>1</span></label>
                     <label><input type="radio" name="q5" value="2"><span>2</span></label>
@@ -371,6 +441,15 @@
             </div>
             <div class="question">
                 <label for="q6" class="question-text">6. Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q6" value="1"><span>1</span></label>
                     <label><input type="radio" name="q6" value="2"><span>2</span></label>
@@ -383,6 +462,15 @@
             </div>
             <div class="question">
                 <label for="q7" class="question-text">7. Ich habe keine Angst vor meinen Gefühlen.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q7" value="1"><span>1</span></label>
                     <label><input type="radio" name="q7" value="2"><span>2</span></label>
@@ -395,6 +483,15 @@
             </div>
             <div class="question">
                 <label for="q8" class="question-text">8. Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q8" value="1"><span>1</span></label>
                     <label><input type="radio" name="q8" value="2"><span>2</span></label>
@@ -407,6 +504,15 @@
             </div>
             <div class="question">
                 <label for="q9" class="question-text">9. Angst ist etwas Schlechtes.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q9" value="1"><span>1</span></label>
                     <label><input type="radio" name="q9" value="2"><span>2</span></label>
@@ -419,6 +525,15 @@
             </div>
             <div class="question">
                 <label for="q10" class="question-text">10. Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q10" value="1"><span>1</span></label>
                     <label><input type="radio" name="q10" value="2"><span>2</span></label>
@@ -431,6 +546,15 @@
             </div>
             <div class="question">
                 <label for="q11" class="question-text">11. Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q11" value="1"><span>1</span></label>
                     <label><input type="radio" name="q11" value="2"><span>2</span></label>
@@ -443,6 +567,15 @@
             </div>
             <div class="question">
                 <label for="q12" class="question-text">12. Ich habe mein Leben im Griff.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q12" value="1"><span>1</span></label>
                     <label><input type="radio" name="q12" value="2"><span>2</span></label>
@@ -455,6 +588,15 @@
             </div>
             <div class="question">
                 <label for="q13" class="question-text">13. Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q13" value="1"><span>1</span></label>
                     <label><input type="radio" name="q13" value="2"><span>2</span></label>
@@ -467,6 +609,15 @@
             </div>
             <div class="question">
                 <label for="q14" class="question-text">14. Sorgen können meinem Erfolg im Wege stehen.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q14" value="1"><span>1</span></label>
                     <label><input type="radio" name="q14" value="2"><span>2</span></label>
@@ -479,6 +630,15 @@
             </div>
             <div class="question">
                 <label for="q15" class="question-text">15. Ich sollte mich so verhalten, wie ich mich im Augenblick fühle.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q15" value="1"><span>1</span></label>
                     <label><input type="radio" name="q15" value="2"><span>2</span></label>
@@ -491,6 +651,15 @@
             </div>
             <div class="question">
                 <label for="q16" class="question-text">16. Wenn ich verspreche, etwas zu tun, werde ich es tun, selbst wenn es mir später nicht danach sein sollte.</label>
+                 <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
                 <div class="scale">
                     <label><input type="radio" name="q16" value="1"><span>1</span></label>
                     <label><input type="radio" name="q16" value="2"><span>2</span></label>
