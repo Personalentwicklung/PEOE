@@ -3,631 +3,698 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akzeptanz- und Handlungsfragebogen, AAQ-Rev-16</title>
+    <title>Akkzeptanz- und Handlungsfragebogen, AAQ-Rev-16</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Import der Schriftart, wie im DISC Test */
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-
-        /* Allgemeine Einstellungen wie im DISC Test */
+        /* Allgemeine Einstellungen für den Body */
         body {
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 40px 20px;
-            background: linear-gradient(to right, #ece9e6, #ffffff); /* Hintergrund wie im DISC Test */
+            background-color: #f0f2f5;
             color: #333;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
         }
-
-        /* Hauptcontainer des Tests wie im DISC Test, mit angepasster Breite */
-        #test-container { /* Geändert von .container zu #test-container für Konsistenz */
+        /* Container für den gesamten Test, um ihn zu zentrieren und zu stylen */
+        .container {
             background-color: #ffffff;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 900px; /* Breite wie gewünscht */
+            max-width: 800px;
             width: 100%;
             box-sizing: border-box;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0; /* Rand wie im DISC Test Formular */
         }
-
-        h1, h2, h3 {
-            color: #2c3e50; /* Farbe wie im DISC Test */
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 700; /* Wie im DISC Test */
-        }
-
         h1 {
-            font-size: 2.5em; /* Wie im DISC Test */
-        }
-
-        h2 {
-            font-size: 1.8em;
-            margin-top: 30px;
-        }
-
-        h3 {
-            font-size: 1.4em;
-        }
-
-        p {
-            line-height: 1.7;
-            margin-bottom: 15px;
-        }
-
-        /* Intro und Quiz Sektion */
-        #intro-section, #quiz-section {
+            color: #0056b3;
             text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
         }
+p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
 
-        /* Introduction Box spezifisch für DISC Test */
-        .introduction-box {
-            max-width: 800px; /* Behält die interne Breite der Box, damit das Bild nicht zu weit herausragt, wenn die Box links und rechts gepaddet ist */
-            margin: 0 auto 30px auto; /* Zentriert die Box */
-            background-color: #f0f8ff; /* Hintergrund wie im DISC Test */
-            border: 1px solid #cceeff; /* Rand wie im DISC Test */
-            border-radius: 12px;
-            padding: 25px 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            text-align: left;
-        }
-        
-        .introduction-box p {
+/* Container für jede Frage */
+.question {
+    margin-bottom: 25px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.question:last-of-type {
+    border-bottom: none;
+}
+
+/* --- KORREKTUR FÜR DIE ÜBERSCHRIFT (FRAGETEXT) --- */
+/* Wählt das Label mit der Klasse 'question-text' aus und macht es fett */
+.question-text {
+    font-weight: bold; /* Macht die Überschrift fett */
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #555;
+    display: block; /* Stellt sicher, dass es eine eigene Zeile einnimmt */
+}
+
+/* --- KORREKTUR FÜR DIE SKALA-OPTIONEN (ZAHLEN) --- */
+.scale {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    gap: 1px; /* Abstand zwischen den Optionen */
+    /* Füge hier align-items: center hinzu, um die vertikale Ausrichtung zu gewährleisten */
+    align-items: center; /* WICHTIG: Stellt sicher, dass alle Items vertikal zentriert sind */
+}
+
+.scale label {
+    flex: 1;
+    text-align: center;
+    /* Vertikale Zentrierung wird bereits durch .scale mit align-items: center behandelt. */
+    /* Zusätzliche Padding oder Height hier könnten zu den "nach oben gerückt" Problemen führen. */
+    padding: 12px 5px; /* Behält dein bestehendes Padding bei */
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    color: #666;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    font-weight: normal; /* WICHTIG: Stellt sicher, dass Zahlen standardmäßig nicht fett sind */
+}
+
+.scale label:hover {
+    background-color: #e9f0f9;
+}
+
+/* Versteckt den eigentlichen Radio-Button */
+.scale input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Stil für die Ziffern im Label */
+.scale label span {
+    display: flex; /* Flexbox für Zentrierung innerhalb des Span */
+    align-items: center; /* Vertikale Zentrierung innerhalb des Span */
+    justify-content: center; /* Horizontale Zentrierung innerhalb des Span */
+    width: 100%;
+    height: 100%;
+    /* Entferne 'top: 0;' und 'left: 0;', da diese im Kontext von flexbox (im Eltern-Label)
+       nicht mehr benötigt werden und bei 'position: relative' des Labels ausreichen könnten
+       oder sogar Probleme verursachen könnten. */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1.1em; /* Macht die Ziffern etwas größer */
+}
+
+/* Stil für die ausgewählte Option */
+.scale input[type="radio"]:checked + span {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold; /* Macht die ausgewählte Zahl fett */
+    border-color: #007bff;
+}
+
+/* Styling für den Absenden-Button - unverändert */
+button {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 30px;
+}
+        /* Stil für die Ziffern im Label */
+        .scale label span {
+            display: flex; /* Flexbox für Zentrierung */
+            align-items: center; /* Vertikale Zentrierung */
+            justify-content: center; /* Horizontale Zentrierung */
+            width: 100%;
+            height: 100%;
+            /* Wichtig: Entferne `position: absolute` hier, wenn es nicht unbedingt nötig ist,
+               oder stelle sicher, dass es sich auf das umgebende Label bezieht.
+               Da das Label selbst `position: relative` hat, sollte es funktionieren.
+            */
+            top: 0; /* Stellt sicher, dass das Span ganz oben im Label beginnt */
+            left: 0; /* Stellt sicher, dass das Span ganz links im Label beginnt */
+            transition: background-color 0.3s ease, color 0.3s ease;
             font-size: 1.1em;
-            color: #444;
-            margin-bottom: 15px;
-            line-height: 1.7;
-            text-align: left;
         }
-        .introduction-box p:first-of-type {
-            text-align: center; /* Erster Absatz bleibt zentriert */
-            margin-bottom: 25px;
-            font-weight: 600; /* Für die Begrüßung etwas stärker */
-        }
-        .introduction-box p:last-child {
-            margin-bottom: 0;
-        }
-
-        .introduction-box ul {
-            list-style-type: disc;
-            padding-left: 20px;
-            margin: 15px 0 25px 0;
-        }
-        .introduction-box ul li {
-            font-size: 1.1em;
-            color: #444;
-            margin-bottom: 8px;
-            line-height: 1.5;
-        }
-
-        /* Start Button wie im DISC Test */
-        #intro-section button {
-            background-color: #2ecc71;
+        /* Stil für die ausgewählte Option */
+        .scale input[type="radio"]:checked + span {
+            background-color: #007bff;
             color: white;
-            padding: 15px 25px;
+            font-weight: bold;
+            border-color: #007bff;
+        }
+        /* Styling für den Absenden-Button und Ergebnisse - unverändert */
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #28a745;
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             font-size: 1.2em;
-            font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             margin-top: 30px;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
         }
-
-        #intro-section button:hover {
-            background-color: #27ae60;
+        button:hover {
+            background-color: #218838;
             transform: translateY(-2px);
         }
-        #intro-section button:active {
+        button:active {
             transform: translateY(0);
         }
-
-        #quiz-section {
+        .result {
             display: none;
-        }
-
-        /* Fragenblock wie im DISC Test */
-        .question-block {
-            background-color: #f7f9fc;
-            border-left: 5px solid #3498db; /* Akzentfarbe wie im DISC Test Frage */
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            text-align: left;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .question-block p {
-            font-weight: 600;
-            font-size: 1.25em;
-            margin-bottom: 20px;
-            color: #34495e;
-        }
-
-        /* Options-Gruppe und Labels wie im DISC Test */
-        .options-group label {
-            display: flex;
-            align-items: center;
-            background-color: #ffffff;
-            padding: 8px;
-            margin-bottom: 5px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            font-size: 1.05em;
-        }
-
-        .options-group label:hover {
-            background-color: #e9f5fd;
-            border-color: #a3d3ff;
-        }
-
-        .options-group input[type="radio"] {
-            margin-right: 12px;
-            transform: scale(1.2);
-            accent-color: #3498db;
-        }
-        .options-group label span { /* Für die Beschriftung der Skala (z.B. "Trifft nie zu") */
-            font-size: 0.95em;
-            color: #666;
-            margin-left: 5px; /* Abstand zum Zahlenwert */
-        }
-
-
-        /* Navigation Buttons wie im DISC Test */
-        .navigation-buttons {
-            display: flex;
-            justify-content: space-between;
             margin-top: 30px;
-        }
-
-        .navigation-buttons button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .navigation-buttons button:hover {
-            background-color: #0056b3;
-        }
-
-        .navigation-buttons button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        /* Ergebnis-Sektion wie im DISC Test */
-        #result-section {
-            display: none;
-            margin-top: 40px;
-            padding: 30px;
-            border-radius: 12px;
-            background-color: #e3f2fd; /* Hellblau für Erfolg wie im DISC Test Result */
-            border: 1px solid #bbdefb; /* Rand wie im DISC Test Result */
-            color: #1565c0; /* Dunkleres Blau für den Text wie im DISC Test Result */
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            background-color: #e6f7ff;
+            border: 1px solid #b3e0ff;
+            border-radius: 8px;
+            text-align: center;
             font-size: 1.1em;
-            line-height: 1.8;
+            line-height: 1.6;
         }
-
-        #result-section h2 {
-            color: #2c3e50;
+        .result h2 {
+            color: #0056b3;
+            margin-top: 0;
             font-size: 1.8em;
-            margin-bottom: 20px;
+        }
+        #detailed-results {
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f7fcff;
+            border-radius: 5px;
+            border: 1px solid #cceeff;
+        }
+        #detailed-results h3 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.5em;
             text-align: center;
         }
-        #result-section p {
-            margin-bottom: 10px;
-            text-align: left;
+        #aaqChart {
+            max-height: 350px;
+            width: 100% !important;
+            height: auto !important;
+            margin-top: 15px;
+            margin-bottom: 20px;
         }
-        #result-section strong {
-            color: #333;
-        }
-
-        /* Chart Styling wie im DISC Test */
-        .chart-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 30px auto 0 auto;
+        .score-interpretation-item {
+            margin-top: 20px;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            border: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: left;
         }
-        .chart-container canvas {
-            max-height: 400px;
+        .score-interpretation-item h4 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
-        /* Test neu starten Button wie im DISC Test */
-        #restart-button {
-            background-color: #6c757d;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 40px;
-            display: block;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
+        .score-interpretation-item .symbol {
+            font-size: 1.8em;
         }
-
-        #restart-button:hover {
-            background-color: #5a6268;
+        .score-interpretation-item p {
+            font-size: 1.0em;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 0;
         }
-
-        /* Responsivität wie im DISC Test */
+        /* Media Queries für Responsivität auf kleineren Bildschirmen */
         @media (max-width: 768px) {
             body {
                 padding: 20px 10px;
             }
-            #test-container {
-                padding: 25px;
+            .container {
+                padding: 20px;
+                box-shadow: none;
             }
             h1 {
                 font-size: 1.8em;
             }
-            h2 {
+            /* Anpassung der Schriftgröße für den Einführungstext auf kleineren Bildschirmen */
+            p {
+                font-size: 1.0em; /* Reduziert die Schriftgröße für den p-Tag */
+                line-height: 1.5;
+            }
+            .question label:first-of-type {
+                font-size: 1em;
+            }
+            .scale label {
+                padding: 10px 3px;
+                font-size: 0.85em;
+            }
+            button {
+                font-size: 1.1em;
+                padding: 12px 15px;
+            }
+            .result h2 {
                 font-size: 1.5em;
             }
-            .question-block {
-                padding: 15px;
+            #detailed-results h3 {
+                font-size: 1.3em;
             }
-            .options-group label {
-                padding: 10px;
+            #aaqChart {
+                max-height: 200px;
             }
-            .navigation-buttons button {
-                padding: 8px 15px;
+            .score-interpretation-item h4 {
+                font-size: 1.3em;
+            }
+            .score-interpretation-item .symbol {
+                font-size: 1.5em;
+            }
+            .score-interpretation-item p {
                 font-size: 0.9em;
-            }
-            .chart-container {
-                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="test-container">
-        <div id="intro-section">
-            <h1>Akzeptanz- und Handlungsfragebogen (AAQ-Rev-16)</h1>
-            <div class="introduction-box">
-                <p>Willkommen zum Akzeptanz- und Handlungsfragebogen (AAQ-Rev-16)!</p>
-                <p>Dieser Fragebogen dient dazu, Ihre psychologische Flexibilität zu erfassen. Psychologische Flexibilität ist die Fähigkeit, in Kontakt mit dem gegenwärtigen Moment zu treten und sich selbst als Kontext wahrzunehmen, um dann im Einklang mit den eigenen Werten zu handeln, selbst wenn unangenehme Gedanken, Gefühle oder körperliche Empfindungen vorhanden sind.</p>
-                <p>Bitte bewerten Sie die folgenden 16 Aussagen danach, wie sehr sie auf Sie zutreffen. Es gibt keine "richtigen" oder "falschen" Antworten. Seien Sie ehrlich zu sich selbst, um ein aussagekräftiges Ergebnis zu erhalten.</p>
-                <p>Verwenden Sie die folgende Skala:</p>
-                <ul>
-                    <li><strong>1 = Trifft nie zu</strong></li>
-                    <li><strong>2 = Trifft sehr selten zu</strong></li>
-                    <li><strong>3 = Trifft selten zu</strong></li>
-                    <li><strong>4 = Manchmal</strong></li>
-                    <li><strong>5 = Trifft oft zu</strong></li>
-                    <li><strong>6 = Trifft sehr oft zu</strong></li>
-                    <li><strong>7 = Trifft immer zu</strong></li>
-                </ul>
-                <p>Ihre Antworten werden nicht gespeichert und sind 100% anonym.</p>
-            </div>
-            <button id="start-test-button">Test starten</button>
-        </div>
+    <div class="container">
+        <h1>Akkzeptanz- und Handlungsfragebogen, AAQ-Rev-16  </h1>
 
-        <div id="quiz-section" style="display: none;">
-            <h2 id="question-counter">Frage 1 von 16</h2>
-            <div id="question-display" class="question-block">
-                </div>
-            <div class="navigation-buttons">
-                <button id="prev-button" disabled>Zurück</button>
-                <button id="next-button">Nächste Frage</button>
-                <button id="submit-button" style="display: none;">Ergebnis anzeigen</button>
-            </div>
-        </div>
+<p>Dieser Fragebogen dient dazu, Ihre psychologische Flexibilität zu erfassen. </p>
+<p>Psychologische Flexibilität ist die Fähigkeit, in Kontakt mit dem gegenwärtigen Moment zu treten und sich selbst als Kontext wahrzunehmen, 
+um dann im Einklang mit den eigenen Werten zu handeln, selbst wenn unangenehme Gedanken, Gefühle oder körperliche Empfindungen vorhanden sind.</p>
+  <p>Bedenken Sie, dass dieser Test eine vereinfachte Momentaufnahme ist und nicht die volle Komplexität Ihrer Persönlichkeit abbilden kann. </p>
+ <p>Er dient als nützliche Orientierungshilfe und gibt eine Übersicht der physiologischen Flexibilität.</p>
+        <p></p>
+<p>Bitte wählen Sie eine zutreffende Aussage mit dem jeweiligen Button.</p>
+<p>1 = nie zutreffend bis 7 = immer zutreffend.</p>  
+<p>Es werden keine Daten gespeichert und ist 100% anonym.</p>  
+        
+        <form id="aaqForm">
 
-        <div id="result-section">
-            <h2>Ihr Ergebnis des AAQ-Rev-16</h2>
-            <div id="result-text">
+            <div class="question">
+    <label for="q1" class="question-text">1. Ich bin in der Lage bei einem Problem aktiv zu werden, selbst wenn ich mir unsicher bin, was das Richtige ist.</label>
+    <div class="scale">
+                    <label><input type="radio" name="q1" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q1" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q1" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q1" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q1" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q1" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q1" value="7"><span>7</span></label>
                 </div>
-            <div class="chart-container">
-                <h3>Ihre psychologische Flexibilität</h3>
-                <canvas id="resultChart"></canvas>
             </div>
-            <button id="restart-button">Test wiederholen</button>
+            <div class="question">
+                <label for="q2" class="question-text">2. Wenn ich mich deprimiert und ängstlich fühle, bin ich unfähig, mich um meine Aufgaben zu kümmern.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q2" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q2" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q2" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q2" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q2" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q2" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q2" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q3" class="question-text">3. Ich versuche Gedanken und Gefühle zu unterdrücken die ich nicht mag, indem ich einfach nicht an sie denke.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q3" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q3" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q3" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q3" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q3" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q3" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q3" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q4" class="question-text">4. Es ist in Ordnung sich deprimiert oder ängstlich zu fühlen.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q4" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q4" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q4" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q4" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q4" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q4" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q4" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q5" class="question-text">5. Ich mache mir selten Gedanken, wie ich meine Ängste, Sorgen und Gefühle unter Kontrolle bekommen kann.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q5" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q5" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q5" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q5" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q5" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q5" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q5" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q6" class="question-text">6. Um etwas Wichtiges zu machen, muss ich erst alle Zweifel aufräumen.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q6" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q6" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q6" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q6" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q6" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q6" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q6" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q7" class="question-text">7. Ich habe keine Angst vor meinen Gefühlen.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q7" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q7" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q7" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q7" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q7" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q7" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q7" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q8" class="question-text">8. Ich gebe mir wirklich viel Mühe, um mich nicht deprimiert oder ängstlich zu fühlen.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q8" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q8" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q8" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q8" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q8" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q8" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q8" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q9" class="question-text">9. Angst ist etwas Schlechtes.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q9" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q9" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q9" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q9" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q9" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q9" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q9" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q10" class="question-text">10. Trotz Zweifels glaube ich, meinem Leben eine Richtung geben zu können, an die ich mich halten kann.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q10" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q10" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q10" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q10" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q10" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q10" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q10" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q11" class="question-text">11. Wenn ich alle schmerzvollen Erfahrungen, die ich in meinem Leben gemacht habe, weg- zaubern könnte, würde ich dies sofort tun.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q11" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q11" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q11" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q11" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q11" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q11" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q11" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q12" class="question-text">12. Ich habe mein Leben im Griff.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q12" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q12" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q12" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q12" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q12" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q12" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q12" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q13" class="question-text">13. Wenn ich mich bei einer Aufgabe langweile, kann ich sie dennoch zu Ende bringen.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q13" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q13" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q13" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q13" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q13" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q13" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q13" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q14" class="question-text">14. Sorgen können meinem Erfolg im Wege stehen.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q14" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q14" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q14" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q14" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q14" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q14" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q14" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q15" class="question-text">15. Ich sollte mich so verhalten, wie ich mich im Augenblick fühle.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q15" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q15" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q15" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q15" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q15" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q15" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q15" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="q16" class="question-text">16. Wenn ich verspreche, etwas zu tun, werde ich es tun, selbst wenn es mir später nicht danach sein sollte.</label>
+                <div class="scale">
+                    <label><input type="radio" name="q16" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q16" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q16" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q16" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q16" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q16" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q16" value="7"><span>7</span></label>
+                </div>
+            </div>
+            <button type="button" onclick="calculateResults()">Absenden</button>
+        </form>
+        <div id="result" class="result">
+            <h2>Deine Ergebnisse:</h2>
+            <div id="detailed-results">
+                <h3>Übersicht deiner psychologischen Flexibilität:</h3>
+                <canvas id="aaqChart"></canvas>
+
+                <div id="total-score-interpretation" class="score-interpretation-item">
+                </div>
+                <div id="bereitschaft-score-interpretation" class="score-interpretation-item">
+                </div>
+                <div id="handlung-score-interpretation" class="score-interpretation-item">
+                </div>
+                <p style="margin-top: 20px;">
+                    **Hinweis zur Interpretation der Scores:** Höhere Werte bedeuten eine höhere psychologische Flexibilität in den jeweiligen Bereichen. Psychologische Flexibilität ist entscheidend für die Fähigkeit, ein erfülltes und werteorientiertes Leben zu führen, auch angesichts innerer und äußerer Herausforderungen.
+                </p>
+            </div>
         </div>
     </div>
-
     <script>
-        const questions = [
-            {
-                question: "1. Meine unangenehmen Gedanken und Gefühle können mich nicht davon abhalten, das zu tun, was mir wichtig ist.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                }
-            },
-            {
-                question: "2. Ich muss meine Emotionen kontrollieren, bevor ich handeln kann.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "3. Ich bin bereit, unangenehme Gefühle zu erleben, wenn ich etwas tun will, das mir wichtig ist.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                }
-            },
-            {
-                question: "4. Schmerzhafte Erinnerungen lassen es nicht zu, dass ich ein erfülltes Leben führe.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "5. Ich mache mir Sorgen darüber, was andere Leute über mich denken.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "6. Ich habe Angst davor, dass meine Gefühle außer Kontrolle geraten könnten.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "7. Ich befürchte, dass ich meine Gefühle nicht ertragen kann.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "8. Wenn ich meine Gefühle kontrollieren könnte, könnte ich besser leben.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "9. Ich fühle mich durch meine Gefühle eingeschränkt.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "10. Ich bin bereit, unangenehme Gefühle zu haben, um ein sinnvolles Leben zu führen.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                }
-            },
-            {
-                question: "11. Schmerzhafte Erinnerungen beherrschen mein Leben.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "12. Wenn ich meine Emotionen nicht unter Kontrolle habe, kann ich nicht produktiv sein.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "13. Wenn ich mich nicht wohlfühle, kann ich die wichtigen Dinge in meinem Leben nicht tun.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            },
-            {
-                question: "14. Ich bin in der Lage, ein sinnvolles Leben zu führen, auch wenn ich Schmerzen habe.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                }
-            },
-            {
-                question: "15. Es ist in Ordnung, meine Gedanken und Gefühle zu haben, auch wenn sie unangenehm sind.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                }
-            },
-            {
-                question: "16. Ich kann meine Gefühle nicht beeinflussen.",
-                options: {
-                    1: "Trifft nie zu", 2: "Trifft sehr selten zu", 3: "Trifft selten zu", 4: "Manchmal", 5: "Trifft oft zu", 6: "Trifft sehr oft zu", 7: "Trifft immer zu"
-                },
-                reverseScore: true
-            }
-        ];
-
-        let currentQuestionIndex = 0;
-        let userAnswers = new Array(questions.length).fill(null);
-
-        // DOM-Elemente
-        const introSection = document.getElementById('intro-section');
-        const quizSection = document.getElementById('quiz-section');
-        const resultSection = document.getElementById('result-section');
-        const startTestButton = document.getElementById('start-test-button');
-        const questionCounter = document.getElementById('question-counter');
-        const questionDisplay = document.getElementById('question-display');
-        const prevButton = document.getElementById('prev-button');
-        const nextButton = document.getElementById('next-button');
-        const submitButton = document.getElementById('submit-button');
-        const resultTextDiv = document.getElementById('result-text');
-        const restartButton = document.getElementById('restart-button');
-        let myChartInstance = null; // Für das Chart-Objekt
-
-        // Event Listener
-        startTestButton.addEventListener('click', startTest);
-        nextButton.addEventListener('click', showNextQuestion);
-        prevButton.addEventListener('click', showPreviousQuestion);
-        submitButton.addEventListener('click', calculateResult);
-        restartButton.addEventListener('click', restartTest);
-
-        function startTest() {
-            introSection.style.display = 'none';
-            quizSection.style.display = 'block';
-            currentQuestionIndex = 0;
-            userAnswers.fill(null); // Antworten zurücksetzen
-            renderQuestion();
-            updateNavigationButtons();
-        }
-
-        function renderQuestion() {
-            const q = questions[currentQuestionIndex];
-            let optionsHtml = '';
-            for (const value in q.options) {
-                optionsHtml += `
-                    <label>
-                        <input type="radio" name="question-${currentQuestionIndex}" value="${value}" ${userAnswers[currentQuestionIndex] === value ? 'checked' : ''}>
-                        ${value} <span class="option-text">= ${q.options[value]}</span>
-                    </label>
-                `;
-            }
-
-            questionDisplay.innerHTML = `
-                <p>${q.question}</p>
-                <div class="options-group">
-                    ${optionsHtml}
-                </div>
-            `;
-            // Listener für Radio-Buttons hinzufügen
-            document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]`).forEach(radio => {
-                radio.addEventListener('change', (event) => {
-                    userAnswers[currentQuestionIndex] = event.target.value;
-                    updateNavigationButtons(); // Buttons aktualisieren, falls Antwort ausgewählt wurde
+        // Eine globale Variable, um die Chart-Instanz zu speichern
+        let aaqChartInstance = null;
+        function calculateResults() {
+            const form = document.getElementById('aaqForm');
+            const questions = form.querySelectorAll('.question');
+            let allAnswered = true;
+            questions.forEach((q, index) => {
+                const radios = q.querySelectorAll(`input[name="q${index + 1}"]`);
+                let answered = false;
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        answered = true;
+                    }
                 });
-            });
-            questionCounter.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
-            updateNavigationButtons();
-        }
-
-        function updateNavigationButtons() {
-            prevButton.disabled = currentQuestionIndex === 0;
-            const currentAnswered = userAnswers[currentQuestionIndex] !== null;
-
-            if (currentQuestionIndex === questions.length - 1) {
-                nextButton.style.display = 'none';
-                submitButton.style.display = currentAnswered ? 'inline-block' : 'none';
-                submitButton.disabled = !currentAnswered;
-            } else {
-                nextButton.style.display = 'inline-block';
-                submitButton.style.display = 'none';
-                nextButton.disabled = !currentAnswered;
-            }
-        }
-
-        function showNextQuestion() {
-            if (userAnswers[currentQuestionIndex] === null) {
-                alert("Bitte wählen Sie eine Antwort, bevor Sie fortfahren.");
-                return;
-            }
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                renderQuestion();
-            }
-        }
-
-        function showPreviousQuestion() {
-            currentQuestionIndex--;
-            renderQuestion();
-        }
-
-        function calculateResult() {
-            if (userAnswers.some(answer => answer === null)) {
-                alert("Bitte beantworten Sie alle Fragen, bevor Sie das Ergebnis anzeigen.");
-                return;
-            }
-
-            let totalScore = 0;
-            userAnswers.forEach((answer, index) => {
-                const question = questions[index];
-                let score = parseInt(answer);
-                if (question.reverseScore) {
-                    score = 8 - score; // Skala von 1-7, also 8-Wert für umgekehrte Punktzahl
+                if (!answered) {
+                    allAnswered = false;
                 }
-                totalScore += score;
             });
-
-            let resultInterpretation = '';
-            // Da es ein einzelner Score ist, passen wir die Chart-Labels und Daten entsprechend an.
-            // Der Chart wird nur den Gesamtscore anzeigen und farblich hervorheben.
-
-            if (totalScore >= 0 && totalScore <= 28) {
-                resultInterpretation = `
-                    <p>Ihr Gesamtpunktwert ist <strong>${totalScore}</strong> von maximal 112.</p>
-                    <p>Ein Wert im Bereich von <strong>0-28 deutet auf eine geringe psychologische Flexibilität hin.</strong></p>
-                    <p>Dies kann bedeuten, dass Sie möglicherweise Schwierigkeiten haben, mit unangenehmen Gedanken und Gefühlen umzugehen. Dies kann zu Vermeidungsverhalten führen und Sie daran hindern, ein Leben im Einklang mit Ihren Werten zu führen.</p>
-                    <p>Es könnte hilfreich sein, Strategien zu erlernen, um Ihre Gedanken und Gefühle zu akzeptieren und dennoch werteorientiert zu handeln. Achtsamkeitsübungen und Techniken der kognitiven Umstrukturierung können hierbei unterstützend wirken.</p>
-                `;
-            } else if (totalScore >= 29 && totalScore <= 42) {
-                resultInterpretation = `
-                    <p>Ihr Gesamtpunktwert ist <strong>${totalScore}</strong> von maximal 112.</p>
-                    <p>Ein Wert im Bereich von <strong>29-42 deutet auf eine moderate psychologische Flexibilität hin.</strong></p>
-                    <p>Sie zeigen bereits eine gewisse Fähigkeit, mit unangenehmen Erfahrungen umzugehen, aber es gibt noch Raum für Wachstum. Es kann Situationen geben, in denen Sie sich von Ihren Gedanken und Gefühlen leiten lassen und dadurch von Ihren Zielen abweichen.</p>
-                    <p>Weiteres Training in Akzeptanz- und Achtsamkeitsstrategien kann Ihnen helfen, Ihre psychologische Flexibilität weiter zu stärken und ein noch erfüllteres Leben zu führen.</p>
-                `;
-            } else { // totalScore >= 43 && totalScore <= 112
-                resultInterpretation = `
-                    <p>Ihr Gesamtpunktwert ist <strong>${totalScore}</strong> von maximal 112.</p>
-                    <p>Ein Wert im Bereich von <strong>43-112 deutet auf eine hohe psychologische Flexibilität hin.</strong></p>
-                    <p>Sie sind gut in der Lage, sich von unangenehmen Gedanken und Gefühlen nicht einschränken zu lassen und können auch unter schwierigen Umständen werteorientiert handeln. Dies ermöglicht Ihnen ein flexibles und effektives Reagieren auf Herausforderungen.</p>
-                    <p>Ihre Fähigkeit zur Akzeptanz und zum werteorientierten Handeln ist eine wertvolle Ressource, die Sie weiterhin pflegen und nutzen können, um Ihre Lebensqualität zu optimieren.</p>
-                `;
+            if (!allAnswered) {
+                alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.');
+                return;
             }
+            const formData = new FormData(form);
+            let totalFlexibilityScore = 0;
+            let bereitschaftScore = 0;
+            let handlungScore = 0;
+            const maxScorePerItem = 7;
+            const minScorePerItem = 1;
+            const numberOfQuestions = 16;
+            // Offizielle Reversed items für AAQ-Rev-16: 2, 3, 6, 8, 9, 11, 14, 15
+            const reversedItems = [2, 3, 6, 8, 9, 11, 14, 15];
+            // Zuordnung der Fragen zu den Sub-Skalen, wie von dir definiert (nicht offizielle AAQ-Rev-16 Subskalen)
+            const bereitschaftIndices = [2, 3, 4, 5, 6, 7, 9]; // 7 Fragen
+            const handlungIndices = [1, 8, 10, 11, 12, 13, 14, 15, 16]; // 9 Fragen
+            for (let i = 1; i <= numberOfQuestions; i++) {
+                const score = parseInt(formData.get(`q${i}`));
+                let finalScore = score;
 
-            resultTextDiv.innerHTML = resultInterpretation;
-            quizSection.style.display = 'none';
-            resultSection.style.display = 'block';
-
-            renderChart(totalScore);
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function renderChart(score) {
-            const ctx = document.getElementById('resultChart').getContext('2d');
-            if (myChartInstance) {
-                myChartInstance.destroy();
+                // Anwenden des Reverse Scoring, falls die Frage in den reversedItems ist
+                if (reversedItems.includes(i)) {
+                    finalScore = (maxScorePerItem + minScorePerItem) - score; // (7+1) - score
+                }
+                // Summe für den Gesamtscore
+                totalFlexibilityScore += finalScore;
+                // Summe für die Bereitschaftsskala (basierend auf deinen Indices)
+                if (bereitschaftIndices.includes(i)) {
+                    bereitschaftScore += finalScore;
+                }
+                // Summe für die Handlungsskala (basierend auf deinen Indices)
+                else if (handlungIndices.includes(i)) {
+                    handlungScore += finalScore;
+                }
             }
+            // Maximale Punktzahlen für die Skalen
+            const maxPossibleTotalScore = numberOfQuestions * maxScorePerItem; // 16 * 7 = 112
+            const maxBereitschaftScore = bereitschaftIndices.length * maxScorePerItem; // 7 * 7 = 49
+            const maxHandlungScore = handlungIndices.length * maxScorePerItem; // 9 * 7 = 63
 
-            let barColor;
-            if (score <= 28) {
-                barColor = 'rgba(231, 76, 60, 0.8)'; // Rot für gering
-            } else if (score <= 42) {
-                barColor = 'rgba(241, 196, 15, 0.8)'; // Gelb für moderat
+            // ----------- START: Ergebnis-Interpretation und Anzeige -----------
+            const totalScoreInterpretationDiv = document.getElementById('total-score-interpretation');
+            const bereitschaftInterpretationDiv = document.getElementById('bereitschaft-score-interpretation');
+            const handlungInterpretationDiv = document.getElementById('handlung-score-interpretation');
+
+            // Interpretation für den Gesamtscore
+            let totalInterpretationText = '';
+            let totalInterpretationSymbol = '';
+            let totalInterpretationTitle = '';
+            const totalPercentage = (totalFlexibilityScore / maxPossibleTotalScore) * 100;
+            if (totalPercentage >= 80) {
+                totalInterpretationTitle = 'Der psychologisch Flexible ✨';
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** zeigt eine außergewöhnlich hohe psychologische Flexibilität. Du bist sehr gut darin, unangenehme Gedanken und Gefühle zu akzeptieren und dennoch handlungsfähig zu bleiben, um ein werteorientiertes Leben zu führen. Deine Anpassungsfähigkeit und Resilienz sind bemerkenswert.`;
+                totalInterpretationSymbol = '🌟';
+            } else if (totalPercentage >= 50) {
+                totalInterpretationTitle = 'Auf dem Weg zur Flexibilität 🚶‍♀️';
+                totalInterpretationText = `Mit einem Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** besitzt du eine gute psychologische Flexibilität. Du bist in der Lage, mit inneren Herausforderungen umzugehen und dein Handeln meist nach deinen Werten auszurichten. Es gibt Potential, deine Flexibilität weiter zu stärken, um noch effektiver mit Stress und Schwierigkeiten umzugehen.`;
+                totalInterpretationSymbol = '🌱';
             } else {
-                barColor = 'rgba(46, 204, 113, 0.8)'; // Grün für hoch
+                totalInterpretationTitle = 'Herausforderung psychologische Flexibilität ⏳';
+                totalInterpretationText = `Dein Gesamtscore von **${totalFlexibilityScore} von ${maxPossibleTotalScore} Punkten** deutet darauf hin, dass du derzeit möglicherweise Schwierigkeiten hast, psychologisch flexibel zu sein. Du könntest dazu neigen, unangenehme Gedanken oder Gefühle zu vermeiden, was dein Handeln einschränken und es dir erschweren könnte, ein erfülltes Leben gemäß deiner Werte zu führen. Dies ist eine Chance zur Entwicklung.`;
+                totalInterpretationSymbol = '🚧';
             }
+            totalScoreInterpretationDiv.innerHTML = `
+                <h4><span class="symbol">${totalInterpretationSymbol}</span> ${totalInterpretationTitle}</h4>
+                <p><strong>Gesamtscore: ${totalFlexibilityScore} / ${maxPossibleTotalScore} Punkte (${totalPercentage.toFixed(1)}%)</strong></p>
+                <p>${totalInterpretationText}</p>
+            `;
 
-            myChartInstance = new Chart(ctx, {
+            // Interpretation für Bereitschaftsskala (DEINE Definition)
+            let bereitText = '';
+            let bereitSymbol = '';
+            let bereitTitle = '';
+            const bereitPercentage = (bereitschaftScore / maxBereitschaftScore) * 100;
+            if (bereitPercentage >= 80) {
+                bereitTitle = 'Offen für Erfahrungen 🧘‍♀️';
+                bereitText = `Deine Bereitschaft, dich schwierigen Gedanken und Gefühlen zu stellen, ist sehr hoch. Du bist offen für Erfahrungen und flexibel im Umgang mit inneren Zuständen, was dir hilft, dich nicht von ihnen beherrschen zu lassen.`;
+                bereitSymbol = '💡';
+            } else if (bereitPercentage >= 50) {
+                bereitTitle = 'Annahme und Öffnung 💭';
+                bereitText = `Du zeigst eine gute Bereitschaft, dich deinen Emotionen und Gedanken anzunehmen. Es gibt Raum für Wachstum, aber du bist auf einem guten Weg, eine akzeptierende Haltung zu entwickeln.`;
+                bereitSymbol = '🤔';
+            } else {
+                bereitTitle = 'Vermeidungstendenzen 🛑';
+                bereitText = `Du neigst dazu, unangenehme Gedanken und Gefühle zu unterdrücken oder zu vermeiden. Dies kann dein Handeln einschränken und zu psychologischer Starrheit führen. Eine größere Bereitschaft zur Akzeptanz könnte hilfreich sein.`;
+                bereitSymbol = '🛑';
+            }
+            bereitschaftInterpretationDiv.innerHTML = `
+                <h4><span class="symbol">${bereitSymbol}</span> ${bereitTitle}</h4>
+                <p><strong>Bereitschaftsskala: ${bereitschaftScore} / ${maxBereitschaftScore} Punkte (${bereitPercentage.toFixed(1)}%)</strong></p>
+                <p>${bereitText}</p>
+            `;
+
+            // Interpretation für Handlungsskala (DEINE Definition)
+            let handlungText = '';
+            let handlungSymbol = '';
+            let handlungTitle = '';
+            const handlungPercentage = (handlungScore / maxHandlungScore) * 100;
+            if (handlungPercentage >= 80) {
+                handlungTitle = 'Zielgerichteter Macher 🚀';
+                handlungText = `Deine Handlungsflexibilität ist ausgezeichnet! Du bist in der Lage, auch unter schwierigen inneren Bedingungen zielgerichtet und werteorientiert zu handeln und deine Ziele zu verfolgen.`;
+                handlungSymbol = '🎯';
+            } else if (handlungPercentage >= 50) {
+                handlungTitle = 'Werteorientiertes Handeln 👣';
+                handlungText = `Du zeigst eine solide Fähigkeit, dein Handeln an deinen Werten auszurichten, selbst wenn es herausfordernd ist. Es gibt Möglichkeiten, deine Handlungsspielräume weiter zu erweitern, um noch effektiver zu sein.`;
+                handlungSymbol = '➡️';
+            } else {
+                handlungTitle = 'Blockiertes Handeln 🚧';
+                handlungText = `Es fällt dir möglicherweise schwer, deine Handlungen konsequent an deinen Werten auszurichten, insbesondere wenn unangenehme Gedanken oder Gefühle aufkommen. Dies kann zu Vermeidungsverhalten und Inaktivität führen.`;
+                handlungSymbol = '⛓️';
+            }
+            handlungInterpretationDiv.innerHTML = `
+                <h4><span class="symbol">${handlungSymbol}</span> ${handlungTitle}</h4>
+                <p><strong>Handlungsskala: ${handlungScore} / ${maxHandlungScore} Punkte (${handlungPercentage.toFixed(1)}%)</strong></p>
+                <p>${handlungText}</p>
+            `;
+
+            document.getElementById('result').style.display = 'block';
+
+            // ----------- START: Chart.js Integration -----------
+            const ctx = document.getElementById('aaqChart').getContext('2d');
+            // Wenn schon eine Chart-Instanz existiert, zerstöre sie, bevor eine neue erstellt wird
+            if (aaqChartInstance) {
+                aaqChartInstance.destroy();
+            }
+            // Daten für die drei Scores, als Prozentsatz
+            const chartLabels = ['Gesamtscore', 'Bereitschaftsskala', 'Handlungsskala'];
+            const chartData = [totalPercentage, bereitPercentage, handlungPercentage];
+            const backgroundColors = [
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 159, 64, 0.7)'
+            ];
+            const borderColors = [
+                'rgba(75, 192, 192, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 159, 64, 1)'
+            ];
+
+            aaqChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Ihr Score'],
+                    labels: chartLabels,
                     datasets: [{
-                        label: 'Psychologische Flexibilität',
-                        data: [score],
-                        backgroundColor: barColor,
-                        borderColor: barColor.replace('0.8)', '1)'),
+                        label: 'Anteil in % der maximalen Punktzahl',
+                        data: chartData,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
                         borderWidth: 1
                     }]
                 },
@@ -637,13 +704,10 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 112, // Maximal möglicher Score
-                            ticks: {
-                                precision: 0
-                            },
+                            max: 100,
                             title: {
                                 display: true,
-                                text: 'Gesamtpunktwert'
+                                text: 'Anteil in %'
                             }
                         },
                         x: {
@@ -654,14 +718,8 @@
                     },
                     plugins: {
                         legend: {
-                            display: false
-                        },
-                        title: {
                             display: true,
-                            text: 'Ihr Gesamtpunktwert im AAQ-Rev-16',
-                            font: {
-                                size: 16
-                            }
+                            position: 'top'
                         },
                         tooltip: {
                             callbacks: {
@@ -671,7 +729,7 @@
                                         label += ': ';
                                     }
                                     if (context.parsed.y !== null) {
-                                        label += context.parsed.y + ' Punkte';
+                                        label += context.parsed.y.toFixed(1) + '%';
                                     }
                                     return label;
                                 }
@@ -680,30 +738,11 @@
                     }
                 }
             });
+            // ----------- END: Chart.js Integration -----------
+
+            // Autoscroll zum Ergebnis
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
-        function restartTest() {
-            if (myChartInstance) {
-                myChartInstance.destroy();
-                myChartInstance = null;
-            }
-
-            currentQuestionIndex = 0;
-            userAnswers.fill(null);
-
-            introSection.style.display = 'block';
-            quizSection.style.display = 'none';
-            resultSection.style.display = 'none';
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Initialisiere den Test beim Laden der Seite
-        document.addEventListener('DOMContentLoaded', () => {
-            introSection.style.display = 'block';
-            quizSection.style.display = 'none';
-            resultSection.style.display = 'none';
-        });
     </script>
 </body>
 </html>
