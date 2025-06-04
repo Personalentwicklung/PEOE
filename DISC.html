@@ -536,19 +536,35 @@
     let pieChartInstance = null;
 
     // Event Listener
-    startTestButton.addEventListener('click', startTest);
-    nextButton.addEventListener('click', showNextQuestion);
-    prevButton.addEventListener('click', showPreviousQuestion);
-    submitButton.addEventListener('click', calculateResult);
-    restartButton.addEventListener('click', restartTest);
+    // Sicherstellen, dass der Button existiert, bevor ein Event Listener hinzugefügt wird
+    if (startTestButton) {
+        startTestButton.addEventListener('click', startTest);
+    }
+    if (nextButton) { // Auch diese könnten null sein, falls das DOM nicht komplett geladen ist
+        nextButton.addEventListener('click', showNextQuestion);
+    }
+    if (prevButton) {
+        prevButton.addEventListener('click', showPreviousQuestion);
+    }
+    if (submitButton) {
+        submitButton.addEventListener('click', calculateResult);
+    }
+    if (restartButton) {
+        restartButton.addEventListener('click', restartTest);
+    }
 
     function startTest() {
-        introSection.style.display = 'none';
-        quizSection.style.display = 'block';
-        currentQuestionIndex = 0;
-        userAnswers.fill(null); // Reset answers
-        renderQuestion();
-        updateNavigationButtons();
+        // Überprüfen, ob die Elemente gefunden wurden, bevor sie manipuliert werden
+        if (introSection && quizSection) {
+            introSection.style.display = 'none';
+            quizSection.style.display = 'block';
+            currentQuestionIndex = 0;
+            userAnswers.fill(null); // Reset answers
+            renderQuestion();
+            updateNavigationButtons();
+        } else {
+            console.error("Fehler: Intro- oder Quiz-Sektionen wurden nicht gefunden.");
+        }
     }
 
     function renderQuestion() {
@@ -563,35 +579,52 @@
             `;
         }
 
-        questionDisplay.innerHTML = `
-            <p>${q.question}</p>
-            <div class="options-group">
-                ${optionsHtml}
-            </div>
-        `;
-        // Listener für Radio-Buttons hinzufügen
-        document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]`).forEach(radio => {
-            radio.addEventListener('change', (event) => {
-                userAnswers[currentQuestionIndex] = event.target.value;
-                updateNavigationButtons(); // Enable next/submit button if an answer is selected
+        // Sicherstellen, dass questionDisplay existiert
+        if (questionDisplay) {
+            questionDisplay.innerHTML = `
+                <p>${q.question}</p>
+                <div class="options-group">
+                    ${optionsHtml}
+                </div>
+            `;
+            // Listener für Radio-Buttons hinzufügen
+            document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]`).forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    userAnswers[currentQuestionIndex] = event.target.value;
+                    updateNavigationButtons(); // Enable next/submit button if an answer is selected
+                });
             });
-        });
-        questionCounter.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+        } else {
+            console.error("Fehler: Question Display Element nicht gefunden.");
+            return; // Beende Funktion, wenn Element nicht gefunden
+        }
+
+        if (questionCounter) {
+            questionCounter.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+        } else {
+            console.error("Fehler: Question Counter Element nicht gefunden.");
+        }
         updateNavigationButtons();
     }
 
     function updateNavigationButtons() {
-        prevButton.disabled = currentQuestionIndex === 0;
+        if (prevButton) {
+            prevButton.disabled = currentQuestionIndex === 0;
+        }
         const currentAnswered = userAnswers[currentQuestionIndex] !== null;
 
         if (currentQuestionIndex === questions.length - 1) {
-            nextButton.style.display = 'none';
-            submitButton.style.display = currentAnswered ? 'inline-block' : 'none';
-            submitButton.disabled = !currentAnswered;
+            if (nextButton) nextButton.style.display = 'none';
+            if (submitButton) {
+                submitButton.style.display = 'inline-block';
+                submitButton.disabled = !currentAnswered;
+            }
         } else {
-            nextButton.style.display = 'inline-block';
-            submitButton.style.display = 'none';
-            nextButton.disabled = !currentAnswered;
+            if (nextButton) {
+                nextButton.style.display = 'inline-block';
+                nextButton.disabled = !currentAnswered;
+            }
+            if (submitButton) submitButton.style.display = 'none';
         }
     }
 
@@ -645,7 +678,7 @@
             resultHtml = '<p><strong>Sie haben mehrere dominante Tendenzen:</strong> ';
             const dominantNames = dominantTypes.map(key => typeDescriptions[key].name.split(' ')[0]);
             resultHtml += dominantNames.join(', ') + '.</p>';
-            resultHtml += '<p>Ihre Stärken liegen in einer Kombination dieser Eigenschaften.</p>'; // Added missing closing p tag here.
+            resultHtml += '<p>Ihre Stärken liegen in einer Kombination dieser Eigenschaften.</p>';
             resultHtml += '<p><strong>Hier sind die Details für jeden dominanten Typ:</strong></p>';
             
             dominantTypes.forEach(typeKey => {
@@ -662,13 +695,25 @@
             resultHtml += '<p>Bitte stellen Sie sicher, dass alle Fragen beantwortet wurden.</p>';
         }
 
-        resultDescriptionDiv.innerHTML = resultHtml;
+        if (resultDescriptionDiv) {
+            resultDescriptionDiv.innerHTML = resultHtml;
+        } else {
+            console.error("Fehler: Result Description Element nicht gefunden.");
+        }
+        
 
-        quizSection.style.display = 'none';
-        resultSection.style.display = 'block';
+        if (quizSection && resultSection) {
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'block';
+        } else {
+            console.error("Fehler: Quiz- oder Ergebnis-Sektionen wurden nicht gefunden.");
+        }
+        
 
         renderCharts(counts);
-        resultSection.scrollIntoView({ behavior: 'smooth' });
+        if (resultSection) { // Nur scrollen, wenn das Element existiert
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 
     function renderCharts(counts) {
@@ -688,126 +733,138 @@
         ];
 
         // Balkendiagramm
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        if (barChartInstance) {
-            barChartInstance.destroy();
-        }
-        barChartInstance = new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Anzahl der Antworten',
-                    data: data,
-                    backgroundColor: backgroundColors,
-                    borderColor: borderColors,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
+        const barCtx = document.getElementById('barChart');
+        if (barCtx) { // Überprüfen, ob das Canvas-Element existiert
+            const barCtx2d = barCtx.getContext('2d');
+            if (barChartInstance) {
+                barChartInstance.destroy();
+            }
+            barChartInstance = new Chart(barCtx2d, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Anzahl der Antworten',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            },
+                            title: {
+                                display: true,
+                                text: 'Anzahl der Punkte'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'DISC Typ'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         },
                         title: {
                             display: true,
-                            text: 'Anzahl der Punkte'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'DISC Typ'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    title: {
-                        display: true,
-                        text: 'Verteilung Ihrer Antworten (Punkte)',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.y !== null) {
-                                    label += context.parsed.y + ' Punkte';
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Kreisdiagramm
-        const pieCtx = document.getElementById('pieChart').getContext('2d');
-        if (pieChartInstance) {
-            pieChartInstance.destroy();
-        }
-        pieChartInstance = new Chart(pieCtx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Anteil der Antworten',
-                    data: data,
-                    backgroundColor: backgroundColors,
-                    borderColor: borderColors,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
+                            text: 'Verteilung Ihrer Antworten (Punkte)',
                             font: {
-                                size: 14
+                                size: 16
                             }
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Prozentuale Verteilung Ihrer Antworten',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + ' Punkte';
+                                    }
+                                    return label;
                                 }
-                                if (context.parsed !== null) {
-                                    let total = context.dataset.data.reduce((sum, current) => sum + current, 0);
-                                    let percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
-                                    label += context.parsed + ' Punkte (' + percentage + ')';
-                                }
-                                return label;
                             }
                         }
                     }
                 }
             });
+        } else {
+            console.error("Fehler: Bar Chart Canvas Element nicht gefunden.");
+        }
+
+
+        // Kreisdiagramm
+        const pieCtx = document.getElementById('pieChart');
+        if (pieCtx) { // Überprüfen, ob das Canvas-Element existiert
+            const pieCtx2d = pieCtx.getContext('2d');
+            if (pieChartInstance) {
+                pieChartInstance.destroy();
+            }
+            pieChartInstance = new Chart(pieCtx2d, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Anteil der Antworten',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                        ,title: {
+                            display: true,
+                            text: 'Prozentuale Verteilung Ihrer Antworten',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        let total = context.dataset.data.reduce((sum, current) => sum + current, 0);
+                                        let percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
+                                        label += context.parsed + ' Punkte (' + percentage + ')';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error("Fehler: Pie Chart Canvas Element nicht gefunden.");
+        }
     }
 
     function restartTest() {
@@ -823,18 +880,25 @@
         currentQuestionIndex = 0;
         userAnswers.fill(null);
 
-        introSection.style.display = 'block';
-        quizSection.style.display = 'none';
-        resultSection.style.display = 'none';
+        // Überprüfen, ob die Elemente existieren, bevor sie manipuliert werden
+        if (introSection && quizSection && resultSection) {
+            introSection.style.display = 'block';
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'none';
+        } else {
+            console.error("Fehler beim Zurücksetzen: Einige Sektionen wurden nicht gefunden.");
+        }
+        
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Initialisiere den Test beim Laden der Seite
     document.addEventListener('DOMContentLoaded', () => {
-        introSection.style.display = 'block';
-        quizSection.style.display = 'none';
-        resultSection.style.display = 'none';
+        // Sicherstellen, dass die Sektionen beim Laden korrekt initialisiert werden
+        if (introSection) introSection.style.display = 'block';
+        if (quizSection) quizSection.style.display = 'none';
+        if (resultSection) resultSection.style.display = 'none';
     });
 </script>
 </body>
