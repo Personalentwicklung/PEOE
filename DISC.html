@@ -352,7 +352,7 @@
 
         <div id="result-section">
             <h2>Ihr Testergebnis</h2>
-            <p style="text-align: center;">Basierend auf Ihren Antworten ist Ihr dominantester Typ:</p>
+            <p style="text-align: center;">Basierend auf Ihren Antworten:</p>
             <div id="result-description">
                 </div>
             
@@ -629,7 +629,7 @@
                 const typeKey = dominantTypes[0];
                 const typeInfo = typeDescriptions[typeKey];
                 resultHtml = `
-                    <p><strong>Ihr dominantester Persönlichkeitstyp ist: ${typeInfo.name}</strong></p>
+                    <p><strong>Basierend auf Ihren Antworten ist Ihr dominantester Persönlichkeitstyp:</strong> ${typeInfo.name}</p>
                     <p><strong>Merkmale:</strong> ${typeInfo.merkmale}</p>
                     <p><strong>Typisches Verhalten:</strong> ${typeInfo.verhalten}</p>
                     <p><strong>Kommunikationsstil:</strong> ${typeInfo.kommunikation}</p>
