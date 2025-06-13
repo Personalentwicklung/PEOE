@@ -128,6 +128,16 @@
             font-weight: normal;
         }
 
+        .feedback-message {
+            background-color: #d1ecf1; /* Helles Blau für Feedback */
+            color: #0c5460; /* Dunkelblau für Text */
+            padding: 15px;
+            border-left: 5px solid #2196f3;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
         .tip {
             background-color: #bbdefb;
             padding: 15px;
@@ -145,14 +155,9 @@
         <p>Ein Leitfaden für weniger Stress und Stressempfindlichkeit</p>
 
         <div id="step-0" class="section">
-            <h2>Liebe Leser*innen,</h2>
-            <p>Ein gesunder Umgang mit den täglichen Herausforderungen wird in unserer aktuellen Umwelt immer wichtiger: Die Dichte wahrgenommener Stressoren hat insgesamt zugenommen und sorgt für einen Mangel an innerer Balance und damit für immer mehr Unruhe und Selbstzweifel. </p>
-            <p>Vielleicht sind wir auch von inneren Erwartungen und Antreibern gestresst und vermögen nicht diese aufzulösen. </p>
-            <p>Unser Gehirn ist neuroplastisch und wir können unsere Struktur zu denken und zu fühlen verändern, bis wir sterben.  Dieser Leitfaden beinhaltet Methoden, die uns dabei unterstützen können, diese Balance zu entwickeln und dauerhaft zu stabilisieren. </p>
-
-            <h3>Warum wir Stressreaktionen brauchen:</h3>
-            <p>Stress hat für uns Menschen eine hohe Relevanz: Mit unserer angeborenen Stressreaktion kann unser Körper innerhalb von wenigen Sekunden in einen Verhaltensmodus gebracht werden, der erstmal unser Überleben sichert. </p>
-            <p>Heute haben wir allerdings viel seltener körperliche als kognitiv wirkende Stressoren.  Für diese Herausforderungen ist unsere angeborene Stressreaktion eher ungeeignet. </p>
+            <h2>Willkommen auf Ihrer Reise zu mehr innerer Balance!</h2>
+            <p>Ein gesunder Umgang mit den täglichen Herausforderungen wird in unserer aktuellen Umwelt immer wichtiger. Die Dichte wahrgenommener Stressoren hat zugenommen und sorgt für einen Mangel an innerer Balance und damit für Unruhe und Selbstzweifel.</p>
+            <p>Dieser Leitfaden bietet Ihnen Methoden, um Ihre Balance zu entwickeln und dauerhaft zu stabilisieren.</p>
 
             <label for="currentStressLevel">Wie würden Sie Ihr aktuelles Stresslevel auf einer Skala von 0 (gar kein Stress) bis 10 (maximaler Stress) einschätzen?</label>
             <input type="range" id="currentStressLevel" min="0" max="10" value="5">
@@ -161,244 +166,280 @@
                 <span>Maximaler Stress</span>
             </div>
             <p>Aktueller Wert: <span id="currentStressLevelValue">5</span></p>
+            <div id="stressLevelFeedback" class="feedback-message hidden"></div>
 
             <div class="button-container">
-                <button onclick="nextStep()">Weiter</button>
+                <button onclick="nextStep(0)">Weiter</button>
             </div>
         </div>
 
         <div id="step-1" class="section hidden">
-            <h2>Die 4 Ansätze für mehr Entspannung</h2>
-            <p>Auf den folgenden Seiten finden Sie 4 Methoden für mehr selbstgesteuerte Entspannung im Alltag, die sich gegenseitig unterstützen.  Sie können diese nacheinander durchgehen oder den Ansatz auswählen, der Sie am meisten anspricht.</p>
-            <p>Die Ansätze sind:</p>
-            <ol>
-                <li>Radikale Akzeptanz: Negative Gefühle zulassen und aushalten, bis sie sich auflösen.</li>
-                <li>ABC-Stressanalyse: Stressoren erkennen und individuelle Bewältigungsstrategien finden.</li>
-                <li>Innerlich aufrecht: Verbesserung unserer Wahrnehmung positiver Fakten.</li>
-                <li>Stressresilienzanalyse: Regelmäßige Überprüfung unserer eigenen Balance.</li>
-            </ol>
-
-            <label for="chooseApproach">Möchten Sie alle Ansätze nacheinander durchgehen oder einen bestimmten auswählen?</label>
-            <select id="chooseApproach" onchange="handleApproachSelection()">
-                <option value="all">Alle Ansätze nacheinander</option>
-                <option value="acceptance">1. Radikale Akzeptanz</option>
-                <option value="abc">2. ABC-Stressanalyse</option>
-                <option value="positive">3. Innerlich aufrecht</option>
-                <option value="resilience">4. Stressresilienzanalyse</option>
-            </select>
-
-            <div class="button-container">
-                <button onclick="startSelectedApproach()">Start</button>
-            </div>
-        </div>
-
-        <div id="approach-acceptance" class="section hidden">
             <h2>1. Ansatz: Radikale Akzeptanz</h2>
             <h3>Negative Gefühle zulassen und aushalten, bis sie sich auflösen</h3>
-            <p>Wenn man den eigenen inneren Stresslevel verändern will, muss man die negativen Gefühle zuerst einmal zulassen und sich diese Gefühle zugestehen – sie quasi „einfach mal laufen lassen“. Es geht also darum, Wut, Angst oder Trauer einfach mal auszuhalten und nicht sofort eine Lösung finden zu wollen. </p>
-            <p>Wichtig zu wissen: Wenn wir Emotionen wahrnehmen, dann sind diese immer echt – Gefühle lügen nicht.  Doch viele unserer aktuellen Emotionen sind eine Mischung aus aktuell ausgelösten und „antiken“ Emotionen, die eventuell schon seit vielen Jahren unterdrückt wurden. </p>
-            <p>Wenn wir uns darin üben, möglichst oft die aktuellen Emotionen zuzulassen, uns eventuell sogar bewusst in diese Gefühle reinsteigern, dann merken wir von ganz allein, wie viel von dem Gefühl aktuell und wieviel alt, aber immer noch in uns gespeichert ist. </p>
+            <p>Um Ihren inneren Stresslevel zu verändern, ist es wichtig, negative Gefühle zuerst einmal zuzulassen und auszuhalten. Es geht nicht darum, sofort eine Lösung zu finden, sondern darum, Wut, Angst oder Trauer einfach mal "laufen zu lassen".</p>
+            <p>Erkennen Sie, dass aktuelle Emotionen oft eine Mischung aus momentan Ausgelöstem und "antiken" Gefühlen sind, die lange unterdrückt wurden.</p>
 
             <label for="feelingsToExplore">Gibt es negative Gefühle, die Sie gerade erleben und genauer betrachten könnten? (z.B. Wut, Angst, Trauer, Frustration)</label>
             <textarea id="feelingsToExplore" placeholder="Beschreiben Sie hier Ihre Gefühle..."></textarea>
+            <div id="feelingsToExploreFeedback" class="feedback-message hidden"></div>
 
-            <label for="oldFeelings">Haben Sie das Gefühl, dass diese Emotionen auch "alte" Anteile, die schon länger in Ihnen schlummern, aktivieren? (Ja/Nein)</label>
+            <label for="oldFeelings">Haben Sie das Gefühl, dass diese Emotionen auch "alte" Anteile, die schon länger in Ihnen schlummern, aktivieren?</label>
             <div class="radio-group">
                 <label><input type="radio" name="oldFeelings" value="yes"> Ja</label>
                 <label><input type="radio" name="oldFeelings" value="no"> Nein</label>
             </div>
+            <div id="oldFeelingsFeedback" class="feedback-message hidden"></div>
 
             <div class="tip">
-                <strong>Tipp:</strong> Üben Sie sich darin, die aktuellen Emotionen zuzulassen und wahrzunehmen, wie viel davon aktuell und wieviel alt ist.  Nehmen Sie sich bewusst Zeit, diese Gefühle "abzutoben" und sich so von emotionalen Altlasten zu befreien. 
+                <strong>Tipp:</strong> Üben Sie sich darin, die aktuellen Emotionen zuzulassen und wahrzunehmen, wie viel davon aktuell und wieviel alt ist. Nehmen Sie sich bewusst Zeit, diese Gefühle "abzutoben" und sich so von emotionalen Altlasten zu befreien.
             </div>
 
             <div class="button-container">
-                <button onclick="nextStep()">Weiter zum nächsten Ansatz</button>
+                <button onclick="nextStep(1)">Weiter zur ABC-Stressanalyse</button>
             </div>
         </div>
 
-        <div id="approach-abc" class="section hidden">
-            <h2>2. Ansatz: ABC-Stressanalyse</h2>
-            <h3>Stressoren erkennen und individuelle Bewältigungsstrategien finden</h3>
-            <p>Die ABC-Stressanalyse ist eine Technik, mit der wir uns einem konkreten Stressor stellen können.  Sie beruht auf dem Wissen, dass wir bei genauer Analyse mit einem kühlen Kopf oft auch bei schwierigen Stressoren eine Lösung und / oder eine Erleichterung finden. </p>
+        <div id="step-2" class="section hidden">
+            <h2>2. Ansatz: ABC-Stressanalyse - Teil A (Auslöser)</h2>
+            <p>Die ABC-Stressanalyse hilft Ihnen, konkrete Stressoren zu erkennen und Bewältigungsstrategien zu finden. Wir beginnen mit "A" für Auslöser.</p>
 
-            <h3>A = Auslöser:</h3>
-            <label for="stressorConcrete">Was oder wer löst bei mir konkret den Stress aus? Wann stresst „es“ mich mehr, wann weniger? Bitte so konkret wie möglich beschreiben.</label>
-            <textarea id="stressorConcrete" placeholder="Ich habe zu viele Aufgaben und habe nie das Gefühl, meiner Arbeit gerecht zu werden. Entweder bleiben Sachen liegen oder ich mache Überstunden. "></textarea>
+            <label for="stressorConcrete">Was oder wer löst bei Ihnen konkret Stress aus? Wann stresst „es“ Sie mehr, wann weniger? (Bitte so konkret wie möglich)</label>
+            <textarea id="stressorConcrete" placeholder="Beispiel: Ich habe zu viele Aufgaben und fühle mich nie gerecht. Entweder bleiben Sachen liegen oder ich mache Überstunden."></textarea>
+            <div id="stressorConcreteFeedback" class="feedback-message hidden"></div>
 
-            <label for="stressorAvoidReduce">Wie kann ich den Stressor vermeiden oder zumindest verringern? Will ich das denn?</label>
-            <textarea id="stressorAvoidReduce" placeholder="Bessere Arbeitsplanung, öfter nein sagen, mehr Aufgaben abgeben, Probleme ansprechen, an Führungskraft wenden, ehrlich mit der Überforderung sein... aber es fällt mir schwer. "></textarea>
+            <label for="stressorAvoidReduce">Wie könnten Sie diesen Stressor vermeiden oder zumindest verringern? Möchten Sie das überhaupt?</label>
+            <textarea id="stressorAvoidReduce" placeholder="Beispiel: Bessere Arbeitsplanung, öfter 'nein' sagen, Aufgaben abgeben, Probleme ansprechen..."></textarea>
+            <div id="stressorAvoidReduceFeedback" class="feedback-message hidden"></div>
 
-            <h3>B = Bewertung:</h3>
-            <label for="stressorThoughts">Was für Gedanken mache ich mir wegen des Stressors? Warum hat der Stressor so viel Macht über mich / meine Gefühle? Wo kommt das her?</label>
-            <textarea id="stressorThoughts" placeholder="Ich fühle mich unfähig und inkompetent. Ich habe Angst, nicht gut genug zu sein. Bin ich qualifiziert genug, diesen Job zu machen? Ich fühle mich insgesamt in meinem Leben immer inkompetenter. "></textarea>
+            <div class="button-container">
+                <button onclick="nextStep(2)">Weiter zu Teil B: Bewertung</button>
+            </div>
+        </div>
 
-            <label for="stressorRethink">Wie kann ich auch über den Stressor denken? Was wäre dann anders / besser / leichter? Wie lange will ich mich noch stressen lassen und wann denke ich um?</label>
-            <textarea id="stressorRethink" placeholder="Ich muss lernen den Stress anzunehmen und der Stress darf da sein. Ich muss lernen mit dem Stress zu arbeiten, anstatt ihn zu verteufeln. Ich wäre vielleicht entspannter. Ich werde mich noch so lange stressen lassen, bis ich mich entscheide, etwas zu ändern. "></textarea>
+        <div id="step-3" class="section hidden">
+            <h2>2. Ansatz: ABC-Stressanalyse - Teil B (Bewertung)</h2>
+            <p>Nachdem Sie den Auslöser benannt haben, geht es nun um Ihre "B"ewertung dieses Stressors.</p>
 
-            <h3>C = Konsequenzen:</h3>
-            <label for="stressorReaction">Wie reagiere ich auf den Stressor im Moment? Wie verhalte ich mich bereits kurz vor dem wiederkehrenden Stress? Will ich so sein / bleiben?</label>
-            <textarea id="stressorReaction" placeholder="Im ersten Moment erstarre ich und später bin ich dann unfair zu meiner Familie. Ich bin dauerhaft gereizt. Ich will so nicht sein und möchte in meinem Leben insgesamt wieder entspannter sein. "></textarea>
+            <label for="stressorThoughts">Was für Gedanken machen Sie sich wegen des Stressors? Warum hat er so viel Macht über Ihre Gefühle? Woher kommt das?</label>
+            <textarea id="stressorThoughts" placeholder="Beispiel: Ich fühle mich unfähig und inkompetent. Ich habe Angst, nicht gut genug zu sein."></textarea>
+            <div id="stressorThoughtsFeedback" class="feedback-message hidden"></div>
 
-            <label for="stressorFutureAction">Wie will/werde ich ab heute bei dem Stressor agieren? Wie wird das auch meine Umwelt verbessern / verändern? Wann beginne ich mein neues Verhalten?</label>
-            <textarea id="stressorFutureAction" placeholder="Ich kann nur so viel tun, wie ich kann. Ich versuche immer mein Bestes zu geben und versuche mir das häufiger bewusst zu machen. Ich versuche meinen Blick auf meinen Stress zu verändern und ihn mehr anzunehmen. Ich. Versuche die Gefühle in mir mehr auszuhalten. "></textarea>
+            <label for="stressorRethink">Wie könnten Sie auch anders über den Stressor denken? Was wäre dann besser/leichter? Wie lange wollen Sie sich noch stressen lassen?</label>
+            <textarea id="stressorRethink" placeholder="Beispiel: Ich muss lernen, den Stress anzunehmen, statt ihn zu verteufeln. Ich kann nur so viel tun, wie ich kann."></textarea>
+            <div id="stressorRethinkFeedback" class="feedback-message hidden"></div>
+
+            <div class="button-container">
+                <button onclick="nextStep(3)">Weiter zu Teil C: Konsequenzen</button>
+            </div>
+        </div>
+
+        <div id="step-4" class="section hidden">
+            <h2>2. Ansatz: ABC-Stressanalyse - Teil C (Konsequenzen)</h2>
+            <p>Zum Abschluss der ABC-Analyse betrachten wir die "C"onsequenzen Ihres Verhaltens und planen neue Reaktionen.</p>
+
+            <label for="stressorReaction">Wie reagieren Sie im Moment auf den Stressor? Wie verhalten Sie sich kurz vor wiederkehrendem Stress? Wollen Sie so bleiben?</label>
+            <textarea id="stressorReaction" placeholder="Beispiel: Im ersten Moment erstarre ich, später bin ich gereizt und unfair zu meiner Familie. Ich will das nicht mehr."></textarea>
+            <div id="stressorReactionFeedback" class="feedback-message hidden"></div>
+
+            <label for="stressorFutureAction">Wie wollen/werden Sie ab heute bei diesem Stressor agieren? Wie wird das auch Ihre Umwelt verbessern?</label>
+            <textarea id="stressorFutureAction" placeholder="Beispiel: Ich versuche, mir bewusst zu machen, dass ich mein Bestes gebe. Ich möchte insgesamt entspannter sein."></textarea>
+            <div id="stressorFutureActionFeedback" class="feedback-message hidden"></div>
 
             <div class="tip">
-                <strong>Tipp:</strong> Dieses systematische Vorgehen hilft, die tatsächliche Bedeutung des Stressors zu hinterfragen und ihn nicht zu überdeuten.  Auch Lösungen lassen sich so leichter finden. 
+                <strong>Fazit ABC-Analyse:</strong> Dieses systematische Vorgehen hilft, die tatsächliche Bedeutung des Stressors zu hinterfragen und nicht zu überdeuten. Auch Lösungen lassen sich so leichter finden.
             </div>
 
             <div class="button-container">
-                <button onclick="nextStep()">Weiter zum nächsten Ansatz</button>
+                <button onclick="nextStep(4)">Weiter zu 'Innerlich aufrecht'</button>
             </div>
         </div>
 
-        <div id="approach-positive" class="section hidden">
-            <h2>3. Ansatz: Innerlich aufrecht</h2>
-            <h3>Verbesserung unserer Wahrnehmung positiver Fakten</h3>
-            <p>Wenn wir unseren inneren Stresszustand verbessern wollen, müssen wir einfach nur aufhören alles schlecht zu reden und anfangen, bewusst das faktisch Positive zu sehen. </p>
-            <p>Durch diese positivere (und realistischere!) Sicht auf unser Leben können Sie Ihren Stresslevel reduzieren und die Synchronisation im Gehirn fördern. </p>
+        <div id="step-5" class="section hidden">
+            <h2>3. Ansatz: Innerlich aufrecht - Positives wahrnehmen</h2>
+            <p>Um Ihren inneren Stresszustand zu verbessern, müssen Sie bewusst das faktisch Positive sehen. Dies fördert eine positivere Sicht auf Ihr Leben und kann Ihren Stresslevel reduzieren.</p>
 
-            <h3>Positives wahrnehmen:</h3>
-            <label for="goodThings">Was läuft alles gut?</label>
+            <label for="goodThings">Was läuft alles gut in Ihrem Leben?</label>
             <textarea id="goodThings" placeholder="Tragen Sie hier ein, was Ihnen Positives auffällt..."></textarea>
+            <div id="goodThingsFeedback" class="feedback-message hidden"></div>
 
-            <label for="friendlyPeople">Wo bemerken Sie Menschen, die freundlich sind?</label>
-            <textarea id="friendlyPeople" placeholder="Denken Sie an Begegnungen, die Ihnen ein Lächeln ins Gesicht zaubern..."></textarea>
-
-            <label for="improvedThings">Was hat sich zum Besseren entwickelt?</label>
-            <textarea id="improvedThings" placeholder="Welche Situationen oder Fähigkeiten haben sich verbessert?"></textarea>
-
-            <h3>Mich stärken:</h3>
-            <label for="myCapabilities">Was kann ich?</label>
-            <textarea id="myCapabilities" placeholder="Nennen Sie Ihre Stärken und Fähigkeiten..."></textarea>
-
-            <label for="overcomeChallenges">Was habe ich bewältigt, obwohl es schwierig war?</label>
-            <textarea id="overcomeChallenges" placeholder="Denken Sie an Herausforderungen, die Sie gemeistert haben..."></textarea>
-
-            <label for="proudOf">Worauf kann ich stolz sein?</label>
-            <textarea id="proudOf" placeholder="Was haben Sie erreicht, das Sie mit Stolz erfüllt?"></textarea>
-
-            <h3>Symptome lindern:</h3>
-            <label for="goodForMe">Was tut mir gut?</label>
-            <textarea id="goodForMe" placeholder="Welche Aktivitäten entspannen Sie?"></textarea>
-
-            <label for="longOverdue">Was habe ich mir eventuell schon lange nicht mehr gegönnt?</label>
-            <textarea id="longOverdue" placeholder="Gibt es etwas, das Sie sich schon lange wünschen?"></textarea>
-
-            <label for="makesMeSmile">Was zaubert mir ein Lächeln ins Gesicht?</label>
-            <textarea id="makesMeSmile" placeholder="Was bringt Sie zum Lachen und macht Sie glücklich?"></textarea>
-
-            <div class="tip">
-                <strong>Tipp:</strong> Hören Sie auf, alles schlechtzureden und fangen Sie an, bewusst das faktisch Positive zu sehen. 
-            </div>
+            <label for="friendlyPeople">Wo bemerken Sie Menschen, die freundlich sind oder Ihnen ein Lächeln ins Gesicht zaubern?</label>
+            <textarea id="friendlyPeople" placeholder="Denken Sie an positive Begegnungen..."></textarea>
+            <div id="friendlyPeopleFeedback" class="feedback-message hidden"></div>
 
             <div class="button-container">
-                <button onclick="nextStep()">Weiter zum nächsten Ansatz</button>
+                <button onclick="nextStep(5)">Weiter</button>
             </div>
         </div>
 
-        <div id="approach-resilience" class="section hidden">
-            <h2>4. Ansatz: Stressresilienzanalyse</h2>
-            <h3>Regelmäßige Überprüfung unserer eigenen Balance</h3>
-            <p>Die Stressresilienzanalyse ist ein beliebtes Instrument zur Feststellung unseres aktuellen Stresslevels.  Sie beinhaltet die vier wichtigsten Konstrukte zur Bewertung der Ausgeglichenheit unseres Lebens. </p>
-            <p>Da wir uns weiterentwickeln, lohnt es sich den Fragebogen immer mal wieder aus der aktuellen Sicht zu beurteilen. </p>
+        <div id="step-6" class="section hidden">
+            <h2>3. Ansatz: Innerlich aufrecht - Mich stärken</h2>
+            <p>Erinnern Sie sich an Ihre Stärken und Erfolge. Das stärkt Ihr Selbstvertrauen und Ihre innere Widerstandsfähigkeit.</p>
 
-            <h3>Vitalität (Lebenskraft)</h3>
-            <p>Definition: Altersgerechte Lebensgestaltung im Jahresrhythmus, Rhythmus von Anspannung und Entspannung, gesunde Lebensform, körperliche Fitness, Urlaub und Freizeit usw. </p>
-            <p>Faktoren für Verlust: Körperliche Erkrankungen, Wetteränderungen und dunkle Jahreszeiten, erschöpfende Lebensweise, gestörter Tag-Nacht-Rhythmus usw. </p>
+            <label for="myCapabilities">Was können Sie gut? Welche Ihrer Fähigkeiten schätzen Sie besonders?</label>
+            <textarea id="myCapabilities" placeholder="Nennen Sie Ihre Stärken und Talente..."></textarea>
+            <div id="myCapabilitiesFeedback" class="feedback-message hidden"></div>
+
+            <label for="overcomeChallenges">Was haben Sie in Ihrem Leben bereits bewältigt, obwohl es schwierig war?</label>
+            <textarea id="overcomeChallenges" placeholder="Denken Sie an gemeisterte Herausforderungen..."></textarea>
+            <div id="overcomeChallengesFeedback" class="feedback-message hidden"></div>
+
+            <div class="button-container">
+                <button onclick="nextStep(6)">Weiter</button>
+            </div>
+        </div>
+
+        <div id="step-7" class="section hidden">
+            <h2>3. Ansatz: Innerlich aufrecht - Symptome lindern</h2>
+            <p>Was tut Ihnen gut und bringt Ihnen Entspannung und Freude? Schenken Sie diesen Dingen bewusst Raum in Ihrem Alltag.</p>
+
+            <label for="goodForMe">Was tut Ihnen gut? Welche Aktivitäten entspannen Sie oder geben Ihnen neue Energie?</label>
+            <textarea id="goodForMe" placeholder="Was hilft Ihnen, sich zu erholen?"></textarea>
+            <div id="goodForMeFeedback" class="feedback-message hidden"></div>
+
+            <label for="makesMeSmile">Was zaubert Ihnen ein Lächeln ins Gesicht? Was bringt Sie zum Lachen und macht Sie glücklich?</label>
+            <textarea id="makesMeSmile" placeholder="Denken Sie an Dinge, die Ihnen Freude bereiten..."></textarea>
+            <div id="makesMeSmileFeedback" class="feedback-message hidden"></div>
+
+            <div class="tip">
+                <strong>Fazit 'Innerlich aufrecht':</strong> Indem Sie bewusst das Positive wahrnehmen und sich auf Ihre Stärken konzentrieren, verändern Sie Ihre Perspektive und reduzieren Ihren Stresslevel.
+            </div>
+
+            <div class="button-container">
+                <button onclick="nextStep(7)">Weiter zur Stressresilienzanalyse</button>
+            </div>
+        </div>
+
+        <div id="step-8" class="section hidden">
+            <h2>4. Ansatz: Stressresilienzanalyse - Vitalität</h2>
+            <p>Die Stressresilienzanalyse hilft Ihnen, Ihren aktuellen Stresslevel und Ihre Ausgeglichenheit zu bewerten. Wir beginnen mit Ihrer Vitalität (Lebenskraft).</p>
+            <p><strong>Definition Vitalität:</strong> Altersgerechte Lebensgestaltung, Rhythmus von Anspannung und Entspannung, gesunde Lebensform, körperliche Fitness, Urlaub und Freizeit.</p>
+            <p><strong>Faktoren für Verlust:</strong> Körperliche Erkrankungen, Wetteränderungen, erschöpfende Lebensweise, gestörter Tag-Nacht-Rhythmus.</p>
+
             <label for="vitalityLevel">Wie würden Sie Ihre Vitalität einschätzen?</label>
             <input type="range" id="vitalityLevel" min="0" max="10" value="5">
             <div class="range-labels"><span>Wenig</span><span>Viel</span></div>
             <p>Aktueller Wert: <span id="vitalityLevelValue">5</span></p>
-            <label for="vitalityReason">Begründung für Ihre Bewertung der Vitalität:</label>
+            <div id="vitalityLevelFeedback" class="feedback-message hidden"></div>
+
+            <label for="vitalityReason">Begründen Sie Ihre Bewertung der Vitalität:</label>
             <textarea id="vitalityReason"></textarea>
-            <label for="vitalityIdeas">Ideen zur Erhaltung/Verbesserung Ihrer Vitalität:</label>
+            <label for="vitalityIdeas">Welche Ideen haben Sie zur Erhaltung/Verbesserung Ihrer Vitalität?</label>
             <textarea id="vitalityIdeas"></textarea>
 
-            <h3>Redundanz / Gleichförmigkeit</h3>
-            <p>Definition: Herstellen von Vertrautheit (das innere Zuhause), Streckung zeitlicher Abläufe „in der Ruhe liegt die Kraft“, Entspannungstechniken / Meditation, kurzfristige Erleichterungen. </p>
-            <p>Faktoren für Verlust: Bei häufigem Wechsel der Umgebung oder der Lebensumstände, zu viel Neuem auf einmal, zu wenig Gewohntem bzw. Vertrautem. </p>
+            <div class="button-container">
+                <button onclick="nextStep(8)">Weiter zu Redundanz</button>
+            </div>
+        </div>
+
+        <div id="step-9" class="section hidden">
+            <h2>4. Ansatz: Stressresilienzanalyse - Redundanz / Gleichförmigkeit</h2>
+            <p><strong>Definition Redundanz:</strong> Herstellen von Vertrautheit, Streckung zeitlicher Abläufe ("in der Ruhe liegt die Kraft"), Entspannungstechniken / Meditation, kurzfristige Erleichterungen.</p>
+            <p><strong>Faktoren für Verlust:</strong> Häufiger Wechsel der Umgebung oder Lebensumstände, zu viel Neues auf einmal, zu wenig Gewohntes bzw. Vertrautes.</p>
+
             <label for="redundancyLevel">Wie würden Sie Ihre Redundanz / Gleichförmigkeit einschätzen?</label>
             <input type="range" id="redundancyLevel" min="0" max="10" value="5">
             <div class="range-labels"><span>Wenig</span><span>Viel</span></div>
             <p>Aktueller Wert: <span id="redundancyLevelValue">5</span></p>
-            <label for="redundancyReason">Begründung für Ihre Bewertung der Redundanz:</label>
+            <div id="redundancyLevelFeedback" class="feedback-message hidden"></div>
+
+            <label for="redundancyReason">Begründen Sie Ihre Bewertung der Redundanz:</label>
             <textarea id="redundancyReason"></textarea>
-            <label for="redundancyIdeas">Ideen zur Erhaltung/Verbesserung Ihrer Redundanz:</label>
+            <label for="redundancyIdeas">Welche Ideen haben Sie zur Erhaltung/Verbesserung Ihrer Redundanz?</label>
             <textarea id="redundancyIdeas"></textarea>
 
-            <h3>Kompetenz</h3>
-            <p>Definition: Neugier- und Lernhaltung, gesunder Umgang mit Erfolg und Misserfolg, aktive Kommunikation / Fragen stellen. </p>
-            <p>Faktoren für Verlust: Wachsende Anforderungen, mehrere Misserfolge in einem kurzen Zeitraum, ungünstige Arbeitsbedingungen, Führungs- und Managementfehler, die zur übermäßigen Belastung der MA führen. </p>
+            <div class="button-container">
+                <button onclick="nextStep(9)">Weiter zu Kompetenz</button>
+            </div>
+        </div>
+
+        <div id="step-10" class="section hidden">
+            <h2>4. Ansatz: Stressresilienzanalyse - Kompetenz</h2>
+            <p><strong>Definition Kompetenz:</strong> Neugier- und Lernhaltung, gesunder Umgang mit Erfolg und Misserfolg, aktive Kommunikation / Fragen stellen.</p>
+            <p><strong>Faktoren für Verlust:</strong> Wachsende Anforderungen, mehrere Misserfolge in kurzer Zeit, ungünstige Arbeitsbedingungen, Führungsfehler.</p>
+
             <label for="competenceLevel">Wie würden Sie Ihr Kompetenzerleben einschätzen?</label>
             <input type="range" id="competenceLevel" min="0" max="10" value="5">
             <div class="range-labels"><span>Wenig</span><span>Viel</span></div>
             <p>Aktueller Wert: <span id="competenceLevelValue">5</span></p>
-            <label for="competenceReason">Begründung für Ihre Bewertung der Kompetenz:</label>
+            <div id="competenceLevelFeedback" class="feedback-message hidden"></div>
+
+            <label for="competenceReason">Begründen Sie Ihre Bewertung der Kompetenz:</label>
             <textarea id="competenceReason"></textarea>
-            <label for="competenceIdeas">Ideen zur Erhaltung/Verbesserung Ihres Kompetenzerlebens:</label>
+            <label for="competenceIdeas">Welche Ideen haben Sie zur Erhaltung/Verbesserung Ihres Kompetenzerlebens?</label>
             <textarea id="competenceIdeas"></textarea>
 
-            <h3>Sinn</h3>
-            <p>Definition: Ordnung in der Seele halten, Gewissensprüfung, emotionale Bindungen, Liebe zu etwas..., Weltoffenheit, Lebensphilosophie, Religion. </p>
-            <p>Faktoren für Verlust: Verletzung oder gar Zerstörung des Wertesystems der „Aufgabe der Ideale der Jugend“, Wechsel des gesellschaftlichen Systems, persönliche Verluste. </p>
+            <div class="button-container">
+                <button onclick="nextStep(10)">Weiter zu Sinn</button>
+            </div>
+        </div>
+
+        <div id="step-11" class="section hidden">
+            <h2>4. Ansatz: Stressresilienzanalyse - Sinn</h2>
+            <p><strong>Definition Sinn:</strong> Ordnung in der Seele halten, Gewissensprüfung, emotionale Bindungen, Liebe zu etwas..., Weltoffenheit, Lebensphilosophie, Religion.</p>
+            <p><strong>Faktoren für Verlust:</strong> Verletzung des Wertesystems, Wechsel des gesellschaftlichen Systems, persönliche Verluste.</p>
+
             <label for="meaningLevel">Wie würden Sie den Sinn in Ihrem Leben einschätzen?</label>
             <input type="range" id="meaningLevel" min="0" max="10" value="5">
             <div class="range-labels"><span>Wenig</span><span>Viel</span></div>
             <p>Aktueller Wert: <span id="meaningLevelValue">5</span></p>
-            <label for="meaningReason">Begründung für Ihre Bewertung des Sinns:</label>
+            <div id="meaningLevelFeedback" class="feedback-message hidden"></div>
+
+            <label for="meaningReason">Begründen Sie Ihre Bewertung des Sinns:</label>
             <textarea id="meaningReason"></textarea>
-            <label for="meaningIdeas">Ideen zur Erhaltung/Wiederherstellung des Sinns in Ihrem Leben:</label>
+            <label for="meaningIdeas">Welche Ideen haben Sie zur Erhaltung/Wiederherstellung des Sinns in Ihrem Leben?</label>
             <textarea id="meaningIdeas"></textarea>
 
             <div class="tip">
-                <strong>Tipp:</strong> Füllen Sie den Fragebogen immer mal wieder aus, um Ihre aktuelle Sichtweise, Situation und Gemütslage zu erfassen und sich selbst dabei ehrlich und freundlich den Spiegel vorzuhalten. 
+                <strong>Fazit Resilienzanalyse:</strong> Füllen Sie diesen Fragebogen immer mal wieder aus, um Ihre aktuelle Sichtweise, Situation und Gemütslage zu erfassen und sich selbst dabei ehrlich und freundlich den Spiegel vorzuhalten.
             </div>
 
             <div class="button-container">
-                <button onclick="nextStep()">Weiter zum Abschluss</button>
+                <button onclick="nextStep(11)">Weiter zum Abschluss</button>
             </div>
         </div>
 
-        <div id="step-final" class="section hidden">
+        <div id="step-12" class="section hidden">
             <h2>Von der Anspannung zu mehr Entspannung – auch im Straßenverkehr!</h2>
-            <p>Wenn Sie die Techniken nutzen, sollten Sie die folgenden Aussagen mit einem guten Gewissen bejahen können – wenn nicht, sollten Sie sich dringend auf die Reise machen: </p>
+            <p>Wenn Sie die Techniken nutzen, sollten Sie die folgenden Aussagen mit einem guten Gewissen bejahen können – wenn nicht, sollten Sie sich dringend auf die Reise machen:</p>
 
             <div class="question-block">
                 <p>1.) Wenn ich mich auf die Straße begebe, konzentriere ich mich auf diese Tätigkeit und lasse mich nicht jagen:</p>
                 <div class="radio-group">
-                    <label><input type="radio" name="trafficConcentration" value="yes"> Ja </label>
-                    <label><input type="radio" name="trafficConcentration" value="no"> Nein </label>
+                    <label><input type="radio" name="trafficConcentration" value="yes" onchange="showTrafficFeedback('trafficConcentration')"> Ja</label>
+                    <label><input type="radio" name="trafficConcentration" value="no" onchange="showTrafficFeedback('trafficConcentration')"> Nein</label>
                 </div>
                 <label for="trafficConcentrationReason">Warum diese Antwort:</label>
                 <textarea id="trafficConcentrationReason"></textarea>
+                <div id="trafficConcentrationFeedback" class="feedback-message hidden"></div>
             </div>
 
             <div class="question-block">
                 <p>2.) Egal, welches Verkehrsmittel ich benutze, ich mache mir bewusst, welche Gefahr von mir ausgeht und bleibe rücksichtsvoll:</p>
                 <div class="radio-group">
-                    <label><input type="radio" name="trafficConsideration" value="yes"> Ja </label>
-                    <label><input type="radio" name="trafficConsideration" value="no"> Nein </label>
+                    <label><input type="radio" name="trafficConsideration" value="yes" onchange="showTrafficFeedback('trafficConsideration')"> Ja</label>
+                    <label><input type="radio" name="trafficConsideration" value="no" onchange="showTrafficFeedback('trafficConsideration')"> Nein</label>
                 </div>
                 <label for="trafficConsiderationReason">Warum diese Antwort:</label>
                 <textarea id="trafficConsiderationReason"></textarea>
+                <div id="trafficConsiderationFeedback" class="feedback-message hidden"></div>
             </div>
 
             <div class="question-block">
                 <p>3.) Ich versetze mich immer wieder in die Wahrnehmung und Situation der anderen Verkehrsteilnehmer und verbessere dann mein Verhalten für mehr Sicherheit:</p>
                 <div class="radio-group">
-                    <label><input type="radio" name="trafficEmpathy" value="yes"> Ja </label>
-                    <label><input type="radio" name="trafficEmpathy" value="no"> Nein </label>
+                    <label><input type="radio" name="trafficEmpathy" value="yes" onchange="showTrafficFeedback('trafficEmpathy')"> Ja</label>
+                    <label><input type="radio" name="trafficEmpathy" value="no" onchange="showTrafficFeedback('trafficEmpathy')"> Nein</label>
                 </div>
                 <label for="trafficEmpathyReason">Warum diese Antwort:</label>
                 <textarea id="trafficEmpathyReason"></textarea>
+                <div id="trafficEmpathyFeedback" class="feedback-message hidden"></div>
             </div>
 
             <div class="tip">
-                <strong>Glückwunsch!</strong> Sie haben alle Ansätze durchlaufen. Denken Sie daran: Das Gehirn ist neuroplastisch. Muster, die sich über einen langen Zeitraum gebildet haben, können nicht innerhalb weniger Tage gelöst werden.  Bleiben Sie geduldig mit sich selbst und probieren Sie die Ansätze regelmäßig aus. 
+                <strong>Glückwunsch!</strong> Sie haben alle Ansätze durchlaufen. Denken Sie daran: Das Gehirn ist neuroplastisch. Muster, die sich über einen langen Zeitraum gebildet haben, können nicht innerhalb weniger Tage gelöst werden. Bleiben Sie geduldig mit sich selbst und probieren Sie die Ansätze regelmäßig aus.
             </div>
 
-            <h2>Ich wünsche viel Erfolg und ein berechtigt gutes Gewissen! </h2>
+            <h2>Ich wünsche viel Erfolg und ein berechtigt gutes Gewissen!</h2>
             <p>by Stefanie K. Yilmaz - stefanie@s-k-yilmaz.de</p>
 
             <div class="button-container">
@@ -409,40 +450,82 @@
     </div>
 
     <script>
-        let currentStep = 0;
+        let currentStepIndex = 0;
         const steps = [
-            'step-0',
-            'step-1',
-            'approach-acceptance',
-            'approach-abc',
-            'approach-positive',
-            'approach-resilience',
-            'step-final'
+            'step-0', 'step-1', 'step-2', 'step-3', 'step-4',
+            'step-5', 'step-6', 'step-7', 'step-8', 'step-9',
+            'step-10', 'step-11', 'step-12'
         ];
 
-        // Initialisiere den Stresslevel-Anzeiger
+        // Initialisiere die Schieberegler und deren Werteanzeige
         document.addEventListener('DOMContentLoaded', () => {
-            const stressLevelSlider = document.getElementById('currentStressLevel');
-            const stressLevelValueSpan = document.getElementById('currentStressLevelValue');
+            const sliders = [
+                { id: 'currentStressLevel', feedbackId: 'stressLevelFeedback', type: 'stress' },
+                { id: 'vitalityLevel', feedbackId: 'vitalityLevelFeedback', type: 'resilience' },
+                { id: 'redundancyLevel', feedbackId: 'redundancyLevelFeedback', type: 'resilience' },
+                { id: 'competenceLevel', feedbackId: 'competenceLevelFeedback', type: 'resilience' },
+                { id: 'meaningLevel', feedbackId: 'meaningLevelFeedback', type: 'resilience' }
+            ];
 
-            if (stressLevelSlider && stressLevelValueSpan) {
-                stressLevelValueSpan.textContent = stressLevelSlider.value;
-                stressLevelSlider.oninput = function() {
-                    stressLevelValueSpan.textContent = this.value;
-                };
-            }
+            sliders.forEach(s => {
+                const slider = document.getElementById(s.id);
+                const valueSpan = document.getElementById(`${s.id}Value`);
+                const feedbackDiv = document.getElementById(s.feedbackId);
 
-            // Initialisiere alle Resilienz-Schieberegler
-            ['vitality', 'redundancy', 'competence', 'meaning'].forEach(id => {
-                const slider = document.getElementById(`${id}Level`);
-                const valueSpan = document.getElementById(`${id}LevelValue`);
                 if (slider && valueSpan) {
-                    valueSpan.textContent = slider.value;
+                    valueSpan.textContent = slider.value; // Initialwert setzen
+
                     slider.oninput = function() {
                         valueSpan.textContent = this.value;
                     };
+                    slider.onchange = function() { // Trigger Feedback bei Änderung
+                        giveSliderFeedback(this.value, s.type, feedbackDiv);
+                    };
                 }
             });
+
+            // Initialisiere Textarea-Feedback bei Eingabe
+            const textareas = [
+                { id: 'feelingsToExplore', feedbackId: 'feelingsToExploreFeedback', type: 'text' },
+                { id: 'stressorConcrete', feedbackId: 'stressorConcreteFeedback', type: 'text' },
+                { id: 'stressorAvoidReduce', feedbackId: 'stressorAvoidReduceFeedback', type: 'text' },
+                { id: 'stressorThoughts', feedbackId: 'stressorThoughtsFeedback', type: 'text' },
+                { id: 'stressorRethink', feedbackId: 'stressorRethinkFeedback', type: 'text' },
+                { id: 'stressorReaction', feedbackId: 'stressorReactionFeedback', type: 'text' },
+                { id: 'stressorFutureAction', feedbackId: 'stressorFutureActionFeedback', type: 'text' },
+                { id: 'goodThings', feedbackId: 'goodThingsFeedback', type: 'text' },
+                { id: 'friendlyPeople', feedbackId: 'friendlyPeopleFeedback', type: 'text' },
+                { id: 'myCapabilities', feedbackId: 'myCapabilitiesFeedback', type: 'text' },
+                { id: 'overcomeChallenges', feedbackId: 'overcomeChallengesFeedback', type: 'text' },
+                { id: 'goodForMe', feedbackId: 'goodForMeFeedback', type: 'text' },
+                { id: 'makesMeSmile', feedbackId: 'makesMeSmileFeedback', type: 'text' },
+                { id: 'vitalityReason', feedbackId: 'vitalityReasonFeedback', type: 'text' },
+                { id: 'vitalityIdeas', feedbackId: 'vitalityIdeasFeedback', type: 'text' },
+                { id: 'redundancyReason', feedbackId: 'redundancyReasonFeedback', type: 'text' },
+                { id: 'redundancyIdeas', feedbackId: 'redundancyIdeasFeedback', type: 'text' },
+                { id: 'competenceReason', feedbackId: 'competenceReasonFeedback', type: 'text' },
+                { id: 'competenceIdeas', feedbackId: 'competenceIdeasFeedback', type: 'text' },
+                { id: 'meaningReason', feedbackId: 'meaningReasonFeedback', type: 'text' },
+                { id: 'meaningIdeas', feedbackId: 'meaningIdeasFeedback', type: 'text' }
+            ];
+
+            textareas.forEach(t => {
+                const textarea = document.getElementById(t.id);
+                const feedbackDiv = document.getElementById(t.feedbackId);
+                if (textarea && feedbackDiv) {
+                    textarea.oninput = function() {
+                        giveTextFeedback(this.value, feedbackDiv);
+                    };
+                }
+            });
+
+            // Initialisiere Radio-Button-Feedback
+            document.querySelectorAll('input[name="oldFeelings"]').forEach(radio => {
+                radio.onchange = function() {
+                    giveRadioFeedback(this.value, 'oldFeelingsFeedback');
+                };
+            });
+
         });
 
         function showStep(stepId) {
@@ -453,60 +536,107 @@
             window.scrollTo(0, 0); // Nach oben scrollen beim Schrittwechsel
         }
 
-        function nextStep() {
-            currentStep++;
-            if (currentStep < steps.length) {
-                showStep(steps[currentStep]);
+        function nextStep(currentStep) {
+            // Optional: Validierung der Eingaben im aktuellen Schritt hier einfügen
+            // Wenn gültig, zum nächsten Schritt:
+            currentStepIndex++;
+            if (currentStepIndex < steps.length) {
+                showStep(steps[currentStepIndex]);
             } else {
-                // Should not happen if logic is correct, but as fallback
-                showStep('step-final');
+                showStep('step-final'); // Fallback, sollte nicht passieren
             }
-        }
-
-        function handleApproachSelection() {
-            const selectElement = document.getElementById('chooseApproach');
-            const selectedValue = selectElement.value;
-            // Setzt den 'currentStep' basierend auf der Auswahl, damit 'nextStep' richtig weitermacht
-            switch (selectedValue) {
-                case 'all':
-                    currentStep = 1; // Startet mit der Auswahl, nextStep() geht zu acceptance
-                    break;
-                case 'acceptance':
-                    currentStep = 2; // Direkt zum Akzeptanz-Ansatz
-                    break;
-                case 'abc':
-                    currentStep = 3; // Direkt zum ABC-Ansatz
-                    break;
-                case 'positive':
-                    currentStep = 4; // Direkt zum Positiv-Ansatz
-                    break;
-                case 'resilience':
-                    currentStep = 5; // Direkt zum Resilienz-Ansatz
-                    break;
-            }
-        }
-
-        function startSelectedApproach() {
-            // Nach der Auswahl, zum nächsten Schritt wechseln, der dann der gewählte Ansatz ist
-            nextStep();
         }
 
         function restartQuiz() {
-            currentStep = 0;
-            showStep(steps[currentStep]);
-            // Optional: Formularfelder zurücksetzen, falls gewünscht
-            document.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+            currentStepIndex = 0;
+            showStep(steps[currentStepIndex]);
+
+            // Formularfelder zurücksetzen und Feedback verbergen
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.value = '';
+                const feedbackDiv = document.getElementById(`${textarea.id}Feedback`);
+                if (feedbackDiv) feedbackDiv.classList.add('hidden');
+            });
             document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
-            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+                const feedbackDivId = `${radio.name}Feedback`;
+                const feedbackDiv = document.getElementById(feedbackDivId);
+                if (feedbackDiv) feedbackDiv.classList.add('hidden');
+            });
             document.querySelectorAll('input[type="range"]').forEach(range => {
                 range.value = 5; // Setze Schieberegler auf Standardwert
                 range.dispatchEvent(new Event('input')); // Trigger update for display value
+                const feedbackDivId = `${range.id}Feedback`;
+                const feedbackDiv = document.getElementById(feedbackDivId);
+                if (feedbackDiv) feedbackDiv.classList.add('hidden');
             });
-            document.getElementById('chooseApproach').value = 'all'; // Setze Auswahl zurück
+        }
+
+        // --- Feedback-Funktionen ---
+
+        function giveSliderFeedback(value, type, feedbackDiv) {
+            feedbackDiv.classList.remove('hidden');
+            let message = '';
+            const numValue = parseInt(value);
+
+            if (type === 'stress') {
+                if (numValue <= 3) {
+                    message = 'Das klingt nach einer guten Balance! Achten Sie darauf, diese auch zu halten.';
+                } else if (numValue <= 7) {
+                    message = 'Ein mittleres Stresslevel ist normal. Die folgenden Ansätze können Ihnen helfen, Ihre Balance zu stärken.';
+                } else {
+                    message = 'Ein hohes Stresslevel kann belastend sein. Es ist großartig, dass Sie sich dem Thema widmen. Die folgenden Ansätze bieten Ihnen konkrete Hilfestellungen.';
+                }
+            } else if (type === 'resilience') { // Für Vitalität, Redundanz, Kompetenz, Sinn
+                if (numValue <= 3) {
+                    message = `Ihre aktuelle Einschätzung deutet darauf hin, dass hier Handlungsbedarf besteht. Welche kleinen Schritte könnten Sie unternehmen, um diesen Bereich zu stärken?`;
+                } else if (numValue <= 7) {
+                    message = `Dieser Bereich scheint in Balance zu sein. Überlegen Sie, was Sie bereits gut machen, um dies beizubehalten!`;
+                } else {
+                    message = `Das ist ein hervorragender Wert! Nutzen Sie Ihre Stärken in diesem Bereich bewusst, um andere Aspekte zu unterstützen.`;
+                }
+            }
+            feedbackDiv.textContent = message;
+        }
+
+        function giveTextFeedback(text, feedbackDiv) {
+            if (text.trim().length > 10) { // Zeigt Feedback nur, wenn etwas Relevantes eingegeben wurde
+                feedbackDiv.classList.remove('hidden');
+                feedbackDiv.textContent = 'Es ist wichtig, sich mit diesen Gedanken auseinanderzusetzen. Gut, dass Sie dies reflektieren!';
+            } else {
+                feedbackDiv.classList.add('hidden');
+            }
+        }
+
+        function giveRadioFeedback(value, feedbackDivId) {
+            const feedbackDiv = document.getElementById(feedbackDivId);
+            feedbackDiv.classList.remove('hidden');
+            if (feedbackDivId === 'oldFeelingsFeedback') {
+                if (value === 'yes') {
+                    feedbackDiv.textContent = 'Viele Emotionen haben "alte" Wurzeln. Das Erkennen hilft, die aktuelle Stärke dieser Gefühle besser zu verstehen.';
+                } else {
+                    feedbackDiv.textContent = 'Wenn Ihre Gefühle vorwiegend aktuell sind, ist das ein guter Ausgangspunkt für gezielte Lösungen.';
+                }
+            }
+        }
+
+        function showTrafficFeedback(name) {
+            const selectedValue = document.querySelector(`input[name="${name}"]:checked`).value;
+            const feedbackDiv = document.getElementById(`${name}Feedback`);
+            feedbackDiv.classList.remove('hidden');
+
+            let message = '';
+            if (selectedValue === 'yes') {
+                message = 'Das ist ein Zeichen hoher Achtsamkeit und Verantwortung im Straßenverkehr! Behalten Sie diese Konzentration bei.';
+            } else {
+                message = 'Es ist ehrlich, das zuzugeben. Welche Gefühle oder Umstände führen dazu, dass Sie sich nicht so verhalten können? Denken Sie daran, wie die Ansätze aus diesem Leitfaden (z.B. ABC-Analyse) Ihnen hier helfen könnten.';
+            }
+            feedbackDiv.textContent = message;
         }
 
         // Starte mit dem ersten Schritt
-        showStep(steps[currentStep]);
+        showStep(steps[currentStepIndex]);
     </script>
 </body>
 </html>
