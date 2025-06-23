@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflexionstool: Führungskompetenzen Selbsteinschätzung</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Allgemeine Einstellungen für den Body */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        /* Container für den gesamten Test, um ihn zu zentrieren und zu stylen */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #1a4e8a;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        .intro {
+            background-color: #e6eff9;
+            border-left: 5px solid #1a4e8a;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 5px;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+        .question-block {
+            border: 1px solid #cddff5;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .question-text {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+            color: #0056b3;
+            font-weight: 600;
+        }
+        .options-group label {
+            display: block;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            font-size: 1em;
+            line-height: 1.4;
+            color: #555;
+        }
+        .options-group label:hover {
+            background-color: #f5f9ff;
+            border-color: #a3c1e8;
+        }
+        .options-group input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2); /* Vergrößert die Radio-Buttons */
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        .options-group input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #1a4e8a;
+        }
+        .options-group label.selected {
+            background-color: #e6eff9;
+            border-color: #1a4e8a;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #28a745; /* Grüne Farbe für den Button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 30px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #result {
+            display: none; /* Standardmäßig ausgeblendet */
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #ccc;
+        }
+        #result h2 {
+            text-align: center;
+            color: #1a4e8a;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        #result-content {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            line-height: 1.7;
+            font-size: 1.1em;
+        }
+        .result-category h3 {
+            color: #0056b3;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .result-category p {
+            margin-bottom: 10px;
+        }
+        .result-category ul {
+            list-style-type: disc;
+            margin-left: 25px;
+            padding-left: 0;
+        }
+        .result-category li {
+            margin-bottom: 8px;
+        }
+        /* Style for the Chart, if still used */
+        #myChart {
+            max-width: 100%;
+            height: 400px;
+            margin-top: 30px;
+            background-color: #fff; /* White background for chart canvas */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reflexionstool: Führungskompetenzen Selbsteinschätzung</h1>
+
+        <div class="intro">
+         
+<p>Dieses Tool ist speziell dafür konzipiert, Ihnen nach Ihrem ersten Führungsseminar eine fundierte Selbsteinschätzung Ihrer aktuellen Führungskompetenzen zu ermöglichen.</p> 
+
+<p>Ihre Antworten helfen Ihnen dabei, Ihre Stärken zu erkennen und potenzielle Entwicklungsfelder in den Bereichen Kommunikation, Delegation, Empathie, Verantwortungsübernahme und Kompetenzentwicklung zu identifizieren. Nehmen Sie sich einen Moment Zeit, um jede Frage ehrlich zu beantworten. </p>
+
+<p>Ihre Teilnahme ist 100% anonym und die Daten werden nicht gespeichert.</p>
+        </div>
+
+        <form id="leadershipAssessmentForm">
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Bei unerwarteten Problemen im Projekt nehme ich eine aktive Rolle ein, um Lösungen zu finden.</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q1" value="4"> <span>Ich ergreife sofort die Initiative und arbeite proaktiv an der Lösungsfindung mit.</span></label>
+                    <label><input type="radio" name="q1" value="3"> <span>Ich analysiere die Situation und schlage konkrete Schritte zur Lösung vor.</span></label>
+                    <label><input type="radio" name="q1" value="2"> <span>Ich warte ab, ob andere Teammitglieder das Problem adressieren, biete aber meine Unterstützung an.</span></label>
+                    <label><input type="radio" name="q1" value="1"> <span>Ich überlasse die Problemlösung in der Regel den zuständigen Teammitgliedern.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Wenn es darum geht, Entscheidungen zu treffen, die mein Team betreffen, beziehe ich...</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q2" value="4"> <span>...das Team aktiv ein und wir treffen Entscheidungen gemeinsam, wann immer möglich.</span></label>
+                    <label><input type="radio" name="q2" value="3"> <span>...wichtige Meinungen ein und treffe dann die finale Entscheidung.</span></label>
+                    <label><input type="radio" name="q2" value="2"> <span>...die Informationen ein, treffe die Entscheidung aber meist allein.</span></label>
+                    <label><input type="radio" name="q2" value="1"> <span>...oft Entscheidungen eigenständig, da dies effizienter ist.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Wenn ich meinem Team wichtige Informationen oder Anweisungen gebe, achte ich darauf, dass...</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q3" value="4"> <span>...die Kommunikation immer klar, prägnant und für jeden verständlich ist.</span></label>
+                    <label><input type="radio" name="q3" value="3"> <span>...die Kernbotschaft deutlich wird und ich für Rückfragen zur Verfügung stehe.</span></label>
+                    <label><input type="radio" name="q3" value="2"> <span>...die Informationen verteilt werden, und ich gehe davon aus, dass sie verstanden werden.</span></label>
+                    <label><input type="radio" name="q3" value="1"> <span>...ich die Informationen gebe und erwarte, dass sich die Mitarbeiter selbständig informieren.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Im Umgang mit Kritik oder Feedback von meinen Teammitgliedern oder Kollegen...</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q4" value="4"> <span>...höre ich aktiv zu, frage nach, um es zu verstehen und sehe es als Chance zur Verbesserung.</span></label>
+                    <label><input type="radio" name="q4" value="3"> <span>...nehme ich es zur Kenntnis und überlege, ob es für mich relevant ist.</span></label>
+                    <label><input type="radio" name="q4" value="2"> <span>...verteidige ich oft meinen Standpunkt, wenn ich mich missverstanden fühle.</span></label>
+                    <label><input type="radio" name="q4" value="1"> <span>...fällt es mir schwer, Kritik anzunehmen und ich reagiere eher abweisend.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Wenn ich Aufgaben an mein Team delegiere, sorge ich dafür, dass die Mitarbeitenden...</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q5" value="4"> <span>...nicht nur die Aufgabe, sondern auch den Kontext und die Ziele dahinter verstehen.</span></label>
+                    <label><input type="radio" name="q5" value="3"> <span>...klare Anweisungen erhalten, um die Aufgabe erfolgreich zu bewältigen.</span></label>
+                    <label><input type="radio" name="q5" value="2"> <span>...die nötigen Informationen bekommen und eigenverantwortlich vorgehen können.</span></label>
+                    <label><input type="radio" name="q5" value="1"> <span>...die Aufgabe erhalten und ich mich dann anderen Themen zuwende.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q6">
+                <p class="question-text">6. Nach der Delegation einer wichtigen Aufgabe...</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q6" value="4"> <span>...lasse ich dem Teammitglied ausreichend Freiraum, um die Aufgabe eigenständig zu lösen, biete aber jederzeit Unterstützung an.</span></label>
+                    <label><input type="radio" name="q6" value="3"> <span>...vereinbare ich regelmäßige Updates, um den Fortschritt zu verfolgen und bei Bedarf einzugreifen.</span></label>
+                    <label><input type="radio" name="q6" value="2"> <span>...warte ich ab, bis das Ergebnis vorliegt, es sei denn, es treten offensichtliche Probleme auf.</span></label>
+                    <label><input type="radio" name="q6" value="1"> <span>...überprüfe ich Details und gebe detailliertes Feedback, um sicherzustellen, dass alles korrekt läuft.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Ein Teammitglied wirkt gestresst oder überfordert. Meine Reaktion ist typischerweise:</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q7" value="4"> <span>Ich spreche das Thema sensibel an, um die Belastung zu verstehen und gemeinsam nach Entlastungsmöglichkeiten zu suchen.</span></label>
+                    <label><input type="radio" name="q7" value="3"> <span>Ich biete Unterstützung an und frage, ob ich helfen kann, die Situation zu verbessern.</span></label>
+                    <label><input type="radio" name="q7" value="2"> <span>Ich beobachte die Situation, in der Hoffnung, dass sich die Lage von selbst entspannt.</span></label>
+                    <label><input type="radio" name="q7" value="1"> <span>Ich gehe davon aus, dass jeder seine eigenen Probleme lösen muss.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Ich bemühe mich, die Perspektiven und Gefühle meiner Teammitglieder zu verstehen, auch wenn sie von meinen eigenen abweichen.</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q8" value="4"> <span>Ja, ich versuche stets, mich in andere hineinzuversetzen und ihre Sichtweisen zu berücksichtigen.</span></label>
+                    <label><input type="radio" name="q8" value="3"> <span>Meistens ja, besonders wenn es die Zusammenarbeit oder die Ergebnisse beeinflusst.</span></label>
+                    <label><input type="radio" name="q8" value="2"> <span>Manchmal, aber meine Hauptpriorität ist die Aufgabenerfüllung.</span></label>
+                    <label><input type="radio" name="q8" value="1"> <span>Selten, da ich mich auf Fakten und objektive Bewertungen konzentriere.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Um die Fähigkeiten meines Teams zu erweitern, fördere ich...</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q9" value="4"> <span>...gezielt individuelle Stärken und ermögliche Weiterbildungen, die zum Wachstum des Einzelnen und des Teams beitragen.</span></label>
+                    <label><input type="radio" name="q9" value="3"> <span>...das Lernen "on the job" durch neue Aufgaben und die Weitergabe von Wissen im Team.</span></label>
+                    <label><input type="radio" name="q9" value="2"> <span>...Weiterbildungen, wenn es direkte Anforderungen oder Budget dafür gibt.</span></label>
+                    <label><input type="radio" name="q9" value="1"> <span>...die Entwicklung meiner Teammitglieder primär durch die Erwartung, dass sie ihre Aufgaben erfüllen.</span></label>
+                </div>
+            </div>
+
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Nach einem wichtigen Projekt reflektiere ich mit meinem Team, was gut lief und wo wir uns verbessern können.</p>
+                <div class="options-group">
+                    <label><input type="radio" name="q10" value="4"> <span>Ja, ich initiiere regelmäßig Retrospektiven, um bewusst aus Erfahrungen zu lernen und Prozesse zu optimieren.</span></label>
+                    <label><input type="radio" name="q10" value="3"> <span>Meistens ja, wir besprechen die wichtigsten Learnings für zukünftige Projekte.</span></label>
+                    <label><input type="radio" name="q10" value="2"> <span>Gelegentlich, wenn es größere Probleme gab, die eine Analyse erfordern.</span></label>
+                    <label><input type="radio" name="q10" value="1"> <span>Selten, da der Fokus auf dem Abschluss des aktuellen Projekts liegt.</span></label>
+                </div>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <button type="button" onclick="validateAndCalculate()">Ergebnisse anzeigen</button>
+        </form>
+
+        <div id="result">
+            <h2>Ihre persönliche Kompetenzanalyse</h2>
+            <div id="result-content">
+                <p>Ihre Ergebnisse werden hier detailliert angezeigt, sobald Sie alle Fragen beantwortet haben.</p>
+                </div>
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event Listener für das Styling der ausgewählten Radio-Buttons
+            const optionGroups = document.querySelectorAll('.options-group');
+            optionGroups.forEach(group => {
+                group.addEventListener('change', function(event) {
+                    const radio = event.target;
+                    if (radio.type === 'radio') {
+                        const name = radio.name;
+                        // Alle Labels in dieser Gruppe deselektieren
+                        document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+                            input.closest('label').classList.remove('selected');
+                        });
+                        // Das aktuell ausgewählte Label selektieren
+                        radio.closest('label').classList.add('selected');
+                    }
+                });
+            });
+        });
+
+        function validateAndCalculate() {
+            const form = document.getElementById('leadershipAssessmentForm');
+            const questions = document.querySelectorAll('.question-block');
+            let allAnswered = true;
+            const answers = {};
+
+            questions.forEach((qBlock, index) => {
+                const qName = `q${index + 1}`;
+                const selectedOption = form.elements[qName].value; // Wert des ausgewählten Radios
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                    qBlock.style.border = '2px solid #dc3545'; // Roter Rand bei fehlender Antwort
+                } else {
+                    qBlock.style.border = '1px solid #cddff5'; // Normaler Rand
+                    answers[qName] = parseInt(selectedOption); // Antwort speichern
+                }
+            });
+
+            const errorMessage = document.getElementById('errorMessage');
+            if (!allAnswered) {
+                errorMessage.textContent = 'Bitte beantworten Sie alle Fragen, um Ihre Ergebnisse anzuzeigen.';
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                errorMessage.textContent = ''; // Fehlermeldung löschen
+                calculateResults(answers); // Ergebnisse berechnen und anzeigen
+            }
+        }
+
+        function calculateResults(answers) {
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('result-content');
+            resultContent.innerHTML = ''; // Vorherige Ergebnisse löschen
+
+            // Initialisiere Punkte für jede Kategorie
+            const scores = {
+                'Führungskompetenzen': 0,
+                'Kommunikation': 0,
+                'Delegation': 0,
+                'Empathie': 0,
+                'Verantwortung': 0,
+                'Kompetenzentwicklung': 0
+            };
+
+            // Hier kommt die Logik zur Zuordnung der Antworten zu den Kategorien
+            // Jede Frage trägt Punkte zur jeweiligen Kategorie bei.
+            // Die Gewichtung kann angepasst werden.
+            scores['Führungskompetenzen'] += answers.q1;
+            scores['Verantwortung'] += answers.q1; // Q1 betrifft auch Verantwortung
+            scores['Führungskompetenzen'] += answers.q2;
+            scores['Verantwortung'] += answers.q2; // Q2 betrifft auch Verantwortung
+
+            scores['Kommunikation'] += answers.q3;
+            scores['Kommunikation'] += answers.q4;
+
+            scores['Delegation'] += answers.q5;
+            scores['Delegation'] += answers.q6;
+
+            scores['Empathie'] += answers.q7;
+            scores['Empathie'] += answers.q8;
+
+            scores['Kompetenzentwicklung'] += answers.q9;
+            scores['Kompetenzentwicklung'] += answers.q10;
+
+            // Maximale Punktzahlen pro Kategorie (Basis für Prozentuale Bewertung und Schwellenwerte)
+            // Jede Frage hat einen Max-Score von 4.
+            const maxScores = {
+                'Führungskompetenzen': 8, // Q1 + Q2
+                'Kommunikation': 8,      // Q3 + Q4
+                'Delegation': 8,         // Q5 + Q6
+                'Empathie': 8,           // Q7 + Q8
+                'Verantwortung': 8,      // Q1 + Q2 (hier doppelt gezählt, wenn Q1/Q2 auch zu Führung geht)
+                'Kompetenzentwicklung': 8 // Q9 + Q10
+            };
+
+            // ACHTUNG: Die doppelte Zählung von Q1 und Q2 für 'Führungskompetenzen' und 'Verantwortung'
+            // ist hier bewusst so gewählt, um beiden Kategorien Gewicht zu geben.
+            // Sie können dies anpassen, z.B. indem Sie die Fragen anders gewichten oder eine spezifische
+            // Frage nur einer Kategorie zuordnen.
+
+            // --- Generierung der ausführlichen Textauswertung ---
+            // Dieser Teil wird sehr umfangreich und die Kernarbeit sein.
+            // Ich demonstriere hier den Aufbau für eine Kategorie und Sie können sich vorstellen,
+            // wie das für alle 6 Bereiche erweitert wird.
+
+            let resultsHtml = '';
+
+            // 1. Führungskompetenzen
+            resultsHtml += generateCategoryResult('Führungskompetenzen', scores['Führungskompetenzen'], maxScores['Führungskompetenzen'],
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt ein stark ausgeprägtes Führungsverständnis. Sie packen Probleme proaktiv an und binden Ihr Team aktiv in Entscheidungsprozesse ein. Das zeugt von hohem Verantwortungsbewusstsein und der Fähigkeit, die Potenziale Ihres Teams zu nutzen.";
+                    if (percentage >= 50) return "Sie zeigen bereits gute Ansätze in Ihren Führungskompetenzen. Sie sind bereit, Verantwortung zu übernehmen und Entscheidungen zu treffen. Es gibt jedoch noch Potenzial, Ihr Team stärker einzubinden oder in komplexen Situationen noch proaktiver vorzugehen.";
+                    return "In diesem Bereich sehen Sie noch deutliche Entwicklungsmöglichkeiten. Es könnte sein, dass Sie zögerlich sind, die Führung zu übernehmen oder Entscheidungen zu delegieren. Der Aufbau eines klaren Führungsverständnisses ist hier ein wichtiger Schritt.";
+                },
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) {
+                        return `
+                            <ul>
+                                <li>**Stärken weiter ausbauen:** Überlegen Sie, wo Sie Ihre Führungskompetenzen weiter vertiefen können. Vielleicht in komplexen Change-Prozessen oder der Entwicklung einer Vision für Ihr Team.</li>
+                                <li>**Mentoring:** Teilen Sie Ihr Wissen und Ihre Herangehensweisen mit Kollegen, die noch am Anfang ihrer Führungskarriere stehen.</li>
+                            </ul>
+                        `;
+                    }
+                    if (percentage >= 50) {
+                        return `
+                            <ul>
+                                <li>**Entscheidungsfindung üben:** Versuchen Sie, bei komplexeren Entscheidungen bewusst verschiedene Perspektiven einzuholen, bevor Sie die finale Entscheidung treffen.</li>
+                                <li>**Proaktivität steigern:** Nehmen Sie sich bewusst vor, bei ersten Anzeichen eines Problems die Initiative zu ergreifen, statt abzuwarten. Definieren Sie klare Verantwortlichkeiten für die Problemlösung in Ihrem Team.</li>
+                                <li>**Weiterbildung:** Ein weiterführendes Seminar zu "Strategischer Führung" oder "Umgang mit Komplexität" könnte wertvolle Impulse geben.</li>
+                            </ul>
+                        `;
+                    }
+                    return `
+                        <ul>
+                            <li>**Grundlagen festigen:** Konzentrieren Sie sich darauf, die Kernprinzipien von Führung zu verinnerlichen. Lesen Sie Fachliteratur oder besuchen Sie weitere Seminare zur Rollenklarheit als Führungskraft.</li>
+                            <li>**Mikro-Entscheidungen treffen:** Beginnen Sie mit kleinen, überschaubaren Entscheidungen, bei denen Sie bewusst Verantwortung übernehmen. Üben Sie, Ihr Team auch bei diesen Entscheidungen einzubeziehen.</li>
+                            <li>**Rückmeldung einholen:** Bitten Sie vertrauenswürdige Kollegen um ehrliches Feedback zu Ihrem Führungsverhalten und Ihrer Bereitschaft, Verantwortung zu übernehmen.</li>
+                        </ul>
+                    `;
+                }
+            );
+
+            // 2. Kommunikation
+            resultsHtml += generateCategoryResult('Kommunikation', scores['Kommunikation'], maxScores['Kommunikation'],
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt eine sehr starke Kommunikationsfähigkeit. Sie legen Wert auf Klarheit und Prägnanz und sind offen für Feedback. Das ist eine hervorragende Basis für eine vertrauensvolle und effektive Zusammenarbeit im Team.";
+                    if (percentage >= 50) return "Sie kommunizieren bereits gut, aber es gibt Bereiche, in denen Sie Ihre Fähigkeiten weiter verfeinern können. Achten Sie möglicherweise noch mehr auf die vollständige Verständlichkeit Ihrer Botschaften und die aktive Einholung von Feedback.";
+                    return "In diesem Bereich sehen Sie noch deutlichen Entwicklungsbedarf. Missverständnisse oder eine geringe Offenheit für Feedback könnten Herausforderungen darstellen. Die Verbesserung der Kommunikationsfähigkeit ist grundlegend für jede Führungskraft.";
+                },
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) {
+                        return `
+                            <ul>
+                                <li>**Kommunikationskanäle optimieren:** Überlegen Sie, ob alle relevanten Informationen Ihr Team auf dem effektivsten Weg erreichen. Gibt es neue Tools oder Methoden, die den Austausch verbessern könnten?</li>
+                                <li>**Storytelling:** Nutzen Sie Geschichten und Beispiele, um komplexe Sachverhalte noch anschaulicher und einprägsamer zu kommunizieren.</li>
+                            </ul>
+                        `;
+                    }
+                    if (percentage >= 50) {
+                        return `
+                            <ul>
+                                <li>**Aktives Zuhören üben:** Hören Sie bewusst zu, fassen Sie Gesagtes zusammen, um sicherzustellen, dass Sie alles verstanden haben, und stellen Sie klärende Fragen.</li>
+                                <li>**Feedback gezielt einholen:** Bitten Sie nach wichtigen Anweisungen oder Entscheidungen aktiv um Feedback, ob alles verstanden wurde und welche offenen Fragen bestehen.</li>
+                                <li>**Klarheit vor Schnelligkeit:** Nehmen Sie sich die Zeit, Ihre Botschaften präzise zu formulieren, bevor Sie sie kommunizieren.</li>
+                            </ul>
+                        `;
+                    }
+                    return `
+                        <ul>
+                            <li>**Grundlagen der Kommunikation:** Besuchen Sie gezielte Trainings zu aktiver Kommunikation und Feedback-Kultur.</li>
+                            <li>**"Ich"-Botschaften:** Üben Sie, Ihre Anliegen und Gefühle in Ich-Botschaften zu formulieren, um Missverständnisse zu vermeiden und konstruktiver zu bleiben.</li>
+                            <li>**Körpersprache und Stimme:** Achten Sie auf nonverbale Signale, sowohl Ihre eigenen als auch die Ihrer Gesprächspartner.</li>
+                            <li>**Regelmäßige Check-ins:** Planen Sie kurze, regelmäßige Gespräche mit jedem Teammitglied, um den Informationsfluss zu fördern und eine offene Gesprächsbasis zu schaffen.</li>
+                        </ul>
+                    `;
+                }
+            );
+
+            // 3. Delegation
+            resultsHtml += generateCategoryResult('Delegation', scores['Delegation'], maxScores['Delegation'],
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) return "Ihre Einschätzung zeigt, dass Sie die Kunst der Delegation beherrschen. Sie geben nicht nur Aufgaben, sondern auch Verantwortung ab und vertrauen auf die Fähigkeiten Ihres Teams. Das fördert Selbstständigkeit und Kompetenzentwicklung.";
+                    if (percentage >= 50) return "Sie delegieren bereits Aufgaben, aber es gibt noch Potenzial, Ihre Delegationsstrategie zu verfeinern. Vielleicht können Sie noch mehr Kontext und Freiraum geben oder die Nachbereitung effektiver gestalten.";
+                    return "Im Bereich Delegation gibt es für Sie noch erhebliche Entwicklungschancen. Es fällt Ihnen möglicherweise schwer, Aufgaben abzugeben, oder Sie kontrollieren lieber zu detailliert. Eine verbesserte Delegation kann Ihr Team stärken und Sie entlasten.";
+                },
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) {
+                        return `
+                            <ul>
+                                <li>**Komplexe Projekte delegieren:** Fordern Sie sich heraus, größere und komplexere Aufgaben zu delegieren, um das Potenzial Ihres Teams voll auszuschöpfen.</li>
+                                <li>**Delegations-Matrix:** Erstellen Sie eine Übersicht über mögliche Aufgaben zur Delegation und ordnen Sie diese den Kompetenzen Ihrer Teammitglieder zu.</li>
+                            </ul>
+                        `;
+                    }
+                    if (percentage >= 50) {
+                        return `
+                            <ul>
+                                <li>**Kontext geben:** Erklären Sie bei der Delegation nicht nur das "Was", sondern auch das "Warum" und das "Wozu". Das fördert das Verständnis und die Motivation.</li>
+                                <li>**Freiraum lassen:** Geben Sie klare Ziele vor, aber lassen Sie dem Teammitglied Spielraum bei der Wahl des Weges. Vermeiden Sie Mikromanagement.</li>
+                                <li>**Regelmäßige, aber nicht übermäßige Überprüfung:** Vereinbaren Sie klare Check-points, aber vertrauen Sie darauf, dass Ihr Teammitglied sich bei Problemen meldet.</li>
+                            </ul>
+                        `;
+                    }
+                    return `
+                        <ul>
+                            <li>**"Das Delegations-Dilemma" verstehen:** Erkennen Sie, welche Ängste oder Bedenken Sie vom Delegieren abhalten (z.B. Kontrollverlust, Angst vor Fehlern).</li>
+                            <li>**Kleine Schritte:** Beginnen Sie mit der Delegation kleiner, klar definierter Aufgaben, bei denen die Fehlerkosten gering sind.</li>
+                            <li>**Vertrauen aufbauen:** Investieren Sie Zeit in den Aufbau von Vertrauen in die Fähigkeiten Ihrer Teammitglieder. Bieten Sie Unterstützung, aber nicht die Lösung an.</li>
+                            <li>**Schulung:** Ein Seminar zum Thema "Effektives Delegieren" oder "Empowerment von Mitarbeitern" kann sehr hilfreich sein.</li>
+                        </ul>
+                    `;
+                }
+            );
+
+            // 4. Empathie
+            resultsHtml += generateCategoryResult('Empathie', scores['Empathie'], maxScores['Empathie'],
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt ein hohes Maß an Empathie. Sie nehmen die Gefühle und Bedürfnisse Ihrer Teammitglieder wahr und gehen proaktiv auf sie ein. Dies stärkt das Vertrauen und fördert ein positives Arbeitsklima.";
+                    if (percentage >= 50) return "Sie zeigen bereits Empathie im Umgang mit Ihrem Team. Es gibt jedoch noch Potenzial, Ihre Fähigkeit zur Perspektivübernahme weiter auszubauen und noch sensibler auf nonverbale Signale zu achten.";
+                    return "In diesem Bereich sehen Sie noch deutliche Entwicklungsmöglichkeiten. Es könnte Ihnen schwerfallen, die Perspektiven anderer zu verstehen oder auf emotionale Signale zu reagieren. Die Entwicklung von Empathie ist entscheidend für eine mitarbeiterorientierte Führung.";
+                },
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) {
+                        return `
+                            <ul>
+                                <li>**Proaktives Zuhören:** Hören Sie nicht nur auf das Gesagte, sondern auch auf das Ungesagte. Achten Sie auf Körpersprache und Tonfall.</li>
+                                <li>**Blick über den Tellerrand:** Versuchen Sie, sich bewusst in die Lage verschiedener Teammitglieder zu versetzen, um deren individuelle Motivationen und Herausforderungen besser zu verstehen.</li>
+                            </ul>
+                        `;
+                    }
+                    if (percentage >= 50) {
+                        return `
+                            <ul>
+                                <li>**Aktives Nachfragen:** Wenn Sie unsicher sind, wie es jemandem geht, fragen Sie direkt und sensibel nach: "Ich habe den Eindruck, du bist gerade sehr gefordert, stimmt das?"</li>
+                                <li>**Gefühle ansprechen:** Benennen Sie Beobachtungen, ohne zu werten: "Ich sehe, das Thema scheint dich zu beschäftigen." Dies öffnet Türen für Gespräche.</li>
+                                <li>**Empathie-Training:** Es gibt spezielle Trainings, die Empathie-Fähigkeiten durch Rollenspiele und Fallstudien trainieren.</li>
+                            </ul>
+                        `;
+                    }
+                    return `
+                        <ul>
+                            <li>**Selbstreflexion:** Fragen Sie sich bewusst, welche Gefühle eine bestimmte Situation bei Ihnen selbst auslöst, und versuchen Sie dann, Parallelen zu anderen zu ziehen.</li>
+                            <li>**Perspektivwechsel üben:** Nehmen Sie sich bei Konflikten oder Problemen bewusst die Zeit, die Situation aus der Sicht jedes beteiligten Teammitglieds zu betrachten.</li>
+                            <li>**Achtsamkeit im Umgang:** Üben Sie, präsenter zu sein und Ihr Gegenüber mit voller Aufmerksamkeit wahrzunehmen, auch wenn es nur für kurze Momente ist.</li>
+                            <li>**Feedback einholen:** Bitten Sie eine vertraute Person um ehrliches Feedback, wie Sie auf andere wirken und ob Sie Empathie ausstrahlen.</li>
+                        </ul>
+                    `;
+                }
+            );
+
+            // 5. Verantwortung (separat, obwohl Q1/Q2 Punkte liefert)
+            resultsHtml += generateCategoryResult('Verantwortung', scores['Verantwortung'], maxScores['Verantwortung'],
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    // Der Text hier muss berücksichtigen, dass Q1+Q2 hier die Basis sind
+                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt ein sehr hohes Verantwortungsbewusstsein. Sie sind proaktiv in der Problemlösung und binden das Team verantwortungsvoll in Entscheidungen ein. Sie nehmen Ihre Rolle als Führungskraft ernst und stehen für die Ergebnisse ein.";
+                    if (percentage >= 50) return "Sie übernehmen bereits Verantwortung in Ihrer Rolle. Es gibt jedoch noch Potenzial, Ihre Verantwortung auch in kritischen oder unklaren Situationen noch deutlicher zu zeigen und als Vorbild voranzugehen.";
+                    return "Im Bereich Verantwortungsübernahme sehen Sie noch deutliche Entwicklungsmöglichkeiten. Es könnte sein, dass Sie zögerlich sind, die Initiative bei Problemen zu ergreifen oder Entscheidungen zu treffen. Ein stärkeres Bewusstsein für die eigene Verantwortung ist hier wichtig.";
+                },
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) {
+                        return `
+                            <ul>
+                                <li>**Verantwortungsbereiche erweitern:** Suchen Sie proaktiv nach weiteren Bereichen, in denen Sie mehr Verantwortung übernehmen können, um die Gesamtleistung des Teams zu steigern.</li>
+                                <li>**"Ownership" im Team fördern:** Schulen und ermutigen Sie Ihre Teammitglieder, selbst Verantwortung für ihre Aufgaben und Projekte zu übernehmen.</li>
+                            </ul>
+                        `;
+                    }
+                    if (percentage >= 50) {
+                        return `
+                            <ul>
+                                <li>**Klarheit schaffen:** Klären Sie bei Aufgaben oder Projekten immer klar, wer für was verantwortlich ist – sowohl für sich selbst als auch für Ihr Team.</li>
+                                <li>**Entscheidungsfreude:** Üben Sie, auch bei unvollständigen Informationen fundierte Entscheidungen zu treffen und dazu zu stehen.</li>
+                                <li>**Fehler als Lernchance:** Wenn Fehler passieren, übernehmen Sie Verantwortung für Ihren Anteil und nutzen Sie die Situation, um gemeinsam mit dem Team daraus zu lernen.</li>
+                            </ul>
+                        `;
+                    }
+                    return `
+                        <ul>
+                            <li>**Rollendefinition:** Setzen Sie sich bewusst mit Ihrer Rolle als Führungskraft und den damit verbundenen Verantwortlichkeiten auseinander.</li>
+                            <li>**Proaktive Haltung:** Nehmen Sie sich vor, bei jedem Problem, das Sie sehen, aktiv zu überlegen, was *Sie* dazu beitragen können.</li>
+                            <li>**Entscheidungen üben:** Fangen Sie klein an: Treffen Sie bewusst Entscheidungen und stehen Sie dazu, auch wenn sie nicht perfekt sind. Lernen Sie aus den Konsequenzen.</li>
+                            <li>**Mentoring:** Suchen Sie den Austausch mit erfahrenen Führungskräften, wie diese mit Verantwortung umgehen.</li>
+                        </ul>
+                    `;
+                }
+            );
+
+            // 6. Kompetenzentwicklung
+            resultsHtml += generateCategoryResult('Kompetenzentwicklung', scores['Kompetenzentwicklung'], maxScores['Kompetenzentwicklung'],
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt, dass Sie die Kompetenzentwicklung Ihres Teams aktiv und systematisch fördern. Sie initiieren Lernprozesse und schaffen eine Kultur des kontinuierlichen Lernens. Das ist vorbildlich und essenziell für die Zukunftsfähigkeit Ihres Teams.";
+                    if (percentage >= 50) return "Sie fördern bereits die Kompetenzentwicklung in Ihrem Team. Es gibt jedoch noch Potenzial, dies bewusster und gezielter zu tun, indem Sie Lernchancen systematischer erkennen und nutzen.";
+                    return "In diesem Bereich sehen Sie noch deutliche Entwicklungsmöglichkeiten. Die Förderung der Kompetenzen Ihres Teams scheint noch nicht im Fokus zu stehen. Eine bewusste Strategie zur Mitarbeiterentwicklung ist jedoch entscheidend für den Erfolg und die Motivation Ihres Teams.";
+                },
+                (score, max) => {
+                    const percentage = (score / max) * 100;
+                    if (percentage >= 75) {
+                        return `
+                            <ul>
+                                <li>**Individuelle Entwicklungspläne:** Erstellen Sie gemeinsam mit jedem Teammitglied einen individuellen Entwicklungsplan, der persönliche Ziele und nötige Maßnahmen festhält.</li>
+                                <li>**Wissensmanagement:** Fördern Sie den internen Wissensaustausch, z.B. durch Workshops, Brown-Bag-Sessions oder eine interne Wissensdatenbank.</li>
+                            </ul>
+                        `;
+                    }
+                    if (percentage >= 50) {
+                        return `
+                            <ul>
+                                <li>**Lernchancen erkennen:** Überlegen Sie bei jeder neuen Aufgabe oder jedem Projekt, welche Lernchancen sich daraus für einzelne Teammitglieder ergeben.</li>
+                                <li>**Feedback als Lernwerkzeug:** Geben Sie regelmäßig konstruktives Feedback, das auf die Weiterentwicklung der Mitarbeiter abzielt.</li>
+                                <li>**Retrospektiven institutionalisieren:** Führen Sie nach jedem Projekt oder Sprint feste Retrospektiven ein, um aus Fehlern und Erfolgen zu lernen.</li>
+                            </ul>
+                        `;
+                    }
+                    return `
+                        <ul>
+                            <li>**Bedeutung erkennen:** Verstehen Sie, dass die Entwicklung Ihrer Mitarbeiter eine Kernaufgabe von Führung ist und direkt den Teamerfolg beeinflusst.</li>
+                            <li>**Entwicklungsgespräche führen:** Beginnen Sie, regelmäßige Gespräche mit Ihren Teammitgliedern über ihre Ziele, Stärken und Entwicklungswünsche zu führen.</li>
+                            <li>**Lernkultur schaffen:** Ermutigen Sie zum Experimentieren und sehen Sie Fehler als Lerngelegenheiten. Schaffen Sie einen sicheren Raum zum Ausprobieren.</li>
+                            <li>**Eigene Weiterbildung:** Zeigen Sie sich selbst als lernende Führungskraft, indem Sie aktiv an Ihrer eigenen Entwicklung arbeiten.</li>
+                        </ul>
+                    `;
+                }
+            );
+
+            resultContent.innerHTML = resultsHtml;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Optional: Diagramm aktualisieren (wenn Sie es behalten möchten)
+            // const ctx = document.getElementById('myChart').getContext('2d');
+            // if (window.myLeadershipChart) {
+            //     window.myLeadershipChart.destroy();
+            // }
+            // window.myLeadershipChart = new Chart(ctx, {
+            //     type: 'bar',
+            //     data: {
+            //         labels: Object.keys(scores),
+            //         datasets: [{
+            //             label: 'Ihre Punktzahl',
+            //             data: Object.values(scores),
+            //             backgroundColor: [
+            //                 'rgba(26, 78, 138, 0.7)',
+            //                 'rgba(0, 123, 255, 0.7)',
+            //                 'rgba(40, 167, 69, 0.7)',
+            //                 'rgba(255, 193, 7, 0.7)',
+            //                 'rgba(220, 53, 69, 0.7)',
+            //                 'rgba(108, 117, 125, 0.7)'
+            //             ],
+            //             borderColor: [
+            //                 'rgba(26, 78, 138, 1)',
+            //                 'rgba(0, 123, 255, 1)',
+            //                 'rgba(40, 167, 69, 1)',
+            //                 'rgba(255, 193, 7, 1)',
+            //                 'rgba(220, 53, 69, 1)',
+            //                 'rgba(108, 117, 125, 1)'
+            //             ],
+            //             borderWidth: 1
+            //         }]
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         maintainAspectRatio: false,
+            //         plugins: {
+            //             legend: { display: false },
+            //             title: {
+            //                 display: true,
+            //                 text: 'Ihr Kompetenzprofil (Punkte)'
+            //             }
+            //         },
+            //         scales: {
+            //             y: {
+            //                 beginAtZero: true,
+            //                 max: 8, // Max-Score pro Kategorie
+            //                 ticks: {
+            //                     precision: 0,
+            //                     stepSize: 1
+            //                 },
+            //                 title: {
+            //                     display: true,
+            //                     text: 'Erreichte Punkte'
+            //                 }
+            //             },
+            //             x: {
+            //                 grid: { display: false }
+            //             }
+            //         }
+            //     }
+            // });
+        }
+
+        // Hilfsfunktion zur Generierung des Ergebnisbereichs für jede Kategorie
+        function generateCategoryResult(categoryName, score, maxScore, descriptionFn, tipsFn) {
+            let html = `<div class="result-category">`;
+            html += `<h3>Kompetenzbereich: ${categoryName}</h3>`;
+            html += `<p><strong>Ihre Selbsteinschätzung:</strong> ${descriptionFn(score, maxScore)}</p>`;
+            html += `<h4>Tipps für Ihre Weiterentwicklung:</h4>`;
+            html += tipsFn(score, maxScore); // Die Tipps-Funktion liefert direkt den HTML-String zurück
+            html += `</div>`;
+            return html;
+        }
+    </script>
+</body>
+</html>
