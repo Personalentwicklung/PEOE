@@ -166,8 +166,7 @@
          
 <p>Dieses Tool ist speziell dafür konzipiert, dir nach deinem ersten Führungsseminar eine fundierte Selbsteinschätzung deiner aktuellen Führungskompetenzen zu ermöglichen.</p> 
 
-<p>Deine Antworten helfen dir dabei, deine Stärken zu erkennen und potenzielle Entwicklungsfelder in den Bereichen Kommunikation, Delegation, Empathie, Verantwortungsübernahme und Kompetenzentwicklung 
-    zu identifizieren. Nimm dir einen Moment Zeit, um jede Frage ehrlich zu beantworten. </p>
+<p>Deine Antworten helfen dir dabei, deine Stärken zu erkennen und potenzielle Entwicklungsfelder in den Bereichen Kommunikation, Delegation, Empathie, Verantwortungsübernahme und Kompetenzentwicklung zu identifizieren. Nimm dir einen Moment Zeit, um jede Frage ehrlich zu beantworten. </p>
 
 <p>Deine Teilnahme ist 100% anonym und die Daten werden nicht gespeichert.</p>
         </div>
@@ -204,7 +203,7 @@
             </div>
 
             <div class="question-block" id="q4">
-                <p class="question-text">4. Im Umgang mit Kritik oder Feedback von meinen Teammitgliedern oder Kollegen...</p>
+                <p class="question-text">4. Im Umgang mit Kritik oder Feedback von meinen Teammitgliedern oder Kollegen,...</p>
                 <div class="options-group">
                     <label><input type="radio" name="q4" value="4"> <span>...höre ich aktiv zu, frage nach, um es zu verstehen und sehe es als Chance zur Verbesserung.</span></label>
                     <label><input type="radio" name="q4" value="3"> <span>...nehme ich es zur Kenntnis und überlege, ob es für mich relevant ist.</span></label>
@@ -278,9 +277,9 @@
         </form>
 
         <div id="result">
-            <h2>Ihre persönliche Kompetenzanalyse</h2>
+            <h2>Deine persönliche Kompetenzanalyse</h2>
             <div id="result-content">
-                <p>Ihre Ergebnisse werden hier detailliert angezeigt, sobald Sie alle Fragen beantwortet haben.</p>
+                <p>Deine Ergebnisse werden hier detailliert angezeigt, sobald du alle Fragen beantwortet hast.</p>
                 </div>
             <canvas id="myChart"></canvas>
         </div>
@@ -327,9 +326,10 @@
 
             const errorMessage = document.getElementById('errorMessage');
             if (!allAnswered) {
-                errorMessage.textContent = 'Bitte beantworten Sie alle Fragen, um Ihre Ergebnisse anzuzeigen.';
+                errorMessage.textContent = 'Bitte beantworte alle Fragen, um deine Ergebnisse anzuzeigen.';
                 errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
+            }
+            else {
                 errorMessage.textContent = ''; // Fehlermeldung löschen
                 calculateResults(answers); // Ergebnisse berechnen und anzeigen
             }
@@ -383,12 +383,12 @@
 
             // ACHTUNG: Die doppelte Zählung von Q1 und Q2 für 'Führungskompetenzen' und 'Verantwortung'
             // ist hier bewusst so gewählt, um beiden Kategorien Gewicht zu geben.
-            // Sie können dies anpassen, z.B. indem Sie die Fragen anders gewichten oder eine spezifische
-            // Frage nur einer Kategorie zuordnen.
+            // Du kannst dies anpassen, z.B. indem du die Fragen anders gewichtest oder eine spezifische
+            // Frage nur einer Kategorie zuordnest.
 
             // --- Generierung der ausführlichen Textauswertung ---
             // Dieser Teil wird sehr umfangreich und die Kernarbeit sein.
-            // Ich demonstriere hier den Aufbau für eine Kategorie und Sie können sich vorstellen,
+            // Ich demonstriere hier den Aufbau für eine Kategorie und Du kannst dir vorstellen,
             // wie das für alle 6 Bereiche erweitert wird.
 
             let resultsHtml = '';
@@ -397,34 +397,34 @@
             resultsHtml += generateCategoryResult('Führungskompetenzen', scores['Führungskompetenzen'], maxScores['Führungskompetenzen'],
                 (score, max) => {
                     const percentage = (score / max) * 100;
-                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt ein stark ausgeprägtes Führungsverständnis. Sie packen Probleme proaktiv an und binden Ihr Team aktiv in Entscheidungsprozesse ein. Das zeugt von hohem Verantwortungsbewusstsein und der Fähigkeit, die Potenziale Ihres Teams zu nutzen.";
-                    if (percentage >= 50) return "Sie zeigen bereits gute Ansätze in Ihren Führungskompetenzen. Sie sind bereit, Verantwortung zu übernehmen und Entscheidungen zu treffen. Es gibt jedoch noch Potenzial, Ihr Team stärker einzubinden oder in komplexen Situationen noch proaktiver vorzugehen.";
-                    return "In diesem Bereich sehen Sie noch deutliche Entwicklungsmöglichkeiten. Es könnte sein, dass Sie zögerlich sind, die Führung zu übernehmen oder Entscheidungen zu delegieren. Der Aufbau eines klaren Führungsverständnisses ist hier ein wichtiger Schritt.";
+                    if (percentage >= 75) return "Deine Selbsteinschätzung zeigt ein stark ausgeprägtes Führungsverständnis. Du packst Probleme proaktiv an und bindest dein Team aktiv in Entscheidungsprozesse ein. Das zeugt von hohem Verantwortungsbewusstsein und der Fähigkeit, die Potenziale deines Teams zu nutzen.";
+                    if (percentage >= 50) return "Du zeigst bereits gute Ansätze in deinen Führungskompetenzen. Du bist bereit, Verantwortung zu übernehmen und Entscheidungen zu treffen. Es gibt jedoch noch Potenzial, dein Team stärker einzubinden oder in komplexen Situationen noch proaktiver vorzugehen.";
+                    return "In diesem Bereich siehst du noch deutliche Entwicklungsmöglichkeiten. Es könnte sein, dass du zögerlich bist, die Führung zu übernehmen oder Entscheidungen zu delegieren. Der Aufbau eines klaren Führungsverständnisses ist hier ein wichtiger Schritt.";
                 },
                 (score, max) => {
                     const percentage = (score / max) * 100;
                     if (percentage >= 75) {
                         return `
                             <ul>
-                                <li>**Stärken weiter ausbauen:** Überlegen Sie, wo Sie Ihre Führungskompetenzen weiter vertiefen können. Vielleicht in komplexen Change-Prozessen oder der Entwicklung einer Vision für Ihr Team.</li>
-                                <li>**Mentoring:** Teilen Sie Ihr Wissen und Ihre Herangehensweisen mit Kollegen, die noch am Anfang ihrer Führungskarriere stehen.</li>
+                                <li>**Stärken weiter ausbauen:** Überlege, wo du deine Führungskompetenzen weiter vertiefen kannst. Vielleicht in komplexen Change-Prozessen oder der Entwicklung einer Vision für dein Team.</li>
+                                <li>**Mentoring:** Teile dein Wissen und deine Herangehensweisen mit Kollegen, die noch am Anfang ihrer Führungskarriere stehen.</li>
                             </ul>
                         `;
                     }
                     if (percentage >= 50) {
                         return `
                             <ul>
-                                <li>**Entscheidungsfindung üben:** Versuchen Sie, bei komplexeren Entscheidungen bewusst verschiedene Perspektiven einzuholen, bevor Sie die finale Entscheidung treffen.</li>
-                                <li>**Proaktivität steigern:** Nehmen Sie sich bewusst vor, bei ersten Anzeichen eines Problems die Initiative zu ergreifen, statt abzuwarten. Definieren Sie klare Verantwortlichkeiten für die Problemlösung in Ihrem Team.</li>
+                                <li>**Entscheidungsfindung üben:** Versuche, bei komplexeren Entscheidungen bewusst verschiedene Perspektiven einzuholen, bevor du die finale Entscheidung triffst.</li>
+                                <li>**Proaktivität steigern:** Nimm dir bewusst vor, bei ersten Anzeichen eines Problems die Initiative zu ergreifen, statt abzuwarten. Definiere klare Verantwortlichkeiten für die Problemlösung in deinem Team.</li>
                                 <li>**Weiterbildung:** Ein weiterführendes Seminar zu "Strategischer Führung" oder "Umgang mit Komplexität" könnte wertvolle Impulse geben.</li>
                             </ul>
                         `;
                     }
                     return `
                         <ul>
-                            <li>**Grundlagen festigen:** Konzentrieren Sie sich darauf, die Kernprinzipien von Führung zu verinnerlichen. Lesen Sie Fachliteratur oder besuchen Sie weitere Seminare zur Rollenklarheit als Führungskraft.</li>
-                            <li>**Mikro-Entscheidungen treffen:** Beginnen Sie mit kleinen, überschaubaren Entscheidungen, bei denen Sie bewusst Verantwortung übernehmen. Üben Sie, Ihr Team auch bei diesen Entscheidungen einzubeziehen.</li>
-                            <li>**Rückmeldung einholen:** Bitten Sie vertrauenswürdige Kollegen um ehrliches Feedback zu Ihrem Führungsverhalten und Ihrer Bereitschaft, Verantwortung zu übernehmen.</li>
+                            <li>**Grundlagen festigen:** Konzentriere dich darauf, die Kernprinzipien von Führung zu verinnerlichen. Lies Fachliteratur oder besuche weitere Seminare zur Rollenklarheit als Führungskraft.</li>
+                            <li>**Mikro-Entscheidungen treffen:** Beginne mit kleinen, überschaubaren Entscheidungen, bei denen du bewusst Verantwortung übernimmst. Übe, dein Team auch bei diesen Entscheidungen einzubeziehen.</li>
+                            <li>**Rückmeldung einholen:** Bitte vertrauenswürdige Kollegen um ehrliches Feedback zu deinem Führungsverhalten und deiner Bereitschaft, Verantwortung zu übernehmen.</li>
                         </ul>
                     `;
                 }
@@ -434,35 +434,35 @@
             resultsHtml += generateCategoryResult('Kommunikation', scores['Kommunikation'], maxScores['Kommunikation'],
                 (score, max) => {
                     const percentage = (score / max) * 100;
-                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt eine sehr starke Kommunikationsfähigkeit. Sie legen Wert auf Klarheit und Prägnanz und sind offen für Feedback. Das ist eine hervorragende Basis für eine vertrauensvolle und effektive Zusammenarbeit im Team.";
-                    if (percentage >= 50) return "Sie kommunizieren bereits gut, aber es gibt Bereiche, in denen Sie Ihre Fähigkeiten weiter verfeinern können. Achten Sie möglicherweise noch mehr auf die vollständige Verständlichkeit Ihrer Botschaften und die aktive Einholung von Feedback.";
-                    return "In diesem Bereich sehen Sie noch deutlichen Entwicklungsbedarf. Missverständnisse oder eine geringe Offenheit für Feedback könnten Herausforderungen darstellen. Die Verbesserung der Kommunikationsfähigkeit ist grundlegend für jede Führungskraft.";
+                    if (percentage >= 75) return "Deine Selbsteinschätzung zeigt eine sehr starke Kommunikationsfähigkeit. Du legst Wert auf Klarheit und Prägnanz und bist offen für Feedback. Das ist eine hervorragende Basis für eine vertrauensvolle und effektive Zusammenarbeit im Team.";
+                    if (percentage >= 50) return "Du kommunizierst bereits gut, aber es gibt Bereiche, in denen du deine Fähigkeiten weiter verfeinern kannst. Achte möglicherweise noch mehr auf die vollständige Verständlichkeit deiner Botschaften und die aktive Einholung von Feedback.";
+                    return "In diesem Bereich siehst du noch deutlichen Entwicklungsbedarf. Missverständnisse oder eine geringe Offenheit für Feedback könnten Herausforderungen darstellen. Die Verbesserung der Kommunikationsfähigkeit ist grundlegend für jede Führungskraft.";
                 },
                 (score, max) => {
                     const percentage = (score / max) * 100;
                     if (percentage >= 75) {
                         return `
                             <ul>
-                                <li>**Kommunikationskanäle optimieren:** Überlegen Sie, ob alle relevanten Informationen Ihr Team auf dem effektivsten Weg erreichen. Gibt es neue Tools oder Methoden, die den Austausch verbessern könnten?</li>
-                                <li>**Storytelling:** Nutzen Sie Geschichten und Beispiele, um komplexe Sachverhalte noch anschaulicher und einprägsamer zu kommunizieren.</li>
+                                <li>**Kommunikationskanäle optimieren:** Überlege, ob alle relevanten Informationen dein Team auf dem effektivsten Weg erreichen. Gibt es neue Tools oder Methoden, die den Austausch verbessern könnten?</li>
+                                <li>**Storytelling:** Nutze Geschichten und Beispiele, um komplexe Sachverhalte noch anschaulicher und einprägsamer zu kommunizieren.</li>
                             </ul>
                         `;
                     }
                     if (percentage >= 50) {
                         return `
                             <ul>
-                                <li>**Aktives Zuhören üben:** Hören Sie bewusst zu, fassen Sie Gesagtes zusammen, um sicherzustellen, dass Sie alles verstanden haben, und stellen Sie klärende Fragen.</li>
-                                <li>**Feedback gezielt einholen:** Bitten Sie nach wichtigen Anweisungen oder Entscheidungen aktiv um Feedback, ob alles verstanden wurde und welche offenen Fragen bestehen.</li>
-                                <li>**Klarheit vor Schnelligkeit:** Nehmen Sie sich die Zeit, Ihre Botschaften präzise zu formulieren, bevor Sie sie kommunizieren.</li>
+                                <li>**Aktives Zuhören üben:** Höre bewusst zu, fasse Gesagtes zusammen, um sicherzustellen, dass du alles verstanden hast, und stelle klärende Fragen.</li>
+                                <li>**Feedback gezielt einholen:** Bitte nach wichtigen Anweisungen oder Entscheidungen aktiv um Feedback, ob alles verstanden wurde und welche offenen Fragen bestehen.</li>
+                                <li>**Klarheit vor Schnelligkeit:** Nimm dir die Zeit, deine Botschaften präzise zu formulieren, bevor du sie kommunizierst.</li>
                             </ul>
                         `;
                     }
                     return `
                         <ul>
-                            <li>**Grundlagen der Kommunikation:** Besuchen Sie gezielte Trainings zu aktiver Kommunikation und Feedback-Kultur.</li>
-                            <li>**"Ich"-Botschaften:** Üben Sie, Ihre Anliegen und Gefühle in Ich-Botschaften zu formulieren, um Missverständnisse zu vermeiden und konstruktiver zu bleiben.</li>
-                            <li>**Körpersprache und Stimme:** Achten Sie auf nonverbale Signale, sowohl Ihre eigenen als auch die Ihrer Gesprächspartner.</li>
-                            <li>**Regelmäßige Check-ins:** Planen Sie kurze, regelmäßige Gespräche mit jedem Teammitglied, um den Informationsfluss zu fördern und eine offene Gesprächsbasis zu schaffen.</li>
+                            <li>**Grundlagen der Kommunikation:** Besuche gezielte Trainings zu aktiver Kommunikation und Feedback-Kultur.</li>
+                            <li>**"Ich"-Botschaften:** Übe, deine Anliegen und Gefühle in Ich-Botschaften zu formulieren, um Missverständnisse zu vermeiden und konstruktiver zu bleiben.</li>
+                            <li>**Körpersprache und Stimme:** Achte auf nonverbale Signale, sowohl deine eigenen als auch die deiner Gesprächspartner.</li>
+                            <li>**Regelmäßige Check-ins:** Plane kurze, regelmäßige Gespräche mit jedem Teammitglied, um den Informationsfluss zu fördern und eine offene Gesprächsbasis zu schaffen.</li>
                         </ul>
                     `;
                 }
@@ -472,34 +472,34 @@
             resultsHtml += generateCategoryResult('Delegation', scores['Delegation'], maxScores['Delegation'],
                 (score, max) => {
                     const percentage = (score / max) * 100;
-                    if (percentage >= 75) return "Ihre Einschätzung zeigt, dass Sie die Kunst der Delegation beherrschen. Sie geben nicht nur Aufgaben, sondern auch Verantwortung ab und vertrauen auf die Fähigkeiten Ihres Teams. Das fördert Selbstständigkeit und Kompetenzentwicklung.";
-                    if (percentage >= 50) return "Sie delegieren bereits Aufgaben, aber es gibt noch Potenzial, Ihre Delegationsstrategie zu verfeinern. Vielleicht können Sie noch mehr Kontext und Freiraum geben oder die Nachbereitung effektiver gestalten.";
-                    return "Im Bereich Delegation gibt es für Sie noch erhebliche Entwicklungschancen. Es fällt Ihnen möglicherweise schwer, Aufgaben abzugeben, oder Sie kontrollieren lieber zu detailliert. Eine verbesserte Delegation kann Ihr Team stärken und Sie entlasten.";
+                    if (percentage >= 75) return "Deine Einschätzung zeigt, dass du die Kunst der Delegation beherrschst. Du gibst nicht nur Aufgaben, sondern auch Verantwortung ab und vertraust auf die Fähigkeiten deines Teams. Das fördert Selbstständigkeit und Kompetenzentwicklung.";
+                    if (percentage >= 50) return "Du delegierst bereits Aufgaben, aber es gibt noch Potenzial, deine Delegationsstrategie zu verfeinern. Vielleicht kannst du noch mehr Kontext und Freiraum geben oder die Nachbereitung effektiver gestalten.";
+                    return "Im Bereich Delegation gibt es für dich noch erhebliche Entwicklungschancen. Es fällt dir möglicherweise schwer, Aufgaben abzugeben, oder du kontrollierst lieber zu detailliert. Eine verbesserte Delegation kann dein Team stärken und dich entlasten.";
                 },
                 (score, max) => {
                     const percentage = (score / max) * 100;
                     if (percentage >= 75) {
                         return `
                             <ul>
-                                <li>**Komplexe Projekte delegieren:** Fordern Sie sich heraus, größere und komplexere Aufgaben zu delegieren, um das Potenzial Ihres Teams voll auszuschöpfen.</li>
-                                <li>**Delegations-Matrix:** Erstellen Sie eine Übersicht über mögliche Aufgaben zur Delegation und ordnen Sie diese den Kompetenzen Ihrer Teammitglieder zu.</li>
+                                <li>**Komplexe Projekte delegieren:** Fordere dich heraus, größere und komplexere Aufgaben zu delegieren, um das Potenzial deines Teams voll auszuschöpfen.</li>
+                                <li>**Delegations-Matrix:** Erstelle eine Übersicht über mögliche Aufgaben zur Delegation und ordne diese den Kompetenzen deiner Teammitglieder zu.</li>
                             </ul>
                         `;
                     }
                     if (percentage >= 50) {
                         return `
                             <ul>
-                                <li>**Kontext geben:** Erklären Sie bei der Delegation nicht nur das "Was", sondern auch das "Warum" und das "Wozu". Das fördert das Verständnis und die Motivation.</li>
-                                <li>**Freiraum lassen:** Geben Sie klare Ziele vor, aber lassen Sie dem Teammitglied Spielraum bei der Wahl des Weges. Vermeiden Sie Mikromanagement.</li>
-                                <li>**Regelmäßige, aber nicht übermäßige Überprüfung:** Vereinbaren Sie klare Check-points, aber vertrauen Sie darauf, dass Ihr Teammitglied sich bei Problemen meldet.</li>
+                                <li>**Kontext geben:** Erkläre bei der Delegation nicht nur das "Was", sondern auch das "Warum" und das "Wozu". Das fördert das Verständnis und die Motivation.</li>
+                                <li>**Freiraum lassen:** Gib klare Ziele vor, aber lasse dem Teammitglied Spielraum bei der Wahl des Weges. Vermeide Mikromanagement.</li>
+                                <li>**Regelmäßige, aber nicht übermäßige Überprüfung:** Vereinbare klare Check-points, aber vertraue darauf, dass dein Teammitglied sich bei Problemen meldet.</li>
                             </ul>
                         `;
                     }
                     return `
                         <ul>
-                            <li>**"Das Delegations-Dilemma" verstehen:** Erkennen Sie, welche Ängste oder Bedenken Sie vom Delegieren abhalten (z.B. Kontrollverlust, Angst vor Fehlern).</li>
-                            <li>**Kleine Schritte:** Beginnen Sie mit der Delegation kleiner, klar definierter Aufgaben, bei denen die Fehlerkosten gering sind.</li>
-                            <li>**Vertrauen aufbauen:** Investieren Sie Zeit in den Aufbau von Vertrauen in die Fähigkeiten Ihrer Teammitglieder. Bieten Sie Unterstützung, aber nicht die Lösung an.</li>
+                            <li>**"Das Delegations-Dilemma" verstehen:** Erkenne, welche Ängste oder Bedenken dich vom Delegieren abhalten (z.B. Kontrollverlust, Angst vor Fehlern).</li>
+                            <li>**Kleine Schritte:** Beginne mit der Delegation kleiner, klar definierter Aufgaben, bei denen die Fehlerkosten gering sind.</li>
+                            <li>**Vertrauen aufbauen:** Investiere Zeit in den Aufbau von Vertrauen in die Fähigkeiten deiner Teammitglieder. Biete Unterstützung, aber nicht die Lösung an.</li>
                             <li>**Schulung:** Ein Seminar zum Thema "Effektives Delegieren" oder "Empowerment von Mitarbeitern" kann sehr hilfreich sein.</li>
                         </ul>
                     `;
@@ -510,35 +510,35 @@
             resultsHtml += generateCategoryResult('Empathie', scores['Empathie'], maxScores['Empathie'],
                 (score, max) => {
                     const percentage = (score / max) * 100;
-                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt ein hohes Maß an Empathie. Sie nehmen die Gefühle und Bedürfnisse Ihrer Teammitglieder wahr und gehen proaktiv auf sie ein. Dies stärkt das Vertrauen und fördert ein positives Arbeitsklima.";
-                    if (percentage >= 50) return "Sie zeigen bereits Empathie im Umgang mit Ihrem Team. Es gibt jedoch noch Potenzial, Ihre Fähigkeit zur Perspektivübernahme weiter auszubauen und noch sensibler auf nonverbale Signale zu achten.";
-                    return "In diesem Bereich sehen Sie noch deutliche Entwicklungsmöglichkeiten. Es könnte Ihnen schwerfallen, die Perspektiven anderer zu verstehen oder auf emotionale Signale zu reagieren. Die Entwicklung von Empathie ist entscheidend für eine mitarbeiterorientierte Führung.";
+                    if (percentage >= 75) return "Deine Selbsteinschätzung zeigt ein hohes Maß an Empathie. Du nimmst die Gefühle und Bedürfnisse deiner Teammitglieder wahr und gehst proaktiv auf sie ein. Dies stärkt das Vertrauen und fördert ein positives Arbeitsklima.";
+                    if (percentage >= 50) return "Du zeigst bereits Empathie im Umgang mit deinem Team. Es gibt jedoch noch Potenzial, deine Fähigkeit zur Perspektivübernahme weiter auszubauen und noch sensibler auf nonverbale Signale zu achten.";
+                    return "In diesem Bereich siehst du noch deutliche Entwicklungsmöglichkeiten. Es könnte dir schwerfallen, die Perspektiven anderer zu verstehen oder auf emotionale Signale zu reagieren. Die Entwicklung von Empathie ist entscheidend für eine mitarbeiterorientierte Führung.";
                 },
                 (score, max) => {
                     const percentage = (score / max) * 100;
                     if (percentage >= 75) {
                         return `
                             <ul>
-                                <li>**Proaktives Zuhören:** Hören Sie nicht nur auf das Gesagte, sondern auch auf das Ungesagte. Achten Sie auf Körpersprache und Tonfall.</li>
-                                <li>**Blick über den Tellerrand:** Versuchen Sie, sich bewusst in die Lage verschiedener Teammitglieder zu versetzen, um deren individuelle Motivationen und Herausforderungen besser zu verstehen.</li>
+                                <li>**Proaktives Zuhören:** Höre nicht nur auf das Gesagte, sondern auch auf das Ungesagte. Achte auf Körpersprache und Tonfall.</li>
+                                <li>**Blick über den Tellerrand:** Versuche, dich bewusst in die Lage verschiedener Teammitglieder zu versetzen, um deren individuelle Motivationen und Herausforderungen besser zu verstehen.</li>
                             </ul>
                         `;
                     }
                     if (percentage >= 50) {
                         return `
                             <ul>
-                                <li>**Aktives Nachfragen:** Wenn Sie unsicher sind, wie es jemandem geht, fragen Sie direkt und sensibel nach: "Ich habe den Eindruck, du bist gerade sehr gefordert, stimmt das?"</li>
-                                <li>**Gefühle ansprechen:** Benennen Sie Beobachtungen, ohne zu werten: "Ich sehe, das Thema scheint dich zu beschäftigen." Dies öffnet Türen für Gespräche.</li>
+                                <li>**Aktives Nachfragen:** Wenn du unsicher bist, wie es jemandem geht, frage direkt und sensibel nach: "Ich habe den Eindruck, du bist gerade sehr gefordert, stimmt das?"</li>
+                                <li>**Gefühle ansprechen:** Benenne Beobachtungen, ohne zu werten: "Ich sehe, das Thema scheint dich zu beschäftigen." Dies öffnet Türen für Gespräche.</li>
                                 <li>**Empathie-Training:** Es gibt spezielle Trainings, die Empathie-Fähigkeiten durch Rollenspiele und Fallstudien trainieren.</li>
                             </ul>
                         `;
                     }
                     return `
                         <ul>
-                            <li>**Selbstreflexion:** Fragen Sie sich bewusst, welche Gefühle eine bestimmte Situation bei Ihnen selbst auslöst, und versuchen Sie dann, Parallelen zu anderen zu ziehen.</li>
-                            <li>**Perspektivwechsel üben:** Nehmen Sie sich bei Konflikten oder Problemen bewusst die Zeit, die Situation aus der Sicht jedes beteiligten Teammitglieds zu betrachten.</li>
-                            <li>**Achtsamkeit im Umgang:** Üben Sie, präsenter zu sein und Ihr Gegenüber mit voller Aufmerksamkeit wahrzunehmen, auch wenn es nur für kurze Momente ist.</li>
-                            <li>**Feedback einholen:** Bitten Sie eine vertraute Person um ehrliches Feedback, wie Sie auf andere wirken und ob Sie Empathie ausstrahlen.</li>
+                            <li>**Selbstreflexion:** Frage dich bewusst, welche Gefühle eine bestimmte Situation bei dir selbst auslöst, und versuche dann, Parallelen zu anderen zu ziehen.</li>
+                            <li>**Perspektivwechsel üben:** Nimm dir bei Konflikten oder Problemen bewusst die Zeit, die Situation aus der Sicht jedes beteiligten Teammitglieds zu betrachten.</li>
+                            <li>**Achtsamkeit im Umgang:** Übe, präsenter zu sein und dein Gegenüber mit voller Aufmerksamkeit wahrzunehmen, auch wenn es nur für kurze Momente ist.</li>
+                            <li>**Feedback einholen:** Bitte eine vertraute Person um ehrliches Feedback, wie du auf andere wirkst und ob du Empathie ausstrahlst.</li>
                         </ul>
                     `;
                 }
@@ -549,35 +549,35 @@
                 (score, max) => {
                     const percentage = (score / max) * 100;
                     // Der Text hier muss berücksichtigen, dass Q1+Q2 hier die Basis sind
-                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt ein sehr hohes Verantwortungsbewusstsein. Sie sind proaktiv in der Problemlösung und binden das Team verantwortungsvoll in Entscheidungen ein. Sie nehmen Ihre Rolle als Führungskraft ernst und stehen für die Ergebnisse ein.";
-                    if (percentage >= 50) return "Sie übernehmen bereits Verantwortung in Ihrer Rolle. Es gibt jedoch noch Potenzial, Ihre Verantwortung auch in kritischen oder unklaren Situationen noch deutlicher zu zeigen und als Vorbild voranzugehen.";
-                    return "Im Bereich Verantwortungsübernahme sehen Sie noch deutliche Entwicklungsmöglichkeiten. Es könnte sein, dass Sie zögerlich sind, die Initiative bei Problemen zu ergreifen oder Entscheidungen zu treffen. Ein stärkeres Bewusstsein für die eigene Verantwortung ist hier wichtig.";
+                    if (percentage >= 75) return "Deine Selbsteinschätzung zeigt ein sehr hohes Verantwortungsbewusstsein. Du bist proaktiv in der Problemlösung und bindest das Team verantwortungsvoll in Entscheidungen ein. Du nimmst deine Rolle als Führungskraft ernst und stehst für die Ergebnisse ein.";
+                    if (percentage >= 50) return "Du übernimmst bereits Verantwortung in deiner Rolle. Es gibt jedoch noch Potenzial, deine Verantwortung auch in kritischen oder unklaren Situationen noch deutlicher zu zeigen und als Vorbild voranzugehen.";
+                    return "Im Bereich Verantwortungsübernahme siehst du noch deutliche Entwicklungsmöglichkeiten. Es könnte sein, dass du zögerlich bist, die Initiative bei Problemen zu ergreifen oder Entscheidungen zu treffen. Ein stärkeres Bewusstsein für die eigene Verantwortung ist hier wichtig.";
                 },
                 (score, max) => {
                     const percentage = (score / max) * 100;
                     if (percentage >= 75) {
                         return `
                             <ul>
-                                <li>**Verantwortungsbereiche erweitern:** Suchen Sie proaktiv nach weiteren Bereichen, in denen Sie mehr Verantwortung übernehmen können, um die Gesamtleistung des Teams zu steigern.</li>
-                                <li>**"Ownership" im Team fördern:** Schulen und ermutigen Sie Ihre Teammitglieder, selbst Verantwortung für ihre Aufgaben und Projekte zu übernehmen.</li>
+                                <li>**Verantwortungsbereiche erweitern:** Suche proaktiv nach weiteren Bereichen, in denen du mehr Verantwortung übernehmen kannst, um die Gesamtleistung des Teams zu steigern.</li>
+                                <li>**"Ownership" im Team fördern:** Schule und ermutige deine Teammitglieder, selbst Verantwortung für ihre Aufgaben und Projekte zu übernehmen.</li>
                             </ul>
                         `;
                     }
                     if (percentage >= 50) {
                         return `
                             <ul>
-                                <li>**Klarheit schaffen:** Klären Sie bei Aufgaben oder Projekten immer klar, wer für was verantwortlich ist – sowohl für sich selbst als auch für Ihr Team.</li>
-                                <li>**Entscheidungsfreude:** Üben Sie, auch bei unvollständigen Informationen fundierte Entscheidungen zu treffen und dazu zu stehen.</li>
-                                <li>**Fehler als Lernchance:** Wenn Fehler passieren, übernehmen Sie Verantwortung für Ihren Anteil und nutzen Sie die Situation, um gemeinsam mit dem Team daraus zu lernen.</li>
+                                <li>**Klarheit schaffen:** Kläre bei Aufgaben oder Projekten immer klar, wer für was verantwortlich ist – sowohl für dich selbst als auch für dein Team.</li>
+                                <li>**Entscheidungsfreude:** Übe, auch bei unvollständigen Informationen fundierte Entscheidungen zu treffen und dazu zu stehen.</li>
+                                <li>**Fehler als Lernchance:** Wenn Fehler passieren, übernimm Verantwortung für deinen Anteil und nutze die Situation, um gemeinsam mit dem Team daraus zu lernen.</li>
                             </ul>
                         `;
                     }
                     return `
                         <ul>
-                            <li>**Rollendefinition:** Setzen Sie sich bewusst mit Ihrer Rolle als Führungskraft und den damit verbundenen Verantwortlichkeiten auseinander.</li>
-                            <li>**Proaktive Haltung:** Nehmen Sie sich vor, bei jedem Problem, das Sie sehen, aktiv zu überlegen, was *Sie* dazu beitragen können.</li>
-                            <li>**Entscheidungen üben:** Fangen Sie klein an: Treffen Sie bewusst Entscheidungen und stehen Sie dazu, auch wenn sie nicht perfekt sind. Lernen Sie aus den Konsequenzen.</li>
-                            <li>**Mentoring:** Suchen Sie den Austausch mit erfahrenen Führungskräften, wie diese mit Verantwortung umgehen.</li>
+                            <li>**Rollendefinition:** Setze dich bewusst mit deiner Rolle als Führungskraft und den damit verbundenen Verantwortlichkeiten auseinander.</li>
+                            <li>**Proaktive Haltung:** Nimm dir vor, bei jedem Problem, das du siehst, aktiv zu überlegen, was *du* dazu beitragen kannst.</li>
+                            <li>**Entscheidungen üben:** Fange klein an: Treffe bewusst Entscheidungen und stehe dazu, auch wenn sie nicht perfekt sind. Lerne aus den Konsequenzen.</li>
+                            <li>**Mentoring:** Suche den Austausch mit erfahrenen Führungskräften, wie diese mit Verantwortung umgehen.</li>
                         </ul>
                     `;
                 }
@@ -587,35 +587,35 @@
             resultsHtml += generateCategoryResult('Kompetenzentwicklung', scores['Kompetenzentwicklung'], maxScores['Kompetenzentwicklung'],
                 (score, max) => {
                     const percentage = (score / max) * 100;
-                    if (percentage >= 75) return "Ihre Selbsteinschätzung zeigt, dass Sie die Kompetenzentwicklung Ihres Teams aktiv und systematisch fördern. Sie initiieren Lernprozesse und schaffen eine Kultur des kontinuierlichen Lernens. Das ist vorbildlich und essenziell für die Zukunftsfähigkeit Ihres Teams.";
-                    if (percentage >= 50) return "Sie fördern bereits die Kompetenzentwicklung in Ihrem Team. Es gibt jedoch noch Potenzial, dies bewusster und gezielter zu tun, indem Sie Lernchancen systematischer erkennen und nutzen.";
-                    return "In diesem Bereich sehen Sie noch deutliche Entwicklungsmöglichkeiten. Die Förderung der Kompetenzen Ihres Teams scheint noch nicht im Fokus zu stehen. Eine bewusste Strategie zur Mitarbeiterentwicklung ist jedoch entscheidend für den Erfolg und die Motivation Ihres Teams.";
+                    if (percentage >= 75) return "Deine Selbsteinschätzung zeigt, dass du die Kompetenzentwicklung deines Teams aktiv und systematisch förderst. Du initiierst Lernprozesse und schaffst eine Kultur des kontinuierlichen Lernens. Das ist vorbildlich und essenziell für die Zukunftsfähigkeit deines Teams.";
+                    if (percentage >= 50) return "Du förderst bereits die Kompetenzentwicklung in deinem Team. Es gibt jedoch noch Potenzial, dies bewusster und gezielter zu tun, indem du Lernchancen systematischer erkennst und nutzt.";
+                    return "In diesem Bereich siehst du noch deutliche Entwicklungsmöglichkeiten. Die Förderung der Kompetenzen deines Teams scheint noch nicht im Fokus zu stehen. Eine bewusste Strategie zur Mitarbeiterentwicklung ist jedoch entscheidend für den Erfolg und die Motivation deines Teams.";
                 },
                 (score, max) => {
                     const percentage = (score / max) * 100;
                     if (percentage >= 75) {
                         return `
                             <ul>
-                                <li>**Individuelle Entwicklungspläne:** Erstellen Sie gemeinsam mit jedem Teammitglied einen individuellen Entwicklungsplan, der persönliche Ziele und nötige Maßnahmen festhält.</li>
-                                <li>**Wissensmanagement:** Fördern Sie den internen Wissensaustausch, z.B. durch Workshops, Brown-Bag-Sessions oder eine interne Wissensdatenbank.</li>
+                                <li>**Individuelle Entwicklungspläne:** Erstelle gemeinsam mit jedem Teammitglied einen individuellen Entwicklungsplan, der persönliche Ziele und nötige Maßnahmen festhält.</li>
+                                <li>**Wissensmanagement:** Fördere den internen Wissensaustausch, z.B. durch Workshops, Brown-Bag-Sessions oder eine interne Wissensdatenbank.</li>
                             </ul>
                         `;
                     }
                     if (percentage >= 50) {
                         return `
                             <ul>
-                                <li>**Lernchancen erkennen:** Überlegen Sie bei jeder neuen Aufgabe oder jedem Projekt, welche Lernchancen sich daraus für einzelne Teammitglieder ergeben.</li>
-                                <li>**Feedback als Lernwerkzeug:** Geben Sie regelmäßig konstruktives Feedback, das auf die Weiterentwicklung der Mitarbeiter abzielt.</li>
-                                <li>**Retrospektiven institutionalisieren:** Führen Sie nach jedem Projekt oder Sprint feste Retrospektiven ein, um aus Fehlern und Erfolgen zu lernen.</li>
+                                <li>**Lernchancen erkennen:** Überlege bei jeder neuen Aufgabe oder jedem Projekt, welche Lernchancen sich daraus für einzelne Teammitglieder ergeben.</li>
+                                <li>**Feedback als Lernwerkzeug:** Gib regelmäßig konstruktives Feedback, das auf die Weiterentwicklung der Mitarbeiter abzielt.</li>
+                                <li>**Retrospektiven institutionalisieren:** Führe nach jedem Projekt oder Sprint feste Retrospektiven ein, um aus Fehlern und Erfolgen zu lernen.</li>
                             </ul>
                         `;
                     }
                     return `
                         <ul>
-                            <li>**Bedeutung erkennen:** Verstehen Sie, dass die Entwicklung Ihrer Mitarbeiter eine Kernaufgabe von Führung ist und direkt den Teamerfolg beeinflusst.</li>
-                            <li>**Entwicklungsgespräche führen:** Beginnen Sie, regelmäßige Gespräche mit Ihren Teammitgliedern über ihre Ziele, Stärken und Entwicklungswünsche zu führen.</li>
-                            <li>**Lernkultur schaffen:** Ermutigen Sie zum Experimentieren und sehen Sie Fehler als Lerngelegenheiten. Schaffen Sie einen sicheren Raum zum Ausprobieren.</li>
-                            <li>**Eigene Weiterbildung:** Zeigen Sie sich selbst als lernende Führungskraft, indem Sie aktiv an Ihrer eigenen Entwicklung arbeiten.</li>
+                            <li>**Bedeutung erkennen:** Verstehe, dass die Entwicklung deiner Mitarbeiter eine Kernaufgabe von Führung ist und direkt den Teamerfolg beeinflusst.</li>
+                            <li>**Entwicklungsgespräche führen:** Beginne, regelmäßige Gespräche mit deinen Teammitgliedern über ihre Ziele, Stärken und Entwicklungswünsche zu führen.</li>
+                            <li>**Lernkultur schaffen:** Ermutige zum Experimentieren und sehe Fehler als Lerngelegenheiten. Schaffe einen sicheren Raum zum Ausprobieren.</li>
+                            <li>**Eigene Weiterbildung:** Zeige dich selbst als lernende Führungskraft, indem du aktiv an deiner eigenen Entwicklung arbeitest.</li>
                         </ul>
                     `;
                 }
@@ -625,7 +625,7 @@
             resultDiv.style.display = 'block';
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            // Optional: Diagramm aktualisieren (wenn Sie es behalten möchten)
+            // Optional: Diagramm aktualisieren (wenn du es behalten möchtest)
             // const ctx = document.getElementById('myChart').getContext('2d');
             // if (window.myLeadershipChart) {
             //     window.myLeadershipChart.destroy();
@@ -635,7 +635,7 @@
             //     data: {
             //         labels: Object.keys(scores),
             //         datasets: [{
-            //             label: 'Ihre Punktzahl',
+            //             label: 'Deine Punktzahl',
             //             data: Object.values(scores),
             //             backgroundColor: [
             //                 'rgba(26, 78, 138, 0.7)',
@@ -663,7 +663,7 @@
             //             legend: { display: false },
             //             title: {
             //                 display: true,
-            //                 text: 'Ihr Kompetenzprofil (Punkte)'
+            //                 text: 'Dein Kompetenzprofil (Punkte)'
             //             }
             //         },
             //         scales: {
@@ -691,8 +691,8 @@
         function generateCategoryResult(categoryName, score, maxScore, descriptionFn, tipsFn) {
             let html = `<div class="result-category">`;
             html += `<h3>Kompetenzbereich: ${categoryName}</h3>`;
-            html += `<p><strong>Ihre Selbsteinschätzung:</strong> ${descriptionFn(score, maxScore)}</p>`;
-            html += `<h4>Tipps für Ihre Weiterentwicklung:</h4>`;
+            html += `<p><strong>Deine Selbsteinschätzung:</strong> ${descriptionFn(score, maxScore)}</p>`; // <-- HIER KORRIGIERT
+            html += `<h4>Tipps für deine Weiterentwicklung:</h4>`; // <-- HIER KORRIGIERT
             html += tipsFn(score, maxScore); // Die Tipps-Funktion liefert direkt den HTML-String zurück
             html += `</div>`;
             return html;
