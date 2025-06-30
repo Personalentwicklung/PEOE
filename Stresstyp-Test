@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dein persönlicher Stresstyp-Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Allgemeine Einstellungen für den Body */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        /* Container für den gesamten Test, um ihn zu zentrieren und zu stylen */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Stil für den Intro-Kasten */
+        .intro-box {
+            background-color: #f7fcff;
+            border: 1px solid #cceeff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .intro-box-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .intro-box-image {
+            display: none; /* Bild ausgeblendet, da es thematisch nicht passt */
+        }
+        .intro-box-image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+        }
+
+
+        /* Container für jede Frage */
+        .question {
+            margin-bottom: 25px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question:last-of-type {
+            border-bottom: none;
+        }
+
+        /* Stil für den Fragetext */
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #555;
+            display: block;
+        }
+
+        /* Stil für die beschreibenden Labels über den Zahlen */
+        .scale-description-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 8px;
+            padding: 0 5px;
+        }
+
+        .scale-description-labels span {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75em;
+            color: #666;
+            padding: 0 2px;
+            line-height: 1.2;
+        }
+
+
+        /* Stil für die Skala-Optionen (Zahlen) */
+        .scale {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            gap: 1px;
+            align-items: center;
+        }
+
+        .scale label {
+            flex: 1;
+            text-align: center;
+            padding: 12px 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            color: #666;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            font-weight: normal;
+        }
+
+        .scale label:hover {
+            background-color: #e9f0f9;
+        }
+
+        .scale input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .scale label span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .scale input[type="radio"]:checked + span {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border-color: #007bff;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 30px;
+        }
+        button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #e6f7ff;
+            border: 1px solid #b3e0ff;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .result h2 {
+            color: #0056b3;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        #detailed-results {
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f7fcff;
+            border-radius: 5px;
+            border: 1px solid #cceeff;
+        }
+        #detailed-results h3 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        #stressTypeChart {
+            max-height: 350px;
+            width: 100% !important;
+            height: auto !important;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        .score-interpretation-item {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .score-interpretation-item h4 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .score-interpretation-item .symbol {
+            font-size: 1.8em;
+        }
+        .score-interpretation-item p {
+            font-size: 1.0em;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 0;
+        }
+        .score-interpretation-item ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        .score-interpretation-item ul li {
+            margin-bottom: 5px;
+        }
+        /* Media Queries für Responsivität auf kleineren Bildschirmen */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            .container {
+                padding: 20px;
+                box-shadow: none;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            p {
+                font-size: 1.0em;
+                line-height: 1.5;
+            }
+            .question label:first-of-type {
+                font-size: 1em;
+            }
+
+            /* Anpassung für beschreibende Labels auf kleinen Bildschirmen */
+            .scale-description-labels span {
+                font-size: 0.65em;
+                line-height: 1.1;
+            }
+
+            .scale label {
+                padding: 10px 3px;
+                font-size: 0.85em;
+            }
+            button {
+                font-size: 1.1em;
+                padding: 12px 15px;
+            }
+            .result h2 {
+                font-size: 1.5em;
+            }
+            #detailed-results h3 {
+                font-size: 1.3em;
+            }
+            #stressTypeChart {
+                max-height: 200px;
+            }
+            .score-interpretation-item h4 {
+                font-size: 1.3em;
+            }
+            .score-interpretation-item .symbol {
+                font-size: 1.5em;
+            }
+            .score-interpretation-item p {
+                font-size: 0.9em;
+            }
+            .intro-box {
+                flex-direction: column;
+            }
+            .intro-box-image {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dein persönlicher Stresstyp-Test</h1>
+
+        <div class="intro-box">
+            <div class="intro-box-content">
+                <p>Dieser Fragebogen hilft dir dabei, **deinen individuellen Stresstyp** zu identifizieren und zu verstehen, wie **du** auf stressige Situationen reagierst.</p>
+                <p>Das Erkennen deines Stresstyps ist der erste Schritt, um gezielte Strategien zur Stressbewältigung zu entwickeln und deine Resilienz zu stärken. Dies ermöglicht dir, auch unter Druck souverän zu agieren.</p>
+                <p>Bitte wähle für jede Aussage die Option, die am besten auf dich zutrifft. Sei dabei so ehrlich wie möglich.</p>
+                <p>Es werden keine Daten gespeichert, der Test ist 100% anonym.</p>
+            </div>
+        </div>
+
+        <form id="stressTestForm">
+            <div class="question">
+                <label for="q1" class="question-text">1. Wenn du ein Projekt oder eine Aufgabe übernimmst, wie stark konzentrierst du dich auf die Fakten und das Erreichen der Ziele, auch wenn es bedeutet, Warnsignale zu ignorieren?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q1" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q1" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q1" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q1" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q1" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q1" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q1" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q2" class="question-text">2. Wie oft stellst du deine eigenen Bedürfnisse zurück, um die Harmonie in Beziehungen oder im Team zu wahren oder Konflikte zu vermeiden?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q2" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q2" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q2" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q2" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q2" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q2" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q2" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q3" class="question-text">3. Du begegnest Veränderungen mit Widerstand oder Skepsis und planst am liebsten alles bis ins Detail, um Fehler zu vermeiden?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q3" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q3" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q3" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q3" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q3" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q3" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q3" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q4" class="question-text">4. Wie wohl fühlst du dich bei neuen, unkonventionellen Herausforderungen und spontanen Änderungen?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q4" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q4" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q4" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q4" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q4" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q4" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q4" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q5" class="question-text">5. Wie oft arbeitest du trotz Ermüdung weiter und ignorierst Warnsignale deines Körpers, weil du ein Ziel unbedingt erreichen willst?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q5" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q5" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q5" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q5" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q5" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q5" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q5" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q6" class="question-text">6. Wenn es zu Problemen kommt, entschuldigst du eher Fehler anderer, anstatt sie direkt anzusprechen, um Konflikte zu vermeiden?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q6" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q6" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q6" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q6" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q6" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q6" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q6" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q7" class="question-text">7. Du neigst dazu, dir selbst Pausen zu versagen oder sie als unnötig zu empfinden, weil du dich auf deine Aufgaben konzentrierst?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q7" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q7" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q7" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q7" value="4"><span>4</span></label>
+                    <label><input type="radio" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q7" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q7" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q8" class="question-text">8. Wie gehst du mit Routinetätigkeiten um – empfindest du sie schnell als langweilig und suchst nach neuen Anreizen?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q8" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q8" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q8" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q8" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q8" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q8" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q8" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q9" class="question-text">9. Es fällt dir schwer, Hilfe aufzusuchen, weil du glaubst, dass du Situationen alleine ertragen oder lösen musst?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q9" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q9" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q9" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q9" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q9" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q9" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q9" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q10" class="question-text">10. Wie oft neigst du dazu, Schwierigkeiten zu vermeiden oder vor ihnen zu flüchten, anstatt dich ihnen direkt zu stellen?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q10" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q10" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q10" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q10" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q10" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q10" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q10" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q11" class="question-text">11. Du bist bekannt für deine hohe soziale Kompetenz und die Fähigkeit, andere zu unterstützen und zu motivieren?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q11" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q11" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q11" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q11" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q11" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q11" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q11" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q12" class="question-text">12. Wenn du dich gestresst fühlst, zeigt sich dies oft in körperlichen Symptomen wie Verspannungen, Kopfschmerzen oder Rückenschmerzen?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q12" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q12" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q12" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q12" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q12" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q12" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q12" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q13" class="question-text">13. Du bist eine sehr pflichtbewusste und verlässliche Person, die großen Wert auf Ordnung und Fehlervermeidung legt?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q13" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q13" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q13" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q13" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q13" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q13" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q13" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q14" class="question-text">14. Du bist oft chaotisch in deiner Arbeitsweise oder Organisation, was deine Umgebung manchmal stressen kann?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q14" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q14" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q14" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q14" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q14" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q14" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q14" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="q15" class="question-text">15. Du suchst aktiv nach einem positiven sozialen Umfeld, auch wenn du dazu neigst, es manchmal zu vernachlässigen?</label>
+                <div class="scale-description-labels">
+                    <span>nie zutreffend</span>
+                    <span>sehr selten zutreffend</span>
+                    <span>selten zutreffend</span>
+                    <span>manchmal zutreffend</span>
+                    <span>häufig zutreffend</span>
+                    <span>fast immer zutreffend</span>
+                    <span>immer zutreffend</span>
+                </div>
+                <div class="scale">
+                    <label><input type="radio" name="q15" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q15" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q15" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q15" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q15" value="5"><span>5</span></label>
+                    <label><input type="radio" name="q15" value="6"><span>6</span></label>
+                    <label><input type="radio" name="q15" value="7"><span>7</span></label>
+                </div>
+            </div>
+
+            <button type="button" onclick="calculateStressType()">Ergebnis anzeigen</button>
+        </form>
+
+        <div id="result" class="result">
+            <h2>Dein Stresstyp:</h2>
+            <div id="detailed-results">
+                <h3>Deine Stresstyp-Verteilung:</h3>
+                <canvas id="stressTypeChart"></canvas>
+
+                <div id="dominant-type-section" class="score-interpretation-item">
+                    </div>
+
+                <p style="margin-top: 20px;">
+                    **Diese Testauswertung liefert eine vereinfachte Momentaufnahme, die als nützliche Orientierungshilfe dient und einen Überblick über deine Tendenzen im Umgang mit Stress ermöglicht. Es ist dabei zu berücksichtigen, dass die volle Komplexität deiner Persönlichkeit hierdurch nicht abgebildet werden kann.**
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stressTypeChartInstance = null; // Globale Variable für Chart-Instanz
+
+        function calculateStressType() {
+            const form = document.getElementById('stressTestForm');
+            const questions = form.querySelectorAll('.question');
+            let allAnswered = true;
+
+            // Überprüfen, ob alle Fragen beantwortet wurden
+            questions.forEach((q, index) => {
+                const radios = q.querySelectorAll(`input[name="q${index + 1}"]`);
+                let answered = false;
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        answered = true;
+                    }
+                });
+                if (!answered) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Bitte beantworte alle Fragen, bevor du das Ergebnis anzeigst.');
+                return;
+            }
+
+            const formData = new FormData(form);
+            const typeCounts = { A: 0, B: 0, C: 0, D: 0 }; // A: Einzelkämpfer, B: Ausgeglichene, C: Hilfsbereite/Konservative, D: Lebenskünstler
+
+            // Gewichtung der Antworten für die Stresstypen
+            // Höhere Werte (5-7) bedeuten stärkere Zustimmung zur Aussage,
+            // niedrigere Werte (1-3) bedeuten stärkere Ablehnung (oder Hinweis auf anderen Typ)
+            // Die Logik muss die Antwortwerte (1-7) in eine Stresstyp-Tendenz umwandeln.
+
+            // Frage 1: Fokus auf Fakten/Ziele, Warnsignale ignorieren (Typ A: Einzelkämpfer)
+            // Hoher Wert (5-7) -> A (Einzelkämpfer)
+            const q1_val = parseInt(formData.get('q1'));
+            if (q1_val >= 5) typeCounts.A++;
+
+            // Frage 2: Eigene Bedürfnisse zurückstellen für Harmonie/Konfliktvermeidung (Typ B: Ausgeglichene)
+            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            const q2_val = parseInt(formData.get('q2'));
+            if (q2_val >= 5) typeCounts.B++;
+
+            // Frage 3: Widerstand gegen Veränderungen, Detailplanung, Fehlervermeidung (Typ C: Hilfsbereite und Konservative)
+            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            const q3_val = parseInt(formData.get('q3'));
+            if (q3_val >= 5) typeCounts.C++;
+
+            // Frage 4: Wohlfühlen bei neuen Herausforderungen/spontanen Änderungen (Typ D: Freiheitsliebender Lebenskünstler)
+            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            const q4_val = parseInt(formData.get('q4'));
+            if (q4_val >= 5) typeCounts.D++;
+
+            // Frage 5: Trotz Ermüdung weiterarbeiten, Warnsignale ignorieren (Typ A: Einzelkämpfer)
+            // Hoher Wert (5-7) -> A (Einzelkämpfer)
+            const q5_val = parseInt(formData.get('q5'));
+            if (q5_val >= 5) typeCounts.A++;
+
+            // Frage 6: Fehler anderer entschuldigen, Konflikte vermeiden (Typ B: Ausgeglichene)
+            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            const q6_val = parseInt(formData.get('q6'));
+            if (q6_val >= 5) typeCounts.B++;
+
+            // Frage 7: Pausen versagen, Fokus auf Aufgaben (Typ C: Hilfsbereite und Konservative)
+            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            const q7_val = parseInt(formData.get('q7'));
+            if (q7_val >= 5) typeCounts.C++;
+
+            // Frage 8: Routinetätigkeiten langweilig, Suche nach neuen Anreizen (Typ D: Freiheitsliebender Lebenskünstler)
+            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            const q8_val = parseInt(formData.get('q8'));
+            if (q8_val >= 5) typeCounts.D++;
+
+            // Frage 9: Schwer, Hilfe aufzusuchen, alleine lösen müssen (Typ B: Ausgeglichene)
+            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            const q9_val = parseInt(formData.get('q9'));
+            if (q9_val >= 5) typeCounts.B++;
+
+            // Frage 10: Schwierigkeiten vermeiden/flüchten (Typ D: Freiheitsliebender Lebenskünstler)
+            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            const q10_val = parseInt(formData.get('q10'));
+            if (q10_val >= 5) typeCounts.D++;
+
+            // Frage 11: Hohe soziale Kompetenz, andere unterstützen/motivieren (Typ B: Ausgeglichene)
+            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            const q11_val = parseInt(formData.get('q11'));
+            if (q11_val >= 5) typeCounts.B++;
+
+            // Frage 12: Körperliche Symptome bei Stress (Typ C: Hilfsbereite und Konservative)
+            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            const q12_val = parseInt(formData.get('q12'));
+            if (q12_val >= 5) typeCounts.C++;
+
+            // Frage 13: Pflichtbewusst, verlässlich, Ordnung, Fehlervermeidung (Typ C: Hilfsbereite und Konservative)
+            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            const q13_val = parseInt(formData.get('q13'));
+            if (q13_val >= 5) typeCounts.C++;
+
+            // Frage 14: Chaotisch in Arbeitsweise/Organisation, stresst Umgebung (Typ D: Freiheitsliebender Lebenskünstler)
+            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            const q14_val = parseInt(formData.get('q14'));
+            if (q14_val >= 5) typeCounts.D++;
+
+            // Frage 15: Sucht positives soziales Umfeld, vernachlässigt es manchmal (Typ A: Einzelkämpfer)
+            // Hoher Wert (5-7) -> A (Einzelkämpfer)
+            const q15_val = parseInt(formData.get('q15'));
+            if (q15_val >= 5) typeCounts.A++;
+
+
+            // Ermitteln des dominanten Stresstyps
+            let dominantType = '';
+            let maxCount = -1;
+
+            let finalDominantTypes = [];
+            for (const type in typeCounts) {
+                if (typeCounts[type] > maxCount) {
+                    maxCount = typeCounts[type];
+                    dominantType = type;
+                    finalDominantTypes = [type];
+                } else if (typeCounts[type] === maxCount && typeCounts[type] > 0) {
+                    finalDominantTypes.push(type);
+                }
+            }
+
+            let resultTitle = '';
+            let resultDescription = '';
+            let recommendationsList = [];
+            let chartLabels = ['Typ A (Einzelkämpfer)', 'Typ B (Ausgeglichene)', 'Typ C (Hilfsbereite & Konservative)', 'Typ D (Lebenskünstler)'];
+            let chartData = [typeCounts.A, typeCounts.B, typeCounts.C, typeCounts.D];
+            let chartColors = ['#dc3545', '#007bff', '#ffc107', '#20c997']; // Rot, Blau, Orange, Türkis
+
+            // Definitionen und Empfehlungen basierend auf den neuen Texten
+            const typeDefinitions = {
+                A: {
+                    title: 'Stresstyp A: Der Einzelkämpfer',
+                    description: 'Du bist der „leistungsorientierte Workaholic“. Du zeichnest dich durch gute analytische Fähigkeiten, starke Sachbezogenheit, Fokussiertheit und Zielorientierung aus. Du bist sehr leistungsfähig, neigst aber dazu, Warnsignale lange zu ignorieren und bist daher leider burnoutanfällig. Dein soziales Umfeld, sowohl im beruflichen als auch im privaten Bereich, kann dabei häufig zu kurz kommen.',
+                    recommendations: [
+                        'Etabliere feste Pausen und nimm dir bewusst Zeit zur Regeneration.',
+                        'Lerne, Aufgaben zu delegieren und Vertrauen in andere zu setzen, um dich zu entlasten.',
+                        'Pflege aktiv dein soziales Umfeld – beruflich und privat. Es bietet wichtige Unterstützung.',
+                        'Integriere Hobbys, Sport und Mentaltraining in deinen Alltag, um dich körperlich und mental zu erholen.',
+                        'Achte bewusst auf Warnsignale deines Körpers und Geistes und reagiere frühzeitig darauf.'
+                    ],
+                    symbol: '⚔️'
+                },
+                B: {
+                    title: 'Stresstyp B: Die Ausgeglichene',
+                    description: 'Du bist der „sozialorientierte Beziehungsmensch“. Du bist ein typischer Durchhalter mit hoher sozialer Kompetenz, der andere gerne unterstützt. Dein ausgeprägtes Harmoniebedürfnis und die Angst vor Konflikten führen oft dazu, dass du eigene Bedürfnisse hintenanstellst. Du entschuldigst Fehler anderer, anstatt sie anzusprechen, und suchst spät Hilfe auf, weil du glaubst, Situationen ertragen zu müssen.',
+                    recommendations: [
+                        'Stärke deinen gesunden Egoismus: Nimm deine eigenen Bedürfnisse besser wahr und artikuliere sie.',
+                        'Trainiere Konfliktmanagement, um im Alltag deine Ziele besser durchsetzen zu können und direkte, konstruktive Gespräche zu führen.',
+                        'Übe dich darin, "Nein" zu sagen, wenn du bereits überlastet bist oder Aufgaben angeboten werden, die nicht in deinen Verantwortungsbereich fallen.',
+                        'Erkenne, dass du nicht alles alleine ertragen musst. Es ist Stärke, um Hilfe zu bitten.'
+                    ],
+                    symbol: '💞'
+                },
+                C: {
+                    title: 'Stresstyp C: Der Hilfsbereite und Konservative',
+                    description: 'Du bist der „werteorientierte Perfektionist“. Dich zeichnen Verlässlichkeit, hohes Pflichtbewusstsein und ein Talent für Organisation aus, um Fehler zu vermeiden. Du bist ein geschätzter Experte, begegnest Veränderungen jedoch oft mit Widerstand oder Skepsis. Der Erfolg deiner Aufgaben oder Projekte steht für dich im Mittelpunkt, was oft dazu führt, dass du auf Pausen verzichtest. Innere Anspannung kann sich bei dir häufig in körperlichen Verspannungen, Kopf- oder Rückenschmerzen äußern. Auf persönlicher Ebene wirst du manchmal als distanziert wahrgenommen.',
+                    recommendations: [
+                        'Lerne zu delegieren: Nicht alle Aufgaben müssen von dir persönlich erledigt werden. Vertraue anderen.',
+                        'Gönn dir bewusst Pausen, auch wenn die Arbeit noch nicht „perfekt“ ist. Regeneration ist essenziell für deine Gesundheit und Leistung.',
+                        'Baue ein Leben neben der Arbeit auf: Entdecke Hobbys und Interessen, die dir einen Ausgleich bieten und dich entspannen.',
+                        'Übe, offener für Veränderungen zu sein und sie als Chance zu betrachten.',
+                        'Achte bewusst auf die Signale deines Körpers, um Verspannungen und Schmerzen vorzubeugen.'
+                    ],
+                    symbol: '📏'
+                },
+                D: {
+                    title: 'Stresstyp D: Der Freiheitsliebende Lebenskünstler',
+                    description: 'Du bist der „freiheitsliebende Lebenskünstler“. Du liebst Abenteuer, neue Herausforderungen und fühlst dich in spontanen Änderungen oder neuen Situationen wohl. Du bist kreativ und flexibel im Alltag, Routinetätigkeiten langweilen dich rasch. Du besitzt eine hohe Selbst- und Fremdmotivation, bist aber paradoxerweise nicht stressresistent, da du eher zur Flucht neigst und Schwierigkeiten vermeidest. Deine oft chaotische Arbeitsweise kann deine Umgebung stressen.',
+                    recommendations: [
+                        'Entwickle Strategien, um mit Routinetätigkeiten umzugehen und sie nicht komplett zu ignorieren. Struktur kann dir helfen, deine Kreativität zu kanalisieren.',
+                        'Arbeite an deiner Stressresistenz: Übe, dich Schwierigkeiten direkt zu stellen, anstatt sie zu vermeiden oder zu flüchten.',
+                        'Finde Wege, deine Kreativität und Flexibilität produktiv einzusetzen, ohne dabei Chaos zu verursachen.',
+                        'Setze klare organisatorische Strukturen für dich selbst und deine Aufgaben, um die Umgebung weniger zu stressen.',
+                        'Lerne, deine Impulse zu steuern und dich auf längerfristige Ziele zu konzentrieren, auch wenn der Weg dorthin weniger "abenteuerlich" ist.'
+                    ],
+                    symbol: '🎨'
+                }
+            };
+
+            if (finalDominantTypes.length === 1) {
+                const typeInfo = typeDefinitions[dominantType];
+                resultTitle = `Dein dominanter Stresstyp ist: **${typeInfo.title}**`;
+                resultDescription = typeInfo.description;
+                recommendationsList = typeInfo.recommendations;
+                finalSymbol = typeInfo.symbol;
+            } else if (finalDominantTypes.length > 1) {
+                // Bei Mischtypen die Beschreibungen kombinieren
+                resultTitle = `Deine dominanten Stresstypen sind: **Mischtyp (${finalDominantTypes.map(t => typeDefinitions[t].title.replace('Stresstyp ', '')).join(' & ')})**`;
+                let combinedDescriptionHtml = '';
+                finalDominantTypes.forEach(type => {
+                    const typeInfo = typeDefinitions[type];
+                    combinedDescriptionHtml += `<p><strong>${typeInfo.title}</strong><br>${typeInfo.description}</p>`;
+                    recommendationsList = recommendationsList.concat(typeInfo.recommendations);
+                });
+                resultDescription = combinedDescriptionHtml;
+                finalSymbol = '🌈'; // Symbol für Mischtyp
+            } else {
+                resultTitle = 'Es konnte kein dominanter Stresstyp ermittelt werden.';
+                resultDescription = 'Bitte stelle sicher, dass du alle Fragen beantwortet hast.';
+                recommendationsList = [];
+            }
+
+            // HTML für den dominanten Typen oder Mischtypen zusammenstellen
+            const dominantTypeSection = document.getElementById('dominant-type-section');
+            dominantTypeSection.innerHTML = `
+                <h4><span class="symbol">${finalSymbol}</span> ${resultTitle}</h4>
+                ${resultDescription}
+                <div class="recommendations">
+                    <h5>Empfehlungen für dich:</h5>
+                    <ul>
+                        ${recommendationsList.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            const resultsDiv = document.getElementById('result');
+            resultsDiv.style.display = 'block';
+
+            // Chart.js Integration
+            const ctx = document.getElementById('stressTypeChart').getContext('2d');
+            if (stressTypeChartInstance) {
+                stressTypeChartInstance.destroy();
+            }
+
+            // Daten für das Balkendiagramm
+            stressTypeChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Anzahl der Übereinstimmungen',
+                        data: chartData,
+                        backgroundColor: chartColors,
+                        borderColor: chartColors.map(color => color.replace('0.7', '1')), // Solide Farben für den Rand
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: Math.max(...chartData) + 1, // Max-Wert + 1 für bessere Darstellung
+                            title: {
+                                display: true,
+                                text: 'Anzahl der Zuordnungen'
+                            },
+                            ticks: {
+                                precision: 0 // Nur ganze Zahlen auf der Y-Achse
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Legende ist hier nicht nötig, da Farben direkt zugeordnet
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.parsed.y} Zuordnungen`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Autoscroll zum Ergebnis
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>
+
