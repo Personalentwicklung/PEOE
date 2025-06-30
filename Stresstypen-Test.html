@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ati<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -710,85 +710,85 @@
             }
 
             const formData = new FormData(form);
-            const typeCounts = { A: 0, B: 0, C: 0, D: 0 }; // A: Einzelkämpfer, B: Ausgeglichene, C: Hilfsbereite/Konservative, D: Lebenskünstler
+            const typeCounts = { A: 0, B: 0, C: 0, D: 0 }; // A: Antreiber, B: Harmoniestrebender, C: Reagierender, D: Strukturierter
 
             // Gewichtung der Antworten für die Stresstypen
             // Höhere Werte (5-7) bedeuten stärkere Zustimmung zur Aussage,
             // niedrigere Werte (1-3) bedeuten stärkere Ablehnung (oder Hinweis auf anderen Typ)
             // Die Logik muss die Antwortwerte (1-7) in eine Stresstyp-Tendenz umwandeln.
 
-            // Frage 1: Fokus auf Fakten/Ziele, Warnsignale ignorieren (Typ A: Einzelkämpfer)
-            // Hoher Wert (5-7) -> A (Einzelkämpfer)
+            // Frage 1: Fokus auf Fakten/Ziele, Warnsignale ignorieren (Typ A: Antreiber)
+            // Hoher Wert (5-7) -> A (Antreiber)
             const q1_val = parseInt(formData.get('q1'));
             if (q1_val >= 5) typeCounts.A++;
 
-            // Frage 2: Eigene Bedürfnisse zurückstellen für Harmonie/Konfliktvermeidung (Typ B: Ausgeglichene)
-            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            // Frage 2: Eigene Bedürfnisse zurückstellen für Harmonie/Konfliktvermeidung (Typ B: Harmoniestrebender)
+            // Hoher Wert (5-7) -> B (Harmoniestrebender)
             const q2_val = parseInt(formData.get('q2'));
             if (q2_val >= 5) typeCounts.B++;
 
             // Frage 3: Widerstand gegen Veränderungen, Detailplanung, Fehlervermeidung (Typ C: Hilfsbereite und Konservative)
-            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            // Hoher Wert (5-7) -> C (Reagierender)
             const q3_val = parseInt(formData.get('q3'));
             if (q3_val >= 5) typeCounts.C++;
 
-            // Frage 4: Wohlfühlen bei neuen Herausforderungen/spontanen Änderungen (Typ D: Freiheitsliebender Lebenskünstler)
-            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            // Frage 4: Wohlfühlen bei neuen Herausforderungen/spontanen Änderungen (Typ D: Strukturierter)
+            // Hoher Wert (5-7) -> D (Strukturierter)
             const q4_val = parseInt(formData.get('q4'));
             if (q4_val >= 5) typeCounts.D++;
 
-            // Frage 5: Trotz Ermüdung weiterarbeiten, Warnsignale ignorieren (Typ A: Einzelkämpfer)
-            // Hoher Wert (5-7) -> A (Einzelkämpfer)
+            // Frage 5: Trotz Ermüdung weiterarbeiten, Warnsignale ignorieren (Typ A: Antreiber)
+            // Hoher Wert (5-7) -> A (Antreiber)
             const q5_val = parseInt(formData.get('q5'));
             if (q5_val >= 5) typeCounts.A++;
 
-            // Frage 6: Fehler anderer entschuldigen, Konflikte vermeiden (Typ B: Ausgeglichene)
-            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            // Frage 6: Fehler anderer entschuldigen, Konflikte vermeiden (Typ B: Harmoniestrebender)
+            // Hoher Wert (5-7) -> B (Harmoniestrebender)
             const q6_val = parseInt(formData.get('q6'));
             if (q6_val >= 5) typeCounts.B++;
 
-            // Frage 7: Pausen versagen, Fokus auf Aufgaben (Typ C: Hilfsbereite und Konservative)
-            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            // Frage 7: Pausen versagen, Fokus auf Aufgaben (Typ C: Reagierender)
+            // Hoher Wert (5-7) -> C (Reagierender)
             const q7_val = parseInt(formData.get('q7'));
             if (q7_val >= 5) typeCounts.C++;
 
-            // Frage 8: Routinetätigkeiten langweilig, Suche nach neuen Anreizen (Typ D: Freiheitsliebender Lebenskünstler)
-            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            // Frage 8: Routinetätigkeiten langweilig, Suche nach neuen Anreizen (Typ D: Strukturierter)
+            // Hoher Wert (5-7) -> D (Strukturierter)
             const q8_val = parseInt(formData.get('q8'));
             if (q8_val >= 5) typeCounts.D++;
 
-            // Frage 9: Schwer, Hilfe aufzusuchen, alleine lösen müssen (Typ B: Ausgeglichene)
-            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            // Frage 9: Schwer, Hilfe aufzusuchen, alleine lösen müssen (Typ B: Harmoniestrebender)
+            // Hoher Wert (5-7) -> B (Harmoniestrebende)
             const q9_val = parseInt(formData.get('q9'));
             if (q9_val >= 5) typeCounts.B++;
 
-            // Frage 10: Schwierigkeiten vermeiden/flüchten (Typ D: Freiheitsliebender Lebenskünstler)
-            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            // Frage 10: Schwierigkeiten vermeiden/flüchten (Typ D: Strukturierter)
+            // Hoher Wert (5-7) -> D (Strukturierter)
             const q10_val = parseInt(formData.get('q10'));
             if (q10_val >= 5) typeCounts.D++;
 
-            // Frage 11: Hohe soziale Kompetenz, andere unterstützen/motivieren (Typ B: Ausgeglichene)
-            // Hoher Wert (5-7) -> B (Ausgeglichene)
+            // Frage 11: Hohe soziale Kompetenz, andere unterstützen/motivieren (Typ B: Harmoniestrebender)
+            // Hoher Wert (5-7) -> B (Harmoniestrebender)
             const q11_val = parseInt(formData.get('q11'));
             if (q11_val >= 5) typeCounts.B++;
 
-            // Frage 12: Körperliche Symptome bei Stress (Typ C: Hilfsbereite und Konservative)
-            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            // Frage 12: Körperliche Symptome bei Stress (Typ C: Reagierender)
+            // Hoher Wert (5-7) -> C (Reagierender)
             const q12_val = parseInt(formData.get('q12'));
             if (q12_val >= 5) typeCounts.C++;
 
-            // Frage 13: Pflichtbewusst, verlässlich, Ordnung, Fehlervermeidung (Typ C: Hilfsbereite und Konservative)
-            // Hoher Wert (5-7) -> C (Hilfsbereite und Konservative)
+            // Frage 13: Pflichtbewusst, verlässlich, Ordnung, Fehlervermeidung (Typ C: Reagierender)
+            // Hoher Wert (5-7) -> C (Reagierender)
             const q13_val = parseInt(formData.get('q13'));
             if (q13_val >= 5) typeCounts.C++;
 
-            // Frage 14: Chaotisch in Arbeitsweise/Organisation, stresst Umgebung (Typ D: Freiheitsliebender Lebenskünstler)
-            // Hoher Wert (5-7) -> D (Lebenskünstler)
+            // Frage 14: Chaotisch in Arbeitsweise/Organisation, stresst Umgebung (Typ D: Strukturierter)
+            // Hoher Wert (5-7) -> D (Strukturierter)
             const q14_val = parseInt(formData.get('q14'));
             if (q14_val >= 5) typeCounts.D++;
 
-            // Frage 15: Sucht positives soziales Umfeld, vernachlässigt es manchmal (Typ A: Einzelkämpfer)
-            // Hoher Wert (5-7) -> A (Einzelkämpfer)
+            // Frage 15: Sucht positives soziales Umfeld, vernachlässigt es manchmal (Typ A: Antreiber)
+            // Hoher Wert (5-7) -> A (Antreiber)
             const q15_val = parseInt(formData.get('q15'));
             if (q15_val >= 5) typeCounts.A++;
 
@@ -811,14 +811,13 @@
             let resultTitle = '';
             let resultDescription = '';
             let recommendationsList = [];
-            let chartLabels = ['Typ A (Einzelkämpfer)', 'Typ B (Ausgeglichene)', 'Typ C (Hilfsbereite & Konservative)', 'Typ D (Lebenskünstler)'];
+            let chartLabels = ['Typ A (Einzelkämpfer)', 'Typ B (Ausgeglichene)', 'Typ C (Reagierender)', 'Typ D (Lebenskünstler)'];
             let chartData = [typeCounts.A, typeCounts.B, typeCounts.C, typeCounts.D];
             let chartColors = ['#dc3545', '#007bff', '#ffc107', '#20c997']; // Rot, Blau, Orange, Türkis
 
-            // Definitionen und Empfehlungen basierend auf den neuen Texten
             const typeDefinitions = {
                 A: {
-                    title: 'Stresstyp A: Der Einzelkämpfer',
+                    title: 'Stresstyp A: Der Antreiber',
                     description: 'Du bist der „leistungsorientierte Workaholic“. Du zeichnest dich durch gute analytische Fähigkeiten, starke Sachbezogenheit, Fokussiertheit und Zielorientierung aus. Du bist sehr leistungsfähig, neigst aber dazu, Warnsignale lange zu ignorieren und bist daher leider burnoutanfällig. Dein soziales Umfeld, sowohl im beruflichen als auch im privaten Bereich, kann dabei häufig zu kurz kommen.',
                     recommendations: [
                         'Etabliere feste Pausen und nimm dir bewusst Zeit zur Regeneration.',
@@ -830,7 +829,7 @@
                     symbol: '⚔️'
                 },
                 B: {
-                    title: 'Stresstyp B: Die Ausgeglichene',
+                    title: 'Stresstyp B: Harmoniestrebender',
                     description: 'Du bist der „sozialorientierte Beziehungsmensch“. Du bist ein typischer Durchhalter mit hoher sozialer Kompetenz, der andere gerne unterstützt. Dein ausgeprägtes Harmoniebedürfnis und die Angst vor Konflikten führen oft dazu, dass du eigene Bedürfnisse hintenanstellst. Du entschuldigst Fehler anderer, anstatt sie anzusprechen, und suchst spät Hilfe auf, weil du glaubst, Situationen ertragen zu müssen.',
                     recommendations: [
                         'Stärke deinen gesunden Egoismus: Nimm deine eigenen Bedürfnisse besser wahr und artikuliere sie.',
@@ -841,26 +840,29 @@
                     symbol: '💞'
                 },
                 C: {
-                    title: 'Stresstyp C: Der Hilfsbereite und Konservative',
-                    description: 'Du bist der „werteorientierte Perfektionist“. Dich zeichnen Verlässlichkeit, hohes Pflichtbewusstsein und ein Talent für Organisation aus, um Fehler zu vermeiden. Du bist ein geschätzter Experte, begegnest Veränderungen jedoch oft mit Widerstand oder Skepsis. Der Erfolg deiner Aufgaben oder Projekte steht für dich im Mittelpunkt, was oft dazu führt, dass du auf Pausen verzichtest. Innere Anspannung kann sich bei dir häufig in körperlichen Verspannungen, Kopf- oder Rückenschmerzen äußern. Auf persönlicher Ebene wirst du manchmal als distanziert wahrgenommen.',
+                    title: 'Stresstyp C: Reagierender',
+                    description: 'Du bist „kreativ, spontan und impulsiv“. Du liebst Abwechslung, denkst schnell und bringst frische Ideen ein. In stressigen Situationen neigst du jedoch dazu, dich zu verzetteln oder dich durch Ablenkung zu entlasten. Struktur und Planung sind nicht deine Stärke – du handelst lieber intuitiv und aus dem Moment heraus. Dein Verhalten wirkt oft sprunghaft oder unorganisiert, was im Team zu Missverständnissen oder Konflikten führen kann. Wenn der Druck steigt, versuchst du, unangenehme Aufgaben zu vermeiden, was langfristig zu Überforderung führen kann. Dein Wunsch nach Freiheit und Flexibilität steht manchmal im Widerspruch zu den Anforderungen des Alltags.
+',
                     recommendations: [
-                        'Lerne zu delegieren: Nicht alle Aufgaben müssen von dir persönlich erledigt werden. Vertraue anderen.',
-                        'Gönn dir bewusst Pausen, auch wenn die Arbeit noch nicht „perfekt“ ist. Regeneration ist essenziell für deine Gesundheit und Leistung.',
-                        'Baue ein Leben neben der Arbeit auf: Entdecke Hobbys und Interessen, die dir einen Ausgleich bieten und dich entspannen.',
-                        'Übe, offener für Veränderungen zu sein und sie als Chance zu betrachten.',
-                        'Achte bewusst auf die Signale deines Körpers, um Verspannungen und Schmerzen vorzubeugen.'
+                        'Um dein Potenzial voll zu entfalten, brauchst du klare Prioritäten, feste Routinen und einen bewussten Umgang mit deiner Energie.',
+                        'Etabliere feste Routinen, damit du leichter den Überblick behältst und deine Energie gezielter einsetzen kannst.',
+                        'Überlege dir, was wirklich wichtig ist, und setze klare Prioritäten – das hilft dir, fokussiert zu bleiben.',
+                        'Übe dich darin, deinen Fokus zu halten, zum Beispiel mit kurzen, strukturierten Arbeitsphasen.',
+                        'Nutze kleine Helfer wie Kalender, To-do-Listen oder Apps, um deine Gedanken zu sortieren und dich besser zu organisieren.'
+                        'Gönn dir regelmäßig bewusste Pausen – auch kreative Köpfe brauchen Zeit zum Auftanken.'
+    
                     ],
                     symbol: '📏'
                 },
                 D: {
-                    title: 'Stresstyp D: Der Freiheitsliebende Lebenskünstler',
-                    description: 'Du bist der „freiheitsliebende Lebenskünstler“. Du liebst Abenteuer, neue Herausforderungen und fühlst dich in spontanen Änderungen oder neuen Situationen wohl. Du bist kreativ und flexibel im Alltag, Routinetätigkeiten langweilen dich rasch. Du besitzt eine hohe Selbst- und Fremdmotivation, bist aber paradoxerweise nicht stressresistent, da du eher zur Flucht neigst und Schwierigkeiten vermeidest. Deine oft chaotische Arbeitsweise kann deine Umgebung stressen.',
+                    title: 'Stresstyp D: Der Strukturierte',
+                    description: 'Du bist "pflichtbewusst und sicherheitsorientiert". Deine Stärken liegen in deiner Verlässlichkeit, deiner Gründlichkeit und deiner Fähigkeit, gut organisiert zu arbeiten. Du fühlst dich wohl in klaren Strukturen und arbeitest am liebsten ungestört und konzentriert. Veränderungen oder unerwartete Situationen bringen dich jedoch schnell aus dem Gleichgewicht. Du hältst gerne an Gewohnheiten fest und meidest Risiken. Wenn andere versuchen, deine bewährten Strukturen aufzubrechen, kann das zu innerer Anspannung oder Konflikten führen. Trotzdem gelingt es dir meist, eine gesunde Balance zwischen Anspannung und Entspannung zu halten – du lässt dich nicht so leicht aus der Ruhe bringen..',
                     recommendations: [
-                        'Entwickle Strategien, um mit Routinetätigkeiten umzugehen und sie nicht komplett zu ignorieren. Struktur kann dir helfen, deine Kreativität zu kanalisieren.',
-                        'Arbeite an deiner Stressresistenz: Übe, dich Schwierigkeiten direkt zu stellen, anstatt sie zu vermeiden oder zu flüchten.',
-                        'Finde Wege, deine Kreativität und Flexibilität produktiv einzusetzen, ohne dabei Chaos zu verursachen.',
-                        'Setze klare organisatorische Strukturen für dich selbst und deine Aufgaben, um die Umgebung weniger zu stressen.',
-                        'Lerne, deine Impulse zu steuern und dich auf längerfristige Ziele zu konzentrieren, auch wenn der Weg dorthin weniger "abenteuerlich" ist.'
+                        'Übe dich darin, auch mal von gewohnten Abläufen abzuweichen und Neues auszuprobieren.',
+                        'Bleib offen für den Austausch mit anderen – frische Perspektiven können bereichern.',
+                        'Trainiere deine Flexibilität, zum Beispiel durch kleine Veränderungen im Alltag.',
+                        'Erlaube dir, nicht perfekt zu sein – Selbstakzeptanz ist ein wichtiger Schlüssel zur inneren Ruhe',
+                        'Nimm dir bewusst Zeit für dich, auch wenn dein Pflichtgefühl dich zu etwas anderem drängt.'
                     ],
                     symbol: '🎨'
                 }
