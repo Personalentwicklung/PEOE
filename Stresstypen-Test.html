@@ -710,109 +710,78 @@
             }
 
             const formData = new FormData(form);
-            const typeCounts = { A: 0, B: 0, C: 0, D: 0 }; // A: Antreiber, B: Harmoniestrebender, C: Reagierender, D: Strukturierter
+            // Initialize scores for each stress type
+            // Changed typeCounts to store actual scores instead of just increments,
+            // allowing for more nuanced weighting of responses.
+            const typeScores = { A: 0, B: 0, C: 0, D: 0 }; 
 
-            // Gewichtung der Antworten für die Stresstypen
-            // Höhere Werte (5-7) bedeuten stärkere Zustimmung zur Aussage,
-            // niedrigere Werte (1-3) bedeuten stärkere Ablehnung (oder Hinweis auf anderen Typ)
-            // Die Logik muss die Antwortwerte (1-7) in eine Stresstyp-Tendenz umwandeln.
+            // Define how each question contributes to each stress type
+            // Positive contribution if a higher value (more agreement) means more of that type
+            // Negative contribution if a higher value (more agreement) means less of that type
+            // The value of the answer (1-7) directly adds or subtracts from the score.
+            const questionMapping = {
+                // Typ A: Antreiber (Leistungsorientiert, ignoriert Warnsignale)
+                q1: { type: 'A', direction: 1 }, // Fokus auf Fakten/Ziele, Warnsignale ignorieren
+                q5: { type: 'A', direction: 1 }, // Trotz Ermüdung weiterarbeiten, Warnsignale ignorieren
+                q15: { type: 'A', direction: 1 }, // Sucht positives soziales Umfeld, vernachlässigt es manchmal
 
-            // Frage 1: Fokus auf Fakten/Ziele, Warnsignale ignorieren (Typ A: Antreiber)
-            // Hoher Wert (5-7) -> A (Antreiber)
-            const q1_val = parseInt(formData.get('q1'));
-            if (q1_val >= 5) typeCounts.A++;
+                // Typ B: Harmoniestrebender (Sozial orientiert, vermeidet Konflikte, stellt eigene Bedürfnisse zurück)
+                q2: { type: 'B', direction: 1 }, // Eigene Bedürfnisse zurückstellen für Harmonie/Konfliktvermeidung
+                q6: { type: 'B', direction: 1 }, // Fehler anderer entschuldigen, Konflikte vermeiden
+                q9: { type: 'B', direction: 1 }, // Schwer, Hilfe aufzusuchen, alleine lösen müssen
+                q11: { type: 'B', direction: 1 }, // Hohe soziale Kompetenz, andere unterstützen/motivieren
 
-            // Frage 2: Eigene Bedürfnisse zurückstellen für Harmonie/Konfliktvermeidung (Typ B: Harmoniestrebender)
-            // Hoher Wert (5-7) -> B (Harmoniestrebender)
-            const q2_val = parseInt(formData.get('q2'));
-            if (q2_val >= 5) typeCounts.B++;
+                // Typ C: Reagierender (Kreativ, spontan, impulsiv, verzettelt sich, körperliche Symptome)
+                q3: { type: 'D', direction: -1 }, // Widerstand gegen Veränderungen, Detailplanung, Fehlervermeidung (High score here means *less* C, more D)
+                q7: { type: 'C', direction: 1 }, // Pausen versagen, Fokus auf Aufgaben (Can also lean towards A, but C often neglects self-care due to focus)
+                q12: { type: 'C', direction: 1 }, // Körperliche Symptome bei Stress
+                q13: { type: 'D', direction: -1 }, // Pflichtbewusst, verlässlich, Ordnung, Fehlervermeidung (High score here means *less* C, more D)
 
-            // Frage 3: Widerstand gegen Veränderungen, Detailplanung, Fehlervermeidung (Typ C: Hilfsbereite und Konservative)
-            // Hoher Wert (5-7) -> C (Reagierender)
-            const q3_val = parseInt(formData.get('q3'));
-            if (q3_val >= 5) typeCounts.C++;
+                // Typ D: Strukturierter (Pflichtbewusst, sicherheitsorientiert, mag Routinen, vermeidet Schwierigkeiten)
+                q4: { type: 'C', direction: -1 }, // Wohlfühlen bei neuen Herausforderungen/spontanen Änderungen (High score here means *less* D, more C)
+                q8: { type: 'C', direction: -1 }, // Routinetätigkeiten langweilig, Suche nach neuen Anreizen (High score here means *less* D, more C)
+                q10: { type: 'D', direction: 1 }, // Schwierigkeiten vermeiden/flüchten
+                q14: { type: 'C', direction: 1 }  // Chaotisch in Arbeitsweise/Organisation, stresst Umgebung (High score here means *more* C, less D)
+            };
 
-            // Frage 4: Wohlfühlen bei neuen Herausforderungen/spontanen Änderungen (Typ D: Strukturierter)
-            // Hoher Wert (5-7) -> D (Strukturierter)
-            const q4_val = parseInt(formData.get('q4'));
-            if (q4_val >= 5) typeCounts.D++;
-
-            // Frage 5: Trotz Ermüdung weiterarbeiten, Warnsignale ignorieren (Typ A: Antreiber)
-            // Hoher Wert (5-7) -> A (Antreiber)
-            const q5_val = parseInt(formData.get('q5'));
-            if (q5_val >= 5) typeCounts.A++;
-
-            // Frage 6: Fehler anderer entschuldigen, Konflikte vermeiden (Typ B: Harmoniestrebender)
-            // Hoher Wert (5-7) -> B (Harmoniestrebender)
-            const q6_val = parseInt(formData.get('q6'));
-            if (q6_val >= 5) typeCounts.B++;
-
-            // Frage 7: Pausen versagen, Fokus auf Aufgaben (Typ C: Reagierender)
-            // Hoher Wert (5-7) -> C (Reagierender)
-            const q7_val = parseInt(formData.get('q7'));
-            if (q7_val >= 5) typeCounts.C++;
-
-            // Frage 8: Routinetätigkeiten langweilig, Suche nach neuen Anreizen (Typ D: Strukturierter)
-            // Hoher Wert (5-7) -> D (Strukturierter)
-            const q8_val = parseInt(formData.get('q8'));
-            if (q8_val >= 5) typeCounts.D++;
-
-            // Frage 9: Schwer, Hilfe aufzusuchen, alleine lösen müssen (Typ B: Harmoniestrebender)
-            // Hoher Wert (5-7) -> B (Harmoniestrebende)
-            const q9_val = parseInt(formData.get('q9'));
-            if (q9_val >= 5) typeCounts.B++;
-
-            // Frage 10: Schwierigkeiten vermeiden/flüchten (Typ D: Strukturierter)
-            // Hoher Wert (5-7) -> D (Strukturierter)
-            const q10_val = parseInt(formData.get('q10'));
-            if (q10_val >= 5) typeCounts.D++;
-
-            // Frage 11: Hohe soziale Kompetenz, andere unterstützen/motivieren (Typ B: Harmoniestrebender)
-            // Hoher Wert (5-7) -> B (Harmoniestrebender)
-            const q11_val = parseInt(formData.get('q11'));
-            if (q11_val >= 5) typeCounts.B++;
-
-            // Frage 12: Körperliche Symptome bei Stress (Typ C: Reagierender)
-            // Hoher Wert (5-7) -> C (Reagierender)
-            const q12_val = parseInt(formData.get('q12'));
-            if (q12_val >= 5) typeCounts.C++;
-
-            // Frage 13: Pflichtbewusst, verlässlich, Ordnung, Fehlervermeidung (Typ C: Reagierender)
-            // Hoher Wert (5-7) -> C (Reagierender)
-            const q13_val = parseInt(formData.get('q13'));
-            if (q13_val >= 5) typeCounts.C++;
-
-            // Frage 14: Chaotisch in Arbeitsweise/Organisation, stresst Umgebung (Typ D: Strukturierter)
-            // Hoher Wert (5-7) -> D (Strukturierter)
-            const q14_val = parseInt(formData.get('q14'));
-            if (q14_val >= 5) typeCounts.D++;
-
-            // Frage 15: Sucht positives soziales Umfeld, vernachlässigt es manchmal (Typ A: Antreiber)
-            // Hoher Wert (5-7) -> A (Antreiber)
-            const q15_val = parseInt(formData.get('q15'));
-            if (q15_val >= 5) typeCounts.A++;
-
+            for (const [questionName, mapping] of Object.entries(questionMapping)) {
+                const value = parseInt(formData.get(questionName));
+                // Adjust score based on the value and direction.
+                // A value of 4 is neutral. Values further from 4 have a stronger effect.
+                // For 'direction: 1' (positive correlation): score increases with higher value.
+                // For 'direction: -1' (negative correlation): score increases with lower value.
+                typeScores[mapping.type] += (value - 4) * mapping.direction;
+            }
 
             // Ermitteln des dominanten Stresstyps
             let dominantType = '';
-            let maxCount = -1;
+            let maxScore = -Infinity; // Initialize with negative infinity for accurate comparison
 
             let finalDominantTypes = [];
-            for (const type in typeCounts) {
-                if (typeCounts[type] > maxCount) {
-                    maxCount = typeCounts[type];
+            for (const type in typeScores) {
+                if (typeScores[type] > maxScore) {
+                    maxScore = typeScores[type];
                     dominantType = type;
                     finalDominantTypes = [type];
-                } else if (typeCounts[type] === maxCount && typeCounts[type] > 0) {
+                } else if (typeScores[type] === maxScore && typeScores[type] > -Infinity) { // Only add if not the initial -Infinity state
                     finalDominantTypes.push(type);
                 }
             }
+            
+            // If all scores are zero or negative, it means no strong dominant type emerged.
+            // In this case, we might say no dominant type or indicate a balanced profile.
+            // For now, let's proceed with whatever maxScore is found.
+            // If maxScore is less than or equal to 0, it indicates no strong tendency.
+            if (maxScore <= 0) {
+                 finalDominantTypes = ['Balanced']; // Or handle as "no clear dominant type"
+            }
+
 
             let resultTitle = '';
             let resultDescription = '';
             let recommendationsList = [];
-            let chartLabels = ['Typ A (Einzelkämpfer)', 'Typ B (Ausgeglichene)', 'Typ C (Reagierender)', 'Typ D (Lebenskünstler)'];
-            let chartData = [typeCounts.A, typeCounts.B, typeCounts.C, typeCounts.D];
+            let chartLabels = ['Typ A (Antreiber)', 'Typ B (Harmoniestrebender)', 'Typ C (Reagierender)', 'Typ D (Strukturierter)'];
+            let chartData = [typeScores.A, typeScores.B, typeScores.C, typeScores.D]; // Use the calculated scores for the chart
             let chartColors = ['#dc3545', '#007bff', '#ffc107', '#20c997']; // Rot, Blau, Orange, Türkis
 
             const typeDefinitions = {
@@ -840,23 +809,22 @@
                     symbol: '💞'
                 },
                 C: {
-                    title: 'Stresstyp C: Reagierender',
-                    description: 'Du bist „kreativ, spontan und impulsiv“. Du liebst Abwechslung, denkst schnell und bringst frische Ideen ein. In stressigen Situationen neigst du jedoch dazu, dich zu verzetteln oder dich durch Ablenkung zu entlasten. Struktur und Planung sind nicht deine Stärke – du handelst lieber intuitiv und aus dem Moment heraus. Dein Verhalten wirkt oft sprunghaft oder unorganisiert, was im Team zu Missverständnissen oder Konflikten führen kann. Wenn der Druck steigt, versuchst du, unangenehme Aufgaben zu vermeiden, was langfristig zu Überforderung führen kann. Dein Wunsch nach Freiheit und Flexibilität steht manchmal im Widerspruch zu den Anforderungen des Alltags.
-',
+                    title: 'Stresstyp C: Der Lebenskünstler',
+                    description: 'Du bist „kreativ, spontan und impulsiv“. Du liebst Abwechslung, denkst schnell und bringst frische Ideen ein. In stressigen Situationen neigst du jedoch dazu, dich zu verzetteln oder dich durch Ablenkung zu entlasten. Struktur und Planung sind nicht deine Stärke – du handelst lieber intuitiv und aus dem Moment heraus. Dein Verhalten wirkt oft sprunghaft oder unorganisiert, was im Team zu Missverständnissen oder Konflikten führen kann. Wenn der Druck steigt, versuchst du, unangenehme Aufgaben zu vermeiden, was langfristig zu Überforderung führen kann. Dein Wunsch nach Freiheit und Flexibilität steht manchmal im Widerspruch zu den Anforderungen des Alltags.',
                     recommendations: [
                         'Um dein Potenzial voll zu entfalten, brauchst du klare Prioritäten, feste Routinen und einen bewussten Umgang mit deiner Energie.',
                         'Etabliere feste Routinen, damit du leichter den Überblick behältst und deine Energie gezielter einsetzen kannst.',
                         'Überlege dir, was wirklich wichtig ist, und setze klare Prioritäten – das hilft dir, fokussiert zu bleiben.',
                         'Übe dich darin, deinen Fokus zu halten, zum Beispiel mit kurzen, strukturierten Arbeitsphasen.',
-                        'Nutze kleine Helfer wie Kalender, To-do-Listen oder Apps, um deine Gedanken zu sortieren und dich besser zu organisieren.'
+                        'Nutze kleine Helfer wie Kalender, To-do-Listen oder Apps, um deine Gedanken zu sortieren und dich besser zu organisieren.',
                         'Gönn dir regelmäßig bewusste Pausen – auch kreative Köpfe brauchen Zeit zum Auftanken.'
     
                     ],
-                    symbol: '📏'
+                    symbol: '🎨'
                 },
                 D: {
                     title: 'Stresstyp D: Der Strukturierte',
-                    description: 'Du bist "pflichtbewusst und sicherheitsorientiert". Deine Stärken liegen in deiner Verlässlichkeit, deiner Gründlichkeit und deiner Fähigkeit, gut organisiert zu arbeiten. Du fühlst dich wohl in klaren Strukturen und arbeitest am liebsten ungestört und konzentriert. Veränderungen oder unerwartete Situationen bringen dich jedoch schnell aus dem Gleichgewicht. Du hältst gerne an Gewohnheiten fest und meidest Risiken. Wenn andere versuchen, deine bewährten Strukturen aufzubrechen, kann das zu innerer Anspannung oder Konflikten führen. Trotzdem gelingt es dir meist, eine gesunde Balance zwischen Anspannung und Entspannung zu halten – du lässt dich nicht so leicht aus der Ruhe bringen..',
+                    description: 'Du bist "pflichtbewusst und sicherheitsorientiert". Deine Stärken liegen in deiner Verlässlichkeit, deiner Gründlichkeit und deiner Fähigkeit, gut organisiert zu arbeiten. Du fühlst dich wohl in klaren Strukturen und arbeitest am liebsten ungestört und konzentriert. Veränderungen oder unerwartete Situationen bringen dich jedoch schnell aus dem Gleichgewicht. Du hältst gerne an Gewohnheiten fest und meidest Risiken. Wenn andere versuchen, deine bewährten Strukturen aufzubrechen, kann das zu innerer Anspannung oder Konflikten führen. Trotzdem gelingt es dir meist, eine gesunde Balance zwischen Anspannung und Entspannung zu halten – du lässt dich nicht so leicht aus der Ruhe bringen.',
                     recommendations: [
                         'Übe dich darin, auch mal von gewohnten Abläufen abzuweichen und Neues auszuprobieren.',
                         'Bleib offen für den Austausch mit anderen – frische Perspektiven können bereichern.',
@@ -864,17 +832,28 @@
                         'Erlaube dir, nicht perfekt zu sein – Selbstakzeptanz ist ein wichtiger Schlüssel zur inneren Ruhe',
                         'Nimm dir bewusst Zeit für dich, auch wenn dein Pflichtgefühl dich zu etwas anderem drängt.'
                     ],
-                    symbol: '🎨'
+                    symbol: '📏'
+                },
+                Balanced: {
+                    title: 'Ausgeglichener Stresstyp',
+                    description: 'Du zeigst eine ausgewogene Verteilung von Eigenschaften über die verschiedenen Stresstypen hinweg. Dies deutet darauf hin, dass du flexibel auf Stress reagierst und möglicherweise situativ unterschiedliche Bewältigungsstrategien anwendest. Es gibt keinen einzelnen, stark dominanten Stresstyp bei dir, was auf eine gute Anpassungsfähigkeit hinweisen kann.',
+                    recommendations: [
+                        'Bleibe achtsam bezüglich deiner Reaktionen auf Stress und erkenne, wann du in bestimmte Muster fällst.',
+                        'Nutze die Stärken aller Stresstypen: deine Zielorientierung (Typ A), deine soziale Kompetenz (Typ B), deine Anpassungsfähigkeit (Typ C) und deine Verlässlichkeit (Typ D).',
+                        'Setze weiterhin auf eine Vielfalt von Stressbewältigungsstrategien, um deine Resilienz zu stärken.',
+                        'Reflektiere regelmäßig, welche Situationen dich besonders herausfordern und wie du darauf reagierst, um deine Anpassungsfähigkeit weiter zu optimieren.'
+                    ],
+                    symbol: '🧘‍♀️'
                 }
             };
 
-            if (finalDominantTypes.length === 1) {
+            if (finalDominantTypes.length === 1 && finalDominantTypes[0] !== 'Balanced') {
                 const typeInfo = typeDefinitions[dominantType];
                 resultTitle = `Dein dominanter Stresstyp ist: **${typeInfo.title}**`;
                 resultDescription = typeInfo.description;
                 recommendationsList = typeInfo.recommendations;
                 finalSymbol = typeInfo.symbol;
-            } else if (finalDominantTypes.length > 1) {
+            } else if (finalDominantTypes.length > 1 && finalDominantTypes[0] !== 'Balanced') {
                 // Bei Mischtypen die Beschreibungen kombinieren
                 resultTitle = `Deine dominanten Stresstypen sind: **Mischtyp (${finalDominantTypes.map(t => typeDefinitions[t].title.replace('Stresstyp ', '')).join(' & ')})**`;
                 let combinedDescriptionHtml = '';
@@ -885,11 +864,14 @@
                 });
                 resultDescription = combinedDescriptionHtml;
                 finalSymbol = '🌈'; // Symbol für Mischtyp
-            } else {
-                resultTitle = 'Es konnte kein dominanter Stresstyp ermittelt werden.';
-                resultDescription = 'Bitte stelle sicher, dass du alle Fragen beantwortet hast.';
-                recommendationsList = [];
+            } else { // Handle the "Balanced" case or no strong dominant type
+                const typeInfo = typeDefinitions['Balanced'];
+                resultTitle = `**${typeInfo.title}**`;
+                resultDescription = typeInfo.description;
+                recommendationsList = typeInfo.recommendations;
+                finalSymbol = typeInfo.symbol;
             }
+
 
             // HTML für den dominanten Typen oder Mischtypen zusammenstellen
             const dominantTypeSection = document.getElementById('dominant-type-section');
@@ -919,7 +901,7 @@
                 data: {
                     labels: chartLabels,
                     datasets: [{
-                        label: 'Anzahl der Übereinstimmungen',
+                        label: 'Punktzahl',
                         data: chartData,
                         backgroundColor: chartColors,
                         borderColor: chartColors.map(color => color.replace('0.7', '1')), // Solide Farben für den Rand
@@ -931,11 +913,13 @@
                     maintainAspectRatio: false,
                     scales: {
                         y: {
-                            beginAtZero: true,
-                            max: Math.max(...chartData) + 1, // Max-Wert + 1 für bessere Darstellung
+                            beginAtZero: true, // Allow negative scores if needed, but for visualization, we might want to cap at 0 or show relative.
+                            // For simplicity, let's keep beginAtZero. Adjust max dynamically.
+                            max: Math.max(...chartData) > 0 ? Math.max(...chartData) + 1 : 5, // Set a reasonable max
+                            min: Math.min(...chartData) < 0 ? Math.min(...chartData) -1 : 0, // Set a reasonable min
                             title: {
                                 display: true,
-                                text: 'Anzahl der Zuordnungen'
+                                text: 'Score'
                             },
                             ticks: {
                                 precision: 0 // Nur ganze Zahlen auf der Y-Achse
@@ -954,7 +938,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `${context.label}: ${context.parsed.y} Zuordnungen`;
+                                    return `${context.label}: ${context.parsed.y} Punkte`;
                                 }
                             }
                         }
@@ -968,4 +952,3 @@
     </script>
 </body>
 </html>
-
