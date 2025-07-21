@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIKP - Personalentwicklung Fragen</title>
+  <title>MIKP - Personalentwicklung</title>
   <style>
     /* Allgemeine Einstellungen für den Body */
     body {
@@ -59,11 +59,15 @@
       color: white;
       border: 1px solid #444;
       border-radius: 5px;
+      transition: background-color 0.1s ease;
     }
     .question-navigation-bar button.active {
       background-color: #1a4e8a;
       color: white;
       border-color: #1a4e8a;
+    }
+    .question-navigation-bar button:active {
+      transform: scale(0.98);
     }
     textarea {
       width: 100%;
@@ -74,6 +78,7 @@
       border: 1px solid #cddff5;
       border-left: 5px solid #1a4e8a; /* Blauer Balken links */
       border-radius: 5px;
+      font-family: inherit; /* Die Schriftart wird vom body-Element geerbt */
     }
     button.check-button {
       display: block;
@@ -91,6 +96,15 @@
     button.check-button:hover {
       background-color: #218838;
     }
+    button.check-button:active {
+      transform: scale(0.98);
+    }
+    button.recheck-button {
+      background-color: #d4ac0d;
+    }
+    button.recheck-button:hover {
+      background-color: #b38e0b;
+    }
     button.solution-button {
       display: block;
       padding: 15px 20px;
@@ -107,6 +121,9 @@
     button.solution-button:hover {
       background-color: #1a3e7a;
     }
+    button.solution-button:active {
+      transform: scale(0.98);
+    }
     .question-section {
       padding: 25px;
       border: 1px solid #cddff5;
@@ -120,6 +137,10 @@
       padding: 15px;
       background-color: #e6eff9;
       border-left: 5px solid #1a4e8a; /* Blauer Balken links */
+      transition: background-color 0.5s ease;
+    }
+    .feedback-section.highlight {
+        background-color: #d8e5f8;
     }
     .solution-section {
       margin-top: 20px;
@@ -129,6 +150,7 @@
     }
     .ok { color: green; }
     .hinweis { color: #d17b00; }
+    .error { color: red; }
   </style>
 </head>
 <body>
@@ -150,7 +172,8 @@
         <p>Bitte gib deine Antwort im folgenden Feld ein:</p>
         <textarea id="pe-prozess-antwort1" placeholder="Deine Antwort hier..."></textarea>
         <br>
-        <button class="check-button" onclick="auswerten('pe-prozess', 1)">Antwort prüfen</button>
+        <div id="pe-prozess-info1"></div>
+        <button id="pe-prozess-btn1" class="check-button" onclick="auswerten('pe-prozess', 1)">Antwort prüfen</button>
 
         <div id="pe-prozess-feedback1" class="feedback-section"></div>
         <button id="pe-prozess-showMusterBtn1" class="solution-button" onclick="zeigeMusterloesung('pe-prozess', 1)" style="display:none;">Musterlösung anzeigen</button>
@@ -172,7 +195,8 @@
         <p>Bitte gib deine Antwort im folgenden Feld ein:</p>
         <textarea id="pe-prozess-antwort2" placeholder="Deine Antwort hier..."></textarea>
         <br>
-        <button class="check-button" onclick="auswerten('pe-prozess', 2)">Antwort prüfen</button>
+        <div id="pe-prozess-info2"></div>
+        <button id="pe-prozess-btn2" class="check-button" onclick="auswerten('pe-prozess', 2)">Antwort prüfen</button>
 
         <div id="pe-prozess-feedback2" class="feedback-section"></div>
         <button id="pe-prozess-showMusterBtn2" class="solution-button" onclick="zeigeMusterloesung('pe-prozess', 2)" style="display:none;">Musterlösung anzeigen</button>
@@ -188,7 +212,8 @@
         <p>Bitte gib deine Antwort im folgenden Feld ein:</p>
         <textarea id="pe-prozess-antwort3" placeholder="Deine Antwort hier..."></textarea>
         <br>
-        <button class="check-button" onclick="auswerten('pe-prozess', 3)">Antwort prüfen</button>
+        <div id="pe-prozess-info3"></div>
+        <button id="pe-prozess-btn3" class="check-button" onclick="auswerten('pe-prozess', 3)">Antwort prüfen</button>
 
         <div id="pe-prozess-feedback3" class="feedback-section"></div>
         <button id="pe-prozess-showMusterBtn3" class="solution-button" onclick="zeigeMusterloesung('pe-prozess', 3)" style="display:none;">Musterlösung anzeigen</button>
@@ -216,7 +241,8 @@
         <p>Bitte gib deine Antwort im folgenden Feld ein:</p>
         <textarea id="potenzial-kompetenz-antwort4" placeholder="Deine Antwort hier..."></textarea>
         <br>
-        <button class="check-button" onclick="auswerten('potenzial-kompetenz', 4)">Antwort prüfen</button>
+        <div id="potenzial-kompetenz-info4"></div>
+        <button id="potenzial-kompetenz-btn4" class="check-button" onclick="auswerten('potenzial-kompetenz', 4)">Antwort prüfen</button>
         <div id="potenzial-kompetenz-feedback4" class="feedback-section"></div>
         <button id="potenzial-kompetenz-showMusterBtn4" class="solution-button" onclick="zeigeMusterloesung('potenzial-kompetenz', 4)" style="display:none;">Musterlösung anzeigen</button>
         <div id="potenzial-kompetenz-muster4" class="solution-section" style="display:none;">
@@ -233,7 +259,8 @@
         <p>Bitte gib deine Antwort im folgenden Feld ein:</p>
         <textarea id="potenzial-kompetenz-antwort5" placeholder="Deine Antwort hier..."></textarea>
         <br>
-        <button class="check-button" onclick="auswerten('potenzial-kompetenz', 5)">Antwort prüfen</button>
+        <div id="potenzial-kompetenz-info5"></div>
+        <button id="potenzial-kompetenz-btn5" class="check-button" onclick="auswerten('potenzial-kompetenz', 5)">Antwort prüfen</button>
         <div id="potenzial-kompetenz-feedback5" class="feedback-section"></div>
         <button id="potenzial-kompetenz-showMusterBtn5" class="solution-button" onclick="zeigeMusterloesung('potenzial-kompetenz', 5)" style="display:none;">Musterlösung anzeigen</button>
         <div id="potenzial-kompetenz-muster5" class="solution-section" style="display:none;">
@@ -244,7 +271,6 @@
           <p>Assessment- oder Development-Center, mit praxisnahen Aufgabenstellungen</p>
           <p>Talentportfolios, in denen Führungskräfte Einschätzungen dokumentieren</p>
           <p>Feedbackgespräche, die systematisch geführt werden</p>
-          <p>Eine Kombination aus objektiven Verfahren und subjektiven Einschätzungen erhöht die Aussagekraft und Validität der Potenzialerkennung.</p>
         </div>
       </div>
 
@@ -254,7 +280,8 @@
         <p>Bitte gib deine Antwort im folgenden Feld ein:</p>
         <textarea id="potenzial-kompetenz-antwort6" placeholder="Deine Antwort hier..."></textarea>
         <br>
-        <button class="check-button" onclick="auswerten('potenzial-kompetenz', 6)">Antwort prüfen</button>
+        <div id="potenzial-kompetenz-info6"></div>
+        <button id="potenzial-kompetenz-btn6" class="check-button" onclick="auswerten('potenzial-kompetenz', 6)">Antwort prüfen</button>
         <div id="potenzial-kompetenz-feedback6" class="feedback-section"></div>
         <button id="potenzial-kompetenz-showMusterBtn6" class="solution-button" onclick="zeigeMusterloesung('potenzial-kompetenz', 6)" style="display:none;">Musterlösung anzeigen</button>
         <div id="potenzial-kompetenz-muster6" class="solution-section" style="display:none;">
@@ -262,7 +289,6 @@
           <p>Die systematische Erfassung von Potenzial und Kompetenz ermöglicht es Unternehmen, gezielt in die Entwicklung ihrer Mitarbeitenden zu investieren.</p>
           <p>Dadurch können Fach- und Führungskräfte frühzeitig identifiziert und aufgebaut werden, was die Nachfolgeplanung erleichtert und die Wettbewerbsfähigkeit stärkt.</p>
           <p>Zudem fördert es die Motivation und Bindung der Mitarbeitenden, da individuelle Entwicklungsperspektiven aufgezeigt werden.</p>
-          <p>Ein strukturierter Umgang mit Potenzial und Kompetenz ist somit ein strategisches Instrument der Personalentwicklung.</p>
         </div>
       </div>
     </div>
@@ -279,7 +305,7 @@
           1: [
             { name: "Bedarfsanalyse", synonyme: ["bedarf", "bedarfsanalyse", "ermittlung"] },
             { name: "Zielplanung", synonyme: ["ziel", "ziele", "zielplanung", "planung"] },
-            { name: "Maßnahmengestaltung", synonyme: ["massnahme", "massnahmen", "massnahmengestaltung", "auswahl"] },
+            { name: "Maßnahmengestaltung", synonyme: ["maßnahme", "maßnahmen", "maßnahmengestaltung", "auswahl"] },
             { name: "Durchführung", synonyme: ["durchführung", "umsetzung", "schulung", "coaching"] },
             { name: "Erfolgskontrolle", synonyme: ["erfolgskontrolle", "kontrolle", "evaluation", "überprüfung"] }
           ],
@@ -295,7 +321,7 @@
             { name: "Widerstand", synonyme: ["widerstand", "ablehnung", "fehlende einbindung"] },
             { name: "Ressourcen", synonyme: ["ressourcenmangel", "zeitmangel", "ressourcen", "zeit", "kosten"] },
             { name: "Kommunikation", synonyme: ["kommunikation", "transparenz", "kommunizieren"] },
-            { name: "Evaluation", synonyme: ["evaluation", "evaluation", "kontrolle"] }
+            { name: "Evaluation", synonyme: ["evaluation", "kontrolle"] }
           ]
         }
       },
@@ -324,7 +350,62 @@
         }
       }
     };
+    
+    function auswerten(themaID, frageNummer) {
+      const antwort = document.getElementById(`${themaID}-antwort${frageNummer}`).value.trim().toLowerCase();
+      const feedback = [];
+      const schluesselwoerter = themen[themaID].keywords[frageNummer];
+      
+      const lines = antwort.split('\n').filter(line => line.trim().length > 0);
+      
+      schluesselwoerter.forEach(k => {
+        let isKeywordFound = false;
+        
+        for (const line of lines) {
+          const wordCount = line.split(/\s+/).filter(Boolean).length;
+          const isShortAnswer = wordCount > 0 && wordCount < 5;
+          
+          if (k.synonyme.some(begriff => line.includes(begriff))) {
+            isKeywordFound = true;
+            if (isShortAnswer) {
+              feedback.push(`<p class="hinweis">⚠️ Der Begriff "${k.name}" wurde erkannt, ist aber noch nicht beschrieben.</p>`);
+            } else {
+              feedback.push(`<p class="ok">✅ Der Begriff "${k.name}" wurde beschrieben.</p>`);
+            }
+            break; 
+          }
+        }
+        
+        if (!isKeywordFound) {
+          feedback.push(`<p class="error">❌ Der Begriff "${k.name}" wurde nicht genannt.</p>`);
+        }
+      });
 
+      const feedbackElement = document.getElementById(`${themaID}-feedback${frageNummer}`);
+      const solutionElement = document.getElementById(`${themaID}-muster${frageNummer}`);
+
+      // Musterlösung beim erneuten Prüfen ausblenden
+      if (solutionElement) {
+          solutionElement.style.display = 'none';
+      }
+
+      // Feedback ausblenden, dann wieder einblenden
+      feedbackElement.style.display = 'none';
+      feedbackElement.innerHTML = `<h3>Feedback:</h3>` + feedback.join("");
+      setTimeout(() => {
+        feedbackElement.style.display = 'block';
+      }, 50); // Eine kurze Verzögerung für den Blinzel-Effekt
+
+      document.getElementById(`${themaID}-showMusterBtn${frageNummer}`).style.display = "block";
+      
+      const infoTextElement = document.getElementById(`${themaID}-info${frageNummer}`);
+      const buttonElement = document.getElementById(`${themaID}-btn${frageNummer}`);
+
+      buttonElement.textContent = "Antwort erneut Prüfen";
+      buttonElement.classList.add('recheck-button');
+      infoTextElement.innerHTML = `<p>Möchtest du deine Antwort noch einmal überarbeiten und erneut Prüfen?</p>`;
+    }
+    
     function zeigeThema(themaID) {
       document.querySelectorAll('.thema-block').forEach(block => {
         block.style.display = 'none';
@@ -352,23 +433,6 @@
       aktuelleFrage = frageNummer;
     }
 
-    function auswerten(themaID, frageNummer) {
-      const antwort = document.getElementById(`${themaID}-antwort${frageNummer}`).value.toLowerCase();
-      const feedback = [];
-      const schluesselwoerter = themen[themaID].keywords[frageNummer];
-
-      schluesselwoerter.forEach(k => {
-        const gefunden = k.synonyme.some(begriff => antwort.includes(begriff));
-        if (gefunden) {
-          feedback.push(`<p class="ok">✅ "${k.name}" wurde beschrieben.</p>`);
-        } else {
-          feedback.push(`<p class="hinweis">⚠️ "${k.name}" wurde nicht eindeutig beschrieben.</p>`);
-        }
-      });
-
-      document.getElementById(`${themaID}-feedback${frageNummer}`).innerHTML = `<h3>Feedback:</h3>` + feedback.join("");
-      document.getElementById(`${themaID}-showMusterBtn${frageNummer}`).style.display = "block";
-    }
 
     function zeigeMusterloesung(themaID, frageNummer) {
       document.getElementById(`${themaID}-muster${frageNummer}`).style.display = "block";
