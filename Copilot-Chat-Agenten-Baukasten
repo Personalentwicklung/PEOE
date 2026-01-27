@@ -6,7 +6,7 @@
   <title>Baukasten für Copilot-Chat-Agenten</title>
   <style>
     :root{
-      /* Farben angelehnt an deine PEOE-Seiten */
+      /* Farben angelehnt an deine PEOE-Seitenn */
       --primary:#005A9C;          /* Blau: Buttons, Links */
       --primary-600:#0a66a8;
       --accent:#2FB1C5;           /* Türkis: Akzente, Editable */
