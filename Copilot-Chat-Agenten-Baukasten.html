@@ -6,22 +6,27 @@
   <title>Baukasten für Copilot-Chat-Agenten</title>
   <style>
     :root{
-      /* Farben angelehnt an deine PEOE-Seitenn */
-      --primary:#005A9C;          /* Blau: Buttons, Links */
+      /* Farben – angelehnt an deine PEOE-Seiten */
+      --primary:#005A9C;
       --primary-600:#0a66a8;
-      --accent:#2FB1C5;           /* Türkis: Akzente, Editable */
-      --bg:#f5f7fa;               /* Seite */
-      --card-bg:#ffffff;          /* Karten */
-      --muted:#4a5568;            /* Sekundärtext */
-      --text:#1a202c;             /* Primärtext */
-      --border:#e2e8f0;           /* Rahmen */
+      --accent:#2FB1C5;
+      --bg:#f5f7fa;
+      --card-bg:#ffffff;
+      --muted:#4a5568;
+      --text:#1a202c;
+      --border:#e2e8f0;
       --shadow:0 4px 14px rgba(0,0,0,0.08);
       --radius:10px;
 
-      --subtle:#eef6f8;           /* leichtes Türkis für Unterboxen */
-      --warning:#C05621;          /* Limit erreicht */
+      --subtle:#eef2f5;          /* Grau für Unterboxen */
+      --warning:#C05621;
       --success:#2F855A;
       --focus:#2FB1C5;
+
+      /* Hellgrün für editierbare Felder */
+      --edit-bg:#E8F5E9;
+      --edit-border:#81C784;
+      --edit-focus:#43A047;
 
       /* Maße */
       --container:1024px;
@@ -34,12 +39,12 @@
     }
 
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
     .container{max-width:var(--container);margin:0 auto;padding:24px;}
     h1{font-size:28px;margin:0 0 var(--space-4);color:var(--primary)}
-    h2{font-size:22px;margin:0 0 var(--space-3);}
-    h3{font-size:18px;margin:0 0 var(--space-2);}
+    h2{font-size:22px;margin:0 0 var(--space-3);color:var(--primary)}
+    h3{font-size:18px;margin:0 0 var(--space-2);color:var(--primary)}
     p{margin:0 0 var(--space-3);color:var(--text)}
 
     .card{
@@ -50,7 +55,6 @@
       padding:var(--space-5);
       margin:0 0 var(--space-5);
     }
-
     .subcard{
       background:var(--subtle);
       border:1px solid var(--border);
@@ -71,10 +75,7 @@
     }
     .btn:hover{background:var(--primary-600)}
     .btn:focus{outline:3px solid var(--focus);outline-offset:2px}
-    .btn.secondary{
-      background:#fff;color:var(--primary);
-      border:1px solid var(--primary);
-    }
+    .btn--sm{padding:8px 14px;font-size:14px}
 
     .muted{color:var(--muted)}
     .row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
@@ -105,19 +106,15 @@
       background:#fcfcfd;
     }
     .editable{
-      background:#E7F7FA;
-      border:1px dashed var(--accent);
-      padding:1px 4px;border-radius:6px;
+      display:inline-block;
+      min-width:160px;           /* sichtbar als Feld */
+      min-height:1.4em;
+      background:var(--edit-bg);
+      border:1px dashed var(--edit-border);
+      border-radius:6px;
+      padding:1px 4px;
     }
-    .editable:focus{outline:2px solid var(--focus);background:#DFF3F7}
-
-    .reset-line{margin-top:10px}
-    .reset-btn{
-      background:#fff;border:1px solid var(--border);color:var(--muted);
-      padding:6px 10px;border-radius:999px;cursor:pointer;font-weight:600;
-    }
-    .reset-btn:hover{border-color:var(--primary);color:var(--primary)}
-    .reset-btn:focus{outline:2px solid var(--focus);outline-offset:2px}
+    .editable:focus{outline:2px solid var(--edit-focus);background:#E3F2E5}
 
     .top-note{margin-bottom:var(--space-4);padding:12px 14px;border-left:4px solid var(--accent);background:#f3fafc;border-radius:6px;}
     .copy-area .title-line{font-weight:700;margin-bottom:8px}
@@ -129,6 +126,15 @@
     #builder{display:none}
     .centered{display:flex;min-height:100vh;align-items:center;justify-content:center}
     .start-card{max-width:760px}
+
+    pre.output{
+      white-space:pre-wrap;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:16px;
+      background:#fff;
+    }
 
     @media (max-width: 720px){
       .container{padding:16px;}
@@ -170,46 +176,44 @@
       <!-- MODUL: Rolle / Persona -->
       <div class="card" id="mod-rolle">
         <h2>Rolle / Persona</h2>
-        <div class="row">
-          <div class="grow">
-            <label for="rolleSelect">Wähle bis zu 3 Rollen</label>
-            <select id="rolleSelect" multiple size="8" aria-describedby="rolleCount rolleHint">
-              <option>Ausbildungsunterstützung (Azubi)</option>
-              <option>Support & Lernen</option>
-              <option>Führungskraft</option>
-              <option>Coach / Mentor</option>
-              <option>Gesundheit/Ernährung</option>
-              <option>Kommunikation / Training</option>
-              <option>Fachkraft Chemieproduktion</option>
-              <option>Fachkraft Technik</option>
-              <option>Fachkraft Wartung/Instandhaltung</option>
-              <option>Engineering</option>
-              <option>HSE / Arbeitssicherheit</option>
-              <option>Labor / QA</option>
-              <option>Prozess- &amp; Verfahrensingenieur</option>
-              <option>Office / Administration</option>
-              <option>IT / Digital / Prozesse</option>
-              <option>Support & Service</option>
-              <option>Verwaltung (HR)</option>
-              <option>Recht / Steuern</option>
-              <option>Finance</option>
-              <option>Einkauf/ Verkauf (CSC)</option>
-            </select>
-            <div class="meta">
-              <span id="rolleCount" aria-live="polite">0 / 3</span>
-              <span class="hint" id="rolleHint" hidden>Maximale Anzahl erreicht.</span>
-            </div>
+        <div class="subcard">
+          <label for="rolleSelect">Wähle bis zu 3 Rollen</label>
+          <select id="rolleSelect" multiple size="8" aria-describedby="rolleCount rolleHint">
+            <option>Ausbildungsunterstützung (Azubi)</option>
+            <option>Support & Lernen</option>
+            <option>Führungskraft</option>
+            <option>Coach / Mentor</option>
+            <option>Gesundheit/Ernährung</option>
+            <option>Kommunikation / Training</option>
+            <option>Fachkraft Chemieproduktion</option>
+            <option>Fachkraft Technik</option>
+            <option>Fachkraft Wartung/Instandhaltung</option>
+            <option>Engineering</option>
+            <option>HSE / Arbeitssicherheit</option>
+            <option>Labor / QA</option>
+            <option>Prozess- &amp; Verfahrensingenieur</option>
+            <option>Office / Administration</option>
+            <option>IT / Digital / Prozesse</option>
+            <option>Support & Service</option>
+            <option>Verwaltung (HR)</option>
+            <option>Recht / Steuern</option>
+            <option>Finance</option>
+            <option>Einkauf/ Verkauf (CSC)</option>
+          </select>
+          <div class="meta">
+            <span id="rolleCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="rolleHint" hidden>Maximale Anzahl erreicht.</span>
+          </div>
 
-            <div class="preview" id="rollePreview">
-              <p>
-                Dein Wirkungsbereich ist
-                <span id="funktionEditable" class="editable" contenteditable="true">{{ funktion }}</span>.
-                Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.
-              </p>
-            </div>
-            <div class="reset-line">
-              <button type="button" class="reset-btn" id="rolleReset">Zurücksetzen (Rolle/Persona)</button>
-            </div>
+          <div class="preview" id="rollePreview">
+            <p>
+              Dein Wirkungsbereich ist
+              <span id="funktionEditable" class="editable" contenteditable="true"></span>.
+              Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="rolleReset">Zurücksetzen (Rolle/Persona)</button>
           </div>
         </div>
       </div>
@@ -217,72 +221,76 @@
       <!-- MODUL: Purpose -->
       <div class="card" id="mod-purpose">
         <h2>Ziel / Purpose</h2>
-        <label for="purposeSelect">Wähle bis zu 2 Zwecke</label>
-        <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint">
-          <option>Situationen klären / Orientierung geben</option>
-          <option>Prozesse vereinfachen</option>
-          <option>Entscheidungen vorbereiten</option>
-          <option>Sicherheit erhöhen / Fehler vermeiden</option>
-          <option>Wissen vermitteln / Erklären</option>
-          <option>Kommunikation verbessern</option>
-          <option>Verständnis steigern (technisch / organisatorisch)</option>
-          <option>Arbeitsalltag entlasten</option>
-          <option>Standardaufgaben beschleunigen</option>
-          <option>Informationen strukturieren</option>
-          <option>Überblick schaffen / Komplexität reduzieren</option>
-          <option>Konsistenz sicherstellen (z. B. Qualität von Texten)</option>
-          <option>Risiken erkennen und Hinweise geben</option>
-          <option>Zusammenarbeit unterstützen</option>
-          <option>Lerninhalte aufbereiten</option>
-        </select>
-        <div class="meta">
-          <span id="purposeCount" aria-live="polite">0 / 2</span>
-          <span class="hint" id="purposeHint" hidden>Maximale Anzahl erreicht.</span>
-        </div>
-        <div class="preview">
-          <p>
-            Dein übergeordneter Zweck ist es,
-            <span id="purposeEditable" class="editable" contenteditable="true">{{ purpose }}</span>.
-            Du orientierst deine gesamte Arbeitsweise an diesem Ziel.
-          </p>
-        </div>
-        <div class="reset-line">
-          <button type="button" class="reset-btn" id="purposeReset">Zurücksetzen (Purpose)</button>
+        <div class="subcard">
+          <label for="purposeSelect">Wähle bis zu 2 Zwecke</label>
+          <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint">
+            <option>Situationen klären / Orientierung geben</option>
+            <option>Prozesse vereinfachen</option>
+            <option>Entscheidungen vorbereiten</option>
+            <option>Sicherheit erhöhen / Fehler vermeiden</option>
+            <option>Wissen vermitteln / Erklären</option>
+            <option>Kommunikation verbessern</option>
+            <option>Verständnis steigern (technisch / organisatorisch)</option>
+            <option>Arbeitsalltag entlasten</option>
+            <option>Standardaufgaben beschleunigen</option>
+            <option>Informationen strukturieren</option>
+            <option>Überblick schaffen / Komplexität reduzieren</option>
+            <option>Konsistenz sicherstellen (z. B. Qualität von Texten)</option>
+            <option>Risiken erkennen und Hinweise geben</option>
+            <option>Zusammenarbeit unterstützen</option>
+            <option>Lerninhalte aufbereiten</option>
+          </select>
+          <div class="meta">
+            <span id="purposeCount" aria-live="polite">0 / 2</span>
+            <span class="hint" id="purposeHint" hidden>Maximale Anzahl erreicht.</span>
+          </div>
+          <div class="preview">
+            <p>
+              Dein übergeordneter Zweck ist es,
+              <span id="purposeEditable" class="editable" contenteditable="true"></span>.
+              Du orientierst deine gesamte Arbeitsweise an diesem Ziel.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="purposeReset">Zurücksetzen (Purpose)</button>
+          </div>
         </div>
       </div>
 
       <!-- MODUL: Aufgaben / Tasks -->
       <div class="card" id="mod-tasks">
         <h2>Auftrag / Task</h2>
-        <label for="tasksSelect">Wähle bis zu 3 Tätigkeiten</label>
-        <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint">
-          <option>Texte erstellen</option>
-          <option>Texte überarbeiten</option>
-          <option>Inhalte erklären</option>
-          <option>Inhalte zusammenfassen</option>
-          <option>Informationen analysieren</option>
-          <option>Informationen strukturieren</option>
-          <option>Prozesse oder Abläufe darstellen</option>
-          <option>Anleitungen formulieren</option>
-          <option>Entscheidungsgrundlagen vorbereiten</option>
-          <option>Fragen beantworten</option>
-          <option>Hinweise oder Risiken aufzeigen</option>
-          <option>Daten oder Dokumente auslesen</option>
-          <option>Lerninhalte aufbereiten</option>
-        </select>
-        <div class="meta">
-          <span id="tasksCount" aria-live="polite">0 / 3</span>
-          <span class="hint" id="tasksHint" hidden>Maximale Anzahl erreicht.</span>
-        </div>
-        <div class="preview">
-          <p>
-            Dein Auftrag umfasst folgende Tätigkeiten:
-            <span id="tasksEditable" class="editable" contenteditable="true">{{ tasks }}</span>.
-            Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.
-          </p>
-        </div>
-        <div class="reset-line">
-          <button type="button" class="reset-btn" id="tasksReset">Zurücksetzen (Tasks)</button>
+        <div class="subcard">
+          <label for="tasksSelect">Wähle bis zu 3 Tätigkeiten</label>
+          <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint">
+            <option>Texte erstellen</option>
+            <option>Texte überarbeiten</option>
+            <option>Inhalte erklären</option>
+            <option>Inhalte zusammenfassen</option>
+            <option>Informationen analysieren</option>
+            <option>Informationen strukturieren</option>
+            <option>Prozesse oder Abläufe darstellen</option>
+            <option>Anleitungen formulieren</option>
+            <option>Entscheidungsgrundlagen vorbereiten</option>
+            <option>Fragen beantworten</option>
+            <option>Hinweise oder Risiken aufzeigen</option>
+            <option>Daten oder Dokumente auslesen</option>
+            <option>Lerninhalte aufbereiten</option>
+          </select>
+          <div class="meta">
+            <span id="tasksCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="tasksHint" hidden>Maximale Anzahl erreicht.</span>
+          </div>
+          <div class="preview">
+            <p>
+              Dein Auftrag umfasst folgende Tätigkeiten:
+              <span id="tasksEditable" class="editable" contenteditable="true"></span>.
+              Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="tasksReset">Zurücksetzen (Tasks)</button>
+          </div>
         </div>
       </div>
 
@@ -309,12 +317,12 @@
           <div class="preview">
             <p>
               Du beginnst deine Antworten grundsätzlich mit:
-              <span id="startEditable" class="editable" contenteditable="true">{{ startverhalten }}</span>.
+              <span id="startEditable" class="editable" contenteditable="true"></span>.
               Halte dieses Startverhalten konsistent ein.
             </p>
           </div>
           <div class="reset-line">
-            <button type="button" class="reset-btn" id="startReset">Zurücksetzen (Startverhalten)</button>
+            <button type="button" class="btn btn--sm" id="startReset">Zurücksetzen (Startverhalten)</button>
           </div>
         </div>
 
@@ -338,12 +346,12 @@
           <div class="preview">
             <p>
               Dein Antwortstil orientiert sich an folgender Tiefe:
-              <span id="tiefeEditable" class="editable" contenteditable="true">{{ antworttiefe }}</span>.
+              <span id="tiefeEditable" class="editable" contenteditable="true"></span>.
               Halte dieses Niveau konsistent in allen Antworten ein.
             </p>
           </div>
           <div class="reset-line">
-            <button type="button" class="reset-btn" id="tiefeReset">Zurücksetzen (Antworttiefe)</button>
+            <button type="button" class="btn btn--sm" id="tiefeReset">Zurücksetzen (Antworttiefe)</button>
           </div>
         </div>
 
@@ -355,7 +363,7 @@
             <option>keine Rückfragen</option>
             <option>1 Rückfrage</option>
             <option>2 Rückfragen (Kontext + Zielbild)</option>
-            <option>nur bei Unklarheit Rückfragen,</option>
+            <option>nur bei Unklarheit Rückfragen</option>
             <option>Rückfragen am Ende jeder Antwort</option>
             <option>Rückfragen vor der Lösung</option>
             <option>Rückfragen optional mit „Soll ich …?“</option>
@@ -364,11 +372,11 @@
           <div class="preview">
             <p>
               Deine Rückfragenlogik lautet:
-              <span id="rqEditable" class="editable" contenteditable="true">{{ rueckfragen }}</span>.
+              <span id="rqEditable" class="editable" contenteditable="true"></span>.
             </p>
           </div>
           <div class="reset-line">
-            <button type="button" class="reset-btn" id="rqReset">Zurücksetzen (Rückfragen)</button>
+            <button type="button" class="btn btn--sm" id="rqReset">Zurücksetzen (Rückfragen)</button>
           </div>
         </div>
 
@@ -389,12 +397,12 @@
           <div class="preview">
             <p>
               Dein Ausdruck folgt dieser Variation:
-              <span id="varEditable" class="editable" contenteditable="true">{{ variation }}</span>.
+              <span id="varEditable" class="editable" contenteditable="true"></span>.
               Bevorzuge dabei Klarheit vor Abwechslung.
             </p>
           </div>
           <div class="reset-line">
-            <button type="button" class="reset-btn" id="varReset">Zurücksetzen (Variation)</button>
+            <button type="button" class="btn btn--sm" id="varReset">Zurücksetzen (Variation)</button>
           </div>
         </div>
 
@@ -414,12 +422,12 @@
           <div class="preview">
             <p>
               Dein Recherche und Quellenverhalten ist:
-              <span id="recEditable" class="editable" contenteditable="true">{{ recherche }}</span>.
+              <span id="recEditable" class="editable" contenteditable="true"></span>.
               Vermeide widersprüchliche Anforderungen.
             </p>
           </div>
           <div class="reset-line">
-            <button type="button" class="reset-btn" id="recReset">Zurücksetzen (Recherche)</button>
+            <button type="button" class="btn btn--sm" id="recReset">Zurücksetzen (Recherche)</button>
           </div>
         </div>
       </div>
@@ -427,32 +435,34 @@
       <!-- MODUL: Kommunikationsstil -->
       <div class="card" id="mod-stil">
         <h2>Kommunikationsstil</h2>
-        <label for="stilSelect">Wähle genau eine Option</label>
-        <select id="stilSelect" size="6">
-          <option>ruhig und klar</option>
-          <option>formell und professionell</option>
-          <option>motivierend / coachend</option>
-          <option>pragmatisch und lösungsorientiert</option>
-          <option>warm und menschlich</option>
-          <option>freundlich und unterstützend</option>
-          <option>neutralsachlich</option>
-          <option>leicht ironisch, aber respektvoll</option>
-          <option>direkt und kompakt</option>
-          <option>didaktisch / erklärend</option>
-          <option>kollegial, wie ein erfahrener Mitarbeiter</option>
-          <option>strukturiert und präzise</option>
-          <option>diplomatisch und wertschätzend</option>
-          <option>analytischtechnisch</option>
-        </select>
-        <div class="preview">
-          <p>
-            Dein Kommunikationsstil ist:
-            <span id="stilEditable" class="editable" contenteditable="true">{{ stil }}</span>.
-            Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.
-          </p>
-        </div>
-        <div class="reset-line">
-          <button type="button" class="reset-btn" id="stilReset">Zurücksetzen (Stil)</button>
+        <div class="subcard">
+          <label for="stilSelect">Wähle genau eine Option</label>
+          <select id="stilSelect" size="6">
+            <option>ruhig und klar</option>
+            <option>formell und professionell</option>
+            <option>motivierend / coachend</option>
+            <option>pragmatisch und lösungsorientiert</option>
+            <option>warm und menschlich</option>
+            <option>freundlich und unterstützend</option>
+            <option>neutralsachlich</option>
+            <option>leicht ironisch, aber respektvoll</option>
+            <option>direkt und kompakt</option>
+            <option>didaktisch / erklärend</option>
+            <option>kollegial, wie ein erfahrener Mitarbeiter</option>
+            <option>strukturiert und präzise</option>
+            <option>diplomatisch und wertschätzend</option>
+            <option>analytischtechnisch</option>
+          </select>
+          <div class="preview">
+            <p>
+              Dein Kommunikationsstil ist:
+              <span id="stilEditable" class="editable" contenteditable="true"></span>.
+              Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="stilReset">Zurücksetzen (Stil)</button>
+          </div>
         </div>
       </div>
 
@@ -499,60 +509,51 @@
     const qs = (sel, root=document) => root.querySelector(sel);
     const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
     const joinList = (arr) => arr.join(', ');
+    const textOrEmpty = (selector) => (qs(selector)?.textContent || '').trim();
 
     function enforceMultiLimit(selectEl, key){
       const { limit } = state[key];
-      // Ermittle neu gewählte Werte
       const selectedOptions = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
 
-      // Falls Limit überschritten → letzte Änderung rückgängig
       if(selectedOptions.length > limit){
-        // Ermitteln: welche Option wurde zuletzt hinzugefügt?
-        // Heuristik: der, der neu in selectedOptions ist und noch nicht in state[key].selected
         const newlyAdded = selectedOptions.find(x => !state[key].selected.includes(x));
-        // Deselect it
         for(const opt of selectEl.options){
           if(opt.text === newlyAdded){ opt.selected = false; break; }
         }
       }
 
-      // finaler Stand nach Korrektur
       const finalSelected = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
-
-      // Reihenfolge: Bestehende Reihenfolge beibehalten, neue am Ende anfügen
       const prev = state[key].selected.slice();
       const kept = prev.filter(x => finalSelected.includes(x));
       const added = finalSelected.filter(x => !prev.includes(x));
       state[key].selected = kept.concat(added);
 
-      // UI: Counter + Hint
       const countEl = qs(`#${key}Count`);
       const hintEl = qs(`#${key}Hint`);
       if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
       if(hintEl){
         const atMax = state[key].selected.length >= limit;
         hintEl.hidden = !atMax;
-        // Optional: disable übrige Optionen (nur visuell; Auswahl bereits limitiert)
         Array.from(selectEl.options).forEach(o => {
           if(!o.selected) o.disabled = atMax;
         });
       }
 
-      // Vorschau aktualisieren (falls nicht manuell editiert)
+      // Vorschau aktualisieren (nur wenn nicht manuell editiert)
       updateEditableFromSelection(key);
     }
 
     function updateEditableFromSelection(key){
-      if(state[key].edited) return; // User hat manuell angepasst → nicht überschreiben
+      if(state[key].edited) return;
       const map = {
-        rolle: { span: '#funktionEditable', value: joinList(state.rolle.selected) || '{{ funktion }}' },
-        purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) || '{{ purpose }}' },
-        tasks: { span: '#tasksEditable', value: joinList(state.tasks.selected) || '{{ tasks }}' }
+        rolle: { span: '#funktionEditable', value: joinList(state.rolle.selected) },
+        purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) },
+        tasks: { span: '#tasksEditable', value: joinList(state.tasks.selected) }
       };
       const target = map[key];
       if(target){
         const el = qs(target.span);
-        if(el) el.textContent = target.value;
+        if(el) el.textContent = target.value; // leer lassen, wenn leer
       }
     }
 
@@ -570,7 +571,7 @@
       })[key];
       if(spanId){
         const el = qs(spanId);
-        el.textContent = val || `{{ ${key} }}`;
+        el.textContent = val; // leer lassen, wenn leer
       }
     }
 
@@ -583,7 +584,7 @@
           state.rolle.edited = false;
           qs('#rolleCount').textContent = `0 / ${state.rolle.limit}`;
           qs('#rolleHint').hidden = true;
-          qs('#funktionEditable').textContent = '{{ funktion }}';
+          qs('#funktionEditable').textContent = '';
           break;
         }
         case 'purpose':{
@@ -593,7 +594,7 @@
           state.purpose.edited = false;
           qs('#purposeCount').textContent = `0 / ${state.purpose.limit}`;
           qs('#purposeHint').hidden = true;
-          qs('#purposeEditable').textContent = '{{ purpose }}';
+          qs('#purposeEditable').textContent = '';
           break;
         }
         case 'tasks':{
@@ -603,93 +604,111 @@
           state.tasks.edited = false;
           qs('#tasksCount').textContent = `0 / ${state.tasks.limit}`;
           qs('#tasksHint').hidden = true;
-          qs('#tasksEditable').textContent = '{{ tasks }}';
+          qs('#tasksEditable').textContent = '';
           break;
         }
         case 'start':{
           qs('#startSelect').selectedIndex = -1;
           state.start.selected = '';
           state.start.edited = false;
-          qs('#startEditable').textContent = '{{ startverhalten }}';
+          qs('#startEditable').textContent = '';
           break;
         }
         case 'tiefe':{
           qs('#tiefeSelect').selectedIndex = -1;
           state.tiefe.selected = '';
           state.tiefe.edited = false;
-          qs('#tiefeEditable').textContent = '{{ antworttiefe }}';
+          qs('#tiefeEditable').textContent = '';
           break;
         }
         case 'rq':{
           qs('#rqSelect').selectedIndex = -1;
           state.rq.selected = '';
           state.rq.edited = false;
-          qs('#rqEditable').textContent = '{{ rueckfragen }}';
+          qs('#rqEditable').textContent = '';
           break;
         }
         case 'variation':{
           qs('#varSelect').selectedIndex = -1;
           state.variation.selected = '';
           state.variation.edited = false;
-          qs('#varEditable').textContent = '{{ variation }}';
+          qs('#varEditable').textContent = '';
           break;
         }
         case 'recherche':{
           qs('#recSelect').selectedIndex = -1;
           state.recherche.selected = '';
           state.recherche.edited = false;
-          qs('#recEditable').textContent = '{{ recherche }}';
+          qs('#recEditable').textContent = '';
           break;
         }
         case 'stil':{
           qs('#stilSelect').selectedIndex = -1;
           state.stil.selected = '';
           state.stil.edited = false;
-          qs('#stilEditable').textContent = '{{ stil }}';
+          qs('#stilEditable').textContent = '';
           break;
         }
       }
     }
 
-    function getEditableText(selector, fallback){
-      const el = qs(selector);
-      const t = (el?.textContent || '').trim();
-      return t || fallback;
+    function getEditableText(selector){
+      return textOrEmpty(selector);
     }
 
-    // Gesamtskript generieren
+    // Gesamtskript generieren – nur nicht-leere Teile einfügen
     function buildScript(){
+      const parts = [];
+
       // 1) Rolle/Persona
-      const rolle = getEditableText('#funktionEditable', '{{ funktion }}');
-      const rolleBlock = `Dein Wirkungsbereich ist ${rolle}. Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.`;
+      const rolle = getEditableText('#funktionEditable');
+      if(rolle){
+        parts.push(`[Rolle / Persona]
+Dein Wirkungsbereich ist ${rolle}. Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.`);
+      }
 
       // 2) Purpose
-      const purpose = getEditableText('#purposeEditable', '{{ purpose }}');
-      const purposeBlock = `Dein übergeordneter Zweck ist es, ${purpose}. Du orientierst deine gesamte Arbeitsweise an diesem Ziel.`;
+      const purpose = getEditableText('#purposeEditable');
+      if(purpose){
+        parts.push(`[Ziel / Purpose]
+Dein übergeordneter Zweck ist es, ${purpose}. Du orientierst deine gesamte Arbeitsweise an diesem Ziel.`);
+      }
 
       // 3) Tasks
-      const tasks = getEditableText('#tasksEditable', '{{ tasks }}');
-      const tasksBlock = `Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.`;
+      const tasks = getEditableText('#tasksEditable');
+      if(tasks){
+        parts.push(`[Auftrag / Task]
+Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.`);
+      }
 
-      // 4) Grundverhalten – Zusammenfassung
-      const start = getEditableText('#startEditable', '{{ startverhalten }}');
-      const tiefe = getEditableText('#tiefeEditable', '{{ antworttiefe }}');
-      const rq = getEditableText('#rqEditable', '{{ rueckfragen }}');
-      const vari = getEditableText('#varEditable', '{{ variation }}');
-      const rec = getEditableText('#recEditable', '{{ recherche }}');
+      // 4) Grundverhalten – nur Zeilen aufnehmen, die nicht leer sind
+      const start = getEditableText('#startEditable');
+      const tiefe = getEditableText('#tiefeEditable');
+      const rq = getEditableText('#rqEditable');
+      const vari = getEditableText('#varEditable');
+      const rec = getEditableText('#recEditable');
 
-      const grundSum = `Du arbeitest nach folgender festen Logik:
-– Du startest Antworten mit: ${start}.
-– Deine Antworttiefe ist: ${tiefe}.
-– Deine Rückfragenlogik lautet: ${rq}.
-– Dein Ausdruck folgt der Variation: ${vari}.
-– Dein Recherche- und Quellenverhalten ist: ${rec}.`;
+      const grundLines = [];
+      if(start) grundLines.push(`– Du startest Antworten mit: ${start}.`);
+      if(tiefe) grundLines.push(`– Deine Antworttiefe ist: ${tiefe}.`);
+      if(rq)    grundLines.push(`– Deine Rückfragenlogik lautet: ${rq}.`);
+      if(vari)  grundLines.push(`– Dein Ausdruck folgt der Variation: ${vari}.`);
+      if(rec)   grundLines.push(`– Dein Recherche- und Quellenverhalten ist: ${rec}.`);
+
+      if(grundLines.length){
+        parts.push(`[Grundverhalten / Arbeitslogik]
+Du arbeitest nach folgender festen Logik:
+${grundLines.join('\n')}`);
+      }
 
       // 5) Kommunikationsstil
-      const stil = getEditableText('#stilEditable', '{{ stil }}');
-      const stilBlock = `Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`;
+      const stil = getEditableText('#stilEditable');
+      if(stil){
+        parts.push(`[Kommunikationsstil]
+Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`);
+      }
 
-      // 6) FEST VERANKERT – fix angehängt
+      // 6) FEST VERANKERT – fix anhängen
       const fixBlocks = [
 `[Formatoption (situativ nachgelagert)]
 Biete nach der ersten Antwort optional an, das Ergebnis in einem gewünschten Format darzustellen (z. B. Schritte, Varianten, Pro/Contra, Formulierungen). Frag nur bei erkennbarem Strukturbedarf; sonst entscheide situativ.`,
@@ -725,16 +744,7 @@ Sag früh und klar, welche Information du brauchst, um eine qualifizierte Antwor
 Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen. Werte nur nennen, wenn sie Orientierung geben („…damit wir Qualität/Sicherheit sichern.“). Trade-offs benennen; Sicherheit und Respekt priorisieren. Orientierung: mutig, klar, lösungsorientiert, ohne Drama.`
       ];
 
-      // Zusammensetzen
-      const parts = [
-        rolleBlock,
-        purposeBlock,
-        tasksBlock,
-        grundSum,
-        stilBlock,
-        // fix blocks
-        ...fixBlocks
-      ];
+      parts.push(...fixBlocks);
 
       return parts.join('\n\n').trim();
     }
@@ -744,14 +754,12 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
         if(navigator.clipboard && window.isSecureContext){
           await navigator.clipboard.writeText(text);
         } else {
-          // Fallback
           const ta = document.createElement('textarea');
           ta.value = text;
           ta.style.position='fixed';
           ta.style.left='-9999px';
           document.body.appendChild(ta);
-          ta.focus();
-          ta.select();
+          ta.focus(); ta.select();
           document.execCommand('copy');
           document.body.removeChild(ta);
         }
@@ -768,7 +776,6 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
       qs('#startBtn').addEventListener('click', () => {
         qs('#start').style.display = 'none';
         qs('#builder').style.display = 'block';
-        // Fokus auf erstes Modul
         qs('#rolleSelect').focus();
       });
 
@@ -796,7 +803,7 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
       qs('#recEditable').addEventListener('input', () => state.recherche.edited = true);
       qs('#stilEditable').addEventListener('input', () => state.stil.edited = true);
 
-      // Resets
+      // Resets in Blau (lassen Größe gleich)
       qs('#rolleReset').addEventListener('click', () => resetModule('rolle'));
       qs('#purposeReset').addEventListener('click', () => resetModule('purpose'));
       qs('#tasksReset').addEventListener('click', () => resetModule('tasks'));
@@ -814,11 +821,11 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
         const msg = qs('#copyMsg');
         msg.style.display = ok ? 'block' : 'none';
         if(!ok) alert('Kopieren nicht möglich. Bitte manuell kopieren.');
-        // optional: nach 4s wieder ausblenden
         if(ok) setTimeout(()=> msg.style.display='none', 4000);
       });
     });
   </script>
 </body>
+</html>
 </html>
 ``
