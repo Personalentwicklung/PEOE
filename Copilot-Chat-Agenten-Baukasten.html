@@ -28,6 +28,10 @@
       --edit-border:#81C784;
       --edit-focus:#43A047;
 
+      /* Grau für nicht-editierbare Badge (Rolle) */
+      --badge-bg:#E5E7EB;
+      --badge-border:#D1D5DB;
+
       /* Maße */
       --container:1024px;
       --space-1:8px;
@@ -42,7 +46,7 @@
     html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
     .container{max-width:var(--container);margin:0 auto;padding:24px;}
-    h1{font-size:28px;margin:0 0 var(--space-4);color:var(--primary)}
+    h1{font-size:28px;margin:0 0 var(--space-4);color:var(--primary);text-align:center}
     h2{font-size:22px;margin:0 0 var(--space-3);color:var(--primary)}
     h3{font-size:18px;margin:0 0 var(--space-2);color:var(--primary)}
     p{margin:0 0 var(--space-3);color:var(--text)}
@@ -59,7 +63,7 @@
       background:var(--subtle);
       border:1px solid var(--border);
       border-radius:8px;
-      padding:var(--space-4);
+      padding:16px;             /* etwas niedriger als vorher */
       margin:var(--space-3) 0;
     }
 
@@ -99,15 +103,16 @@
     .hint{color:var(--warning);font-size:14px;margin-top:6px}
 
     .preview{
-      margin-top:14px;
-      padding:14px;
+      margin-top:12px;
+      padding:10px 12px;        /* niedriger: weniger Höhe */
       border:1px dashed var(--border);
       border-radius:8px;
       background:#fcfcfd;
     }
+
     .editable{
       display:inline-block;
-      min-width:160px;           /* sichtbar als Feld */
+      min-width:160px;          /* sichtbar als Feld */
       min-height:1.4em;
       background:var(--edit-bg);
       border:1px dashed var(--edit-border);
@@ -116,10 +121,19 @@
     }
     .editable:focus{outline:2px solid var(--edit-focus);background:#E3F2E5}
 
-    .top-note{margin-bottom:var(--space-4);padding:12px 14px;border-left:4px solid var(--accent);background:#f3fafc;border-radius:6px;}
+    .badge-gray{
+      display:inline-block;
+      min-width:160px;
+      min-height:1.4em;
+      background:var(--badge-bg);
+      border:1px solid var(--badge-border);
+      border-radius:6px;
+      padding:1px 6px;
+    }
+
+    .reset-line{margin-top:14px} /* etwas mehr Abstand */
     .copy-area .title-line{font-weight:700;margin-bottom:8px}
     .copy-msg{margin-top:10px;color:var(--success);display:none}
-
     .guide li{margin:6px 0}
 
     /* Startscreen / Umschaltung */
@@ -135,6 +149,8 @@
       padding:16px;
       background:#fff;
     }
+
+    .top-note{margin-bottom:var(--space-4);padding:12px 14px;border-left:4px solid var(--accent);background:#f3fafc;border-radius:6px;}
 
     @media (max-width: 720px){
       .container{padding:16px;}
@@ -208,7 +224,7 @@
           <div class="preview" id="rollePreview">
             <p>
               Dein Wirkungsbereich ist
-              <span id="funktionEditable" class="editable" contenteditable="true"></span>.
+              <span id="rolleBadge" class="badge-gray"></span>.
               Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.
             </p>
           </div>
@@ -492,7 +508,7 @@
   <script>
     // --- State ---
     const state = {
-      rolle: { selected: [], limit: 3, edited:false },
+      rolle: { selected: [], limit: 3, edited:false },   // edited bleibt false (nicht editierbar)
       purpose: { selected: [], limit: 2, edited:false },
       tasks: { selected: [], limit: 3, edited:false },
 
@@ -507,53 +523,73 @@
 
     // --- Helpers ---
     const qs = (sel, root=document) => root.querySelector(sel);
-    const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
     const joinList = (arr) => arr.join(', ');
     const textOrEmpty = (selector) => (qs(selector)?.textContent || '').trim();
 
+    // Toggle-Mehrfachauswahl OHNE STRG/⌘
+    function enableClickToggle(selectEl, key){
+      selectEl.addEventListener('mousedown', (e) => {
+        const opt = e.target;
+        if(opt && opt.tagName === 'OPTION'){
+          e.preventDefault();            // verhindert Standard (überschreibt sonst)
+          opt.selected = !opt.selected;  // toggle
+          selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+          selectEl.focus();
+        }
+      });
+    }
+
     function enforceMultiLimit(selectEl, key){
       const { limit } = state[key];
-      const selectedOptions = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
+      // lese aktuelle selected
+      const current = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
 
-      if(selectedOptions.length > limit){
-        const newlyAdded = selectedOptions.find(x => !state[key].selected.includes(x));
-        for(const opt of selectEl.options){
-          if(opt.text === newlyAdded){ opt.selected = false; break; }
-        }
+      // Reihenfolge beibehalten: erst alte behalten, dann neu hinzugekommene anhängen
+      const prev = state[key].selected.slice();
+      const kept = prev.filter(x => current.includes(x));
+      const added = current.filter(x => !prev.includes(x));
+      const merged = kept.concat(added);
+
+      // Limit anwenden
+      if(merged.length > limit){
+        // Überzählige am Ende wieder abwählen
+        const toDeselect = merged.slice(limit);
+        Array.from(selectEl.options).forEach(o => {
+          if(toDeselect.includes(o.text)) o.selected = false;
+        });
+        state[key].selected = merged.slice(0, limit);
+      } else {
+        state[key].selected = merged;
       }
 
-      const finalSelected = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
-      const prev = state[key].selected.slice();
-      const kept = prev.filter(x => finalSelected.includes(x));
-      const added = finalSelected.filter(x => !prev.includes(x));
-      state[key].selected = kept.concat(added);
-
+      // UI: Counter + Hint + übrige Optionen sperren
       const countEl = qs(`#${key}Count`);
       const hintEl = qs(`#${key}Hint`);
       if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
-      if(hintEl){
-        const atMax = state[key].selected.length >= limit;
-        hintEl.hidden = !atMax;
-        Array.from(selectEl.options).forEach(o => {
-          if(!o.selected) o.disabled = atMax;
-        });
-      }
+      const atMax = state[key].selected.length >= limit;
+      if(hintEl) hintEl.hidden = !atMax;
+      Array.from(selectEl.options).forEach(o => {
+        if(!o.selected) o.disabled = atMax;  // nur nicht-gewählte sperren
+      });
 
       // Vorschau aktualisieren (nur wenn nicht manuell editiert)
       updateEditableFromSelection(key);
     }
 
     function updateEditableFromSelection(key){
-      if(state[key].edited) return;
+      // Rolle: nicht editierbar → Badge füllen
+      if(key === 'rolle'){
+        qs('#rolleBadge').textContent = joinList(state.rolle.selected);
+        return;
+      }
+      if(state[key].edited) return; // user hat manuell getippt
       const map = {
-        rolle: { span: '#funktionEditable', value: joinList(state.rolle.selected) },
         purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) },
-        tasks: { span: '#tasksEditable', value: joinList(state.tasks.selected) }
+        tasks:   { span: '#tasksEditable',   value: joinList(state.tasks.selected) }
       };
       const target = map[key];
       if(target){
-        const el = qs(target.span);
-        if(el) el.textContent = target.value; // leer lassen, wenn leer
+        qs(target.span).textContent = target.value; // leer bleibt leer
       }
     }
 
@@ -570,8 +606,7 @@
         stil:'#stilEditable'
       })[key];
       if(spanId){
-        const el = qs(spanId);
-        el.textContent = val; // leer lassen, wenn leer
+        qs(spanId).textContent = val;  // leer bleibt leer
       }
     }
 
@@ -581,10 +616,9 @@
           const select = qs('#rolleSelect');
           Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
           state.rolle.selected = [];
-          state.rolle.edited = false;
           qs('#rolleCount').textContent = `0 / ${state.rolle.limit}`;
           qs('#rolleHint').hidden = true;
-          qs('#funktionEditable').textContent = '';
+          qs('#rolleBadge').textContent = '';
           break;
         }
         case 'purpose':{
@@ -652,41 +686,44 @@
       }
     }
 
-    function getEditableText(selector){
-      return textOrEmpty(selector);
+    function getModuleTextFromEditableOrSelection(spanSelector, selectedArray){
+      const t = textOrEmpty(spanSelector);
+      if(t) return t;
+      if(selectedArray && selectedArray.length) return joinList(selectedArray);
+      return '';
     }
 
     // Gesamtskript generieren – nur nicht-leere Teile einfügen
     function buildScript(){
       const parts = [];
 
-      // 1) Rolle/Persona
-      const rolle = getEditableText('#funktionEditable');
-      if(rolle){
+      // 1) Rolle/Persona (nicht editierbar -> aus state)
+      if(state.rolle.selected.length){
+        const rolle = joinList(state.rolle.selected);
         parts.push(`[Rolle / Persona]
 Dein Wirkungsbereich ist ${rolle}. Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.`);
       }
 
       // 2) Purpose
-      const purpose = getEditableText('#purposeEditable');
+      const purpose = getModuleTextFromEditableOrSelection('#purposeEditable', state.purpose.selected);
       if(purpose){
         parts.push(`[Ziel / Purpose]
 Dein übergeordneter Zweck ist es, ${purpose}. Du orientierst deine gesamte Arbeitsweise an diesem Ziel.`);
       }
 
       // 3) Tasks
-      const tasks = getEditableText('#tasksEditable');
+      const tasks = getModuleTextFromEditableOrSelection('#tasksEditable', state.tasks.selected);
       if(tasks){
         parts.push(`[Auftrag / Task]
 Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.`);
       }
 
-      // 4) Grundverhalten – nur Zeilen aufnehmen, die nicht leer sind
-      const start = getEditableText('#startEditable');
-      const tiefe = getEditableText('#tiefeEditable');
-      const rq = getEditableText('#rqEditable');
-      const vari = getEditableText('#varEditable');
-      const rec = getEditableText('#recEditable');
+      // 4) Grundverhalten – Zeilen nur, wenn befüllt
+      const start = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected ? [state.start.selected] : []);
+      const tiefe = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected ? [state.tiefe.selected] : []);
+      const rq    = getModuleTextFromEditableOrSelection('#rqEditable', state.rq.selected ? [state.rq.selected] : []);
+      const vari  = getModuleTextFromEditableOrSelection('#varEditable', state.variation.selected ? [state.variation.selected] : []);
+      const rec   = getModuleTextFromEditableOrSelection('#recEditable', state.recherche.selected ? [state.recherche.selected] : []);
 
       const grundLines = [];
       if(start) grundLines.push(`– Du startest Antworten mit: ${start}.`);
@@ -702,7 +739,7 @@ ${grundLines.join('\n')}`);
       }
 
       // 5) Kommunikationsstil
-      const stil = getEditableText('#stilEditable');
+      const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected ? [state.stil.selected] : []);
       if(stil){
         parts.push(`[Kommunikationsstil]
 Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`);
@@ -779,12 +816,19 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
         qs('#rolleSelect').focus();
       });
 
-      // Multi-Selects
-      qs('#rolleSelect').addEventListener('change', e => enforceMultiLimit(e.target, 'rolle'));
-      qs('#purposeSelect').addEventListener('change', e => enforceMultiLimit(e.target, 'purpose'));
-      qs('#tasksSelect').addEventListener('change', e => enforceMultiLimit(e.target, 'tasks'));
+      // Multi-Selects mit Click-Toggle
+      const multiDefs = [
+        {sel:'#rolleSelect',   key:'rolle'},
+        {sel:'#purposeSelect', key:'purpose'},
+        {sel:'#tasksSelect',   key:'tasks'}
+      ];
+      multiDefs.forEach(d => {
+        const el = qs(d.sel);
+        enableClickToggle(el, d.key);
+        el.addEventListener('change', e => enforceMultiLimit(e.target, d.key));
+      });
 
-      // Singles
+      // Single-Selects
       qs('#startSelect').addEventListener('change', e => updateSingleSelect(e.target, 'start'));
       qs('#tiefeSelect').addEventListener('change', e => updateSingleSelect(e.target, 'tiefe'));
       qs('#rqSelect').addEventListener('change', e => updateSingleSelect(e.target, 'rq'));
@@ -792,18 +836,17 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
       qs('#recSelect').addEventListener('change', e => updateSingleSelect(e.target, 'recherche'));
       qs('#stilSelect').addEventListener('change', e => updateSingleSelect(e.target, 'stil'));
 
-      // Editable flags
-      qs('#funktionEditable').addEventListener('input', () => state.rolle.edited = true);
+      // Editable flags (nicht für Rolle, da nicht editierbar)
       qs('#purposeEditable').addEventListener('input', () => state.purpose.edited = true);
-      qs('#tasksEditable').addEventListener('input', () => state.tasks.edited = true);
-      qs('#startEditable').addEventListener('input', () => state.start.edited = true);
-      qs('#tiefeEditable').addEventListener('input', () => state.tiefe.edited = true);
-      qs('#rqEditable').addEventListener('input', () => state.rq.edited = true);
-      qs('#varEditable').addEventListener('input', () => state.variation.edited = true);
-      qs('#recEditable').addEventListener('input', () => state.recherche.edited = true);
-      qs('#stilEditable').addEventListener('input', () => state.stil.edited = true);
+      qs('#tasksEditable').addEventListener('input',   () => state.tasks.edited   = true);
+      qs('#startEditable').addEventListener('input',   () => state.start.edited   = true);
+      qs('#tiefeEditable').addEventListener('input',   () => state.tiefe.edited   = true);
+      qs('#rqEditable').addEventListener('input',      () => state.rq.edited      = true);
+      qs('#varEditable').addEventListener('input',     () => state.variation.edited = true);
+      qs('#recEditable').addEventListener('input',     () => state.recherche.edited = true);
+      qs('#stilEditable').addEventListener('input',    () => state.stil.edited    = true);
 
-      // Resets in Blau (lassen Größe gleich)
+      // Resets
       qs('#rolleReset').addEventListener('click', () => resetModule('rolle'));
       qs('#purposeReset').addEventListener('click', () => resetModule('purpose'));
       qs('#tasksReset').addEventListener('click', () => resetModule('tasks'));
@@ -827,5 +870,3 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
   </script>
 </body>
 </html>
-</html>
-``
