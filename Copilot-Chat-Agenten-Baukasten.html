@@ -6,19 +6,19 @@
   <title>Baukasten für Copilot-Chat-Agenten</title>
   <style>
     :root{
-      /* Farben – angelehnt an deine PEOE-Seiten */
+      /* Farben – angelehnt an PEOE-Seiten */
       --primary:#005A9C;
       --primary-600:#0a66a8;
       --accent:#2FB1C5;
       --bg:#f5f7fa;
       --card-bg:#ffffff;
+      --subtle:#eef2f5;
       --muted:#4a5568;
       --text:#1a202c;
       --border:#e2e8f0;
       --shadow:0 4px 14px rgba(0,0,0,0.08);
       --radius:10px;
 
-      --subtle:#eef2f5;          /* Grau für Unterboxen */
       --warning:#C05621;
       --success:#2F855A;
       --focus:#2FB1C5;
@@ -63,7 +63,7 @@
       background:var(--subtle);
       border:1px solid var(--border);
       border-radius:8px;
-      padding:16px;             /* etwas niedriger als vorher */
+      padding:16px;
       margin:var(--space-3) 0;
     }
 
@@ -95,7 +95,12 @@
       border-radius:8px;
       background:#fff;
       color:var(--text);
+      font-size:14px;              /* Option 1: 14px */
+      line-height:1.4;
     }
+    /* explizit auch Options */
+    select option{font-size:14px;}
+
     .meta{
       display:flex;align-items:center;gap:12px;
       margin-top:8px;color:var(--muted);font-size:14px;
@@ -104,7 +109,7 @@
 
     .preview{
       margin-top:12px;
-      padding:10px 12px;        /* niedriger: weniger Höhe */
+      padding:10px 12px;
       border:1px dashed var(--border);
       border-radius:8px;
       background:#fcfcfd;
@@ -112,12 +117,13 @@
 
     .editable{
       display:inline-block;
-      min-width:160px;          /* sichtbar als Feld */
+      min-width:160px;
       min-height:1.4em;
       background:var(--edit-bg);
       border:1px dashed var(--edit-border);
       border-radius:6px;
-      padding:1px 4px;
+      padding:2px 6px;
+      line-height:1.6;
     }
     .editable:focus{outline:2px solid var(--edit-focus);background:#E3F2E5}
 
@@ -128,10 +134,11 @@
       background:var(--badge-bg);
       border:1px solid var(--badge-border);
       border-radius:6px;
-      padding:1px 6px;
+      padding:2px 6px;           /* gleiche Padding wie .editable */
+      line-height:1.6;           /* gleiche Höhe wie .editable */
     }
 
-    .reset-line{margin-top:14px} /* etwas mehr Abstand */
+    .reset-line{margin-top:14px}
     .copy-area .title-line{font-weight:700;margin-bottom:8px}
     .copy-msg{margin-top:10px;color:var(--success);display:none}
     .guide li{margin:6px 0}
@@ -150,7 +157,19 @@
       background:#fff;
     }
 
-    .top-note{margin-bottom:var(--space-4);padding:12px 14px;border-left:4px solid var(--accent);background:#f3fafc;border-radius:6px;}
+    .top-note{
+      margin-bottom:var(--space-4);
+      padding:12px 14px;
+      border-left:4px solid var(--accent);
+      background:#f3fafc;
+      border-radius:6px;
+    }
+    .top-note.small{
+      padding:8px 10px;
+      margin-bottom:12px;
+      font-size:14px;
+      border-left-width:3px;
+    }
 
     @media (max-width: 720px){
       .container{padding:16px;}
@@ -192,11 +211,12 @@
       <!-- MODUL: Rolle / Persona -->
       <div class="card" id="mod-rolle">
         <h2>Rolle / Persona</h2>
+        <div class="top-note small" role="note">Wofür soll der Agent zuständig sein?</div>
         <div class="subcard">
           <label for="rolleSelect">Wähle bis zu 3 Rollen</label>
           <select id="rolleSelect" multiple size="8" aria-describedby="rolleCount rolleHint">
             <option>Ausbildungsunterstützung (Azubi)</option>
-            <option>Support & Lernen</option>
+            <option>Support &amp; Lernen</option>
             <option>Führungskraft</option>
             <option>Coach / Mentor</option>
             <option>Gesundheit/Ernährung</option>
@@ -210,7 +230,7 @@
             <option>Prozess- &amp; Verfahrensingenieur</option>
             <option>Office / Administration</option>
             <option>IT / Digital / Prozesse</option>
-            <option>Support & Service</option>
+            <option>Support &amp; Service</option>
             <option>Verwaltung (HR)</option>
             <option>Recht / Steuern</option>
             <option>Finance</option>
@@ -237,6 +257,7 @@
       <!-- MODUL: Purpose -->
       <div class="card" id="mod-purpose">
         <h2>Ziel / Purpose</h2>
+        <div class="top-note small" role="note">Welchen übergeordneten Zweck soll der Agent dienen?</div>
         <div class="subcard">
           <label for="purposeSelect">Wähle bis zu 2 Zwecke</label>
           <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint">
@@ -276,6 +297,7 @@
       <!-- MODUL: Aufgaben / Tasks -->
       <div class="card" id="mod-tasks">
         <h2>Auftrag / Task</h2>
+        <div class="top-note small" role="note">Welche konkrete Tätigkeit(en) soll der Agent ausüben?</div>
         <div class="subcard">
           <label for="tasksSelect">Wähle bis zu 3 Tätigkeiten</label>
           <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint">
@@ -313,8 +335,10 @@
       <!-- MODUL-GRUPPE: Grundverhalten -->
       <div class="card" id="mod-grundverhalten">
         <h2><strong>Grundverhalten / Arbeitslogik</strong></h2>
+        <div class="top-note small" role="note">Wie soll der Agent Situationen starten und steuern?</div>
 
         <!-- Startverhalten -->
+        <div class="top-note small" role="note">Agent beginnt Antworten mit …</div>
         <div class="subcard" id="sub-startverhalten">
           <h3>Startverhalten</h3>
           <label for="startSelect">Wähle genau eine Option</label>
@@ -343,11 +367,12 @@
         </div>
 
         <!-- Antworttiefe -->
+        <div class="top-note small" role="note">Wie soll der Agent antworten?</div>
         <div class="subcard" id="sub-antworttiefe">
           <h3>Antwortstil / Spezifität</h3>
           <label for="tiefeSelect">Wähle genau eine Option</label>
           <select id="tiefeSelect" size="6">
-            <option>einfach & kompakt</option>
+            <option>einfach &amp; kompakt</option>
             <option>mittlere Tiefe (situativ)</option>
             <option>ausführlich / erläuternd</option>
             <option>technisch präzise</option>
@@ -372,6 +397,7 @@
         </div>
 
         <!-- Rückfragen-Logik -->
+        <div class="top-note small" role="note">Welche Rückfragen‑Logik soll verwendet werden?</div>
         <div class="subcard" id="sub-rueckfragen">
           <h3>Rückfragen-Logik</h3>
           <label for="rqSelect">Wähle genau eine Option</label>
@@ -397,6 +423,7 @@
         </div>
 
         <!-- Variation -->
+        <div class="top-note small" role="note">Wie sollen sich die Antworten variieren?</div>
         <div class="subcard" id="sub-variation">
           <h3>Variation / Ausdruck</h3>
           <label for="varSelect">Wähle genau eine Option</label>
@@ -423,6 +450,7 @@
         </div>
 
         <!-- Recherche -->
+        <div class="top-note small" role="note">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
         <div class="subcard" id="sub-recherche">
           <h3>Recherche- und Faktenverhalten</h3>
           <label for="recSelect">Wähle genau eine Option</label>
@@ -451,7 +479,9 @@
       <!-- MODUL: Kommunikationsstil -->
       <div class="card" id="mod-stil">
         <h2>Kommunikationsstil</h2>
+        <div class="top-note small" role="note">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
         <div class="subcard">
+          <h3 style="margin-top:0">Stil</h3>
           <label for="stilSelect">Wähle genau eine Option</label>
           <select id="stilSelect" size="6">
             <option>ruhig und klar</option>
@@ -531,7 +561,7 @@
       selectEl.addEventListener('mousedown', (e) => {
         const opt = e.target;
         if(opt && opt.tagName === 'OPTION'){
-          e.preventDefault();            // verhindert Standard (überschreibt sonst)
+          e.preventDefault();
           opt.selected = !opt.selected;  // toggle
           selectEl.dispatchEvent(new Event('change', {bubbles:true}));
           selectEl.focus();
@@ -541,18 +571,16 @@
 
     function enforceMultiLimit(selectEl, key){
       const { limit } = state[key];
-      // lese aktuelle selected
       const current = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
 
-      // Reihenfolge beibehalten: erst alte behalten, dann neu hinzugekommene anhängen
+      // Reihenfolge beibehalten
       const prev = state[key].selected.slice();
-      const kept = prev.filter(x => current.includes(x));
+      const kept  = prev.filter(x => current.includes(x));
       const added = current.filter(x => !prev.includes(x));
       const merged = kept.concat(added);
 
       // Limit anwenden
       if(merged.length > limit){
-        // Überzählige am Ende wieder abwählen
         const toDeselect = merged.slice(limit);
         Array.from(selectEl.options).forEach(o => {
           if(toDeselect.includes(o.text)) o.selected = false;
@@ -582,14 +610,14 @@
         qs('#rolleBadge').textContent = joinList(state.rolle.selected);
         return;
       }
-      if(state[key].edited) return; // user hat manuell getippt
+      if(state[key].edited) return;
       const map = {
         purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) },
         tasks:   { span: '#tasksEditable',   value: joinList(state.tasks.selected) }
       };
       const target = map[key];
       if(target){
-        qs(target.span).textContent = target.value; // leer bleibt leer
+        qs(target.span).textContent = target.value;
       }
     }
 
@@ -606,7 +634,7 @@
         stil:'#stilEditable'
       })[key];
       if(spanId){
-        qs(spanId).textContent = val;  // leer bleibt leer
+        qs(spanId).textContent = val;
       }
     }
 
@@ -697,7 +725,7 @@
     function buildScript(){
       const parts = [];
 
-      // 1) Rolle/Persona (nicht editierbar -> aus state)
+      // 1) Rolle/Persona
       if(state.rolle.selected.length){
         const rolle = joinList(state.rolle.selected);
         parts.push(`[Rolle / Persona]
@@ -718,24 +746,25 @@ Dein übergeordneter Zweck ist es, ${purpose}. Du orientierst deine gesamte Arbe
 Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.`);
       }
 
-      // 4) Grundverhalten – Zeilen nur, wenn befüllt
+      // 4) Grundverhalten – ausführliche Sätze (Variante A, ohne Listen)
       const start = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected ? [state.start.selected] : []);
       const tiefe = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected ? [state.tiefe.selected] : []);
       const rq    = getModuleTextFromEditableOrSelection('#rqEditable', state.rq.selected ? [state.rq.selected] : []);
       const vari  = getModuleTextFromEditableOrSelection('#varEditable', state.variation.selected ? [state.variation.selected] : []);
       const rec   = getModuleTextFromEditableOrSelection('#recEditable', state.recherche.selected ? [state.recherche.selected] : []);
 
-      const grundLines = [];
-      if(start) grundLines.push(`– Du startest Antworten mit: ${start}.`);
-      if(tiefe) grundLines.push(`– Deine Antworttiefe ist: ${tiefe}.`);
-      if(rq)    grundLines.push(`– Deine Rückfragenlogik lautet: ${rq}.`);
-      if(vari)  grundLines.push(`– Dein Ausdruck folgt der Variation: ${vari}.`);
-      if(rec)   grundLines.push(`– Dein Recherche- und Quellenverhalten ist: ${rec}.`);
+      const grundParts = [];
+      if(start) grundParts.push(`Du beginnst deine Antworten grundsätzlich mit: ${start}. Halte dieses Startverhalten konsistent ein.`);
+      if(tiefe) grundParts.push(`Dein Antwortstil orientiert sich an folgender Tiefe: ${tiefe}. Halte dieses Niveau konsistent in allen Antworten ein.`);
+      if(rq)    grundParts.push(`Deine Rückfragenlogik lautet: ${rq}.`);
+      if(vari)  grundParts.push(`Dein Ausdruck folgt dieser Variation: ${vari}. Bevorzuge dabei Klarheit vor Abwechslung.`);
+      if(rec)   grundParts.push(`Dein Recherche und Quellenverhalten ist: ${rec}. Vermeide widersprüchliche Anforderungen.`);
 
-      if(grundLines.length){
+      if(grundParts.length){
         parts.push(`[Grundverhalten / Arbeitslogik]
 Du arbeitest nach folgender festen Logik:
-${grundLines.join('\n')}`);
+
+${grundParts.join('\n\n')}`);
       }
 
       // 5) Kommunikationsstil
@@ -759,7 +788,7 @@ Bei privaten Belastungen: freundlich bleiben, Rolle klären, beruflichen Rahmen 
 Bei gesundheitlichen Belastungen, auffälligen Fehlzeiten, eskalierten Konflikten oder Themen außerhalb deiner Rolle: Hinweise geben, dass HR/BGM/Betriebsrat eingebunden werden sollte. Immer sachlich, respektvoll, neutral, ohne persönliche Abwertungen.`,
 
 `[Out-of-Scope]
-Du kommunizierst klar, wenn eine Anfrage außerhalb deines Zuständigkeitsbereiches liegt, und bietest dann sichere, fachlich passende Alternativen an.`,
+Du kommunizierst klar, wenn eine Anfrage außerhalb des Zuständigkeitsbereiches liegt, und bietest dann sichere, fachlich passende Alternativen an.`,
 
 `[Universelle Fehler- & Klarheitslogik]
 Wenn Informationen fehlen, unklar oder widersprüchlich sind, frage einmal präzise nach, triff keine Annahmen und arbeite nicht mit Vermutungen. Bleibe faktentreu, biete bei Bedarf Optionen an und mach transparent, wenn du ohne Klärung nicht sinnvoll weitermachen kannst.`,
