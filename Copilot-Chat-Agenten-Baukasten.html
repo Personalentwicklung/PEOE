@@ -85,14 +85,852 @@
     .row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
     .grow{flex:1 1 320px}
 
-    /* Labels nicht mehr fett für „Wähle …“-Zeile: nutzen wir eigene Klasse .subhint */
-    label{display:block;margin:0 0 6px;font-weight:600}
+    /* Sub-Hinweise */
     .subhint{
       font-size:14px;
       color:var(--muted);
       margin:0 0 6px;
       font-weight:400; /* nicht fett */
     }
+    .subhint-ask{
+      font-size:14px;
+      color:var(--text);
+      margin:0 6px 6px 0;
+      font-weight:700; /* fett wie Label */
+    }
+
+    /* Selects */
+    select{
+      width:100%;
+      min-width:280px;
+      max-width:100%;
+      padding:6px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:#fff;
+      color:var(--text);
+      font-size:14px;              /* 14px wie gewünscht */
+      line-height:1.4;
+    }
+    select option{font-size:14px;}
+
+    .meta{
+      display:flex;align-items:center;gap:12px;
+      margin-top:8px;color:var(--muted);font-size:14px;
+    }
+    .hint{color:var(--warning);font-size:14px;margin-top:6px}
+
+    .preview{
+      margin-top:12px;
+      padding:10px 12px;
+      border:1px dashed var(--border);
+      border-radius:8px;
+      background:#fcfcfd;
+    }
+
+    .editable{
+      display:inline-block;
+      min-width:160px;
+      min-height:1.4em;
+      background:var(--edit-bg);
+      border:1px dashed var(--edit-border);
+      border-radius:6px;
+      padding:2px 6px;
+      line-height:1.6;
+    }
+    .editable:focus{outline:2px solid var(--edit-focus);background:#E3F2E5}
+
+    .badge-gray{
+      display:inline-block;
+      min-width:160px;
+      min-height:1.4em;
+      background:var(--badge-bg);
+      border:1px solid var(--badge-border);
+      border-radius:6px;
+      padding:2px 6px;           /* gleiche Padding wie .editable */
+      line-height:1.6;           /* gleiche Höhe wie .editable */
+    }
+
+    .reset-line{margin-top:14px}
+    .copy-area .title-line{font-weight:700;margin-bottom:8px}
+    .copy-msg{margin-top:10px;color:var(--success);display:none}
+    .guide li{margin:6px 0}
+
+    /* Startscreen / Umschaltung */
+    #builder{display:none}
+    .centered{display:flex;min-height:100vh;align-items:center;justify-content:center}
+    .start-card{max-width:760px}
+
+    pre.output{
+      white-space:pre-wrap;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:16px;
+      background:#fff;
+    }
+
+    /* Hinweisbox (groß) bleibt nur für Datenschutzhinweis oben */
+    .top-note{
+      margin-bottom:var(--space-4);
+      padding:12px 14px;
+      border-left:4px solid var(--accent);
+      background:#f3fafc;
+      border-radius:6px;
+    }
+
+    @media (max-width: 720px){
+      .container{padding:16px;}
+      h1{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- START: Startscreen -->
+  <section id="start" class="centered">
+    <div class="card start-card">
+      <div class="container">
+        <h1>Baukasten für Copilot-Chat-Agenten</h1>
+        <p>Dieser Baukasten unterstützt dich dabei, einen vollständig einsatzbereiten Copilot Chat Agenten zu erstellen. Du wählst die gewünschten Eigenschaften aus, passt die erzeugten Textbausteine bei Bedarf an und kopierst anschließend das fertige Agenten Script in einen neuen Agent in Copilot.</p>
+        <p>Viel Erfolg beim Erstellen deines Agents.</p>
+
+        <div class="top-note" role="note" aria-label="Datenschutzhinweis">
+          <h3>Datenschutzhinweis</h3>
+          <p>Der Baukasten speichert keine persönlichen Daten. Alle Eingaben bleiben ausschließlich in deinem Browser und werden nicht an Server übertragen. Beim Schließen der Seite gehen nicht gespeicherte Inhalte verloren.</p>
+        </div>
+
+        <button id="startBtn" class="btn">Start</button>
+      </div>
+    </div>
+  </section>
+  <!-- END: Startscreen -->
+
+  <!-- START: Builder -->
+  <section id="builder">
+    <div class="container">
+      <h1>Baukasten für Copilot-Chat-Agenten</h1>
+
+      <div class="card">
+        <h3>Hinweise zur Bedienung</h3>
+        <p class="muted">Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt. In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern. Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt. Unbearbeitete Module fließen nicht in das Agenten Script ein. Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.</p>
+      </div>
+
+      <!-- MODUL: Rolle / Persona -->
+      <div class="card" id="mod-rolle">
+        <h2>Rolle / Persona</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Zuständigkeit</h3>
+          <div class="subhint-ask">Wofür soll der Agent zuständig sein?</div>
+          <div class="subhint">Wähle bis zu 3 Rollen:</div>
+
+          <select id="rolleSelect" multiple size="8" aria-describedby="rolleCount rolleHint" aria-label="Rollen auswählen">
+            <option>Ausbildungsunterstützung, Azubi</option>
+            <option>Support &amp; Lernen</option>
+            <option>Führungskraft</option>
+            <option>Coach / Mentor</option>
+            <option>Gesundheit / Ernährung</option>
+            <option>Kommunikation / Training</option>
+            <option>Fachkraft Chemieproduktion</option>
+            <option>Fachkraft Technik</option>
+            <option>Fachkraft Wartung / Instandhaltung</option>
+            <option>Engineering</option>
+            <option>HSE / Arbeitssicherheit</option>
+            <option>Labor / QA</option>
+            <option>Prozess- &amp; Verfahrensingenieur</option>
+            <option>Office / Administration</option>
+            <option>IT / Digital / Prozesse</option>
+            <option>Support &amp; Service</option>
+            <option>Verwaltung, HR</option>
+            <option>Recht / Steuern</option>
+            <option>Finance</option>
+            <option>Einkauf / Verkauf, CSC</option>
+          </select>
+
+          <div class="meta">
+            <span id="rolleCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="rolleHint" hidden>Maximale Anzahl erreicht.</span>
+          </div>
+
+          <div class="preview" id="rollePreview">
+            <p>
+              Dein Wirkungsbereich ist
+              <span id="rolleBadge" class="badge-gray"></span>.
+              Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="rolleReset">Zurücksetzen (Rolle/Persona)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL: Purpose -->
+      <div class="card" id="mod-purpose">
+        <h2>Ziel / Purpose</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Zweck</h3>
+          <div class="subhint-ask">Welchen übergeordneten Zweck soll der Agent dienen?</div>
+          <div class="subhint">Wähle bis zu 2 Zwecke:</div>
+
+          <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint" aria-label="Zwecke auswählen">
+            <option>Situationen klären, Orientierung geben</option>
+            <option>Prozesse vereinfachen</option>
+            <option>Entscheidungen vorbereiten</option>
+            <option>Sicherheit erhöhen, Fehler vermeiden</option>
+            <option>Wissen vermitteln, erklären</option>
+            <option>Kommunikation verbessern</option>
+            <option>Verständnis steigern, technisch und organisatorisch</option>
+            <option>Arbeitsalltag entlasten</option>
+            <option>Standardaufgaben beschleunigen</option>
+            <option>Informationen strukturieren</option>
+            <option>Überblick schaffen, Komplexität reduzieren</option>
+            <option>Konsistenz sicherstellen, z. B. Qualität von Texten</option>
+            <option>Risiken erkennen und Hinweise geben</option>
+            <option>Zusammenarbeit unterstützen</option>
+            <option>Lerninhalte aufbereiten</option>
+          </select>
+
+          <div class="meta">
+            <span id="purposeCount" aria-live="polite">0 / 2</span>
+            <span class="hint" id="purposeHint" hidden>Maximale Anzahl erreicht.</span>
+          </div>
+          <div class="preview">
+            <p>
+              Dein übergeordneter Zweck ist es,
+              <span id="purposeEditable" class="editable" contenteditable="true"></span>.
+              Du orientierst deine gesamte Arbeitsweise an diesem Ziel.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="purposeReset">Zurücksetzen (Purpose)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL: Aufgaben / Tasks -->
+      <div class="card" id="mod-tasks">
+        <h2>Auftrag / Task</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Tätigkeiten</h3>
+          <div class="subhint-ask">Welche konkrete Tätigkeit(en) soll der Agent ausüben?</div>
+          <div class="subhint">Wähle bis zu 3 Tätigkeiten:</div>
+
+          <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint" aria-label="Tätigkeiten auswählen">
+            <option>Texte erstellen</option>
+            <option>Texte überarbeiten</option>
+            <option>Inhalte erklären</option>
+            <option>Inhalte zusammenfassen</option>
+            <option>Informationen analysieren</option>
+            <option>Informationen strukturieren</option>
+            <option>Prozesse oder Abläufe darstellen</option>
+            <option>Anleitungen formulieren</option>
+            <option>Entscheidungsgrundlagen vorbereiten</option>
+            <option>Fragen beantworten</option>
+            <option>Hinweise oder Risiken aufzeigen</option>
+            <option>Daten oder Dokumente auslesen</option>
+            <option>Lerninhalte aufbereiten</option>
+          </select>
+
+          <div class="meta">
+            <span id="tasksCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="tasksHint" hidden>Maximale Anzahl erreicht.</span>
+          </div>
+          <div class="preview">
+            <p>
+              Dein Auftrag umfasst folgende Tätigkeiten:
+              <span id="tasksEditable" class="editable" contenteditable="true"></span>.
+              Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="tasksReset">Zurücksetzen (Tasks)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL-GRUPPE: Grundverhalten -->
+      <div class="card" id="mod-grundverhalten">
+        <h2><strong>Grundverhalten / Arbeitslogik</strong></h2>
+
+        <div class="subcard" id="sub-startverhalten">
+          <h3 style="margin-top:0">Startverhalten</h3>
+          <div class="subhint-ask">Agent beginnt Antworten mit …</div>
+          <div class="subhint">Wähle genau eine Option:</div>
+
+          <select id="startSelect" size="6" aria-label="Startverhalten wählen">
+            <option>direkte Antwort ohne Rückfragen</option>
+            <option>1–3 kurze Impulse</option>
+            <option>1–2 Klärungsfragen bei unklarem Fall</option>
+            <option>kurze Zusammenfassung + Rückfrage</option>
+            <option>kurze Rückbestätigung</option>
+            <option>situativer Start, je nach Kontext</option>
+            <option>erst Kontext abfragen, dann liefern</option>
+            <option>erst Zielbild abfragen</option>
+            <option>direkt 3 Vorschläge machen</option>
+            <option>neutraler Startsatz</option>
+          </select>
+
+          <div class="preview">
+            <p>
+              Du beginnst deine Antworten grundsätzlich mit:
+              <span id="startEditable" class="editable" contenteditable="true"></span>.
+              Halte dieses Startverhalten konsistent ein.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="startReset">Zurücksetzen (Startverhalten)</button>
+          </div>
+        </div>
+
+        <div class="subcard" id="sub-antworttiefe">
+          <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
+          <div class="subhint-ask">Wie soll der Agent antworten?</div>
+          <div class="subhint">Wähle genau eine Option:</div>
+
+          <select id="tiefeSelect" size="6" aria-label="Antworttiefe wählen">
+            <option>einfach und kompakt</option>
+            <option>mittlere Tiefe, situativ</option>
+            <option>ausführlich, erläuternd</option>
+            <option>technisch präzise</option>
+            <option>praxisnah mit Beispielen</option>
+            <option>Schritt für Schritt</option>
+            <option>tabellarisch</option>
+            <option>mit Vor- und Nachteilen</option>
+            <option>mit Empfehlungen</option>
+            <option>rein faktenbasiert</option>
+            <option>ohne Theorie, nur Nutzen</option>
+          </select>
+
+          <div class="preview">
+            <p>
+              Dein Antwortstil orientiert sich an folgender Tiefe:
+              <span id="tiefeEditable" class="editable" contenteditable="true"></span>.
+              Halte dieses Niveau konsistent in allen Antworten ein.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="tiefeReset">Zurücksetzen (Antworttiefe)</button>
+          </div>
+        </div>
+
+        <div class="subcard" id="sub-rueckfragen">
+          <h3 style="margin-top:0">Rückfragen-Logik</h3>
+          <div class="subhint-ask">Welche Rückfragen-Logik soll verwendet werden?</div>
+          <div class="subhint">Wähle genau eine Option:</div>
+
+          <select id="rqSelect" size="6" aria-label="Rückfragen-Logik wählen">
+            <option>keine Rückfragen</option>
+            <option>eine Rückfrage</option>
+            <option>zwei Rückfragen, Kontext + Zielbild</option>
+            <option>Rückfragen nur bei Unklarheit</option>
+            <option>Rückfragen am Ende jeder Antwort</option>
+            <option>Rückfragen vor der Lösung</option>
+            <option>Rückfragen optional mit „Soll ich …?“</option>
+            <option>gezielte Rückfragen, nur zum Scope</option>
+          </select>
+
+          <div class="preview">
+            <p>
+              Deine Rückfragenlogik lautet:
+              <span id="rqEditable" class="editable" contenteditable="true"></span>.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="rqReset">Zurücksetzen (Rückfragen)</button>
+          </div>
+        </div>
+
+        <div class="subcard" id="sub-variation">
+          <h3 style="margin-top:0">Variation / Ausdruck</h3>
+          <div class="subhint-ask">Wie sollen sich die Antworten variieren?</div>
+          <div class="subhint">Wähle genau eine Option:</div>
+
+          <select id="varSelect" size="6" aria-label="Variation wählen">
+            <option>keine Wiederholungen</option>
+            <option>variierte Einstiege</option>
+            <option>variierte Impulsformen</option>
+            <option>variierte Rückfragen</option>
+            <option>variierte Abschlüsse</option>
+            <option>variierte Satzstrukturen</option>
+            <option>immer natürlich formulieren</option>
+            <option>dezente Variation in Länge und Kürze</option>
+          </select>
+
+          <div class="preview">
+            <p>
+              Dein Ausdruck folgt dieser Variation:
+              <span id="varEditable" class="editable" contenteditable="true"></span>.
+              Bevorzuge dabei Klarheit vor Abwechslung.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="varReset">Zurücksetzen (Variation)</button>
+          </div>
+        </div>
+
+        <div class="subcard" id="sub-recherche">
+          <h3 style="margin-top:0">Recherche- und Faktenverhalten</h3>
+          <div class="subhint-ask">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
+          <div class="subhint">Wähle genau eine Option:</div>
+
+          <select id="recSelect" size="6" aria-label="Rechercheverhalten wählen">
+            <option>Web-Suche nur bei Bedarf</option>
+            <option>Quellen immer angeben, Titel / Datum / Link</option>
+            <option>Quellen nur bei externen Themen</option>
+            <option>keine Web-Suche</option>
+            <option>externe Infos nur in Stichpunkten</option>
+            <option>vor Recherche zuerst Rückfrage</option>
+            <option>bei Unklarheit „Fehlende Daten“ melden</option>
+          </select>
+
+          <div class="preview">
+            <p>
+              Dein Recherche und Quellenverhalten ist:
+              <span id="recEditable" class="editable" contenteditable="true"></span>.
+              Vermeide widersprüchliche Anforderungen.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="recReset">Zurücksetzen (Recherche)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL: Kommunikationsstil -->
+      <div class="card" id="mod-stil">
+        <h2>Kommunikationsstil</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Stil</h3>
+          <div class="subhint-ask">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
+          <div class="subhint">Wähle genau eine Option:</div>
+
+          <select id="stilSelect" size="6" aria-label="Kommunikationsstil wählen">
+            <option>ruhig und klar</option>
+            <option>formell und professionell</option>
+            <option>motivierend, coachend</option>
+            <option>pragmatisch und lösungsorientiert</option>
+            <option>warm und menschlich</option>
+            <option>freundlich und unterstützend</option>
+            <option>neutral-sachlich</option>
+            <option>leicht ironisch, respektvoll</option>
+            <option>direkt und kompakt</option>
+            <option>didaktisch, erklärend</option>
+            <option>kollegial, wie ein erfahrener Mitarbeiter</option>
+            <option>strukturiert und präzise</option>
+            <option>diplomatisch und wertschätzend</option>
+            <option>analytisch-technisch</option>
+          </select>
+
+          <div class="preview">
+            <p>
+              Dein Kommunikationsstil ist:
+              <span id="stilEditable" class="editable" contenteditable="true"></span>.
+              Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.
+            </p>
+          </div>
+          <div class="reset-line">
+            <button type="button" class="btn btn--sm" id="stilReset">Zurücksetzen (Stil)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COPY -->
+      <div class="card copy-area" id="copyArea">
+        <div class="title-line">Das Agent-Script kann nun gespeichert werden</div>
+        <button class="btn" id="copyBtn">Kopieren in Zwischenablage</button>
+        <div class="copy-msg" id="copyMsg">Agent‑Skript wurde in die Zwischenablage kopiert!</div>
+      </div>
+
+      <!-- Anleitung (immer sichtbar) -->
+      <div class="card">
+        <h2>Anleitung</h2>
+        <ol class="guide">
+          <li><strong>Neuen Agenten anlegen</strong><br/>Öffne in Copilot Chat „Neuer Agent”. Dieses befindet sich auf der linken Seite.</li>
+          <li><strong>Bezeichnung eintragen</strong><br/>Gib deinem Agenten einen kurzen, klaren Namen. Beispiele: Office Assistent, Begleiter, Coach, Azubi Tutor.</li>
+          <li><strong>Beschreibung eintragen</strong><br/>Beschreibe in ein bis zwei Sätzen, wofür der Agent gedacht ist. Beispiel: „Unterstützt bei täglichen Aufgaben, erklärt Inhalte verständlich und liefert klare, zuverlässige Antworten.“</li>
+          <li><strong>Agent-Script einfügen</strong><br/>Füge den kopierten Text aus dem Baukasten in das Feld „Anweisungen“ ein. Das Script bildet die komplette Funktionslogik des Agents.</li>
+          <li><strong>Agent speichern und verwenden</strong><br/>Klicke auf Erstellen, um deinen neuen Agenten anzulegen.</li>
+          <li><strong>Bearbeiten des Agent</strong><br/>Wenn die Ergebnisse des Agent nicht zufriedenstellend sein sollten, ist es möglich das Agent-Script aus den Anweisungen zu kopieren und in einem regulären Copilot Chat anzupassen. Klicke dazu neben dem Agent auf die drei Punkte und wähle <strong>„Bearbeiten“.</strong></li>
+        </ol>
+      </div>
+
+    </div>
+  </section>
+  <!-- END: Builder -->
+
+  <script>
+    // --- State ---
+    const state = {
+      rolle: { selected: [], limit: 3, edited:false },   // edited bleibt false (nicht editierbar)
+      purpose: { selected: [], limit: 2, edited:false },
+      tasks: { selected: [], limit: 3, edited:false },
+
+      start: { selected: '', edited:false },
+      tiefe: { selected: '', edited:false },
+      rq: { selected: '', edited:false },
+      variation: { selected: '', edited:false },
+      recherche: { selected: '', edited:false },
+
+      stil: { selected: '', edited:false }
+    };
+
+    // --- Helpers ---
+    const qs = (sel, root=document) => root.querySelector(sel);
+    const joinList = (arr) => arr.join(', ');
+    const textOrEmpty = (selector) => (qs(selector)?.textContent || '').trim();
+
+    // Toggle-Mehrfachauswahl OHNE STRG/⌘
+    function enableClickToggle(selectEl, key){
+      selectEl.addEventListener('mousedown', (e) => {
+        const opt = e.target;
+        if(opt && opt.tagName === 'OPTION'){
+          e.preventDefault();
+          opt.selected = !opt.selected;  // toggle
+          selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+          selectEl.focus();
+        }
+      });
+    }
+
+    function enforceMultiLimit(selectEl, key){
+      const { limit } = state[key];
+      const current = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
+
+      // Reihenfolge beibehalten
+      const prev = state[key].selected.slice();
+      const kept  = prev.filter(x => current.includes(x));
+      const added = current.filter(x => !prev.includes(x));
+      const merged = kept.concat(added);
+
+      // Limit anwenden
+      if(merged.length > limit){
+        const toDeselect = merged.slice(limit);
+        Array.from(selectEl.options).forEach(o => {
+          if(toDeselect.includes(o.text)) o.selected = false;
+        });
+        state[key].selected = merged.slice(0, limit);
+      } else {
+        state[key].selected = merged;
+      }
+
+      // UI: Counter + Hint + übrige Optionen sperren
+      const countEl = qs(`#${key}Count`);
+      const hintEl = qs(`#${key}Hint`);
+      if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
+      const atMax = state[key].selected.length >= limit;
+      if(hintEl) hintEl.hidden = !atMax;
+      Array.from(selectEl.options).forEach(o => {
+        if(!o.selected) o.disabled = atMax;  // nur nicht-gewählte sperren
+      });
+
+      // Vorschau aktualisieren (nur wenn nicht manuell editiert)
+      updateEditableFromSelection(key);
+    }
+
+    function updateEditableFromSelection(key){
+      // Rolle: nicht editierbar → Badge füllen
+      if(key === 'rolle'){
+        qs('#rolleBadge').textContent = joinList(state.rolle.selected);
+        return;
+      }
+      if(state[key].edited) return;
+      const map = {
+        purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) },
+        tasks:   { span: '#tasksEditable',   value: joinList(state.tasks.selected) }
+      };
+      const target = map[key];
+      if(target){
+        qs(target.span).textContent = target.value;
+      }
+    }
+
+    function updateSingleSelect(selectEl, key){
+      const val = selectEl.value || '';
+      state[key].selected = val;
+      if(state[key].edited) return;
+      const spanId = ({
+        start:'#startEditable',
+        tiefe:'#tiefeEditable',
+        rq:'#rqEditable',
+        variation:'#varEditable',
+        recherche:'#recEditable',
+        stil:'#stilEditable'
+      })[key];
+      if(spanId){
+        qs(spanId).textContent = val;
+      }
+    }
+
+    function resetModule(key){
+      switch(key){
+        case 'rolle':{
+          const select = qs('#rolleSelect');
+          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
+          state.rolle.selected = [];
+          qs('#rolleCount').textContent = `0 / ${state.rolle.limit}`;
+          qs('#rolleHint').hidden = true;
+          qs('#rolleBadge').textContent = '';
+          break;
+        }
+        case 'purpose':{
+          const select = qs('#purposeSelect');
+          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
+          state.purpose.selected = [];
+          state.purpose.edited = false;
+          qs('#purposeCount').textContent = `0 / ${state.purpose.limit}`;
+          qs('#purposeHint').hidden = true;
+          qs('#purposeEditable').textContent = '';
+          break;
+        }
+        case 'tasks':{
+          const select = qs('#tasksSelect');
+          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
+          state.tasks.selected = [];
+          state.tasks.edited = false;
+          qs('#tasksCount').textContent = `0 / ${state.tasks.limit}`;
+          qs('#tasksHint').hidden = true;
+          qs('#tasksEditable').textContent = '';
+          break;
+        }
+        case 'start':{
+          qs('#startSelect').selectedIndex = -1;
+          state.start.selected = '';
+          state.start.edited = false;
+          qs('#startEditable').textContent = '';
+          break;
+        }
+        case 'tiefe':{
+          qs('#tiefeSelect').selectedIndex = -1;
+          state.tiefe.selected = '';
+          state.tiefe.edited = false;
+          qs('#tiefeEditable').textContent = '';
+          break;
+        }
+        case 'rq':{
+          qs('#rqSelect').selectedIndex = -1;
+          state.rq.selected = '';
+          state.rq.edited = false;
+          qs('#rqEditable').textContent = '';
+          break;
+        }
+        case 'variation':{
+          qs('#varSelect').selectedIndex = -1;
+          state.variation.selected = '';
+          state.variation.edited = false;
+          qs('#varEditable').textContent = '';
+          break;
+        }
+        case 'recherche':{
+          qs('#recSelect').selectedIndex = -1;
+          state.recherche.selected = '';
+          state.recherche.edited = false;
+          qs('#recEditable').textContent = '';
+          break;
+        }
+        case 'stil':{
+          qs('#stilSelect').selectedIndex = -1;
+          state.stil.selected = '';
+          state.stil.edited = false;
+          qs('#stilEditable').textContent = '';
+          break;
+        }
+      }
+    }
+
+    function getModuleTextFromEditableOrSelection(spanSelector, selectedArray){
+      const t = textOrEmpty(spanSelector);
+      if(t) return t;
+      if(selectedArray && selectedArray.length) return joinList(selectedArray);
+      return '';
+    }
+
+    // Gesamtskript generieren – nur nicht-leere Teile einfügen
+    function buildScript(){
+      const parts = [];
+
+      // 1) Rolle/Persona
+      if(state.rolle.selected.length){
+        const rolle = joinList(state.rolle.selected);
+        parts.push(`[Rolle / Persona]
+Dein Wirkungsbereich ist ${rolle}. Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.`);
+      }
+
+      // 2) Purpose
+      const purpose = getModuleTextFromEditableOrSelection('#purposeEditable', state.purpose.selected);
+      if(purpose){
+        parts.push(`[Ziel / Purpose]
+Dein übergeordneter Zweck ist es, ${purpose}. Du orientierst deine gesamte Arbeitsweise an diesem Ziel.`);
+      }
+
+      // 3) Tasks
+      const tasks = getModuleTextFromEditableOrSelection('#tasksEditable', state.tasks.selected);
+      if(tasks){
+        parts.push(`[Auftrag / Task]
+Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.`);
+      }
+
+      // 4) Grundverhalten – ausführliche Sätze (Variante A, ohne Listen)
+      const start = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected ? [state.start.selected] : []);
+      const tiefe = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected ? [state.tiefe.selected] : []);
+      const rq    = getModuleTextFromEditableOrSelection('#rqEditable', state.rq.selected ? [state.rq.selected] : []);
+      const vari  = getModuleTextFromEditableOrSelection('#varEditable', state.variation.selected ? [state.variation.selected] : []);
+      const rec   = getModuleTextFromEditableOrSelection('#recEditable', state.recherche.selected ? [state.recherche.selected] : []);
+
+      const grundParts = [];
+      if(start) grundParts.push(`Du beginnst deine Antworten grundsätzlich mit: ${start}. Halte dieses Startverhalten konsistent ein.`);
+      if(tiefe) grundParts.push(`Dein Antwortstil orientiert sich an folgender Tiefe: ${tiefe}. Halte dieses Niveau konsistent in allen Antworten ein.`);
+      if(rq)    grundParts.push(`Deine Rückfragenlogik lautet: ${rq}.`);
+      if(vari)  grundParts.push(`Dein Ausdruck folgt dieser Variation: ${vari}. Bevorzuge dabei Klarheit vor Abwechslung.`);
+      if(rec)   grundParts.push(`Dein Recherche und Quellenverhalten ist: ${rec}. Vermeide widersprüchliche Anforderungen.`);
+
+      if(grundParts.length){
+        parts.push(`[Grundverhalten / Arbeitslogik]
+Du arbeitest nach folgender festen Logik:
+
+${grundParts.join('\n\n')}`);
+      }
+
+      // 5) Kommunikationsstil
+      const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected ? [state.stil.selected] : []);
+      if(stil){
+        parts.push(`[Kommunikationsstil]
+Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`);
+      }
+
+      // 6) FEST VERANKERT – fix anhängen
+      const fixBlocks = [
+`[Formatoption (situativ nachgelagert)]
+Biete nach der ersten Antwort optional an, das Ergebnis in einem gewünschten Format darzustellen (z. B. Schritte, Varianten, Pro/Contra, Formulierungen). Frag nur bei erkennbarem Strukturbedarf; sonst entscheide situativ.`,
+
+`[Compliance DSGVO]
+Du hältst dich jederzeit an Datenschutz, Vertraulichkeit, Sicherheit und professionelle Grenzen. Nie Diagnosen erfragen; nur arbeitsrelevante Einschränkungen klären.`,
+
+`[Grenzen]
+Keine Diagnosen oder medizinischen Aussagen; keine psychologischen Interpretationen; keine Rechtsberatung. Keine Beratung zu Kindern, Familie oder privaten Ursachen.
+Bei privaten Belastungen: freundlich bleiben, Rolle klären, beruflichen Rahmen sortieren (Prioritäten, Ruhe, Arbeitsfähigkeit).
+Bei gesundheitlichen Belastungen, auffälligen Fehlzeiten, eskalierten Konflikten oder Themen außerhalb deiner Rolle: Hinweise geben, dass HR/BGM/Betriebsrat eingebunden werden sollte. Immer sachlich, respektvoll, neutral, ohne persönliche Abwertungen.`,
+
+`[Out-of-Scope]
+Du kommunizierst klar, wenn eine Anfrage außerhalb des Zuständigkeitsbereiches liegt, und bietest dann sichere, fachlich passende Alternativen an.`,
+
+`[Universelle Fehler- & Klarheitslogik]
+Wenn Informationen fehlen, unklar oder widersprüchlich sind, frage einmal präzise nach, triff keine Annahmen und arbeite nicht mit Vermutungen. Bleibe faktentreu, biete bei Bedarf Optionen an und mach transparent, wenn du ohne Klärung nicht sinnvoll weitermachen kannst.`,
+
+`[Konsistenz- & Lückenmanagement]
+Prüfe Nutzerangaben auf Konsistenz, vermeide Endlos-Schleifen (max. eine Nachfrage) und halte Grenzen klar fest: Sag offen, wenn dir verlässliche Infos fehlen oder der Auftrag außerhalb deines Handlungsspielraums liegt.`,
+
+`[Kommunikatives Eskalationsmodell]
+Arbeite in vier Schritten:
+(1) kurze offene Klärung,
+(2) Konkretisierung mit Fokus,
+(3) Konsequenz nach zwei unklaren Antworten („Ich kann ohne Klärung nicht weiterhelfen.“),
+(4) Hinweis, dass das Thema ggf. einer formalen Prüfung durch zuständige Stellen bedarf.`,
+
+`[Transparenzpflicht]
+Sag früh und klar, welche Information du brauchst, um eine qualifizierte Antwort zu geben.`,
+
+`[Werte & Unternehmensbezug]
+Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen. Werte nur nennen, wenn sie Orientierung geben („…damit wir Qualität/Sicherheit sichern.“). Trade-offs benennen; Sicherheit und Respekt priorisieren. Orientierung: mutig, klar, lösungsorientiert, ohne Drama.`
+      ];
+
+      parts.push(...fixBlocks);
+
+      return parts.join('\n\n').trim();
+    }
+
+    async function```html
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baukasten für Copilot-Chat-Agenten</title>
+  <style>
+    :root{
+      /* Farben – angelehnt an PEOE-Seiten */
+      --primary:#005A9C;
+      --primary-600:#0a66a8;
+      --accent:#2FB1C5;
+      --bg:#f5f7fa;
+      --card-bg:#ffffff;
+      --subtle:#eef2f5;
+      --muted:#4a5568;
+      --text:#1a202c;
+      --border:#e2e8f0;
+      --shadow:0 4px 14px rgba(0,0,0,0.08);
+      --radius:10px;
+
+      --warning:#C05621;
+      --success:#2F855A;
+      --focus:#2FB1C5;
+
+      /* Hellgrün für editierbare Felder */
+      --edit-bg:#E8F5E9;
+      --edit-border:#81C784;
+      --edit-focus:#43A047;
+
+      /* Grau für nicht-editierbare Badge (Rolle) */
+      --badge-bg:#E5E7EB;
+      --badge-border:#D1D5DB;
+
+      /* Maße */
+      --container:1024px;
+      --space-1:8px;
+      --space-2:12px;
+      --space-3:16px;
+      --space-4:20px;
+      --space-5:28px;
+      --space-6:36px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+
+    .container{max-width:var(--container);margin:0 auto;padding:24px;}
+    h1{font-size:28px;margin:0 0 var(--space-4);color:var(--primary);text-align:center}
+    h2{font-size:22px;margin:0 0 var(--space-3);color:var(--primary)}
+    h3{font-size:18px;margin:0 0 var(--space-2);color:var(--primary)}
+    p{margin:0 0 var(--space-3);color:var(--text)}
+
+    .card{
+      background:var(--card-bg);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:var(--space-5);
+      margin:0 0 var(--space-5);
+    }
+    .subcard{
+      background:var(--subtle);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:16px;
+      margin:var(--space-3) 0;
+    }
+
+    .btn{
+      background:var(--primary);
+      color:#fff;
+      border:none;
+      border-radius:999px;
+      padding:12px 20px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    .btn:hover{background:var(--primary-600)}
+    .btn:focus{outline:3px solid var(--focus);outline-offset:2px}
+    .btn--sm{padding:8px 14px;font-size:14px}
+
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+    .grow{flex:1 1 320px}
+
+    /* Sub-Hinweise: Frage fett, Auswahlhinweis normal */
+    .subhint{font-size:14px;color:var(--muted);margin:0 0 6px;}
+    .subhint--question{font-weight:600;color:var(--text);} /* fett wie frühere Labels */
+    .subhint--choose{font-weight:400;}                     /* nicht fett */
 
     select{
       width:100%;
@@ -215,10 +1053,8 @@
         <h2>Rolle / Persona</h2>
         <div class="subcard">
           <h3 style="margin-top:0">Zuständigkeit</h3>
-          <div class="subhint">Wofür soll der Agent zuständig sein?</div>
-
-          <label for="rolleSelect">Rollen</label>
-          <div class="subhint">Wähle bis zu 3 Rollen</div>
+          <div class="subhint subhint--question">Wofür soll der Agent zuständig sein?</div>
+          <div class="subhint subhint--choose">Wähle bis zu 3 Rollen:</div>
 
           <select id="rolleSelect" multiple size="8" aria-describedby="rolleCount rolleHint">
             <option>Ausbildungsunterstützung, Azubi</option>
@@ -266,10 +1102,8 @@
         <h2>Ziel / Purpose</h2>
         <div class="subcard">
           <h3 style="margin-top:0">Zweck</h3>
-          <div class="subhint">Welchen übergeordneten Zweck soll der Agent dienen?</div>
-
-          <label for="purposeSelect">Zwecke</label>
-          <div class="subhint">Wähle bis zu 2 Zwecke</div>
+          <div class="subhint subhint--question">Welchen übergeordneten Zweck soll der Agent dienen?</div>
+          <div class="subhint subhint--choose">Wähle bis zu 2 Zwecke:</div>
 
           <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint">
             <option>Situationen klären, Orientierung geben</option>
@@ -311,15 +1145,11 @@
         <h2>Auftrag / Task</h2>
         <div class="subcard">
           <h3 style="margin-top:0">Tätigkeiten</h3>
-          <div class="subhint">Welche konkrete Tätigkeit(en) soll der Agent ausüben?</div>
-
-          <label for="tasksSelect">Tätigkeiten</label>
-          <div class="subhint">Wähle bis zu 3 Tätigkeiten</div>
+          <div class="subhint subhint--question">Welche konkrete Tätigkeit(en) soll der Agent ausüben?</div>
+          <div class="subhint subhint--choose">Wähle bis zu 3 Tätigkeiten:</div>
 
           <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint">
-            <option>Texte erstellen</option>
-            <option>Texte überarbeiten</option>
-            <option>Inhalte erklären</option>
+            ption>Inhalte erklären</option>
             <option>Inhalte zusammenfassen</option>
             <option>Informationen analysieren</option>
             <option>Informationen strukturieren</option>
@@ -330,6 +1160,9 @@
             <option>Hinweise oder Risiken aufzeigen</option>
             <option>Daten oder Dokumente auslesen</option>
             <option>Lerninhalte aufbereiten</option>
+            <option>Texte erstellen</option>
+            <option>Texte überarbeiten</option>
+            <o
           </select>
 
           <div class="meta">
@@ -352,15 +1185,15 @@
       <!-- MODUL-GRUPPE: Grundverhalten -->
       <div class="card" id="mod-grundverhalten">
         <h2><strong>Grundverhalten / Arbeitslogik</strong></h2>
+
         <div class="subcard" id="sub-startverhalten">
           <h3 style="margin-top:0">Startverhalten</h3>
-          <div class="subhint">Agent beginnt Antworten mit …</div>
-
-          <label for="startSelect">Optionen</label>
-          <div class="subhint">Wähle genau eine Option</div>
+          <div class="subhint subhint--question">Agent beginnt Antworten mit …</div>
+          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
 
           <select id="startSelect" size="6">
-            <option>direkte Antwort ohne Rückfragen</option>
+             <option>direkte Antwort ohne Rückfragen</option>
+             <option>direkt 3 Vorschläge machen</option>
             <option>1–3 kurze Impulse</option>
             <option>1–2 Klärungsfragen bei unklarem Fall</option>
             <option>kurze Zusammenfassung + Rückfrage</option>
@@ -368,7 +1201,7 @@
             <option>situativer Start, je nach Kontext</option>
             <option>erst Kontext abfragen, dann liefern</option>
             <option>erst Zielbild abfragen</option>
-            <option>direkt 3 Vorschläge machen</option>
+           
             <option>neutraler Startsatz</option>
           </select>
 
@@ -386,10 +1219,8 @@
 
         <div class="subcard" id="sub-antworttiefe">
           <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
-          <div class="subhint">Wie soll der Agent antworten?</div>
-
-          <label for="tiefeSelect">Optionen</label>
-          <div class="subhint">Wähle genau eine Option</div>
+          <div class="subhint subhint--question">Wie soll der Agent antworten?</div>
+          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
 
           <select id="tiefeSelect" size="6">
             <option>einfach und kompakt</option>
@@ -419,10 +1250,8 @@
 
         <div class="subcard" id="sub-rueckfragen">
           <h3 style="margin-top:0">Rückfragen-Logik</h3>
-          <div class="subhint">Welche Rückfragen-Logik soll verwendet werden?</div>
-
-          <label for="rqSelect">Optionen</label>
-          <div class="subhint">Wähle genau eine Option</div>
+          <div class="subhint subhint--question">Welche Rückfragen-Logik soll verwendet werden?</div>
+          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
 
           <select id="rqSelect" size="6">
             <option>keine Rückfragen</option>
@@ -448,20 +1277,19 @@
 
         <div class="subcard" id="sub-variation">
           <h3 style="margin-top:0">Variation / Ausdruck</h3>
-          <div class="subhint">Wie sollen sich die Antworten variieren?</div>
-
-          <label for="varSelect">Optionen</label>
-          <div class="subhint">Wähle genau eine Option</div>
+          <div class="subhint subhint--question">Wie sollen sich die Antworten variieren?</div>
+          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
 
           <select id="varSelect" size="6">
             <option>keine Wiederholungen</option>
+            <option>dezente Variation in Länge und Kürze</option>
             <option>variierte Einstiege</option>
             <option>variierte Impulsformen</option>
             <option>variierte Rückfragen</option>
             <option>variierte Abschlüsse</option>
             <option>variierte Satzstrukturen</option>
             <option>immer natürlich formulieren</option>
-            <option>dezente Variation in Länge und Kürze</option>
+         
           </select>
 
           <div class="preview">
@@ -478,10 +1306,8 @@
 
         <div class="subcard" id="sub-recherche">
           <h3 style="margin-top:0">Recherche- und Faktenverhalten</h3>
-          <div class="subhint">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
-
-          <label for="recSelect">Optionen</label>
-          <div class="subhint">Wähle genau eine Option</div>
+          <div class="subhint subhint--question">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
+          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
 
           <select id="recSelect" size="6">
             <option>Web-Suche nur bei Bedarf</option>
@@ -511,12 +1337,11 @@
         <h2>Kommunikationsstil</h2>
         <div class="subcard">
           <h3 style="margin-top:0">Stil</h3>
-          <div class="subhint">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
-
-          <label for="stilSelect">Optionen</label>
-          <div class="subhint">Wähle genau eine Option</div>
+          <div class="subhint subhint--question">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
+          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
 
           <select id="stilSelect" size="6">
+            <option>analytisch-technisch</option>
             <option>ruhig und klar</option>
             <option>formell und professionell</option>
             <option>motivierend, coachend</option>
@@ -530,7 +1355,7 @@
             <option>kollegial, wie ein erfahrener Mitarbeiter</option>
             <option>strukturiert und präzise</option>
             <option>diplomatisch und wertschätzend</option>
-            <option>analytisch-technisch</option>
+           
           </select>
 
           <div class="preview">
@@ -934,3 +1759,4 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
   </script>
 </body>
 </html>
+
