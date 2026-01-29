@@ -1395,368 +1395,398 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
   </section>
   <!-- END: Builder -->
 
-  <script>
-    // --- State ---
-    const state = {
-      rolle: { selected: [], limit: 3, edited:false },   // edited bleibt false (nicht editierbar)
-      purpose: { selected: [], limit: 2, edited:false },
-      tasks: { selected: [], limit: 3, edited:false },
+ <script>
+  // --- State ---
+  const state = {
+    rolle: { selected: [], limit: 3, edited:false },   // Rolle nicht editierbar
+    purpose: { selected: [], limit: 2, edited:false },
+    tasks: { selected: [], limit: 3, edited:false },
 
-      start: { selected: '', edited:false },
-      tiefe: { selected: '', edited:false },
-      rq: { selected: '', edited:false },
-      variation: { selected: '', edited:false },
-      recherche: { selected: '', edited:false },
+    start: { selected: '', edited:false },
+    tiefe: { selected: '', edited:false },
+    rq: { selected: '', edited:false },
+    variation: { selected: '', edited:false },
+    recherche: { selected: '', edited:false },
 
-      stil: { selected: '', edited:false }
-    };
+    stil: { selected: '', edited:false }
+  };
 
-    // --- Helpers ---
-    const qs = (sel, root=document) => root.querySelector(sel);
-    const joinList = (arr) => arr.join(', ');
-    const textOrEmpty = (selector) => (qs(selector)?.textContent || '').trim();
+  // --- Helpers ---
+  const qs = (sel, root=document) => root.querySelector(sel);
+  const joinList = (arr) => arr.join(', ');
+  const textOrEmpty = (selector) => (qs(selector)?.textContent || '').trim();
 
-    // Toggle-Mehrfachauswahl OHNE STRG/⌘
-    function enableClickToggle(selectEl, key){
-      selectEl.addEventListener('mousedown', (e) => {
-        const opt = e.target;
-        if(opt && opt.tagName === 'OPTION'){
-          e.preventDefault();
-          opt.selected = !opt.selected;  // toggle
-          selectEl.dispatchEvent(new Event('change', {bubbles:true}));
-          selectEl.focus();
-        }
-      });
-    }
-
-    function enforceMultiLimit(selectEl, key){
-      const { limit } = state[key];
-      const current = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
-
-      // Reihenfolge beibehalten
-      const prev = state[key].selected.slice();
-      const kept  = prev.filter(x => current.includes(x));
-      const added = current.filter(x => !prev.includes(x));
-      const merged = kept.concat(added);
-
-      // Limit anwenden
-      if(merged.length > limit){
-        const toDeselect = merged.slice(limit);
-        Array.from(selectEl.options).forEach(o => {
-          if(toDeselect.includes(o.text)) o.selected = false;
-        });
-        state[key].selected = merged.slice(0, limit);
-      } else {
-        state[key].selected = merged;
+  // Toggle-Mehrfachauswahl OHNE STRG/⌘
+  function enableClickToggle(selectEl, key){
+    if(!selectEl) return;
+    selectEl.addEventListener('mousedown', (e) => {
+      const opt = e.target;
+      if(opt && opt.tagName === 'OPTION'){
+        e.preventDefault();
+        opt.selected = !opt.selected;             // toggle
+        selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+        selectEl.focus();
       }
+    });
+  }
 
-      // UI: Counter + Hint + übrige Optionen sperren
-      const countEl = qs(`#${key}Count`);
-      const hintEl = qs(`#${key}Hint`);
-      if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
-      const atMax = state[key].selected.length >= limit;
-      if(hintEl) hintEl.hidden = !atMax;
+  function enforceMultiLimit(selectEl, key){
+    if(!selectEl) return;
+    const { limit } = state[key];
+    const current = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
+
+    // Reihenfolge beibehalten
+    const prev = state[key].selected.slice();
+    const kept  = prev.filter(x => current.includes(x));
+    const added = current.filter(x => !prev.includes(x));
+    const merged = kept.concat(added);
+
+    // Limit anwenden
+    if(merged.length > limit){
+      const toDeselect = merged.slice(limit);
       Array.from(selectEl.options).forEach(o => {
-        if(!o.selected) o.disabled = atMax;  // nur nicht-gewählte sperren
+        if(toDeselect.includes(o.text)) o.selected = false;
       });
-
-      // Vorschau aktualisieren (nur wenn nicht manuell editiert)
-      updateEditableFromSelection(key);
+      state[key].selected = merged.slice(0, limit);
+    } else {
+      state[key].selected = merged;
     }
 
-    function updateEditableFromSelection(key){
-      // Rolle: nicht editierbar → Badge füllen
-      if(key === 'rolle'){
-        qs('#rolleBadge').textContent = joinList(state.rolle.selected);
-        return;
+    // UI: Counter + Hint + übrige Optionen sperren
+    const countEl = qs(`#${key}Count`);
+    const hintEl = qs(`#${key}Hint`);
+    if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
+    const atMax = state[key].selected.length >= limit;
+    if(hintEl) hintEl.hidden = !atMax;
+    Array.from(selectEl.options).forEach(o => {
+      if(!o.selected) o.disabled = atMax;  // nur nicht-gewählte sperren
+    });
+
+    // Vorschau aktualisieren (nur wenn nicht manuell editiert)
+    updateEditableFromSelection(key);
+  }
+
+  function updateEditableFromSelection(key){
+    // Rolle: nicht editierbar → Badge füllen
+    if(key === 'rolle'){
+      const badge = qs('#rolleBadge');
+      if(badge) badge.textContent = joinList(state.rolle.selected);
+      return;
+    }
+    if(state[key].edited) return;
+    const map = {
+      purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) },
+      tasks:   { span: '#tasksEditable',   value: joinList(state.tasks.selected) }
+    };
+    const target = map[key];
+    if(target){
+      const el = qs(target.span);
+      if(el) el.textContent = target.value;
+    }
+  }
+
+  function updateSingleSelect(selectEl, key){
+    if(!selectEl) return;
+    const val = selectEl.value || '';
+    state[key].selected = val;
+    if(state[key].edited) return;
+    const spanId = ({
+      start:'#startEditable',
+      tiefe:'#tiefeEditable',
+      rq:'#rqEditable',
+      variation:'#varEditable',
+      recherche:'#recEditable',
+      stil:'#stilEditable'
+    })[key];
+    if(spanId){
+      const el = qs(spanId);
+      if(el) el.textContent = val;
+    }
+  }
+
+  function resetModule(key){
+    switch(key){
+      case 'rolle':{
+        const select = qs('#rolleSelect');
+        if(!select) break;
+        Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
+        state.rolle.selected = [];
+        const c = qs('#rolleCount'); if(c) c.textContent = `0 / ${state.rolle.limit}`;
+        const h = qs('#rolleHint'); if(h) h.hidden = true;
+        const b = qs('#rolleBadge'); if(b) b.textContent = '';
+        break;
       }
-      if(state[key].edited) return;
-      const map = {
-        purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) },
-        tasks:   { span: '#tasksEditable',   value: joinList(state.tasks.selected) }
-      };
-      const target = map[key];
-      if(target){
-        qs(target.span).textContent = target.value;
+      case 'purpose':{
+        const select = qs('#purposeSelect');
+        if(!select) break;
+        Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
+        state.purpose.selected = []; state.purpose.edited = false;
+        const c = qs('#purposeCount'); if(c) c.textContent = `0 / ${state.purpose.limit}`;
+        const h = qs('#purposeHint'); if(h) h.hidden = true;
+        const e = qs('#purposeEditable'); if(e) e.textContent = '';
+        break;
+      }
+      case 'tasks':{
+        const select = qs('#tasksSelect');
+        if(!select) break;
+        Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
+        state.tasks.selected = []; state.tasks.edited = false;
+        const c = qs('#tasksCount'); if(c) c.textContent = `0 / ${state.tasks.limit}`;
+        const h = qs('#tasksHint'); if(h) h.hidden = true;
+        const e = qs('#tasksEditable'); if(e) e.textContent = '';
+        break;
+      }
+      case 'start':{
+        const s = qs('#startSelect'); if(s) s.selectedIndex = -1;
+        state.start.selected = ''; state.start.edited = false;
+        const e = qs('#startEditable'); if(e) e.textContent = '';
+        break;
+      }
+      case 'tiefe':{
+        const s = qs('#tiefeSelect'); if(s) s.selectedIndex = -1;
+        state.tiefe.selected = ''; state.tiefe.edited = false;
+        const e = qs('#tiefeEditable'); if(e) e.textContent = '';
+        break;
+      }
+      case 'rq':{
+        const s = qs('#rqSelect'); if(s) s.selectedIndex = -1;
+        state.rq.selected = ''; state.rq.edited = false;
+        const e = qs('#rqEditable'); if(e) e.textContent = '';
+        break;
+      }
+      case 'variation':{
+        const s = qs('#varSelect'); if(s) s.selectedIndex = -1;
+        state.variation.selected = ''; state.variation.edited = false;
+        const e = qs('#varEditable'); if(e) e.textContent = '';
+        break;
+      }
+      case 'recherche':{
+        const s = qs('#recSelect'); if(s) s.selectedIndex = -1;
+        state.recherche.selected = ''; state.recherche.edited = false;
+        const e = qs('#recEditable'); if(e) e.textContent = '';
+        break;
+      }
+      case 'stil':{
+        const s = qs('#stilSelect'); if(s) s.selectedIndex = -1;
+        state.stil.selected = ''; state.stil.edited = false;
+        const e = qs('#stilEditable'); if(e) e.textContent = '';
+        break;
       }
     }
+  }
 
-    function updateSingleSelect(selectEl, key){
-      const val = selectEl.value || '';
-      state[key].selected = val;
-      if(state[key].edited) return;
-      const spanId = ({
-        start:'#startEditable',
-        tiefe:'#tiefeEditable',
-        rq:'#rqEditable',
-        variation:'#varEditable',
-        recherche:'#recEditable',
-        stil:'#stilEditable'
-      })[key];
-      if(spanId){
-        qs(spanId).textContent = val;
-      }
-    }
+  function getModuleTextFromEditableOrSelection(spanSelector, selectedArray){
+    const t = textOrEmpty(spanSelector);
+    if(t) return t;
+    if(selectedArray && selectedArray.length) return joinList(selectedArray);
+    return '';
+  }
 
-    function resetModule(key){
-      switch(key){
-        case 'rolle':{
-          const select = qs('#rolleSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.rolle.selected = [];
-          qs('#rolleCount').textContent = `0 / ${state.rolle.limit}`;
-          qs('#rolleHint').hidden = true;
-          qs('#rolleBadge').textContent = '';
-          break;
-        }
-        case 'purpose':{
-          const select = qs('#purposeSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.purpose.selected = [];
-          state.purpose.edited = false;
-          qs('#purposeCount').textContent = `0 / ${state.purpose.limit}`;
-          qs('#purposeHint').hidden = true;
-          qs('#purposeEditable').textContent = '';
-          break;
-        }
-        case 'tasks':{
-          const select = qs('#tasksSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.tasks.selected = [];
-          state.tasks.edited = false;
-          qs('#tasksCount').textContent = `0 / ${state.tasks.limit}`;
-          qs('#tasksHint').hidden = true;
-          qs('#tasksEditable').textContent = '';
-          break;
-        }
-        case 'start':{
-          qs('#startSelect').selectedIndex = -1;
-          state.start.selected = '';
-          state.start.edited = false;
-          qs('#startEditable').textContent = '';
-          break;
-        }
-        case 'tiefe':{
-          qs('#tiefeSelect').selectedIndex = -1;
-          state.tiefe.selected = '';
-          state.tiefe.edited = false;
-          qs('#tiefeEditable').textContent = '';
-          break;
-        }
-        case 'rq':{
-          qs('#rqSelect').selectedIndex = -1;
-          state.rq.selected = '';
-          state.rq.edited = false;
-          qs('#rqEditable').textContent = '';
-          break;
-        }
-        case 'variation':{
-          qs('#varSelect').selectedIndex = -1;
-          state.variation.selected = '';
-          state.variation.edited = false;
-          qs('#varEditable').textContent = '';
-          break;
-        }
-        case 'recherche':{
-          qs('#recSelect').selectedIndex = -1;
-          state.recherche.selected = '';
-          state.recherche.edited = false;
-          qs('#recEditable').textContent = '';
-          break;
-        }
-        case 'stil':{
-          qs('#stilSelect').selectedIndex = -1;
-          state.stil.selected = '';
-          state.stil.edited = false;
-          qs('#stilEditable').textContent = '';
-          break;
-        }
-      }
-    }
+  // Gesamtskript generieren – nur nicht-leere Teile einfügen
+  function buildScript(){
+    const parts = [];
 
-    function getModuleTextFromEditableOrSelection(spanSelector, selectedArray){
-      const t = textOrEmpty(spanSelector);
-      if(t) return t;
-      if(selectedArray && selectedArray.length) return joinList(selectedArray);
-      return '';
-    }
-
-    // Gesamtskript generieren – nur nicht-leere Teile einfügen
-    function buildScript(){
-      const parts = [];
-
-      // 1) Rolle/Persona
-      if(state.rolle.selected.length){
-        const rolle = joinList(state.rolle.selected);
-        parts.push(`[Rolle / Persona]
+    // 1) Rolle/Persona
+    if(state.rolle.selected.length){
+      const rolle = joinList(state.rolle.selected);
+      parts.push(`[Rolle / Persona]
 Dein Wirkungsbereich ist ${rolle}. Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.`);
-      }
+    }
 
-      // 2) Purpose
-      const purpose = getModuleTextFromEditableOrSelection('#purposeEditable', state.purpose.selected);
-      if(purpose){
-        parts.push(`[Ziel / Purpose]
+    // 2) Purpose
+    const purpose = getModuleTextFromEditableOrSelection('#purposeEditable', state.purpose.selected);
+    if(purpose){
+      parts.push(`[Ziel / Purpose]
 Dein übergeordneter Zweck ist es, ${purpose}. Du orientierst deine gesamte Arbeitsweise an diesem Ziel.`);
-      }
+    }
 
-      // 3) Tasks
-      const tasks = getModuleTextFromEditableOrSelection('#tasksEditable', state.tasks.selected);
-      if(tasks){
-        parts.push(`[Auftrag / Task]
+    // 3) Tasks
+    const tasks = getModuleTextFromEditableOrSelection('#tasksEditable', state.tasks.selected);
+    if(tasks){
+      parts.push(`[Auftrag / Task]
 Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.`);
-      }
+    }
 
-      // 4) Grundverhalten – ausführliche Sätze (Variante A, ohne Listen)
-      const start = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected ? [state.start.selected] : []);
-      const tiefe = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected ? [state.tiefe.selected] : []);
-      const rq    = getModuleTextFromEditableOrSelection('#rqEditable', state.rq.selected ? [state.rq.selected] : []);
-      const vari  = getModuleTextFromEditableOrSelection('#varEditable', state.variation.selected ? [state.variation.selected] : []);
-      const rec   = getModuleTextFromEditableOrSelection('#recEditable', state.recherche.selected ? [state.recherche.selected] : []);
+    // 4) Grundverhalten – ausführliche Sätze
+    const start = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected ? [state.start.selected] : []);
+    const tiefe = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected ? [state.tiefe.selected] : []);
+    const rq    = getModuleTextFromEditableOrSelection('#rqEditable', state.rq.selected ? [state.rq.selected] : []);
+    const vari  = getModuleTextFromEditableOrSelection('#varEditable', state.variation.selected ? [state.variation.selected] : []);
+    const rec   = getModuleTextFromEditableOrSelection('#recEditable', state.recherche.selected ? [state.recherche.selected] : []);
 
-      const grundParts = [];
-      if(start) grundParts.push(`Du beginnst deine Antworten grundsätzlich mit: ${start}. Halte dieses Startverhalten konsistent ein.`);
-      if(tiefe) grundParts.push(`Dein Antwortstil orientiert sich an folgender Tiefe: ${tiefe}. Halte dieses Niveau konsistent in allen Antworten ein.`);
-      if(rq)    grundParts.push(`Deine Rückfragenlogik lautet: ${rq}.`);
-      if(vari)  grundParts.push(`Dein Ausdruck folgt dieser Variation: ${vari}. Bevorzuge dabei Klarheit vor Abwechslung.`);
-      if(rec)   grundParts.push(`Dein Recherche und Quellenverhalten ist: ${rec}. Vermeide widersprüchliche Anforderungen.`);
+    const grundParts = [];
+    if(start) grundParts.push(`Du beginnst deine Antworten grundsätzlich mit: ${start}. Halte dieses Startverhalten konsistent ein.`);
+    if(tiefe) grundParts.push(`Dein Antwortstil orientiert sich an folgender Tiefe: ${tiefe}. Halte dieses Niveau konsistent in allen Antworten ein.`);
+    if(rq)    grundParts.push(`Deine Rückfragenlogik lautet: ${rq}.`);
+    if(vari)  grundParts.push(`Dein Ausdruck folgt dieser Variation: ${vari}. Bevorzuge dabei Klarheit vor Abwechslung.`);
+    if(rec)   grundParts.push(`Dein Recherche und Quellenverhalten ist: ${rec}. Vermeide widersprüchliche Anforderungen.`);
 
-      if(grundParts.length){
-        parts.push(`[Grundverhalten / Arbeitslogik]
+    if(grundParts.length){
+      parts.push(`[Grundverhalten / Arbeitslogik]
 Du arbeitest nach folgender festen Logik:
 
 ${grundParts.join('\n\n')}`);
-      }
+    }
 
-      // 5) Kommunikationsstil
-      const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected ? [state.stil.selected] : []);
-      if(stil){
-        parts.push(`[Kommunikationsstil]
+    // 5) Kommunikationsstil
+    const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected ? [state.stil.selected] : []);
+    if(stil){
+      parts.push(`[Kommunikationsstil]
 Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`);
-      }
+    }
 
-      // 6) FEST VERANKERT – fix anhängen
-      const fixBlocks = [
+    // 6) FEST VERANKERT – fix anhängen
+    const fixBlocks = [
 `[Formatoption (situativ nachgelagert)]
 Biete nach der ersten Antwort optional an, das Ergebnis in einem gewünschten Format darzustellen (z. B. Schritte, Varianten, Pro/Contra, Formulierungen). Frag nur bei erkennbarem Strukturbedarf; sonst entscheide situativ.`,
-
 `[Compliance DSGVO]
 Du hältst dich jederzeit an Datenschutz, Vertraulichkeit, Sicherheit und professionelle Grenzen. Nie Diagnosen erfragen; nur arbeitsrelevante Einschränkungen klären.`,
-
 `[Grenzen]
 Keine Diagnosen oder medizinischen Aussagen; keine psychologischen Interpretationen; keine Rechtsberatung. Keine Beratung zu Kindern, Familie oder privaten Ursachen.
 Bei privaten Belastungen: freundlich bleiben, Rolle klären, beruflichen Rahmen sortieren (Prioritäten, Ruhe, Arbeitsfähigkeit).
 Bei gesundheitlichen Belastungen, auffälligen Fehlzeiten, eskalierten Konflikten oder Themen außerhalb deiner Rolle: Hinweise geben, dass HR/BGM/Betriebsrat eingebunden werden sollte. Immer sachlich, respektvoll, neutral, ohne persönliche Abwertungen.`,
-
 `[Out-of-Scope]
 Du kommunizierst klar, wenn eine Anfrage außerhalb des Zuständigkeitsbereiches liegt, und bietest dann sichere, fachlich passende Alternativen an.`,
-
 `[Universelle Fehler- & Klarheitslogik]
 Wenn Informationen fehlen, unklar oder widersprüchlich sind, frage einmal präzise nach, triff keine Annahmen und arbeite nicht mit Vermutungen. Bleibe faktentreu, biete bei Bedarf Optionen an und mach transparent, wenn du ohne Klärung nicht sinnvoll weitermachen kannst.`,
-
 `[Konsistenz- & Lückenmanagement]
 Prüfe Nutzerangaben auf Konsistenz, vermeide Endlos-Schleifen (max. eine Nachfrage) und halte Grenzen klar fest: Sag offen, wenn dir verlässliche Infos fehlen oder der Auftrag außerhalb deines Handlungsspielraums liegt.`,
-
 `[Kommunikatives Eskalationsmodell]
 Arbeite in vier Schritten:
 (1) kurze offene Klärung,
 (2) Konkretisierung mit Fokus,
 (3) Konsequenz nach zwei unklaren Antworten („Ich kann ohne Klärung nicht weiterhelfen.“),
 (4) Hinweis, dass das Thema ggf. einer formalen Prüfung durch zuständige Stellen bedarf.`,
-
 `[Transparenzpflicht]
 Sag früh und klar, welche Information du brauchst, um eine qualifizierte Antwort zu geben.`,
-
 `[Werte & Unternehmensbezug]
 Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen. Werte nur nennen, wenn sie Orientierung geben („…damit wir Qualität/Sicherheit sichern.“). Trade-offs benennen; Sicherheit und Respekt priorisieren. Orientierung: mutig, klar, lösungsorientiert, ohne Drama.`
-      ];
+    ];
+    parts.push(...fixBlocks);
 
-      parts.push(...fixBlocks);
+    return parts.join('\n\n').trim();
+  }
 
-      return parts.join('\n\n').trim();
-    }
-
-    async function copyToClipboard(text){
-      try{
-        if(navigator.clipboard && window.isSecureContext){
-          await navigator.clipboard.writeText(text);
-        } else {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position='fixed';
-          ta.style.left='-9999px';
-          document.body.appendChild(ta);
-          ta.focus(); ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-        }
-        return true;
-      }catch(e){
-        console.error(e);
-        return false;
+  async function copyToClipboard(text){
+    try{
+      if(navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position='fixed';
+        ta.style.left='-9999px';
+        document.body.appendChild(ta);
+        ta.focus(); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
       }
+      return true;
+    }catch(e){
+      console.error(e);
+      return false;
+    }
+  }
+
+  // --- Wiring ---
+  window.addEventListener('DOMContentLoaded', () => {
+    // Umschalten Start -> Builder (robust mit Checks)
+    const startBtn = qs('#startBtn');
+    const startSection = qs('#start');
+    const builderSection = qs('#builder');
+
+    if(startBtn && startSection && builderSection){
+      startBtn.addEventListener('click', () => {
+        startSection.style.display = 'none';
+        builderSection.style.display = 'block';
+        const firstFocus = qs('#rolleSelect') || builderSection;
+        if(firstFocus && typeof firstFocus.focus === 'function') firstFocus.focus();
+      });
     }
 
-    // --- Wiring ---
-    window.addEventListener('DOMContentLoaded', () => {
-      // Umschalten Start -> Builder
-      qs('#startBtn').addEventListener('click', () => {
-        qs('#start').style.display = 'none';
-        qs('#builder').style.display = 'block';
-        qs('#rolleSelect').focus();
+    // Multi-Selects mit Click-Toggle
+    const multiDefs = [
+      {sel:'#rolleSelect',   key:'rolle'},
+      {sel:'#purposeSelect', key:'purpose'},
+      {sel:'#tasksSelect',   key:'tasks'}
+    ];
+    multiDefs.forEach(d => {
+      const el = qs(d.sel);
+      enableClickToggle(el, d.key);
+      if(el) el.addEventListener('change', e => enforceMultiLimit(e.target, d.key));
+    });
+
+    // Single-Selects
+    const singles = [
+      {sel:'#startSelect', key:'start'},
+      {sel:'#tiefeSelect', key:'tiefe'},
+      {sel:'#rqSelect',    key:'rq'},
+      {sel:'#varSelect',   key:'variation'},
+      {sel:'#recSelect',   key:'recherche'},
+      {sel:'#stilSelect',  key:'stil'}
+    ];
+    singles.forEach(s => {
+      const el = qs(s.sel);
+      if(el) el.addEventListener('change', e => updateSingleSelect(e.target, s.key));
+    });
+
+    // Editable flags (nicht für Rolle)
+    const editableMap = [
+      '#purposeEditable','#tasksEditable','#startEditable',
+      '#tiefeEditable','#rqEditable','#varEditable',
+      '#recEditable','#stilEditable'
+    ];
+    editableMap.forEach(sel => {
+      const el = qs(sel);
+      if(!el) return;
+      el.addEventListener('input', () => {
+        const key = ({
+          '#purposeEditable':'purpose',
+          '#tasksEditable':'tasks',
+          '#startEditable':'start',
+          '#tiefeEditable':'tiefe',
+          '#rqEditable':'rq',
+          '#varEditable':'variation',
+          '#recEditable':'recherche',
+          '#stilEditable':'stil'
+        })[sel];
+        if(key) state[key].edited = true;
       });
+    });
 
-      // Multi-Selects mit Click-Toggle
-      const multiDefs = [
-        {sel:'#rolleSelect',   key:'rolle'},
-        {sel:'#purposeSelect', key:'purpose'},
-        {sel:'#tasksSelect',   key:'tasks'}
-      ];
-      multiDefs.forEach(d => {
-        const el = qs(d.sel);
-        enableClickToggle(el, d.key);
-        el.addEventListener('change', e => enforceMultiLimit(e.target, d.key));
-      });
+    // Resets
+    const resetButtons = [
+      {sel:'#rolleReset',   key:'rolle'},
+      {sel:'#purposeReset', key:'purpose'},
+      {sel:'#tasksReset',   key:'tasks'},
+      {sel:'#startReset',   key:'start'},
+      {sel:'#tiefeReset',   key:'tiefe'},
+      {sel:'#rqReset',      key:'rq'},
+      {sel:'#varReset',     key:'variation'},
+      {sel:'#recReset',     key:'recherche'},
+      {sel:'#stilReset',    key:'stil'}
+    ];
+    resetButtons.forEach(r => {
+      const btn = qs(r.sel);
+      if(btn) btn.addEventListener('click', () => resetModule(r.key));
+    });
 
-      // Single-Selects
-      qs('#startSelect').addEventListener('change', e => updateSingleSelect(e.target, 'start'));
-      qs('#tiefeSelect').addEventListener('change', e => updateSingleSelect(e.target, 'tiefe'));
-      qs('#rqSelect').addEventListener('change', e => updateSingleSelect(e.target, 'rq'));
-      qs('#varSelect').addEventListener('change', e => updateSingleSelect(e.target, 'variation'));
-      qs('#recSelect').addEventListener('change', e => updateSingleSelect(e.target, 'recherche'));
-      qs('#stilSelect').addEventListener('change', e => updateSingleSelect(e.target, 'stil'));
-
-      // Editable flags (nicht für Rolle, da nicht editierbar)
-      qs('#purposeEditable').addEventListener('input', () => state.purpose.edited = true);
-      qs('#tasksEditable').addEventListener('input',   () => state.tasks.edited   = true);
-      qs('#startEditable').addEventListener('input',   () => state.start.edited   = true);
-      qs('#tiefeEditable').addEventListener('input',   () => state.tiefe.edited   = true);
-      qs('#rqEditable').addEventListener('input',      () => state.rq.edited      = true);
-      qs('#varEditable').addEventListener('input',     () => state.variation.edited = true);
-      qs('#recEditable').addEventListener('input',     () => state.recherche.edited = true);
-      qs('#stilEditable').addEventListener('input',    () => state.stil.edited    = true);
-
-      // Resets
-      qs('#rolleReset').addEventListener('click', () => resetModule('rolle'));
-      qs('#purposeReset').addEventListener('click', () => resetModule('purpose'));
-      qs('#tasksReset').addEventListener('click', () => resetModule('tasks'));
-      qs('#startReset').addEventListener('click', () => resetModule('start'));
-      qs('#tiefeReset').addEventListener('click', () => resetModule('tiefe'));
-      qs('#rqReset').addEventListener('click', () => resetModule('rq'));
-      qs('#varReset').addEventListener('click', () => resetModule('variation'));
-      qs('#recReset').addEventListener('click', () => resetModule('recherche'));
-      qs('#stilReset').addEventListener('click', () => resetModule('stil'));
-
-      // Copy
-      qs('#copyBtn').addEventListener('click', async () => {
+    // Copy
+    const copyBtn = qs('#copyBtn');
+    if(copyBtn){
+      copyBtn.addEventListener('click', async () => {
         const script = buildScript();
         const ok = await copyToClipboard(script);
         const msg = qs('#copyMsg');
-        msg.style.display = ok ? 'block' : 'none';
+        if(msg){
+          msg.style.display = ok ? 'block' : 'none';
+          if(ok) setTimeout(()=> msg.style.display='none', 4000);
+        }
         if(!ok) alert('Kopieren nicht möglich. Bitte manuell kopieren.');
-        if(ok) setTimeout(()=> msg.style.display='none', 4000);
       });
-    });
-  </script>
+    }
+  });
+</script>
 </body>
 </html>
 
