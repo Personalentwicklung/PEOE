@@ -203,8 +203,13 @@
       <h1>Baukasten für Copilot-Chat-Agenten</h1>
 
       <div class="card">
-        <h3>Hinweise zur Bedienung</h3>
-        <p class="muted">Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt. In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern. Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt. Unbearbeitete Module fließen nicht in das Agenten Script ein. Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.</p>
+      <h3>Hinweise zur Bedienung</h3>
+    <p class="muted">
+    Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt.<br>
+    In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern.<br>
+    Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt.<br>
+    Unbearbeitete Module fließen nicht in das Agenten Script ein.<br>
+    Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.</p>
       </div>
 
       <!-- MODUL: Rolle / Persona -->
@@ -267,9 +272,9 @@
           <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint" aria-label="Zwecke auswählen">
             <option>Situationen klären, Orientierung geben</option>
             <option>Prozesse vereinfachen</option>
+             <option>Wissen vermitteln, erklären</option>
             <option>Entscheidungen vorbereiten</option>
             <option>Sicherheit erhöhen, Fehler vermeiden</option>
-            <option>Wissen vermitteln, erklären</option>
             <option>Kommunikation verbessern</option>
             <option>Verständnis steigern, technisch und organisatorisch</option>
             <option>Arbeitsalltag entlasten</option>
@@ -308,8 +313,6 @@
           <div class="subhint subhint--choose">Wähle bis zu 3 Tätigkeiten:</div>
 
           <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint" aria-label="Tätigkeiten auswählen">
-            <option>Texte erstellen</option>
-            <option>Texte überarbeiten</option>
             <option>Inhalte erklären</option>
             <option>Inhalte zusammenfassen</option>
             <option>Informationen analysieren</option>
@@ -321,6 +324,8 @@
             <option>Hinweise oder Risiken aufzeigen</option>
             <option>Daten oder Dokumente auslesen</option>
             <option>Lerninhalte aufbereiten</option>
+            <option>Texte erstellen</option>
+            <option>Texte überarbeiten</option>
           </select>
 
           <div class="meta">
@@ -347,7 +352,7 @@
         <div class="subcard" id="sub-startverhalten">
           <h3 style="margin-top:0">Startverhalten</h3>
           <div class="subhint subhint--question">Agent beginnt Antworten mit …</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+          <div class="subhint subhint--choose">Wähle eine Option:</div>
 
           <select id="startSelect" size="6" aria-label="Startverhalten wählen">
             <option>direkte Antwort ohne Rückfragen</option>
@@ -377,7 +382,7 @@
         <div class="subcard" id="sub-antworttiefe">
           <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
           <div class="subhint subhint--question">Wie soll der Agent antworten?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+          <div class="subhint subhint--choose">Wähle eine Option:</div>
 
           <select id="tiefeSelect" size="6" aria-label="Antworttiefe wählen">
             <option>einfach und kompakt</option>
@@ -386,11 +391,11 @@
             <option>technisch präzise</option>
             <option>praxisnah mit Beispielen</option>
             <option>Schritt für Schritt</option>
-            <option>tabellarisch</option>
             <option>mit Vor- und Nachteilen</option>
             <option>mit Empfehlungen</option>
             <option>rein faktenbasiert</option>
             <option>ohne Theorie, nur Nutzen</option>
+            <option>tabellarisch</option>
           </select>
 
           <div class="preview">
@@ -408,7 +413,7 @@
         <div class="subcard" id="sub-rueckfragen">
           <h3 style="margin-top:0">Rückfragen-Logik</h3>
           <div class="subhint subhint--question">Welche Rückfragen-Logik soll verwendet werden?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+          <div class="subhint subhint--choose">Wähle eine Option:</div>
 
           <select id="rqSelect" size="6" aria-label="Rückfragen-Logik wählen">
             <option>keine Rückfragen</option>
@@ -435,7 +440,7 @@
         <div class="subcard" id="sub-variation">
           <h3 style="margin-top:0">Variation / Ausdruck</h3>
           <div class="subhint subhint--question">Wie sollen sich die Antworten variieren?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+          <div class="subhint subhint--choose">Wähle eine Option:</div>
 
           <select id="varSelect" size="6" aria-label="Variation wählen">
             <option>keine Wiederholungen</option>
@@ -463,13 +468,13 @@
         <div class="subcard" id="sub-recherche">
           <h3 style="margin-top:0">Recherche- und Faktenverhalten</h3>
           <div class="subhint subhint--question">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+          <div class="subhint subhint--choose">Wähle eine Option:</div>
 
           <select id="recSelect" size="6" aria-label="Rechercheverhalten wählen">
-            <option>Web-Suche nur bei Bedarf</option>
-            <option>Quellen immer angeben, Titel / Datum / Link</option>
-            <option>Quellen nur bei externen Themen</option>
             <option>keine Web-Suche</option>
+            <option>Web-Suche nur bei Bedarf</option>
+            <option>Websuche, Quellen immer angeben, Titel / Datum / Link</option>
+            <option>Websuche, Quellen nur bei externen Themen</option>
             <option>externe Infos nur in Stichpunkten</option>
             <option>vor Recherche zuerst Rückfrage</option>
             <option>bei Unklarheit „Fehlende Daten“ melden</option>
@@ -494,13 +499,15 @@
         <div class="subcard">
           <h3 style="margin-top:0">Stil</h3>
           <div class="subhint subhint--question">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+          <div class="subhint subhint--choose">Wähle eine Option:</div>
 
           <select id="stilSelect" size="6" aria-label="Kommunikationsstil wählen">
+            <option>analytisch-technisch</option>
+            <option>pragmatisch und lösungsorientiert</option>
+            <option>strukturiert und präzise</option>
             <option>ruhig und klar</option>
             <option>formell und professionell</option>
             <option>motivierend, coachend</option>
-            <option>pragmatisch und lösungsorientiert</option>
             <option>warm und menschlich</option>
             <option>freundlich und unterstützend</option>
             <option>neutral-sachlich</option>
@@ -508,9 +515,8 @@
             <option>direkt und kompakt</option>
             <option>didaktisch, erklärend</option>
             <option>kollegial, wie ein erfahrener Mitarbeiter</option>
-            <option>strukturiert und präzise</option>
             <option>diplomatisch und wertschätzend</option>
-            <option>analytisch-technisch</option>
+          
           </select>
 
           <div class="preview">
