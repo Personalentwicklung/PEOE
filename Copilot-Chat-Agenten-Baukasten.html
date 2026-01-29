@@ -1,3 +1,5 @@
+V5 Mit Infofeldern
+
 <!doctype html>
 <html lang="de">
 <head>
@@ -174,6 +176,61 @@
       .container{padding:16px;}
       h1{font-size:24px}
     }
+
+
+
+
+/* Inline-Info: Button rechts neben Reset */
+.actions-line{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:14px;
+}
+.info-btn{
+  background:#ffffff;
+  color:var(--primary);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+.info-btn:hover{background:#f7fafc}
+.info-btn:focus{outline:3px solid var(--focus);outline-offset:2px}
+
+.info-panel{
+  margin-top:12px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  display:none; /* start hidden */
+}
+.info-panel h4{
+  margin:0 0 8px;
+  font-size:16px;
+  color:var(--primary);
+}
+.info-panel p{margin:0 0 10px;color:var(--text)}
+.info-panel .close-info{
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:6px 10px;
+  cursor:pointer;
+}
+.info-panel .close-info:hover{background:#f8fafc}
+``
+
+
+
+
+
+
   </style>
 </head>
 <body>
@@ -299,6 +356,34 @@
             </p>
           </div>
           <div class="reset-line">
+
+<!-- ... bestehende Preview & Reset ... -->
+<div class="reset-line">
+  <button type="button" class="btn btn--sm" id="rolleReset">Zurücksetzen (Rolle/Persona)</button>
+</div>
+
+<!-- Aktionen rechts: Info -->
+<div class="actions-line">
+  <button type="button"
+          class="info-btn"
+          id="infoBtn_rolle"
+          aria-controls="infoPanel_rolle"
+          aria-expanded="false"
+          title="Hinweise zur Auswahl">ℹ️ Hinweise</button>
+</div>
+
+<!-- Info-Panel (start hidden) -->
+<div class="info-panel" id="infoPanel_rolle" role="region" aria-label="Hinweise zu Rolle / Persona">
+  <h4>Hinweise zu Rollen / Persona</h4>
+  <p><strong>Wozu dient die Auswahl?</strong> Sie bestimmt den Kontext, in dem der Agent antwortet (z. B. Ausbildung, Führung, HSE).</p>
+  <p><strong>Warum nicht „Meister“ oder „Vorgesetzter“ als Handlungsträger?</strong> Die KI erkennt keine echten Handlungen von Personen. Sie liefert Hilfen, Klarstellungen und strukturierte Antworten – keine Weisungen oder Entscheidungen. Formuliere daher den Kontext („für Führungskräfte“, „für Ausbilder“) statt eine reale Rolle mit Befugnissen.</p>
+  <p><strong>Empfehlung:</strong> Wähle maximal drei Rollen, die deinen typischen Aufgabenbereich abdecken. Zu viele Rollen machen den Stil widersprüchlich.</p>
+  <button type="button" class="close-info">Verbergen</button>
+</div>
+
+
+
+
             <button type="button" class="btn btn--sm" id="purposeReset">Zurücksetzen (Purpose)</button>
           </div>
         </div>
@@ -868,6 +953,59 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
         return false;
       }
     }
+
+
+
+
+// --- Info-Panels ---
+// Toggle per Button: #infoBtn_<key> → Panel #infoPanel_<key>
+function wireInfoPanel(key){
+  const btn = qs(`#infoBtn_${key}`);
+  const panel = qs(`#infoPanel_${key}`);
+  if(!btn || !panel) return;
+
+  const closeBtn = panel.querySelector('.close-info');
+
+  function openPanel(){
+    panel.style.display = 'block';
+    btn.setAttribute('aria-expanded','true');
+    // Fokus ins Panel (auf close)
+    closeBtn?.focus();
+  }
+  function closePanel(){
+    panel.style.display = 'none';
+    btn.setAttribute('aria-expanded','false');
+    // Fokus zurück auf Button
+    btn.focus();
+  }
+
+  btn.addEventListener('click', () => {
+    const isOpen = panel.style.display === 'block';
+    if(isOpen) closePanel(); else openPanel();
+  });
+  closeBtn?.addEventListener('click', closePanel);
+
+  // ESC schließt, wenn Panel offen
+  panel.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closePanel();
+  });
+}
+
+// Im DOMContentLoaded: einfach für die existierenden Panels aufrufen, z. B.:
+window.addEventListener('DOMContentLoaded', () => {
+  ['rolle','purpose','tasks','start','tiefe','rq','variation','recherche','stil'].forEach(wireInfoPanel);
+});
+
+
+
+
+
+
+
+
+
+
+
 
     // --- Wiring ---
     window.addEventListener('DOMContentLoaded', () => {
