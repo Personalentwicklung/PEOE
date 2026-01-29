@@ -85,7 +85,15 @@
     .row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
     .grow{flex:1 1 320px}
 
-    label{display:block;font-weight:600;margin:0 0 6px}
+    /* Labels nicht mehr fett für „Wähle …“-Zeile: nutzen wir eigene Klasse .subhint */
+    label{display:block;margin:0 0 6px;font-weight:600}
+    .subhint{
+      font-size:14px;
+      color:var(--muted);
+      margin:0 0 6px;
+      font-weight:400; /* nicht fett */
+    }
+
     select{
       width:100%;
       min-width:280px;
@@ -95,10 +103,9 @@
       border-radius:8px;
       background:#fff;
       color:var(--text);
-      font-size:14px;              /* Option 1: 14px */
+      font-size:14px;              /* gewünschte 14px */
       line-height:1.4;
     }
-    /* explizit auch Options */
     select option{font-size:14px;}
 
     .meta{
@@ -157,18 +164,13 @@
       background:#fff;
     }
 
+    /* Hinweisbox (große) bleibt nur für Datenschutzhinweis oben */
     .top-note{
       margin-bottom:var(--space-4);
       padding:12px 14px;
       border-left:4px solid var(--accent);
       background:#f3fafc;
       border-radius:6px;
-    }
-    .top-note.small{
-      padding:8px 10px;
-      margin-bottom:12px;
-      font-size:14px;
-      border-left-width:3px;
     }
 
     @media (max-width: 720px){
@@ -205,28 +207,29 @@
 
       <div class="card">
         <h3>Hinweise zur Bedienung</h3>
-        <p class="muted">Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt.
-In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern.
-Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt. 
-Unbearbeitete Module fließen nicht in das Agenten Script ein.
-Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.</p>
-</div>
+        <p class="muted">Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt. In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern. Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt. Unbearbeitete Module fließen nicht in das Agenten Script ein. Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.</p>
+      </div>
+
       <!-- MODUL: Rolle / Persona -->
       <div class="card" id="mod-rolle">
         <h2>Rolle / Persona</h2>
-        <div class="top-note small" role="note">Wofür soll der Agent zuständig sein?</div>
         <div class="subcard">
-          <label for="rolleSelect">Wähle bis zu 3 Rollen</label>
+          <h3 style="margin-top:0">Zuständigkeit</h3>
+          <div class="subhint">Wofür soll der Agent zuständig sein?</div>
+
+          <label for="rolleSelect">Rollen</label>
+          <div class="subhint">Wähle bis zu 3 Rollen</div>
+
           <select id="rolleSelect" multiple size="8" aria-describedby="rolleCount rolleHint">
-            <option>Ausbildungsunterstützung (Azubi)</option>
+            <option>Ausbildungsunterstützung, Azubi</option>
             <option>Support &amp; Lernen</option>
             <option>Führungskraft</option>
             <option>Coach / Mentor</option>
-            <option>Gesundheit/Ernährung</option>
+            <option>Gesundheit / Ernährung</option>
             <option>Kommunikation / Training</option>
             <option>Fachkraft Chemieproduktion</option>
             <option>Fachkraft Technik</option>
-            <option>Fachkraft Wartung/Instandhaltung</option>
+            <option>Fachkraft Wartung / Instandhaltung</option>
             <option>Engineering</option>
             <option>HSE / Arbeitssicherheit</option>
             <option>Labor / QA</option>
@@ -234,11 +237,12 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
             <option>Office / Administration</option>
             <option>IT / Digital / Prozesse</option>
             <option>Support &amp; Service</option>
-            <option>Verwaltung (HR)</option>
+            <option>Verwaltung, HR</option>
             <option>Recht / Steuern</option>
             <option>Finance</option>
-            <option>Einkauf/ Verkauf (CSC)</option>
+            <option>Einkauf / Verkauf, CSC</option>
           </select>
+
           <div class="meta">
             <span id="rolleCount" aria-live="polite">0 / 3</span>
             <span class="hint" id="rolleHint" hidden>Maximale Anzahl erreicht.</span>
@@ -260,26 +264,31 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
       <!-- MODUL: Purpose -->
       <div class="card" id="mod-purpose">
         <h2>Ziel / Purpose</h2>
-        <div class="top-note small" role="note">Welchen übergeordneten Zweck soll der Agent dienen?</div>
         <div class="subcard">
-          <label for="purposeSelect">Wähle bis zu 2 Zwecke</label>
+          <h3 style="margin-top:0">Zweck</h3>
+          <div class="subhint">Welchen übergeordneten Zweck soll der Agent dienen?</div>
+
+          <label for="purposeSelect">Zwecke</label>
+          <div class="subhint">Wähle bis zu 2 Zwecke</div>
+
           <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint">
-            <option>Situationen klären / Orientierung geben</option>
+            <option>Situationen klären, Orientierung geben</option>
             <option>Prozesse vereinfachen</option>
             <option>Entscheidungen vorbereiten</option>
-            <option>Sicherheit erhöhen / Fehler vermeiden</option>
-            <option>Wissen vermitteln / Erklären</option>
+            <option>Sicherheit erhöhen, Fehler vermeiden</option>
+            <option>Wissen vermitteln, erklären</option>
             <option>Kommunikation verbessern</option>
-            <option>Verständnis steigern (technisch / organisatorisch)</option>
+            <option>Verständnis steigern, technisch und organisatorisch</option>
             <option>Arbeitsalltag entlasten</option>
             <option>Standardaufgaben beschleunigen</option>
             <option>Informationen strukturieren</option>
-            <option>Überblick schaffen / Komplexität reduzieren</option>
-            <option>Konsistenz sicherstellen (z. B. Qualität von Texten)</option>
+            <option>Überblick schaffen, Komplexität reduzieren</option>
+            <option>Konsistenz sicherstellen, z. B. Qualität von Texten</option>
             <option>Risiken erkennen und Hinweise geben</option>
             <option>Zusammenarbeit unterstützen</option>
             <option>Lerninhalte aufbereiten</option>
           </select>
+
           <div class="meta">
             <span id="purposeCount" aria-live="polite">0 / 2</span>
             <span class="hint" id="purposeHint" hidden>Maximale Anzahl erreicht.</span>
@@ -300,9 +309,13 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
       <!-- MODUL: Aufgaben / Tasks -->
       <div class="card" id="mod-tasks">
         <h2>Auftrag / Task</h2>
-        <div class="top-note small" role="note">Welche konkrete Tätigkeit(en) soll der Agent ausüben?</div>
         <div class="subcard">
-          <label for="tasksSelect">Wähle bis zu 3 Tätigkeiten</label>
+          <h3 style="margin-top:0">Tätigkeiten</h3>
+          <div class="subhint">Welche konkrete Tätigkeit(en) soll der Agent ausüben?</div>
+
+          <label for="tasksSelect">Tätigkeiten</label>
+          <div class="subhint">Wähle bis zu 3 Tätigkeiten</div>
+
           <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint">
             <option>Texte erstellen</option>
             <option>Texte überarbeiten</option>
@@ -318,6 +331,7 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
             <option>Daten oder Dokumente auslesen</option>
             <option>Lerninhalte aufbereiten</option>
           </select>
+
           <div class="meta">
             <span id="tasksCount" aria-live="polite">0 / 3</span>
             <span class="hint" id="tasksHint" hidden>Maximale Anzahl erreicht.</span>
@@ -338,25 +352,26 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
       <!-- MODUL-GRUPPE: Grundverhalten -->
       <div class="card" id="mod-grundverhalten">
         <h2><strong>Grundverhalten / Arbeitslogik</strong></h2>
-        <div class="top-note small" role="note">Wie soll der Agent Situationen starten und steuern?</div>
-
-        <!-- Startverhalten -->
-        <div class="top-note small" role="note">Agent beginnt Antworten mit …</div>
         <div class="subcard" id="sub-startverhalten">
-          <h3>Startverhalten</h3>
-          <label for="startSelect">Wähle genau eine Option</label>
+          <h3 style="margin-top:0">Startverhalten</h3>
+          <div class="subhint">Agent beginnt Antworten mit …</div>
+
+          <label for="startSelect">Optionen</label>
+          <div class="subhint">Wähle genau eine Option</div>
+
           <select id="startSelect" size="6">
             <option>direkte Antwort ohne Rückfragen</option>
             <option>1–3 kurze Impulse</option>
             <option>1–2 Klärungsfragen bei unklarem Fall</option>
             <option>kurze Zusammenfassung + Rückfrage</option>
             <option>kurze Rückbestätigung</option>
-            <option>situativer Start (KI wählt je nach Kontext)</option>
+            <option>situativer Start, je nach Kontext</option>
             <option>erst Kontext abfragen, dann liefern</option>
             <option>erst Zielbild abfragen</option>
             <option>direkt 3 Vorschläge machen</option>
             <option>neutraler Startsatz</option>
           </select>
+
           <div class="preview">
             <p>
               Du beginnst deine Antworten grundsätzlich mit:
@@ -369,24 +384,27 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
           </div>
         </div>
 
-        <!-- Antworttiefe -->
-        <div class="top-note small" role="note">Wie soll der Agent antworten?</div>
         <div class="subcard" id="sub-antworttiefe">
-          <h3>Antwortstil / Spezifität</h3>
-          <label for="tiefeSelect">Wähle genau eine Option</label>
+          <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
+          <div class="subhint">Wie soll der Agent antworten?</div>
+
+          <label for="tiefeSelect">Optionen</label>
+          <div class="subhint">Wähle genau eine Option</div>
+
           <select id="tiefeSelect" size="6">
-            <option>einfach &amp; kompakt</option>
-            <option>mittlere Tiefe (situativ)</option>
-            <option>ausführlich / erläuternd</option>
+            <option>einfach und kompakt</option>
+            <option>mittlere Tiefe, situativ</option>
+            <option>ausführlich, erläuternd</option>
             <option>technisch präzise</option>
             <option>praxisnah mit Beispielen</option>
-            <option>SchrittfürSchritt</option>
+            <option>Schritt für Schritt</option>
             <option>tabellarisch</option>
-            <option>mit Vor/Nachteilen</option>
+            <option>mit Vor- und Nachteilen</option>
             <option>mit Empfehlungen</option>
             <option>rein faktenbasiert</option>
             <option>ohne Theorie, nur Nutzen</option>
           </select>
+
           <div class="preview">
             <p>
               Dein Antwortstil orientiert sich an folgender Tiefe:
@@ -399,21 +417,24 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
           </div>
         </div>
 
-        <!-- Rückfragen-Logik -->
-        <div class="top-note small" role="note">Welche Rückfragen‑Logik soll verwendet werden?</div>
         <div class="subcard" id="sub-rueckfragen">
-          <h3>Rückfragen-Logik</h3>
-          <label for="rqSelect">Wähle genau eine Option</label>
+          <h3 style="margin-top:0">Rückfragen-Logik</h3>
+          <div class="subhint">Welche Rückfragen-Logik soll verwendet werden?</div>
+
+          <label for="rqSelect">Optionen</label>
+          <div class="subhint">Wähle genau eine Option</div>
+
           <select id="rqSelect" size="6">
             <option>keine Rückfragen</option>
-            <option>1 Rückfrage</option>
-            <option>2 Rückfragen (Kontext + Zielbild)</option>
-            <option>nur bei Unklarheit Rückfragen</option>
+            <option>eine Rückfrage</option>
+            <option>zwei Rückfragen, Kontext + Zielbild</option>
+            <option>Rückfragen nur bei Unklarheit</option>
             <option>Rückfragen am Ende jeder Antwort</option>
             <option>Rückfragen vor der Lösung</option>
             <option>Rückfragen optional mit „Soll ich …?“</option>
-            <option>gezielte Rückfragen (nur zu Scope)</option>
+            <option>gezielte Rückfragen, nur zum Scope</option>
           </select>
+
           <div class="preview">
             <p>
               Deine Rückfragenlogik lautet:
@@ -425,11 +446,13 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
           </div>
         </div>
 
-        <!-- Variation -->
-        <div class="top-note small" role="note">Wie sollen sich die Antworten variieren?</div>
         <div class="subcard" id="sub-variation">
-          <h3>Variation / Ausdruck</h3>
-          <label for="varSelect">Wähle genau eine Option</label>
+          <h3 style="margin-top:0">Variation / Ausdruck</h3>
+          <div class="subhint">Wie sollen sich die Antworten variieren?</div>
+
+          <label for="varSelect">Optionen</label>
+          <div class="subhint">Wähle genau eine Option</div>
+
           <select id="varSelect" size="6">
             <option>keine Wiederholungen</option>
             <option>variierte Einstiege</option>
@@ -437,9 +460,10 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
             <option>variierte Rückfragen</option>
             <option>variierte Abschlüsse</option>
             <option>variierte Satzstrukturen</option>
-            <option>„immer natürlich formulieren“</option>
-            <option>dezente Variation in Länge/Kürze</option>
+            <option>immer natürlich formulieren</option>
+            <option>dezente Variation in Länge und Kürze</option>
           </select>
+
           <div class="preview">
             <p>
               Dein Ausdruck folgt dieser Variation:
@@ -452,20 +476,23 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
           </div>
         </div>
 
-        <!-- Recherche -->
-        <div class="top-note small" role="note">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
         <div class="subcard" id="sub-recherche">
-          <h3>Recherche- und Faktenverhalten</h3>
-          <label for="recSelect">Wähle genau eine Option</label>
+          <h3 style="margin-top:0">Recherche- und Faktenverhalten</h3>
+          <div class="subhint">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
+
+          <label for="recSelect">Optionen</label>
+          <div class="subhint">Wähle genau eine Option</div>
+
           <select id="recSelect" size="6">
             <option>Web-Suche nur bei Bedarf</option>
-            <option>Quellen immer angeben (Titel / Datum / Link)</option>
+            <option>Quellen immer angeben, Titel / Datum / Link</option>
             <option>Quellen nur bei externen Themen</option>
             <option>keine Web-Suche</option>
             <option>externe Infos nur in Stichpunkten</option>
             <option>vor Recherche zuerst Rückfrage</option>
             <option>bei Unklarheit „Fehlende Daten“ melden</option>
           </select>
+
           <div class="preview">
             <p>
               Dein Recherche und Quellenverhalten ist:
@@ -482,26 +509,30 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
       <!-- MODUL: Kommunikationsstil -->
       <div class="card" id="mod-stil">
         <h2>Kommunikationsstil</h2>
-        <div class="top-note small" role="note">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
         <div class="subcard">
           <h3 style="margin-top:0">Stil</h3>
-          <label for="stilSelect">Wähle genau eine Option</label>
+          <div class="subhint">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
+
+          <label for="stilSelect">Optionen</label>
+          <div class="subhint">Wähle genau eine Option</div>
+
           <select id="stilSelect" size="6">
             <option>ruhig und klar</option>
             <option>formell und professionell</option>
-            <option>motivierend / coachend</option>
+            <option>motivierend, coachend</option>
             <option>pragmatisch und lösungsorientiert</option>
             <option>warm und menschlich</option>
             <option>freundlich und unterstützend</option>
-            <option>neutralsachlich</option>
-            <option>leicht ironisch, aber respektvoll</option>
+            <option>neutral-sachlich</option>
+            <option>leicht ironisch, respektvoll</option>
             <option>direkt und kompakt</option>
-            <option>didaktisch / erklärend</option>
+            <option>didaktisch, erklärend</option>
             <option>kollegial, wie ein erfahrener Mitarbeiter</option>
             <option>strukturiert und präzise</option>
             <option>diplomatisch und wertschätzend</option>
-            <option>analytischtechnisch</option>
+            <option>analytisch-technisch</option>
           </select>
+
           <div class="preview">
             <p>
               Dein Kommunikationsstil ist:
@@ -531,10 +562,7 @@ Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit ei
           <li><strong>Beschreibung eintragen</strong><br/>Beschreibe in ein bis zwei Sätzen, wofür der Agent gedacht ist. Beispiel: „Unterstützt bei täglichen Aufgaben, erklärt Inhalte verständlich und liefert klare, zuverlässige Antworten.“</li>
           <li><strong>Agent-Script einfügen</strong><br/>Füge den kopierten Text aus dem Baukasten in das Feld „Anweisungen“ ein. Das Script bildet die komplette Funktionslogik des Agents.</li>
           <li><strong>Agent speichern und verwenden</strong><br/>Klicke auf Erstellen, um deinen neuen Agenten anzulegen.</li>
-          <li><strong>Bearbeiten des Agent</strong><br/>Wenn die Ergebnisse des Agent nicht zufriedenstellend sein sollten, ist es möglich das Agent-Script aus den Anweisungen zu kopieren und in einem regulären Copilot Chat anzupassen.</li>
-                                                        Klicke dazu neben dem Agent auf die drei Punkte und wähle <strong>„Bearbeiten“.</strong>
-
-
+          <li><strong>Bearbeiten des Agent</strong><br/>Wenn die Ergebnisse des Agent nicht zufriedenstellend sein sollten, ist es möglich das Agent-Script aus den Anweisungen zu kopieren und in einem regulären Copilot Chat anzupassen. Klicke dazu neben dem Agent auf die drei Punkte und wähle <strong>„Bearbeiten“.</strong></li>
         </ol>
       </div>
 
