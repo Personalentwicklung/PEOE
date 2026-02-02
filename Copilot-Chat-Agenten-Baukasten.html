@@ -89,7 +89,7 @@
       border-radius:8px;
       background:#fff;
       color:var(--text);
-      font-size:14px; /* 14px */
+      font-size:14px;
       line-height:1.4;
     }
     select option{font-size:14px;}
@@ -123,26 +123,16 @@
       background:var(--badge-bg);
       border:1px solid var(--badge-border);
       border-radius:6px;
-      padding:2px 6px; /* gleiche Padding wie .editable */
-      line-height:1.6; /* gleiche Höhe wie .editable */
+      padding:2px 6px;
+      line-height:1.6;
     }
-    .reset-line{margin-top:14px}
     .copy-area .title-line{font-weight:700;margin-bottom:8px}
     .copy-msg{margin-top:10px;color:var(--success);display:none}
-    .guide li{margin:6px 0}
     /* Startscreen / Umschaltung */
     #builder{display:none}
     .centered{display:flex;min-height:100vh;align-items:center;justify-content:center}
     .start-card{max-width:760px}
-    pre.output{
-      white-space:pre-wrap;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      border:1px solid var(--border);
-      border-radius:8px;
-      padding:16px;
-      background:#fff;
-    }
-    /* Hinweisbox (groß) bleibt nur für Datenschutzhinweis oben */
+    /* Hinweisbox */
     .top-note{
       margin-bottom:var(--space-4);
       padding:12px 14px;
@@ -150,54 +140,24 @@
       background:#f3fafc;
       border-radius:6px;
     }
-    /* Inline-Info: Button rechts neben Reset */
     .actions-line{
-      display:flex;
-      justify-content:flex-end;
-      gap:10px;
-      margin-top:14px;
-      flex-wrap:wrap;
+      display:flex;justify-content:flex-end;gap:10px;margin-top:14px;flex-wrap:wrap;
     }
     .info-btn{
-      background:#ffffff;
-      color:var(--primary);
-      border:1px solid var(--border);
-      border-radius:999px;
-      padding:8px 12px;
-      font-weight:600;
-      cursor:pointer;
-      box-shadow:0 2px 6px rgba(0,0,0,0.06);
+      background:#ffffff;color:var(--primary);border:1px solid var(--border);border-radius:999px;padding:8px 12px;font-weight:600;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.06);
     }
     .info-btn:hover{background:#f7fafc}
     .info-btn:focus{outline:3px solid var(--focus);outline-offset:2px}
     .info-panel{
-      margin-top:12px;
-      padding:12px 14px;
-      border:1px solid var(--border);
-      border-radius:8px;
-      background:#fff;
-      box-shadow:var(--shadow);
-      display:none; /* start hidden */
+      margin-top:12px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;box-shadow:var(--shadow);display:none;
     }
-    .info-panel h4{
-      margin:0 0 8px;
-      font-size:16px;
-      color:var(--primary);
-    }
+    .info-panel h4{margin:0 0 8px;font-size:16px;color:var(--primary);}
     .info-panel p{margin:0 0 10px;color:var(--text)}
     .info-panel .close-info{
-      background:transparent;
-      color:var(--muted);
-      border:1px solid var(--border);
-      border-radius:999px;
-      padding:6px 10px;
-      cursor:pointer;
+      background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:6px 10px;cursor:pointer;
     }
     .info-panel .close-info:hover{background:#f8fafc}
-    @media (max-width: 720px){
-      .container{padding:16px;}
-      h1{font-size:24px}
-    }
+    @media (max-width: 720px){.container{padding:16px;}h1{font-size:24px}}
   </style>
 </head>
 <body>
@@ -228,13 +188,12 @@
         <p class="muted">
           Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt.<br>
           In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern.<br>
-          Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt.<br>
           Unbearbeitete Module fließen nicht in das Agenten Script ein.<br>
           Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.
         </p>
       </div>
 
-      <!-- MODUL: Rolle / Persona -->
+      <!-- MODUL: Rolle / Persona (unverändert) -->
       <div class="card" id="mod-rolle">
         <h2>Rolle / Persona</h2>
         <div class="subcard">
@@ -267,28 +226,24 @@
             <span id="rolleCount" aria-live="polite">0 / 3</span>
             <span class="hint" id="rolleHint" hidden>Maximale Anzahl erreicht.</span>
           </div>
-          <div class="preview" id="rollePreview">
-            <p>
-              Dein Wirkungsbereich ist
-              <span id="rolleBadge" class="badge-gray"></span>.
-              Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.
-            </p>
+          <div class="preview">
+            <p>Dein Wirkungsbereich ist <span id="rolleBadge" class="badge-gray"></span>. Du agierst als professioneller, menschlicher Begleiter für diesen Kontext.</p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_rolle" aria-controls="infoPanel_rolle" aria-expanded="false" title="Hinweise zur Auswahl">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_rolle" aria-controls="infoPanel_rolle" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="rolleReset">Zurücksetzen (Rolle/Persona)</button>
           </div>
           <div class="info-panel" id="infoPanel_rolle" role="region" aria-label="Hinweise zu Rolle / Persona">
             <h4>Hinweise zu Rollen / Persona</h4>
-            <p><strong>Wofür ist die Rollenwahl?</strong> Sie definiert den fachlichen Kontext, in dem der Agent antwortet (z. B. Ausbildung, Führung, HSE). Dadurch werden Beispiele, Ton und Prioritäten passend gewählt.</p>
-            <p><strong>Warum keine „Handlungsrollen“?</strong> Eine KI gibt keine Weisungen und trifft keine Entscheidungen. Nutze Kontext-Formulierungen wie „für Führungskräfte“ oder „für Ausbilder“ statt realer Befugnisse.</p>
-            <p><strong>Best Practice:</strong> Beschränke dich auf 1–3 präzise Rollen. Zu viele Rollen führen zu widersprüchlichem Stil.</p>
+            <p><strong>Wofür?</strong> Festlegt den fachlichen Kontext (z. B. Ausbildung, HSE) – Beispiele, Ton und Prioritäten richten sich daran aus.</p>
+            <p><strong>Keine Befugnisse:</strong> Nutze Kontext- statt Entscheidungsrollen.</p>
+            <p><strong>Best Practice:</strong> 1–3 präzise Rollen wählen.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
       </div>
 
-      <!-- MODUL: Purpose -->
+      <!-- MODUL: Purpose (unverändert) -->
       <div class="card" id="mod-purpose">
         <h2>Ziel / Purpose</h2>
         <div class="subcard">
@@ -317,27 +272,23 @@
             <span class="hint" id="purposeHint" hidden>Maximale Anzahl erreicht.</span>
           </div>
           <div class="preview">
-            <p>
-              Dein übergeordneter Zweck ist es,
-              <span id="purposeEditable" class="editable" contenteditable="true"></span>.
-              Du orientierst deine gesamte Arbeitsweise an diesem Ziel.
-            </p>
+            <p>Dein übergeordneter Zweck ist es, <span id="purposeEditable" class="editable" contenteditable="true"></span>. Du orientierst deine gesamte Arbeitsweise an diesem Ziel.</p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_purpose" aria-controls="infoPanel_purpose" aria-expanded="false" title="Hinweise zu Purpose">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_purpose" aria-controls="infoPanel_purpose" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="purposeReset">Zurücksetzen (Purpose)</button>
           </div>
           <div class="info-panel" id="infoPanel_purpose" role="region" aria-label="Hinweise zu Ziel / Purpose">
             <h4>Hinweise zu Ziel / Purpose</h4>
-            <p><strong>Wirkung:</strong> Purpose lenkt Prioritäten (z. B. Sicherheit vor Geschwindigkeit) und beeinflusst Ton, Tiefe und Struktur.</p>
-            <p><strong>Auswahl:</strong> Wähle 1–2 klare Zwecke, die wirklich gebraucht werden. Zu viele Zwecke machen Antworten widersprüchlich.</p>
-            <p><strong>Formulierung:</strong> Vermeide interne Produkt-/Teamnamen. Nutze generische Ziele („Komplexität reduzieren“, „Konsistenz sichern“) für robuste, übertragbare Nutzung.</p>
+            <p><strong>Wirkung:</strong> Steuert Prioritäten (z. B. Sicherheit) und beeinflusst Tiefe/Struktur.</p>
+            <p><strong>Auswahl:</strong> 1–2 klare Zwecke wählen.</p>
+            <p><strong>Formulierung:</strong> Generisch statt interner Namen.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
       </div>
 
-      <!-- MODUL: Aufgaben / Tasks -->
+      <!-- MODUL: Aufgaben / Tasks (unverändert) -->
       <div class="card" id="mod-tasks">
         <h2>Auftrag / Task</h2>
         <div class="subcard">
@@ -364,27 +315,23 @@
             <span class="hint" id="tasksHint" hidden>Maximale Anzahl erreicht.</span>
           </div>
           <div class="preview">
-            <p>
-              Dein Auftrag umfasst folgende Tätigkeiten:
-              <span id="tasksEditable" class="editable" contenteditable="true"></span>.
-              Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.
-            </p>
+            <p>Dein Auftrag umfasst folgende Tätigkeiten: <span id="tasksEditable" class="editable" contenteditable="true"></span>. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.</p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_tasks" aria-controls="infoPanel_tasks" aria-expanded="false" title="Hinweise zu Tasks">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_tasks" aria-controls="infoPanel_tasks" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="tasksReset">Zurücksetzen (Tasks)</button>
           </div>
           <div class="info-panel" id="infoPanel_tasks" role="region" aria-label="Hinweise zu Aufgaben / Tasks">
             <h4>Hinweise zu Tätigkeiten</h4>
-            <p><strong>Fokus:</strong> Wähle Kernaufgaben, die 80 % deiner Nutzung abdecken (z. B. erklären, strukturieren, zusammenfassen).</p>
-            <p><strong>Balance:</strong> Kombiniere maximal 3 Tätigkeiten, damit der Agent klar bleibt (z. B. „erklären + strukturieren + Risiken aufzeigen“).</p>
-            <p><strong>Tipp:</strong> Wenn du viel mit Dokumenten arbeitest, ergänze „Daten/Dokumente auslesen“, aber bleibe bei drei Aufgaben für klare Priorität.</p>
+            <p><strong>Fokus:</strong> 80‑%‑Kernaufgaben priorisieren.</p>
+            <p><strong>Balance:</strong> Max. 3 Tätigkeiten kombinieren.</p>
+            <p><strong>Tipp:</strong> Bei Dokumenten „Daten/Dokumente auslesen“ ergänzen.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
       </div>
 
-      <!-- MODUL: Kommunikationsstil -->
+      <!-- MODUL: Kommunikationsstil (unverändert) -->
       <div class="card" id="mod-stil">
         <h2>Kommunikationsstil</h2>
         <div class="subcard">
@@ -408,21 +355,17 @@
             <option>diplomatisch und wertschätzend</option>
           </select>
           <div class="preview">
-            <p>
-              Dein Kommunikationsstil ist:
-              <span id="stilEditable" class="editable" contenteditable="true"></span>.
-              Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.
-            </p>
+            <p>Dein Kommunikationsstil ist: <span id="stilEditable" class="editable" contenteditable="true"></span>. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.</p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_stil" aria-controls="infoPanel_stil" aria-expanded="false" title="Hinweise zu Kommunikationsstil">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_stil" aria-controls="infoPanel_stil" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="stilReset">Zurücksetzen (Stil)</button>
           </div>
           <div class="info-panel" id="infoPanel_stil" role="region" aria-label="Hinweise zum Kommunikationsstil">
             <h4>Hinweise zum Stil</h4>
-            <p><strong>Passung zur Zielgruppe:</strong> QA/Engineering profitieren von „neutral-sachlich“ oder „analytisch-technisch“. Support/Coaching oft „freundlich“, „motivierend“ oder „warm“.</p>
-            <p><strong>Konsistenz:</strong> Halte den Stil in Ton, Wortwahl und Struktur durch. Stilwechsel nur, wenn die Rolle es erfordert.</p>
-            <p><strong>Tipp:</strong> Für breite Nutzung ist „ruhig und klar“ mit „strukturiert und präzise“ eine sichere Kombination.</p>
+            <p><strong>Passung:</strong> Stil zur Zielgruppe wählen.</p>
+            <p><strong>Konsistenz:</strong> Ton, Wortwahl, Struktur durchhalten.</p>
+            <p><strong>Tipp:</strong> „ruhig & klar“ + „strukturiert & präzise“ ist robust.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -435,7 +378,7 @@
         <!-- Startverhalten (Multi, limit 3, size 8) -->
         <div class="subcard" id="sub-startverhalten">
           <h3 style="margin-top:0">Startverhalten</h3>
-          <div class="subhint subhint--question">Agent beginnt Antworten mit …</div>
+          <div class="subhint subhint--question">Wie soll der Agent seine Antworten beginnen?</div>
           <div class="subhint subhint--choose">Wähle bis zu 3 Optionen:</div>
           <select id="startSelect" multiple size="8" aria-describedby="startCount startHint" aria-label="Startverhalten wählen">
             <option>direkter Start</option>
@@ -456,15 +399,14 @@
             <p><strong>Einstiegsarten:</strong> <span id="startEditable" class="editable" contenteditable="true"></span></p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_start" aria-controls="infoPanel_start" aria-expanded="false" title="Hinweise zu Startverhalten">ℹ️ Hinweise</button>
-            <button type="button" class="btn btn--sm" id="startReset">Zurücksetzen (Startverhalten)</button>
+            <button type="button" class="info-btn" id="infoBtn_start" aria-controls="infoPanel_start" aria-expanded="false">ℹ️ Hinweise</button>
+            <button type="button" class="btn btn--sm" id="startReset">Zurücksetzen (Start)</button>
           </div>
-          <!-- Hilfetexte: original V5.1 -->
           <div class="info-panel" id="infoPanel_start" role="region" aria-label="Hinweise zum Startverhalten">
-            <h4>Hinweise zum Startverhalten</h4>
-            <p><strong>Direkt vs. klärend:</strong> Bei klaren, standardisierten Aufgaben ist der direkte Einstieg effizient. Bei offenen oder komplexen Anliegen verbessern 1–2 Klärungsfragen die Trefferqualität deutlich.</p>
-            <p><strong>Zusammenfassung + Rückfrage:</strong> Gut, wenn Nutzer viel Kontext liefert. Der Agent spiegelt kurz und fragt gezielt nach, bevor er liefert.</p>
-            <p><strong>Praxis-Tipp:</strong> Für allgemeine Nutzung: „Rückfragen nur bei Unklarheit“ oder „1–2 Klärungsfragen bei unklarem Fall“.</p>
+            <h4>Hilfetext – Startverhalten</h4>
+            <p><strong>Direkt vs. orientierend:</strong> Wähle 1–3 Einstiegstypen (z. B. „direkt“, „kurzer Impuls“, „Überblick“). Sie bestimmen nur den Startton, nicht die Dialoglogik.</p>
+            <p><strong>Natürlichkeit:</strong> Die Einstiege werden situativ genutzt und nicht in jeder Antwort identisch wiederholt.</p>
+            <p><strong>Abgrenzung:</strong> Rückfragen werden separat unter „Rückfragen‑Logik“ gesteuert, nicht hier.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -472,7 +414,7 @@
         <!-- Variation / Ausdruck (Multi, limit 3, size 8) -->
         <div class="subcard" id="sub-variation">
           <h3 style="margin-top:0">Variation / Ausdruck</h3>
-          <div class="subhint subhint--question">Wie sollen sich die Antworten variieren?</div>
+          <div class="subhint subhint--question">Wie soll der sprachliche Ausdruck leicht variieren?</div>
           <div class="subhint subhint--choose">Wähle bis zu 3 Optionen:</div>
           <select id="varSelect" multiple size="8" aria-describedby="variationCount variationHint" aria-label="Variation wählen">
             <option>Einstiegsformulierungen leicht variieren</option>
@@ -491,15 +433,14 @@
             <p><strong>Variation:</strong> <span id="varEditable" class="editable" contenteditable="true"></span></p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_variation" aria-controls="infoPanel_variation" aria-expanded="false" title="Hinweise zu Variation">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_variation" aria-controls="infoPanel_variation" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="varReset">Zurücksetzen (Variation)</button>
           </div>
-          <!-- Hilfetexte: original V5.1 -->
           <div class="info-panel" id="infoPanel_variation" role="region" aria-label="Hinweise zu Variation / Ausdruck">
-            <h4>Hinweise zu Variation</h4>
-            <p><strong>Warum variieren?</strong> Leichte Variation vermeidet Monotonie und erhöht Lesbarkeit, ohne die Klarheit zu opfern.</p>
-            <p><strong>Was variieren?</strong> Einstiege, Abschlüsse, Satzbau. Inhalte bleiben gleich präzise.</p>
-            <p><strong>Grenze:</strong> Zu starke Variation wirkt unruhig. Bevorzuge Klarheit vor Abwechslung.</p>
+            <h4>Hilfetext – Variation / Ausdruck</h4>
+            <p><strong>Ziel:</strong> Leichte sprachliche Abwechslung für ein natürliches Lesegefühl.</p>
+            <p><strong>Rahmen:</strong> Variation betrifft Wortwahl, Satzbau, Einstieg/Abschluss – Struktur und Inhalt bleiben gleich.</p>
+            <p><strong>Grenze:</strong> Klarheit geht vor Abwechslung; keine künstliche Verlängerung.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -507,7 +448,7 @@
         <!-- Antwortstil / Spezifität (Single, size 8) -->
         <div class="subcard" id="sub-antwortstil">
           <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
-          <div class="subhint subhint--question">Wie soll der Agent antworten?</div>
+          <div class="subhint subhint--question">Wie soll der Agent seine Antworten aufbauen?</div>
           <div class="subhint subhint--choose">Wähle genau eine Option:</div>
           <select id="tiefeSelect" size="8" aria-label="Antwortstil wählen">
             <option>kompakt & direkt</option>
@@ -523,15 +464,14 @@
             <p><strong>Antwortstil:</strong> <span id="tiefeEditable" class="editable" contenteditable="true"></span></p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_tiefe" aria-controls="infoPanel_tiefe" aria-expanded="false" title="Hinweise zu Antwortstil">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_tiefe" aria-controls="infoPanel_tiefe" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="tiefeReset">Zurücksetzen (Antwortstil)</button>
           </div>
-          <!-- Hilfetexte: original V5.1 („Antworttiefe“) -->
-          <div class="info-panel" id="infoPanel_tiefe" role="region" aria-label="Hinweise zur Antworttiefe">
-            <h4>Hinweise zur Antworttiefe</h4>
-            <p><strong>Kompakt:</strong> Für schnelle Aufgaben, wenn die Zielgruppe geübt ist.</p>
-            <p><strong>Ausführlich/erläuternd:</strong> Für Lernen, Onboarding, komplexe Themen. Kombiniere bei Bedarf mit „Praxisnah mit Beispielen“.</p>
-            <p><strong>Technisch präzise:</strong> Für Engineering/HSE/QA. Vermeide unnötige Vereinfachungen; nutze Fachbegriffe konsistent.</p>
+          <div class="info-panel" id="infoPanel_tiefe" role="region" aria-label="Hinweise zu Antwortstil / Spezifität">
+            <h4>Hilfetext – Antwortstil / Spezifität</h4>
+            <p><strong>Aufgabe:</strong> Legt den inhaltlichen Aufbau fest.</p>
+            <p><strong>Konsistenz:</strong> Eine Option wählen und konsequent beibehalten.</p>
+            <p><strong>Tipp:</strong> „Schrittweise/strukturiert“ ist häufig ein guter Default.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -539,7 +479,7 @@
         <!-- Rückfragen-Logik (Single, size 8) -->
         <div class="subcard" id="sub-rueckfragen">
           <h3 style="margin-top:0">Rückfragen‑Logik</h3>
-          <div class="subhint subhint--question">Welche Rückfragen-Logik soll verwendet werden?</div>
+          <div class="subhint subhint--question">Wie soll der Agent Rückfragen einsetzen?</div>
           <div class="subhint subhint--choose">Wähle genau eine Option:</div>
           <select id="rqSelect" size="8" aria-label="Rückfragen-Logik wählen">
             <option>keine Rückfragen</option>
@@ -554,16 +494,14 @@
             <p><strong>Rückfragen‑Logik:</strong> <span id="rqEditable" class="editable" contenteditable="true"></span></p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_rq" aria-controls="infoPanel_rq" aria-expanded="false" title="Hinweise zur Rückfragen-Logik">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_rq" aria-controls="infoPanel_rq" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="rqReset">Zurücksetzen (Rückfragen)</button>
           </div>
-          <!-- Hilfetexte: original V5.1 -->
           <div class="info-panel" id="infoPanel_rq" role="region" aria-label="Hinweise zur Rückfragen-Logik">
-            <h4>Warum Rückfragen vor der Antwort?</h4>
-            <p><strong>Qualität erhöhen:</strong> Präzise Rückfragen klären Scope und Zielbild. Das vermeidet Fehlannahmen und spart Korrekturschleifen.</p>
-            <p><strong>Maximal 2 Rückfragen:</strong> Kontext („Worum genau geht es?“) + Zielbild („Wie soll das Ergebnis aussehen?“). Mehr Rückfragen bremsen und führen zu Dialog-Schleifen.</p>
-            <p><strong>Wann keine Rückfragen?</strong> Bei klaren, standardisierten Aufgaben („Fasse diesen Absatz in 3 Bulletpoints zusammen.“) liefert der Agent direkt – optional mit kurzer Rückbestätigung.</p>
-            <p><strong>Praxis-Tipp:</strong> „Rückfragen nur bei Unklarheit“ ist universell: schnell, aber mit Qualitätssicherung bei Bedarf.</p>
+            <h4>Hilfetext – Rückfragen‑Logik</h4>
+            <p><strong>Nutzen:</strong> Rückfragen erhöhen die Treffgenauigkeit, ohne den Fluss zu stören.</p>
+            <p><strong>Begrenzung:</strong> Nur eine Regel – eindeutiges Verhalten.</p>
+            <p><strong>Praxis:</strong> „Nur bei Unklarheit (max. 1)“ ist universell geeignet.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -571,7 +509,7 @@
         <!-- Recherche & Quellen (Single, size 8) -->
         <div class="subcard" id="sub-recherche">
           <h3 style="margin-top:0">Recherche & Quellen</h3>
-          <div class="subhint subhint--question">Welche Rechercheart und welches Faktenverhalten soll angewendet werden?</div>
+          <div class="subhint subhint--question">Wie soll der Agent recherchieren und Quellen verwenden?</div>
           <div class="subhint subhint--choose">Wähle genau eine Option:</div>
           <select id="recSelect" size="8" aria-label="Rechercheverhalten wählen">
             <option>keine Websuche</option>
@@ -586,15 +524,14 @@
             <p><strong>Recherche:</strong> <span id="recEditable" class="editable" contenteditable="true"></span></p>
           </div>
           <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_recherche" aria-controls="infoPanel_recherche" aria-expanded="false" title="Hinweise zu Recherche">ℹ️ Hinweise</button>
+            <button type="button" class="info-btn" id="infoBtn_recherche" aria-controls="infoPanel_recherche" aria-expanded="false">ℹ️ Hinweise</button>
             <button type="button" class="btn btn--sm" id="recReset">Zurücksetzen (Recherche)</button>
           </div>
-          <!-- Hilfetexte: original V5.1 -->
           <div class="info-panel" id="infoPanel_recherche" role="region" aria-label="Hinweise zur Recherche">
-            <h4>Hinweise zur Recherche</h4>
-            <p><strong>Intern vs. extern:</strong> Für interne Themen ist Websuche meist unnötig. Extern: Quelle mit Titel/Datum/Link angeben.</p>
-            <p><strong>Rückfrage vor Recherche:</strong> Klärt Scope und spart Zeit. Erst suchen, wenn klar ist, was wirklich benötigt wird.</p>
-            <p><strong>Stichpunkte:</strong> Bei großer Unsicherheit besser nur Stichpunkte liefern und weitere Präzisierung anbieten.</p>
+            <h4>Hilfetext – Recherche & Quellen</h4>
+            <p><strong>Transparenz:</strong> Bei externen Themen Quellen nennen.</p>
+            <p><strong>Reihenfolge:</strong> Erst klären, dann recherchieren.</p>
+            <p><strong>Sicherheit:</strong> Keine Vermutungen als Fakten ausgeben.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -611,24 +548,13 @@
       <div class="card">
         <h2>Anleitung</h2>
         <ol class="guide">
-          <li><strong>Neuen Agenten anlegen</strong><br/>
-            Öffne in Copilot Chat den Punkt „Neuer Agent“. Dieser befindet sich in der linken Navigation.</li>
-          <li><strong>Bezeichnung eintragen</strong><br/>
-            Gib deinem Agenten einen kurzen, eindeutigen Namen. Beispiele: Office‑Assistent, Begleiter, Coach, Azubi‑Tutor.</li>
-          <li><strong>Beschreibung eintragen</strong><br/>
-            Beschreibe in ein bis zwei Sätzen, wofür der Agent gedacht ist.<br/>
-            Beispiel: „Unterstützt bei täglichen Aufgaben, erklärt Inhalte verständlich und liefert klare, zuverlässige Antworten.“</li>
-          <li><strong>Agent‑Script einfügen</strong><br/>
-            Füge den aus dem Baukasten kopierten Text in das Feld <strong>„Anweisungen“</strong> ein.
-            Dieses Script definiert das vollständige Verhalten des Agents.</li>
-          <li><strong>Agent speichern</strong><br/>
-            Klicke oben rechts auf <strong>„Erstellen“</strong>, um den Agenten anzulegen und verfügbar zu machen.</li>
-          <li><strong>Agent testen</strong><br/>
-            Teste den Agent mit typischen Fragen aus deinem Arbeitsalltag und lasse den Baukasten währenddessen geöffnet!</li>
-          <li><strong>Agent anpassen</strong><br/>
-            Du kannst den Agent jederzeit weiter verfeinern.<br/>
-            Klicke dazu neben dem Agent‑Symbol auf die drei Punkte und wähle <strong>„Bearbeiten“</strong>.<br/>
-            Solange der Baukasten mit deinen Auswahlen noch geöffnet ist, kannst du Änderungen vornehmen und das aktualisierte Script erneut einfügen.</li>
+          <li><strong>Neuen Agenten anlegen</strong><br/>In Copilot Chat „Neuer Agent“ öffnen.</li>
+          <li><strong>Bezeichnung eintragen</strong><br/>Kurzer, eindeutiger Name.</li>
+          <li><strong>Beschreibung eintragen</strong><br/>1–2 Sätze zum Einsatz.</li>
+          <li><strong>Agent‑Script einfügen</strong><br/>Script in „Anweisungen“ einfügen.</li>
+          <li><strong>Agent speichern</strong><br/>„Erstellen“ klicken.</li>
+          <li><strong>Agent testen</strong><br/>Mit typischen Fragen prüfen.</li>
+          <li><strong>Agent anpassen</strong><br/>Über „Bearbeiten“ jederzeit feinjustieren.</li>
         </ol>
       </div>
     </div>
@@ -638,14 +564,14 @@
   <script>
     // --- State ---
     const state = {
-      rolle:   { selected: [], limit: 3, edited:false }, // nicht editierbar
+      rolle:   { selected: [], limit: 3, edited:false },
       purpose: { selected: [], limit: 2, edited:false },
       tasks:   { selected: [], limit: 3, edited:false },
       // V5.2: Start & Variation als Multi mit Limit 3
       start:     { selected: [], limit: 3, edited:false },
-      tiefe:     { selected: '', edited:false },   // "Antwortstil / Spezifität"
-      rq:        { selected: '', edited:false },
       variation: { selected: [], limit: 3, edited:false },
+      tiefe:     { selected: '', edited:false },     // "Antwortstil / Spezifität"
+      rq:        { selected: '', edited:false },
       recherche: { selected: '', edited:false },
       stil:      { selected: '', edited:false }
     };
@@ -655,13 +581,13 @@
     const joinList = (arr) => arr.join(', ');
     const textOrEmpty = (selector) => (qs(selector)?.textContent || '').trim();
 
-    // Toggle-Mehrfachauswahl OHNE STRG/⌘
+    // Toggle-Multi ohne STRG/⌘
     function enableClickToggle(selectEl, key){
       selectEl.addEventListener('mousedown', (e) => {
         const opt = e.target;
         if(opt && opt.tagName === 'OPTION'){
-          e.preventDefault(); // verhindert Standard
-          opt.selected = !opt.selected; // toggle
+          e.preventDefault();
+          opt.selected = !opt.selected;
           selectEl.dispatchEvent(new Event('change', {bubbles:true}));
           selectEl.focus();
         }
@@ -670,163 +596,91 @@
 
     function enforceMultiLimit(selectEl, key){
       const { limit } = state[key];
-      const current = Array.from(selectEl.options).filter(o => o.selected).map(o => o.text);
-      // Reihenfolge beibehalten
+      const current = Array.from(selectEl.options).filter(o=>o.selected).map(o=>o.text);
       const prev = state[key].selected.slice();
-      const kept = prev.filter(x => current.includes(x));
-      const added = current.filter(x => !prev.includes(x));
+      const kept = prev.filter(x=>current.includes(x));
+      const added = current.filter(x=>!prev.includes(x));
       const merged = kept.concat(added);
-      // Limit anwenden
       if(merged.length > limit){
         const toDeselect = merged.slice(limit);
-        Array.from(selectEl.options).forEach(o => {
-          if(toDeselect.includes(o.text)) o.selected = false;
-        });
+        Array.from(selectEl.options).forEach(o => { if(toDeselect.includes(o.text)) o.selected = false; });
         state[key].selected = merged.slice(0, limit);
       } else {
         state[key].selected = merged;
       }
-      // UI: Counter + Hint + übrige Optionen sperren
-      const countId = key === 'variation' ? 'variationCount' : key + 'Count';
-      const hintId  = key === 'variation' ? 'variationHint'  : key + 'Hint';
-      const countEl = qs('#' + countId);
-      const hintEl  = qs('#' + hintId);
+      // Counter + Hinweis + Lock nicht-gewählter Optionen
+      const idBase = key === 'variation' ? 'variation' : 'start';
+      const countEl = qs(`#${idBase}Count`);
+      const hintEl  = qs(`#${idBase}Hint`);
       if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
       const atMax = state[key].selected.length >= limit;
       if(hintEl) hintEl.hidden = !atMax;
-      Array.from(selectEl.options).forEach(o => {
-        if(!o.selected) o.disabled = atMax; // nur nicht-gewählte sperren
-      });
-      // Vorschau aktualisieren (nur wenn nicht manuell editiert)
+      Array.from(selectEl.options).forEach(o => { if(!o.selected) o.disabled = atMax; });
       updateEditableFromSelection(key);
     }
 
     function updateEditableFromSelection(key){
-      // Rolle: nicht editierbar → Badge füllen
-      if(key === 'rolle'){
-        qs('#rolleBadge').textContent = joinList(state.rolle.selected);
-        return;
-      }
+      if(key === 'rolle'){ qs('#rolleBadge').textContent = joinList(state.rolle.selected); return; }
       if(state[key]?.edited) return;
       const map = {
         purpose:   { span: '#purposeEditable', value: joinList(state.purpose.selected) },
         tasks:     { span: '#tasksEditable',   value: joinList(state.tasks.selected)   },
         start:     { span: '#startEditable',   value: joinList(state.start.selected)   },
-        variation: { span: '#varEditable',     value: joinList(state.variation.selected)},
+        variation: { span: '#varEditable',     value: joinList(state.variation.selected) },
         tiefe:     { span: '#tiefeEditable',   value: state.tiefe.selected             },
         rq:        { span: '#rqEditable',      value: state.rq.selected                },
         recherche: { span: '#recEditable',     value: state.recherche.selected         },
         stil:      { span: '#stilEditable',    value: state.stil.selected              }
       };
       const target = map[key];
-      if(target){ qs(target.span).textContent = target.value; } // leer bleibt leer
+      if(target) qs(target.span).textContent = target.value;
     }
 
     function updateSingleSelect(selectEl, key){
       const val = selectEl.value || '';
       state[key].selected = val;
       if(state[key].edited) return;
-      const spanId = ({
-        tiefe:'#tiefeEditable',
-        rq:'#rqEditable',
-        recherche:'#recEditable',
-        stil:'#stilEditable'
-      })[key];
-      if(spanId){ qs(spanId).textContent = val; }
+      const spanId = ({ tiefe:'#tiefeEditable', rq:'#rqEditable', recherche:'#recEditable', stil:'#stilEditable' })[key];
+      if(spanId) qs(spanId).textContent = val;
     }
 
     function resetModule(key){
       switch(key){
         case 'rolle':{
-          const select = qs('#rolleSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.rolle.selected = [];
-          qs('#rolleCount').textContent = `0 / ${state.rolle.limit}`;
-          qs('#rolleHint').hidden = true;
-          qs('#rolleBadge').textContent = '';
-          break;
+          const el = qs('#rolleSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.rolle.selected = []; qs('#rolleCount').textContent = `0 / ${state.rolle.limit}`; qs('#rolleHint').hidden = true; qs('#rolleBadge').textContent = ''; break;
         }
         case 'purpose':{
-          const select = qs('#purposeSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.purpose.selected = [];
-          state.purpose.edited = false;
-          qs('#purposeCount').textContent = `0 / ${state.purpose.limit}`;
-          qs('#purposeHint').hidden = true;
-          qs('#purposeEditable').textContent = '';
-          break;
+          const el = qs('#purposeSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.purpose.selected = []; state.purpose.edited=false; qs('#purposeCount').textContent=`0 / ${state.purpose.limit}`; qs('#purposeHint').hidden=true; qs('#purposeEditable').textContent=''; break;
         }
         case 'tasks':{
-          const select = qs('#tasksSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.tasks.selected = [];
-          state.tasks.edited = false;
-          qs('#tasksCount').textContent = `0 / ${state.tasks.limit}`;
-          qs('#tasksHint').hidden = true;
-          qs('#tasksEditable').textContent = '';
-          break;
+          const el = qs('#tasksSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.tasks.selected=[]; state.tasks.edited=false; qs('#tasksCount').textContent=`0 / ${state.tasks.limit}`; qs('#tasksHint').hidden=true; qs('#tasksEditable').textContent=''; break;
         }
         case 'start':{
-          const select = qs('#startSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.start.selected = [];
-          state.start.edited = false;
-          qs('#startEditable').textContent = '';
-          qs('#startCount').textContent = `0 / ${state.start.limit}`;
-          qs('#startHint').hidden = true;
-          break;
-        }
-        case 'tiefe':{
-          qs('#tiefeSelect').selectedIndex = -1;
-          state.tiefe.selected = '';
-          state.tiefe.edited = false;
-          qs('#tiefeEditable').textContent = '';
-          break;
-        }
-        case 'rq':{
-          qs('#rqSelect').selectedIndex = -1;
-          state.rq.selected = '';
-          state.rq.edited = false;
-          qs('#rqEditable').textContent = '';
-          break;
+          const el = qs('#startSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.start.selected=[]; state.start.edited=false; qs('#startEditable').textContent=''; qs('#startCount').textContent=`0 / ${state.start.limit}`; qs('#startHint').hidden=true; break;
         }
         case 'variation':{
-          const select = qs('#varSelect');
-          Array.from(select.options).forEach(o => {o.selected=false; o.disabled=false;});
-          state.variation.selected = [];
-          state.variation.edited = false;
-          qs('#varEditable').textContent = '';
-          qs('#variationCount').textContent = `0 / ${state.variation.limit}`;
-          qs('#variationHint').hidden = true;
-          break;
+          const el = qs('#varSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.variation.selected=[]; state.variation.edited=false; qs('#varEditable').textContent=''; qs('#variationCount').textContent=`0 / ${state.variation.limit}`; qs('#variationHint').hidden=true; break;
         }
-        case 'recherche':{
-          qs('#recSelect').selectedIndex = -1;
-          state.recherche.selected = '';
-          state.recherche.edited = false;
-          qs('#recEditable').textContent = '';
-          break;
-        }
-        case 'stil':{
-          qs('#stilSelect').selectedIndex = -1;
-          state.stil.selected = '';
-          state.stil.edited = false;
-          qs('#stilEditable').textContent = '';
-          break;
-        }
+        case 'tiefe':{ qs('#tiefeSelect').selectedIndex=-1; state.tiefe.selected=''; state.tiefe.edited=false; qs('#tiefeEditable').textContent=''; break; }
+        case 'rq':{ qs('#rqSelect').selectedIndex=-1; state.rq.selected=''; state.rq.edited=false; qs('#rqEditable').textContent=''; break; }
+        case 'recherche':{ qs('#recSelect').selectedIndex=-1; state.recherche.selected=''; state.recherche.edited=false; qs('#recEditable').textContent=''; break; }
+        case 'stil':{ qs('#stilSelect').selectedIndex=-1; state.stil.selected=''; state.stil.edited=false; qs('#stilEditable').textContent=''; break; }
       }
     }
 
-    function getModuleTextFromEditableOrSelection(spanSelector, selectedArrayOrString){
+    function getModuleTextFromEditableOrSelection(spanSelector, selected){
       const t = textOrEmpty(spanSelector);
       if(t) return t;
-      if(Array.isArray(selectedArrayOrString)){
-        return selectedArrayOrString.length ? joinList(selectedArrayOrString) : '';
-      }
-      return selectedArrayOrString || '';
+      if(Array.isArray(selected)) return selected.length ? joinList(selected) : '';
+      return selected || '';
     }
 
-    // Gesamtskript generieren – nur nicht-leere Teile einfügen
+    // Script generieren – neue Reihenfolge + neue Sätze (nur Grundverhalten)
     function buildScript(){
       const parts = [];
 
@@ -851,25 +705,25 @@ Dein übergeordneter Zweck ist es, ${purpose}. Du orientierst deine gesamte Arbe
 Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben verlässlich, klar strukturiert und nutzerorientiert aus.`);
       }
 
-      // 4) Grundverhalten – V5.2 Sätze in neuer Reihenfolge
-      const startSel      = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected);
-      const variationSel  = getModuleTextFromEditableOrSelection('#varEditable',   state.variation.selected);
-      const antwortstil   = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected);
-      const rueckfragen   = getModuleTextFromEditableOrSelection('#rqEditable',    state.rq.selected);
-      const rechercheSel  = getModuleTextFromEditableOrSelection('#recEditable',   state.recherche.selected);
+      // 4) Grundverhalten – NEU (nur wenn Felder gefüllt sind)
+      const startSel     = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected);
+      const variationSel = getModuleTextFromEditableOrSelection('#varEditable', state.variation.selected);
+      const antwortstil  = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected);
+      const rueckfragen  = getModuleTextFromEditableOrSelection('#rqEditable', state.rq.selected);
+      const rechercheSel = getModuleTextFromEditableOrSelection('#recEditable', state.recherche.selected);
 
-      const grundParts = [];
-      if(startSel)     grundParts.push(`Für den Einstieg nutzt du ${startSel}, situativ und ohne wiederholende Muster.`);
-      if(variationSel) grundParts.push(`Du variierst deinen Ausdruck dezent durch ${variationSel}, damit Antworten natürlich und nicht repetitiv wirken.`);
-      if(antwortstil)  grundParts.push(`Deine Antworten folgen dem Stil ${antwortstil}, damit Inhalte klar, nachvollziehbar und strukturiert bleiben.`);
-      if(rueckfragen)  grundParts.push(`Deine Rückfragenlogik lautet: ${rueckfragen}.`);
-      if(rechercheSel) grundParts.push(`Dein Recherche‑ und Quellenverhalten ist: ${rechercheSel}.`);
+      const g = [];
+      if(startSel)     g.push(`Für den Einstieg nutzt du ${startSel}, situativ und ohne wiederholende Muster.`);
+      if(variationSel) g.push(`Du variierst deinen Ausdruck dezent durch ${variationSel}, damit Antworten natürlich und nicht repetitiv wirken.`);
+      if(antwortstil)  g.push(`Deine Antworten folgen dem Stil ${antwortstil}, damit Inhalte klar, nachvollziehbar und strukturiert bleiben.`);
+      if(rueckfragen)  g.push(`Deine Rückfragenlogik lautet: ${rueckfragen}.`);
+      if(rechercheSel) g.push(`Dein Recherche- und Quellenverhalten ist: ${rechercheSel}.`);
 
-      if(grundParts.length){
+      if(g.length){
         parts.push(`[Grundverhalten / Arbeitslogik]
 Du arbeitest nach folgender festen Logik:
 
-${grundParts.join('\n\n')}`);
+${g.join('\n\n')}`);
       }
 
       // 5) Kommunikationsstil
@@ -879,7 +733,7 @@ ${grundParts.join('\n\n')}`);
 Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`);
       }
 
-      // 6) FEST VERANKERT – fix anhängen (unverändert)
+      // 6) Feste Blöcke (unverändert)
       const fixBlocks = [
 `[Formatoption (situativ nachgelagert)]
 Biete nach der ersten Antwort optional an, das Ergebnis in einem gewünschten Format darzustellen (z. B. Schritte, Varianten, Pro/Contra, Formulierungen). Frag nur bei erkennbarem Strukturbedarf; sonst entscheide situativ.`,
@@ -911,114 +765,87 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
       return parts.join('\n\n').trim();
     }
 
-    // --- Info-Panels ---
+    // Info-Panels
     function wireInfoPanel(key){
       const btn = qs(`#infoBtn_${key}`);
       const panel = qs(`#infoPanel_${key}`);
       if(!btn || !panel) return;
       const closeBtn = panel.querySelector('.close-info');
-      function openPanel(){
-        panel.style.display = 'block';
-        btn.setAttribute('aria-expanded','true');
-        closeBtn && closeBtn.focus();
-      }
-      function closePanel(){
-        panel.style.display = 'none';
-        btn.setAttribute('aria-expanded','false');
-        btn.focus();
-      }
-      btn.addEventListener('click', () => {
-        const isOpen = panel.style.display === 'block';
-        if(isOpen) closePanel(); else openPanel();
-      });
-      closeBtn && closeBtn.addEventListener('click', closePanel);
-      panel.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape') closePanel();
-      });
+      function open(){ panel.style.display='block'; btn.setAttribute('aria-expanded','true'); closeBtn && closeBtn.focus(); }
+      function close(){ panel.style.display='none'; btn.setAttribute('aria-expanded','false'); btn.focus(); }
+      btn.addEventListener('click', ()=>{ const openNow = panel.style.display==='block'; openNow?close():open(); });
+      closeBtn && closeBtn.addEventListener('click', close);
+      panel.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
     }
 
     async function copyToClipboard(text){
       try{
-        if(navigator.clipboard && window.isSecureContext){
-          await navigator.clipboard.writeText(text);
-        } else {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position='fixed';
-          ta.style.left='-9999px';
-          document.body.appendChild(ta);
-          ta.focus(); ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-        }
+        if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); }
+        else { const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px'; document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
         return true;
-      }catch(e){
-        console.error(e);
-        return false;
-      }
+      }catch(e){ console.error(e); return false; }
     }
 
-    // --- Wiring ---
-    window.addEventListener('DOMContentLoaded', () => {
-      // Umschalten Start -> Builder
-      const startBtn = qs('#startBtn');
-      startBtn.addEventListener('click', () => {
-        qs('#start').style.display = 'none';
-        qs('#builder').style.display = 'block';
+    // Wiring
+    window.addEventListener('DOMContentLoaded', ()=>{
+      // Start -> Builder
+      qs('#startBtn').addEventListener('click', ()=>{
+        qs('#start').style.display='none';
+        qs('#builder').style.display='block';
         qs('#rolleSelect').focus();
       });
 
       // Info-Panels
-      ['rolle','purpose','tasks','start','tiefe','rq','variation','recherche','stil'].forEach(wireInfoPanel);
+      ['rolle','purpose','tasks','start','variation','tiefe','rq','recherche','stil'].forEach(wireInfoPanel);
 
-      // Multi-Selects mit Click-Toggle (inkl. Start/Variation)
+      // Multi-Selects (inkl. Start/Variation)
       [
-        {sel:'#rolleSelect',   key:'rolle'},
+        {sel:'#rolleSelect', key:'rolle'},
         {sel:'#purposeSelect', key:'purpose'},
-        {sel:'#tasksSelect',   key:'tasks'},
-        {sel:'#startSelect',   key:'start'},
-        {sel:'#varSelect',     key:'variation'}
-      ].forEach(d => {
+        {sel:'#tasksSelect', key:'tasks'},
+        {sel:'#startSelect', key:'start'},
+        {sel:'#varSelect', key:'variation'}
+      ].forEach(d=>{
         const el = qs(d.sel);
         enableClickToggle(el, d.key);
-        el.addEventListener('change', e => enforceMultiLimit(e.target, d.key));
+        el.addEventListener('change', e=>enforceMultiLimit(e.target, d.key));
       });
 
       // Single-Selects
-      qs('#tiefeSelect').addEventListener('change', e => updateSingleSelect(e.target, 'tiefe'));
-      qs('#rqSelect').addEventListener('change',    e => updateSingleSelect(e.target, 'rq'));
-      qs('#recSelect').addEventListener('change',   e => updateSingleSelect(e.target, 'recherche'));
-      qs('#stilSelect').addEventListener('change',  e => updateSingleSelect(e.target, 'stil'));
+      qs('#tiefeSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'tiefe'));
+      qs('#rqSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'rq'));
+      qs('#recSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'recherche'));
+      qs('#stilSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'stil'));
 
-      // Editable flags (nicht für Rolle, da nicht editierbar)
-      qs('#purposeEditable').addEventListener('input', () => state.purpose.edited = true);
-      qs('#tasksEditable').addEventListener('input',   () => state.tasks.edited   = true);
-      qs('#startEditable').addEventListener('input',   () => state.start.edited   = true);
-      qs('#tiefeEditable').addEventListener('input',   () => state.tiefe.edited   = true);
-      qs('#rqEditable').addEventListener('input',      () => state.rq.edited      = true);
-      qs('#varEditable').addEventListener('input',     () => state.variation.edited = true);
-      qs('#recEditable').addEventListener('input',     () => state.recherche.edited = true);
-      qs('#stilEditable').addEventListener('input',    () => state.stil.edited    = true);
+      // Editable-Flags
+      qs('#purposeEditable').addEventListener('input', ()=> state.purpose.edited = true);
+      qs('#tasksEditable').addEventListener('input', ()=> state.tasks.edited   = true);
+      qs('#startEditable').addEventListener('input', ()=> state.start.edited   = true);
+      qs('#varEditable').addEventListener('input',   ()=> state.variation.edited = true);
+      qs('#tiefeEditable').addEventListener('input', ()=> state.tiefe.edited   = true);
+      qs('#rqEditable').addEventListener('input',    ()=> state.rq.edited      = true);
+      qs('#recEditable').addEventListener('input',   ()=> state.recherche.edited = true);
+      qs('#stilEditable').addEventListener('input',  ()=> state.stil.edited    = true);
 
       // Resets
-      qs('#rolleReset').addEventListener('click',   () => resetModule('rolle'));
-      qs('#purposeReset').addEventListener('click', () => resetModule('purpose'));
-      qs('#tasksReset').addEventListener('click',   () => resetModule('tasks'));
-      qs('#startReset').addEventListener('click',   () => resetModule('start'));
-      qs('#tiefeReset').addEventListener('click',   () => resetModule('tiefe'));
-      qs('#rqReset').addEventListener('click',      () => resetModule('rq'));
-      qs('#varReset').addEventListener('click',     () => resetModule('variation'));
-      qs('#recReset').addEventListener('click',     () => resetModule('recherche'));
-      qs('#stilReset').addEventListener('click',    () => resetModule('stil'));
+      qs('#rolleReset').addEventListener('click',   ()=>resetModule('rolle'));
+      qs('#purposeReset').addEventListener('click', ()=>resetModule('purpose'));
+      qs('#tasksReset').addEventListener('click',   ()=>resetModule('tasks'));
+      qs('#startReset').addEventListener('click',   ()=>resetModule('start'));
+      qs('#varReset').addEventListener('click',     ()=>resetModule('variation'));
+      qs('#tiefeReset').addEventListener('click',   ()=>resetModule('tiefe'));
+      qs('#rqReset').addEventListener('click',      ()=>resetModule('rq'));
+      qs('#recReset').addEventListener('click',     ()=>resetModule('recherche'));
+      qs('#stilReset').addEventListener('click',    ()=>resetModule('stil'));
 
       // Copy
-      qs('#copyBtn').addEventListener('click', async () => {
+      qs('#copyBtn').addEventListener('click', async ()=>{
         const script = buildScript();
         const ok = await copyToClipboard(script);
         const msg = qs('#copyMsg');
         msg.style.display = ok ? 'block' : 'none';
         if(!ok) alert('Kopieren nicht möglich. Bitte manuell kopieren.');
-        if(ok) setTimeout(() => msg.style.display='none', 4000);
+        if(ok) setTimeout(()=> msg.style.display='none', 4000);
       });
     });
   </script>
