@@ -129,8 +129,6 @@
   user-select:none;
 }
 
-
-    
     .editable:focus{outline:2px solid var(--edit-focus);background:#E3F2E5}
     .badge-gray{
       display:inline-block;
@@ -649,7 +647,7 @@
         state[key].selected = merged;
       }
       // Counter + Hinweis + Lock nicht-gewählter Optionen
-      const idBase = key === 'variation' ? 'variation' : 'start';
+      const idBase = key;
       const countEl = qs(`#${idBase}Count`);
       const hintEl  = qs(`#${idBase}Hint`);
       if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
@@ -889,5 +887,7 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
       });
     });
   </script>
+</body>
+</html>
 </body>
 </html>
