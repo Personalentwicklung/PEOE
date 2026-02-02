@@ -115,6 +115,22 @@
       padding:2px 6px;
       line-height:1.6;
     }
+
+
+.demo-editable {
+  display:inline-block;
+  background:var(--edit-bg);
+  border:1px dashed var(--edit-border);
+  border-radius:6px;
+  padding:2px 6px;
+  line-height:1.6;
+  font-size:14px;
+  cursor:default;
+  user-select:none;
+}
+
+
+    
     .editable:focus{outline:2px solid var(--edit-focus);background:#E3F2E5}
     .badge-gray{
       display:inline-block;
@@ -187,7 +203,7 @@
         <h3>Hinweise zur Bedienung</h3>
         <p class="muted">
           Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt.<br>
-          In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern.<br>
+          In allen Modulen außer dem ersten kannst du die Texte in den <span class="demo-editable">grünen Feldern</span> nach Bedarf ändern.<br>
           Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt.<br>
           Unbearbeitete Module fließen nicht in das Agenten Script ein.<br>
           Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.
