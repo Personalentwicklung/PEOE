@@ -188,10 +188,12 @@
         <p class="muted">
           Dieser Baukasten ist in logische Module unterteilt, die ein korrekt aufgebauter Agent benötigt.<br>
           In allen Modulen außer dem ersten kannst du die Texte in den <strong>grünen Feldern</strong> nach Bedarf ändern.<br>
+          Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt.<br>
           Unbearbeitete Module fließen nicht in das Agenten Script ein.<br>
           Sobald alle Module ausgefüllt sind, kannst du das fertige Agenten Script mit einem Klick in die Zwischenablage kopieren.
         </p>
       </div>
+
 
       <!-- MODUL: Rolle / Persona (unverändert) -->
       <div class="card" id="mod-rolle">
@@ -414,7 +416,7 @@
   <!-- 2) Variation / Ausdruck (Multi, limit 3, size 8) -->
   <div class="subcard" id="sub-variation">
     <h3 style="margin-top:0">Variation / Ausdruck</h3>
-    <div class="subhint subhint--question">Wie soll der sprachliche Ausdruck leicht variieren?</div>
+    <div class="subhint subhint--question">Wie soll der sprachliche Ausdruck variieren?</div>
     <div class="subhint subhint--choose">Wähle bis zu 3 Optionen:</div>
     <select id="varSelect" multiple size="8" aria-describedby="variationCount variationHint" aria-label="Variation wählen">
       <option>Einstiegsformulierungen leicht variieren</option>
@@ -548,19 +550,37 @@
         <div class="copy-msg" id="copyMsg">Agent‑Skript wurde in die Zwischenablage kopiert!</div>
       </div>
 
-      <!-- Anleitung -->
+      <!-- Anleitung (immer sichtbar) -->
       <div class="card">
         <h2>Anleitung</h2>
         <ol class="guide">
-          <li><strong>Neuen Agenten anlegen</strong><br/>In Copilot Chat „Neuer Agent“ öffnen.</li>
-          <li><strong>Bezeichnung eintragen</strong><br/>Kurzer, eindeutiger Name.</li>
-          <li><strong>Beschreibung eintragen</strong><br/>1–2 Sätze zum Einsatz.</li>
-          <li><strong>Agent‑Script einfügen</strong><br/>Script in „Anweisungen“ einfügen.</li>
-          <li><strong>Agent speichern</strong><br/>„Erstellen“ klicken.</li>
-          <li><strong>Agent testen</strong><br/>Mit typischen Fragen prüfen.</li>
-          <li><strong>Agent anpassen</strong><br/>Über „Bearbeiten“ jederzeit feinjustieren.</li>
+          <li><strong>Neuen Agenten anlegen</strong><br/>
+          Öffne in Copilot Chat den Punkt „Neuer Agent“. Dieser befindet sich in der linken Navigation.</li>
+
+          <li><strong>Bezeichnung eintragen</strong><br/>
+          Gib deinem Agenten einen kurzen, eindeutigen Namen. Beispiele: Office‑Assistent, Begleiter, Coach, Azubi‑Tutor.</li>
+
+          <li><strong>Beschreibung eintragen</strong><br/>
+          Beschreibe in ein bis zwei Sätzen, wofür der Agent gedacht ist.<br/>
+          Beispiel: „Unterstützt bei täglichen Aufgaben, erklärt Inhalte verständlich und liefert klare, zuverlässige Antworten.“</li>
+
+          <li><strong>Agent‑Script einfügen</strong><br/>
+          Füge den aus dem Baukasten kopierten Text in das Feld <strong>„Anweisungen“</strong> ein.
+          Dieses Script definiert das vollständige Verhalten des Agents.</li>
+
+          <li><strong>Agent speichern</strong><br/>
+          Klicke oben rechts auf <strong>„Erstellen“</strong>, um den Agenten anzulegen und verfügbar zu machen.</li>
+
+          <li><strong>Agent testen</strong><br/>
+          Teste den Agent mit typischen Fragen aus deinem Arbeitsalltag und lasse den Baukasten währenddessen geöffnet!</li>
+
+          <li><strong>Agent anpassen</strong><br/>
+          Du kannst den Agent jederzeit weiter verfeinern.<br/>
+          Klicke dazu neben dem Agent‑Symbol auf die drei Punkte und wähle <strong>„Bearbeiten“</strong>.<br/>
+          Solange der Baukasten mit deinen Auswahlen noch geöffnet ist, kannst du Änderungen vornehmen und das aktualisierte Script erneut einfügen.</li>
         </ol>
       </div>
+
     </div>
   </section>
   <!-- END: Builder -->
