@@ -371,171 +371,175 @@
         </div>
       </div>
 
-      <!-- MODUL-GRUPPE: Grundverhalten (V5.2) -->
-      <div class="card" id="mod-grundverhalten">
-        <h2><strong>Grundverhalten / Arbeitslogik</strong></h2>
+    <div class="card" id="mod-grundverhalten">
+  <h2><strong>Grundverhalten / Arbeitslogik</strong></h2>
 
-        <!-- Startverhalten (Multi, limit 3, size 8) -->
-        <div class="subcard" id="sub-startverhalten">
-          <h3 style="margin-top:0">Startverhalten</h3>
-          <div class="subhint subhint--question">Wie soll der Agent seine Antworten beginnen?</div>
-          <div class="subhint subhint--choose">Wähle bis zu 3 Optionen:</div>
-          <select id="startSelect" multiple size="8" aria-describedby="startCount startHint" aria-label="Startverhalten wählen">
-            <option>direkter Start</option>
-            <option>kurzer Impuls</option>
-            <option>kurze Einordnung</option>
-            <option>Überblick am Anfang</option>
-            <option>freundlicher Einstieg</option>
-            <option>sachlich-klarer Einstieg</option>
-            <option>ruhiger Einstieg</option>
-            <option>kurze Zusammenfassung des Inputs</option>
-            <option>neutraler Startsatz</option>
-          </select>
-          <div class="meta">
-            <span id="startCount" aria-live="polite">0 / 3</span>
-            <span class="hint" id="startHint" hidden>Maximale Anzahl erreicht.</span>
-          </div>
-          <div class="preview">
-            <p><strong>Einstiegsarten:</strong> <span id="startEditable" class="editable" contenteditable="true"></span></p>
-          </div>
-          <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_start" aria-controls="infoPanel_start" aria-expanded="false">ℹ️ Hinweise</button>
-            <button type="button" class="btn btn--sm" id="startReset">Zurücksetzen (Start)</button>
-          </div>
-          <div class="info-panel" id="infoPanel_start" role="region" aria-label="Hinweise zum Startverhalten">
-            <h4>Hilfetext – Startverhalten</h4>
-            <p><strong>Direkt vs. orientierend:</strong> Wähle 1–3 Einstiegstypen (z. B. „direkt“, „kurzer Impuls“, „Überblick“). Sie bestimmen nur den Startton, nicht die Dialoglogik.</p>
-            <p><strong>Natürlichkeit:</strong> Die Einstiege werden situativ genutzt und nicht in jeder Antwort identisch wiederholt.</p>
-            <p><strong>Abgrenzung:</strong> Rückfragen werden separat unter „Rückfragen‑Logik“ gesteuert, nicht hier.</p>
-            <button type="button" class="close-info">Verbergen</button>
-          </div>
-        </div>
+  <!-- 1) Startverhalten (Multi, limit 3, size 8) -->
+  <div class="subcard" id="sub-startverhalten">
+    <h3 style="margin-top:0">Startverhalten</h3>
+    <div class="subhint subhint--question">Wie soll der Agent seine Antworten beginnen?</div>
+    <div class="subhint subhint--choose">Wähle bis zu 3 Optionen:</div>
+    <select id="startSelect" multiple size="8" aria-describedby="startCount startHint" aria-label="Startverhalten wählen">
+      <option>direkter Start</option>
+      <option>kurzer Impuls</option>
+      <option>kurze Einordnung</option>
+      <option>Überblick am Anfang</option>
+      <option>freundlicher Einstieg</option>
+      <option>sachlich-klarer Einstieg</option>
+      <option>ruhiger Einstieg</option>
+      <option>kurze Zusammenfassung des Inputs</option>
+      <option>neutraler Startsatz</option>
+    </select>
+    <div class="meta">
+      <span id="startCount" aria-live="polite">0 / 3</span>
+      <span class="hint" id="startHint" hidden>Maximale Anzahl erreicht.</span>
+    </div>
+    <!-- Preview: kompletter Script-Satz mit Platzhalter -->
+    <div class="preview">
+      <p>Für den Einstieg nutzt du <span id="startEditable" class="editable" contenteditable="true"></span>, situativ und ohne wiederholende Muster.</p>
+    </div>
+    <div class="actions-line">
+      <button type="button" class="info-btn" id="infoBtn_start" aria-controls="infoPanel_start" aria-expanded="false">ℹ️ Hinweise</button>
+      <button type="button" class="btn btn--sm" id="startReset">Zurücksetzen (Start)</button>
+    </div>
+    <div class="info-panel" id="infoPanel_start" role="region" aria-label="Hilfetext Startverhalten">
+      <h4>Hilfetext – Startverhalten</h4>
+      <p><strong>Direkt vs. orientierend:</strong> Wähle 1–3 Einstiegstypen (z. B. „direkt“, „kurzer Impuls“, „Überblick“). Sie bestimmen nur den Startton, nicht die Dialoglogik.</p>
+      <p><strong>Natürlichkeit:</strong> Einstiege werden situativ genutzt und nicht in jeder Antwort identisch wiederholt.</p>
+      <p><strong>Abgrenzung:</strong> Rückfragen werden separat unter „Rückfragen‑Logik“ gesteuert, nicht hier.</p>
+      <button type="button" class="close-info">Verbergen</button>
+    </div>
+  </div>
 
-        <!-- Variation / Ausdruck (Multi, limit 3, size 8) -->
-        <div class="subcard" id="sub-variation">
-          <h3 style="margin-top:0">Variation / Ausdruck</h3>
-          <div class="subhint subhint--question">Wie soll der sprachliche Ausdruck leicht variieren?</div>
-          <div class="subhint subhint--choose">Wähle bis zu 3 Optionen:</div>
-          <select id="varSelect" multiple size="8" aria-describedby="variationCount variationHint" aria-label="Variation wählen">
-            <option>Einstiegsformulierungen leicht variieren</option>
-            <option>Satzbau leicht variieren</option>
-            <option>Wortwahl dezent variieren</option>
-            <option>Abschlussformulierungen variieren</option>
-            <option>Antwortlänge leicht variieren</option>
-            <option>dezente Synonyme statt Wiederholungen</option>
-            <option>kleine Variation bei Übergängen („Weiter…“, „Als Nächstes…“)</option>
-          </select>
-          <div class="meta">
-            <span id="variationCount" aria-live="polite">0 / 3</span>
-            <span class="hint" id="variationHint" hidden>Maximale Anzahl erreicht.</span>
-          </div>
-          <div class="preview">
-            <p><strong>Variation:</strong> <span id="varEditable" class="editable" contenteditable="true"></span></p>
-          </div>
-          <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_variation" aria-controls="infoPanel_variation" aria-expanded="false">ℹ️ Hinweise</button>
-            <button type="button" class="btn btn--sm" id="varReset">Zurücksetzen (Variation)</button>
-          </div>
-          <div class="info-panel" id="infoPanel_variation" role="region" aria-label="Hinweise zu Variation / Ausdruck">
-            <h4>Hilfetext – Variation / Ausdruck</h4>
-            <p><strong>Ziel:</strong> Leichte sprachliche Abwechslung für ein natürliches Lesegefühl.</p>
-            <p><strong>Rahmen:</strong> Variation betrifft Wortwahl, Satzbau, Einstieg/Abschluss – Struktur und Inhalt bleiben gleich.</p>
-            <p><strong>Grenze:</strong> Klarheit geht vor Abwechslung; keine künstliche Verlängerung.</p>
-            <button type="button" class="close-info">Verbergen</button>
-          </div>
-        </div>
+  <!-- 2) Variation / Ausdruck (Multi, limit 3, size 8) -->
+  <div class="subcard" id="sub-variation">
+    <h3 style="margin-top:0">Variation / Ausdruck</h3>
+    <div class="subhint subhint--question">Wie soll der sprachliche Ausdruck leicht variieren?</div>
+    <div class="subhint subhint--choose">Wähle bis zu 3 Optionen:</div>
+    <select id="varSelect" multiple size="8" aria-describedby="variationCount variationHint" aria-label="Variation wählen">
+      <option>Einstiegsformulierungen leicht variieren</option>
+      <option>Satzbau leicht variieren</option>
+      <option>Wortwahl dezent variieren</option>
+      <option>Abschlussformulierungen variieren</option>
+      <option>Antwortlänge leicht variieren</option>
+      <option>dezente Synonyme statt Wiederholungen</option>
+      <option>kleine Variation bei Übergängen („Weiter…“, „Als Nächstes…“)</option>
+    </select>
+    <div class="meta">
+      <span id="variationCount" aria-live="polite">0 / 3</span>
+      <span class="hint" id="variationHint" hidden>Maximale Anzahl erreicht.</span>
+    </div>
+    <!-- Preview: kompletter Script-Satz mit Platzhalter -->
+    <div class="preview">
+      <p>Du variierst deinen Ausdruck dezent durch <span id="varEditable" class="editable" contenteditable="true"></span>, damit Antworten natürlich und nicht repetitiv wirken.</p>
+    </div>
+    <div class="actions-line">
+      <button type="button" class="info-btn" id="infoBtn_variation" aria-controls="infoPanel_variation" aria-expanded="false">ℹ️ Hinweise</button>
+      <button type="button" class="btn btn--sm" id="varReset">Zurücksetzen (Variation)</button>
+    </div>
+    <div class="info-panel" id="infoPanel_variation" role="region" aria-label="Hilfetext Variation / Ausdruck">
+      <h4>Hilfetext – Variation / Ausdruck</h4>
+      <p><strong>Ziel:</strong> Leichte sprachliche Abwechslung für ein natürliches Lesegefühl.</p>
+      <p><strong>Rahmen:</strong> Variation betrifft Wortwahl, Satzbau, Einstieg/Abschluss – Struktur und Inhalt bleiben gleich.</p>
+      <p><strong>Grenze:</strong> Klarheit geht vor Abwechslung; keine künstliche Verlängerung.</p>
+      <button type="button" class="close-info">Verbergen</button>
+    </div>
+  </div>
 
-        <!-- Antwortstil / Spezifität (Single, size 8) -->
-        <div class="subcard" id="sub-antwortstil">
-          <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
-          <div class="subhint subhint--question">Wie soll der Agent seine Antworten aufbauen?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
-          <select id="tiefeSelect" size="8" aria-label="Antwortstil wählen">
-            <option>kompakt & direkt</option>
-            <option>schrittweise/strukturiert</option>
-            <option>technisch präzise</option>
-            <option>praxisnah mit Beispielen</option>
-            <option>ausführlich erklärend</option>
-            <option>tabellarische Darstellung</option>
-            <option>Pro/Contra‑Struktur</option>
-            <option>klare Handlungsempfehlungen</option>
-          </select>
-          <div class="preview">
-            <p><strong>Antwortstil:</strong> <span id="tiefeEditable" class="editable" contenteditable="true"></span></p>
-          </div>
-          <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_tiefe" aria-controls="infoPanel_tiefe" aria-expanded="false">ℹ️ Hinweise</button>
-            <button type="button" class="btn btn--sm" id="tiefeReset">Zurücksetzen (Antwortstil)</button>
-          </div>
-          <div class="info-panel" id="infoPanel_tiefe" role="region" aria-label="Hinweise zu Antwortstil / Spezifität">
-            <h4>Hilfetext – Antwortstil / Spezifität</h4>
-            <p><strong>Aufgabe:</strong> Legt den inhaltlichen Aufbau fest.</p>
-            <p><strong>Konsistenz:</strong> Eine Option wählen und konsequent beibehalten.</p>
-            <p><strong>Tipp:</strong> „Schrittweise/strukturiert“ ist häufig ein guter Default.</p>
-            <button type="button" class="close-info">Verbergen</button>
-          </div>
-        </div>
+  <!-- 3) Antwortstil / Spezifität (Single, size 8) -->
+  <div class="subcard" id="sub-antwortstil">
+    <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
+    <div class="subhint subhint--question">Wie soll der Agent seine Antworten aufbauen?</div>
+    <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+    <select id="tiefeSelect" size="8" aria-label="Antwortstil wählen">
+      <option>kompakt & direkt</option>
+      <option>schrittweise/strukturiert</option>
+      <option>technisch präzise</option>
+      <option>praxisnah mit Beispielen</option>
+      <option>ausführlich erklärend</option>
+      <option>tabellarische Darstellung</option>
+      <option>Pro/Contra‑Struktur</option>
+      <option>klare Handlungsempfehlungen</option>
+    </select>
+    <!-- Preview: kompletter Script-Satz mit Platzhalter -->
+    <div class="preview">
+      <p>Deine Antworten folgen dem Stil <span id="tiefeEditable" class="editable" contenteditable="true"></span>, damit Inhalte klar, nachvollziehbar und strukturiert bleiben.</p>
+    </div>
+    <div class="actions-line">
+      <button type="button" class="info-btn" id="infoBtn_tiefe" aria-controls="infoPanel_tiefe" aria-expanded="false">ℹ️ Hinweise</button>
+      <button type="button" class="btn btn--sm" id="tiefeReset">Zurücksetzen (Antwortstil)</button>
+    </div>
+    <div class="info-panel" id="infoPanel_tiefe" role="region" aria-label="Hilfetext Antwortstil / Spezifität">
+      <h4>Hilfetext – Antwortstil / Spezifität</h4>
+      <p><strong>Aufgabe:</strong> Legt den inhaltlichen Aufbau fest.</p>
+      <p><strong>Konsistenz:</strong> Eine Option wählen und konsequent beibehalten.</p>
+      <p><strong>Tipp:</strong> „Schrittweise/strukturiert“ ist häufig ein guter Default.</p>
+      <button type="button" class="close-info">Verbergen</button>
+    </div>
+  </div>
 
-        <!-- Rückfragen-Logik (Single, size 8) -->
-        <div class="subcard" id="sub-rueckfragen">
-          <h3 style="margin-top:0">Rückfragen‑Logik</h3>
-          <div class="subhint subhint--question">Wie soll der Agent Rückfragen einsetzen?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
-          <select id="rqSelect" size="8" aria-label="Rückfragen-Logik wählen">
-            <option>keine Rückfragen</option>
-            <option>Rückfragen nur bei Unklarheit (max. 1)</option>
-            <option>Zielbild klären (1 Frage)</option>
-            <option>Kontext klären (1 Frage)</option>
-            <option>Rückfrage am Ende</option>
-            <option>Scope‑Frage bei Mehrdeutigkeit</option>
-            <option>optionale Bestätigungsfrage („Soll ich weiter ins Detail gehen?“)</option>
-          </select>
-          <div class="preview">
-            <p><strong>Rückfragen‑Logik:</strong> <span id="rqEditable" class="editable" contenteditable="true"></span></p>
-          </div>
-          <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_rq" aria-controls="infoPanel_rq" aria-expanded="false">ℹ️ Hinweise</button>
-            <button type="button" class="btn btn--sm" id="rqReset">Zurücksetzen (Rückfragen)</button>
-          </div>
-          <div class="info-panel" id="infoPanel_rq" role="region" aria-label="Hinweise zur Rückfragen-Logik">
-            <h4>Hilfetext – Rückfragen‑Logik</h4>
-            <p><strong>Nutzen:</strong> Rückfragen erhöhen die Treffgenauigkeit, ohne den Fluss zu stören.</p>
-            <p><strong>Begrenzung:</strong> Nur eine Regel – eindeutiges Verhalten.</p>
-            <p><strong>Praxis:</strong> „Nur bei Unklarheit (max. 1)“ ist universell geeignet.</p>
-            <button type="button" class="close-info">Verbergen</button>
-          </div>
-        </div>
+  <!-- 4) Rückfragen-Logik (Single, size 8) -->
+  <div class="subcard" id="sub-rueckfragen">
+    <h3 style="margin-top:0">Rückfragen‑Logik</h3>
+    <div class="subhint subhint--question">Wie soll der Agent Rückfragen einsetzen?</div>
+    <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+    <select id="rqSelect" size="8" aria-label="Rückfragen-Logik wählen">
+      <option>keine Rückfragen</option>
+      <option>Rückfragen nur bei Unklarheit (max. 1)</option>
+      <option>Zielbild klären (1 Frage)</option>
+      <option>Kontext klären (1 Frage)</option>
+      <option>Rückfrage am Ende</option>
+      <option>Scope‑Frage bei Mehrdeutigkeit</option>
+      <option>optionale Bestätigungsfrage („Soll ich weiter ins Detail gehen?“)</option>
+    </select>
+    <!-- Preview: kompletter Script-Satz mit Platzhalter -->
+    <div class="preview">
+      <p>Deine Rückfragenlogik lautet: <span id="rqEditable" class="editable" contenteditable="true"></span>.</p>
+    </div>
+    <div class="actions-line">
+      <button type="button" class="info-btn" id="infoBtn_rq" aria-controls="infoPanel_rq" aria-expanded="false">ℹ️ Hinweise</button>
+      <button type="button" class="btn btn--sm" id="rqReset">Zurücksetzen (Rückfragen)</button>
+    </div>
+    <div class="info-panel" id="infoPanel_rq" role="region" aria-label="Hilfetext Rückfragen-Logik">
+      <h4>Hilfetext – Rückfragen‑Logik</h4>
+      <p><strong>Nutzen:</strong> Rückfragen erhöhen die Treffgenauigkeit, ohne den Fluss zu stören.</p>
+      <p><strong>Begrenzung:</strong> Nur eine Regel – eindeutiges Verhalten.</p>
+      <p><strong>Praxis:</strong> „Nur bei Unklarheit (max. 1)“ ist universell geeignet.</p>
+      <button type="button" class="close-info">Verbergen</button>
+    </div>
+  </div>
 
-        <!-- Recherche & Quellen (Single, size 8) -->
-        <div class="subcard" id="sub-recherche">
-          <h3 style="margin-top:0">Recherche & Quellen</h3>
-          <div class="subhint subhint--question">Wie soll der Agent recherchieren und Quellen verwenden?</div>
-          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
-          <select id="recSelect" size="8" aria-label="Rechercheverhalten wählen">
-            <option>keine Websuche</option>
-            <option>Websuche bei Bedarf</option>
-            <option>Websuche mit Quellenangabe (Titel/Datum/Link)</option>
-            <option>Websuche nur bei externen Themen</option>
-            <option>externe Infos als Stichpunkte</option>
-            <option>vor Recherche einmal Rückfrage bei Unklarheit</option>
-            <option>Recherche präzise, keine Vermutungen</option>
-          </select>
-          <div class="preview">
-            <p><strong>Recherche:</strong> <span id="recEditable" class="editable" contenteditable="true"></span></p>
-          </div>
-          <div class="actions-line">
-            <button type="button" class="info-btn" id="infoBtn_recherche" aria-controls="infoPanel_recherche" aria-expanded="false">ℹ️ Hinweise</button>
-            <button type="button" class="btn btn--sm" id="recReset">Zurücksetzen (Recherche)</button>
-          </div>
-          <div class="info-panel" id="infoPanel_recherche" role="region" aria-label="Hinweise zur Recherche">
-            <h4>Hilfetext – Recherche & Quellen</h4>
-            <p><strong>Transparenz:</strong> Bei externen Themen Quellen nennen.</p>
-            <p><strong>Reihenfolge:</strong> Erst klären, dann recherchieren.</p>
-            <p><strong>Sicherheit:</strong> Keine Vermutungen als Fakten ausgeben.</p>
-            <button type="button" class="close-info">Verbergen</button>
-          </div>
-        </div>
-      </div>
+  <!-- 5) Recherche & Quellen (Single, size 8) -->
+  <div class="subcard" id="sub-recherche">
+    <h3 style="margin-top:0">Recherche & Quellen</h3>
+    <div class="subhint subhint--question">Wie soll der Agent recherchieren und Quellen verwenden?</div>
+    <div class="subhint subhint--choose">Wähle genau eine Option:</div>
+    <select id="recSelect" size="8" aria-label="Rechercheverhalten wählen">
+      <option>keine Websuche</option>
+      <option>Websuche bei Bedarf</option>
+      <option>Websuche mit Quellenangabe (Titel/Datum/Link)</option>
+      <option>Websuche nur bei externen Themen</option>
+      <option>externe Infos als Stichpunkte</option>
+      <option>vor Recherche einmal Rückfrage bei Unklarheit</option>
+      <option>Recherche präzise, keine Vermutungen</option>
+    </select>
+    <!-- Preview: kompletter Script-Satz mit Platzhalter -->
+    <div class="preview">
+      <p>Dein Recherche‑ und Quellenverhalten ist: <span id="recEditable" class="editable" contenteditable="true"></span>.</p>
+    </div>
+    <div class="actions-line">
+      <button type="button" class="info-btn" id="infoBtn_recherche" aria-controls="infoPanel_recherche" aria-expanded="false">ℹ️ Hinweise</button>
+      <button type="button" class="btn btn--sm" id="recReset">Zurücksetzen (Recherche)</button>
+    </div>
+    <div class="info-panel" id="infoPanel_recherche" role="region" aria-label="Hilfetext Recherche & Quellen">
+      <h4>Hilfetext – Recherche & Quellen</h4>
+      <p><strong>Transparenz:</strong> Bei externen Themen Quellen nennen.</p>
+      <p><strong>Reihenfolge:</strong> Erst klären, dann recherchieren.</p>
+      <p><strong>Sicherheit:</strong> Keine Vermutungen als Fakten ausgeben.</p>
+      <button type="button" class="close-info">Verbergen</button>
+    </div>
+  </div>
+</div>
 
       <!-- COPY -->
       <div class="card copy-area" id="copyArea">
