@@ -353,7 +353,7 @@
         <div class="subcard">
           <h3 style="margin-top:0">Stil</h3>
           <div class="subhint subhint--question">Welchen Tonfall / welche Persönlichkeit soll der Agent verwenden?</div>
-          <div class="subhint subhint--choose">Wähle eine Option:</div>
+          <div class="subhint subhint--choose">Wähle genau eine Option:</div>
           <select id="stilSelect" size="6" aria-label="Kommunikationsstil wählen">
             <option>analytisch-technisch</option>
             <option>pragmatisch und lösungsorientiert</option>
@@ -466,7 +466,7 @@
   <div class="subcard" id="sub-antwortstil">
     <h3 style="margin-top:0">Antwortstil / Spezifität</h3>
     <div class="subhint subhint--question">Wie soll der Agent seine Antworten aufbauen?</div>
-    <div class="subhint subhint--choose">Wähle eine Option:</div>
+    <div class="subhint subhint--choose">Wähle genau eine Option:</div>
     <select id="tiefeSelect" size="8" aria-label="Antwortstil wählen">
       <option>kompakt & direkt</option>
       <option>schrittweise/strukturiert</option>
@@ -498,7 +498,7 @@
   <div class="subcard" id="sub-rueckfragen">
     <h3 style="margin-top:0">Rückfragen‑Logik</h3>
     <div class="subhint subhint--question">Wie soll der Agent Rückfragen einsetzen?</div>
-    <div class="subhint subhint--choose">Wähle eine Option:</div>
+    <div class="subhint subhint--choose">Wähle genau eine Option:</div>
     <select id="rqSelect" size="8" aria-label="Rückfragen-Logik wählen">
       <option>keine Rückfragen</option>
       <option>Rückfragen nur bei Unklarheit (max. 1)</option>
@@ -529,7 +529,7 @@
   <div class="subcard" id="sub-recherche">
     <h3 style="margin-top:0">Recherche & Quellen</h3>
     <div class="subhint subhint--question">Wie soll der Agent recherchieren und Quellen verwenden?</div>
-    <div class="subhint subhint--choose">Wähle eine Option:</div>
+    <div class="subhint subhint--choose">Wähle genau eine Option:</div>
     <select id="recSelect" size="8" aria-label="Rechercheverhalten wählen">
       <option>keine Websuche</option>
       <option>Websuche bei Bedarf</option>
@@ -657,22 +657,39 @@
       updateEditableFromSelection(key);
     }
 
-    function updateEditableFromSelection(key){
-      if(key === 'rolle'){ qs('#rolleBadge').textContent = joinList(state.rolle.selected); return; }
-      if(state[key]?.edited) return;
-      const map = {
-        purpose:   { span: '#purposeEditable', value: joinList(state.purpose.selected) },
-        tasks:     { span: '#tasksEditable',   value: joinList(state.tasks.selected)   },
-        start:     { span: '#startEditable',   value: joinList(state.start.selected)   },
-        variation: { span: '#varEditable',     value: joinList(state.variation.selected) },
-        tiefe:     { span: '#tiefeEditable',   value: state.tiefe.selected             },
-        rq:        { span: '#rqEditable',      value: state.rq.selected                },
-        recherche: { span: '#recEditable',     value: state.recherche.selected         },
-        stil:      { span: '#stilEditable',    value: state.stil.selected              }
-      };
-      const target = map[key];
-      if(target) qs(target.span).textContent = target.value;
-    }
+   function updateEditableFromSelection(key){
+  // Rolle: nicht editierbar → Badge füllen
+  if (key === 'rolle') {
+    qs('#rolleBadge').textContent = joinList(state.rolle.selected);
+    return;
+  }
+
+  const map = {
+    purpose:   { span: '#purposeEditable',   value: joinList(state.purpose.selected)   },
+    tasks:     { span: '#tasksEditable',     value: joinList(state.tasks.selected)     },
+    start:     { span: '#startEditable',     value: joinList(state.start.selected)     },
+    variation: { span: '#varEditable',       value: joinList(state.variation.selected) },
+    tiefe:     { span: '#tiefeEditable',     value: state.tiefe.selected               },
+    rq:        { span: '#rqEditable',        value: state.rq.selected                  },
+    recherche: { span: '#recEditable',       value: state.recherche.selected           },
+    stil:      { span: '#stilEditable',      value: state.stil.selected                }
+  };
+
+  const target = map[key];
+  if (!target) return;
+
+  const span = qs(target.span);
+  const newVal = target.value ?? '';
+  const curVal = (span.textContent || '').trim();
+
+  // Überschreibe, wenn:
+  // - Feld leer ist ODER
+  // - Feld noch exakt dem (letzten) Auswahl-Join entspricht ODER
+  // - der Nutzer nicht bewusst „entkoppelt“ hat (edited=false)
+  if (!state[key]?.edited || curVal === '' || curVal === newVal) {
+    span.textContent = newVal;
+  }
+}
 
     function updateSingleSelect(selectEl, key){
       const val = selectEl.value || '';
@@ -858,8 +875,15 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
       // Editable-Flags
       qs('#purposeEditable').addEventListener('input', ()=> state.purpose.edited = true);
       qs('#tasksEditable').addEventListener('input', ()=> state.tasks.edited   = true);
-      qs('#startEditable').addEventListener('input', ()=> state.start.edited   = true);
-      qs('#varEditable').addEventListener('input',   ()=> state.variation.edited = true);
+
+     qs('#startEditable').addEventListener('input', () => {
+  const joined = joinList(state.start.selected);
+  state.start.edited = (qs('#startEditable').textContent || '').trim() !== joined;
+});
+qs('#varEditable').addEventListener('input', () => {
+  const joined = joinList(state.variation.selected);
+  state.variation.edited = (qs('#varEditable').textContent || '').trim() !== joined;
+});
       qs('#tiefeEditable').addEventListener('input', ()=> state.tiefe.edited   = true);
       qs('#rqEditable').addEventListener('input',    ()=> state.rq.edited      = true);
       qs('#recEditable').addEventListener('input',   ()=> state.recherche.edited = true);
@@ -887,7 +911,5 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
       });
     });
   </script>
-</body>
-</html>
 </body>
 </html>
