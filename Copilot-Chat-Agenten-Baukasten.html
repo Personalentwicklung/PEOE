@@ -305,45 +305,108 @@
   </section>
   <!-- END: Builder -->
 
-  <!-- Info-Modal: Optionale Info-Ebene für Agenten-Baukasten V5.4 -->
-  <div id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
-    <div class="modal-content" role="document">
-      <span id="closeInfo" class="close-x" role="button" aria-label="Schließen">&times;</span>
+  <!-- Info-Modal: Optionale Info-Ebene -->
+<div id="infoModal" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <span id="closeInfo" class="close-x" role="button" aria-label="Schließen">&times;</span>
 
-      <div class="info-step active" data-step="1">
-        <h3 id="infoTitle">Was ist dieser Baukasten?</h3>
-        <ul>
-          <li><strong>Ziel:</strong> Er zeigt den Unterschied zwischen <strong>Copilot‑Fähigkeiten</strong> (KI‑Funktionen) und diesem <strong>Verhaltens‑Regelwerk</strong> (deine Arbeitslogik für den Agenten).</li>
-          <li><strong>Direkte Nutzung:</strong> Kein Tutorial‑Zwang, kein Wizard, keine Blockade – du kannst sofort mit dem Builder arbeiten.</li>
-          <li><strong>Diskret:</strong> Der Info‑Button blendet diese Ebene nur ein, wenn du sie brauchst.</li>
-        </ul>
-      </div>
+    <!-- SCREEN 1 -->
+    <div class="info-step active" data-step="1">
+      <h3>Was macht dieser Baukasten?</h3>
+      <p>Dieser Baukasten erstellt Copilot‑Agenten, die verlässlich, klar und strukturiert arbeiten.</p>
 
-      <div class="info-step" data-step="2">
-        <h3>Copilot‑Fähigkeiten vs. Regelwerk</h3>
-        <ul>
-          <li><strong>Copilot‑Fähigkeiten:</strong> Antworten formulieren, zusammenfassen, strukturieren, recherchieren.</li>
-          <li><strong>Regelwerk hier:</strong> Definiert <strong>Rolle</strong>, <strong>Zweck</strong>, <strong>Aufgaben</strong> und <strong>Arbeitslogik</strong> (Start, Variation, Rückfragen, Quellen) – also <em>wie</em> geantwortet wird.</li>
-          <li><strong>Wirkung:</strong> Das Regelwerk steuert Stil & Verhalten, nicht die technischen Fähigkeiten.</li>
-        </ul>
-      </div>
+      <p>Mit wenigen Auswahlfeldern bestimmst du:</p>
+      <ul>
+        <li>wie ein Agent antwortet</li>
+        <li>wie er kommuniziert</li>
+        <li>wie er mit Rückfragen, Recherche und Unklarheiten umgeht</li>
+        <li>wie er seine Aufgaben strukturiert</li>
+      </ul>
 
-      <div class="info-step" data-step="3">
-        <h3>So nutzt du die Info‑Ebene</h3>
-        <ul>
-          <li><strong>Bei Bedarf öffnen:</strong> wenn Unklarheit über die Logik besteht.</li>
-          <li><strong>Navigation:</strong> Mit <em>Weiter</em>/<em>Zurück</em> durch drei kurze Screens; unten zeigen Dots den Fortschritt.</li>
-          <li><strong>Schließen:</strong> Über <em>X</em> oder Klick auf den Hintergrund; du landest wieder im Startbereich.</li>
-        </ul>
-      </div>
+      <p>Der Fokus liegt auf Verhalten, Ton und Arbeitsweise.</p>
+      <p>Die fachlichen Fähigkeiten bringt Copilot bereits vollständig mit.</p>
+      <p>Der Baukasten sorgt dafür, dass sie gezielt, nachvollziehbar und konsistent eingesetzt werden.</p>
+    </div>
 
-      <div class="step-nav">
-        <button id="prevStep" class="btn btn--sm" type="button">Zurück</button>
-        <div id="stepDots" class="muted" aria-live="polite"></div>
-        <button id="nextStep" class="btn btn--sm" type="button">Weiter</button>
-      </div>
+    <!-- SCREEN 2 -->
+    <div class="info-step" data-step="2">
+      <h3>Wie funktioniert das?</h3>
+
+      <p>Du stellst dir einen Agenten zusammen, indem du fünf Bereiche auswählst:</p>
+
+      <p><strong>Rolle / Persona</strong><br>Welcher Grundstil? (z. B. sachlich, unterstützend, technisch)</p>
+
+      <p><strong>Purpose (Ziel)</strong><br>Was soll der Agent grundsätzlich erreichen?<br>(z. B. Prozesse vereinfachen, Aufgaben beschleunigen)</p>
+
+      <p><strong>Tasks (Arbeitsauftrag)</strong><br>Was macht der Agent typischerweise?<br>(z. B. analysieren, strukturieren, erklären)</p>
+
+      <p><strong>Kommunikationsstil</strong><br>Wie klingt der Agent?<br>(z. B. ruhig & klar, analytisch, kompakt)</p>
+
+      <p><strong>Grundverhalten</strong><br>Wie arbeitet der Agent?</p>
+      <ul>
+        <li>Wie er startet</li>
+        <li>Wie tief er antwortet</li>
+        <li>Wann er Rückfragen stellt</li>
+        <li>Wie er recherchiert</li>
+        <li>Wie natürlich er formuliert</li>
+      </ul>
+
+      <p>Durch diese Einstellungen entsteht ein klar definiertes Regelwerk, das den Agenten stabil, klar und vorhersehbar macht.</p>
+    </div>
+
+    <!-- SCREEN 3 -->
+    <div class="info-step" data-step="3">
+      <h3>Was passiert im Hintergrund?</h3>
+
+      <p>Der Baukasten setzt alle Entscheidungen in ein strukturiertes Regelwerk um. Dieses Regelwerk steuert:</p>
+      <ul>
+        <li>Tonfall</li>
+        <li>Struktur</li>
+        <li>Antwort-Niveau</li>
+        <li>Rückfragenverhalten</li>
+        <li>Recherche‑Verhalten</li>
+        <li>Variationen im Ausdruck</li>
+        <li>Umgang mit unklaren Situationen</li>
+        <li>Grenzen (keine Diagnosen, keine Rechtsauskünfte usw.)</li>
+        <li>Transparenz, Konsistenz</li>
+        <li>Datenschutz‑Hinweise</li>
+      </ul>
+
+      <p>Das erzeugte Script ist klar, konsistent und universell – und genau das macht die Agenten verlässlich.</p>
+      <p>Zusätzlich werden feste Bestandteile in das Script eingebaut. So z. B. Eskalationsstufen und DSGVO.</p>
+    </div>
+
+    <!-- SCREEN 4 -->
+    <div class="info-step" data-step="4">
+      <h3>Wie setzt der Agent deine Einstellungen um?</h3>
+
+      <p>Die Auswahl im Baukasten bildet die oberste Steuerlogik des Agenten. Diese Anweisungen haben Vorrang vor:</p>
+      <ul>
+        <li>benutzerdefinierten Copilot‑Einstellungen</li>
+        <li>persönlichen Erinnerungen</li>
+        <li>spontanen Stiländerungen</li>
+        <li>dem Standard‑Verhalten der KI</li>
+      </ul>
+
+      <p>Der Agent folgt dadurch konsequent:</p>
+      <ul>
+        <li>dem gewählten Ton</li>
+        <li>dem definierten Arbeitsverhalten</li>
+        <li>der gewünschten Struktur</li>
+        <li>der festgelegten Rückfragen‑ und Recherchelogik</li>
+      </ul>
+
+      <p>Gleichzeitig nutzt er alle Fähigkeiten, die Copilot bereits mitbringt, wendet sie aber innerhalb deiner definierten Regeln an – konsistent, kontrolliert und ohne Stilbrüche.</p>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="step-nav">
+      <button id="prevStep" class="btn btn--sm" type="button">Zurück</button>
+      <div id="stepDots" class="muted" aria-live="polite"></div>
+      <button id="nextStep" class="btn btn--sm" type="button">Weiter</button>
     </div>
   </div>
+</div>
 
   <script>
   // --- State
