@@ -172,7 +172,18 @@
     }
     .info-panel .close-info:hover{background:#f8fafc}
     @media (max-width: 720px){.container{padding:16px;}h1{font-size:24px}}
-  </style>
+  
+/* === Info-Modal FIXED === */
+@keyframes soft-pulse {0%{box-shadow:0 0 0 0 rgba(47,177,197,.4);}70%{box-shadow:0 0 0 10px rgba(47,177,197,0);}100%{box-shadow:0 0 0 0 rgba(47,177,197,0);}}
+.info-pulse{animation:soft-pulse 3s infinite;}
+#infoModal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
+.modal-content{background:var(--card-bg);padding:40px;border-radius:var(--radius);max-width:600px;width:90%;position:relative;box-shadow:var(--shadow);border:1px solid var(--border);} 
+.close-x{position:absolute;top:10px;right:15px;font-size:32px;cursor:pointer;color:var(--muted);} 
+.info-step{display:none;} .info-step.active{display:block;} 
+.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:30px;border-top:1px solid var(--border);padding-top:20px;} 
+/* === END === */
+
+</style>
 </head>
 <body>
   <!-- START: Startscreen -->
@@ -186,7 +197,10 @@
           <h3>Datenschutzhinweis</h3>
           <p>Der Baukasten speichert keine persönlichen Daten. Alle Eingaben bleiben ausschließlich in deinem Browser und werden nicht an Server übertragen. Beim Schließen der Seite gehen nicht gespeicherte Inhalte verloren.</p>
         </div>
-        <button id="startBtn" class="btn">Start</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:25px;">
+  <button id="startBtn" class="btn">Baukasten starten</button>
+  <button id="mainInfoBtn" class="info-btn info-pulse">Info zum Baukasten</button>
+</div>
       </div>
     </div>
   </section>
@@ -915,6 +929,42 @@ qs('#varEditable').addEventListener('input', () => {
         if(ok) setTimeout(()=> msg.style.display='none', 4000);
       });
     });
-  </script>
+  
+// === INFO-MODAL FIXED ===
+(function(){
+ const m=document.getElementById('infoModal'); if(!m) return;
+ const open=document.getElementById('mainInfoBtn'); const x=document.getElementById('closeInfo');
+ const steps=[...m.querySelectorAll('.info-step')]; let i=0;
+ const next=document.getElementById('nextStep'); const prev=document.getElementById('prevStep'); const dots=document.getElementById('stepDots');
+ function up(){steps.forEach((s,idx)=>s.classList.toggle('active',idx===i)); prev.style.visibility=i===0?'hidden':'visible'; next.textContent=i===steps.length-1?'Verstanden':'Weiter'; dots.textContent=steps.map((_,idx)=>idx===i?'●':'○').join(' ');} 
+ open.onclick=()=>{m.style.display='flex'; i=0; up();}; x.onclick=()=>m.style.display='none';
+ next.onclick=()=>{ if(i<steps.length-1){i++; up();} else m.style.display='none'; };
+ prev.onclick=()=>{ if(i>0){i--; up();} };
+ m.onclick=e=>{ if(e.target===m) m.style.display='none'; };
+})();
+// === END ===
+
+</script>
+
+<div id="infoModal" role="dialog" aria-modal="true">
+ <div class="modal-content">
+   <span id="closeInfo" class="close-x">&times;</span>
+   <div class="info-step active"><h3>Was ist dieser Baukasten?</h3><ul>
+    <li><strong>Ziel:</strong> Unterschied Copilot-Fähigkeiten vs. Regelwerk.</li>
+    <li><strong>Nutzung:</strong> Kein Wizard.</li>
+    <li><strong>Hinweis:</strong> Info bei Bedarf.</li></ul></div>
+   <div class="info-step"><h3>Copilot vs. Regelwerk</h3><ul>
+    <li>Copilot = Fähigkeiten.</li><li>Regelwerk = Verhalten/Logik.</li><li>Steuert Stil.</li></ul></div>
+   <div class="info-step"><h3>So nutzt du es</h3><ul><li>Nur öffnen bei Bedarf.</li>
+    <li>Weiter/Zurück Navigation.</li>
+    <li>Schließen über X.</li></ul></div>
+   <div class="step-nav">
+      <button id="prevStep" class="btn btn--sm">Zurück</button>
+      <div id="stepDots" class="muted"></div>
+      <button id="nextStep" class="btn btn--sm">Weiter</button>
+   </div>
+ </div>
+</div>
+
 </body>
 </html>
