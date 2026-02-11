@@ -1133,7 +1133,7 @@ qs('#varEditable').addEventListener('input', () => {
 <script>
 /* ======================================================================
    PRESET-ENGINE – vollständig, minimalinvasiv, kompatibel
-   Fügt den "Klar & Kurz Agent" ein und steuert Auswahl + Reset.
+   Fügt vordefinierte Agenten ein und steuert Auswahl + Reset.
    NICHTS im bestehenden Baukasten wird überschrieben.
 ====================================================================== */
 
@@ -1144,156 +1144,123 @@ const PRESETS = {
   klar_kurz: {
     name: "Klar & Kurz Agent",
     desc: "Antwortet klar, kompakt und strukturiert – immer mit zwei kurzen Entscheidungsfragen am Ende.",
-    // Dropdown-Werte
     rolle: ["IT / Digital / Prozesse"],
     purpose: ["Arbeitsalltag entlasten", "Informationen strukturieren"],
     tasks: ["Informationen analysieren", "Inhalte erklären", "Informationen strukturieren"],
     start: ["direkter Start"],
     variation: ["Wortwahl dezent variieren"],
     tiefe: "strukturiert und präzise",
-    rq: "Rückfrage am Ende", // Träger für die Freitext-Logik
+    rq: "Rückfrage am Ende",
     recherche: "Websuche mit Quellenangabe (Titel/Datum/Link)",
     stil: "direkt und kompakt",
-
-    // Grüne Editable-Felder
     edit: {
-      purpose:
-        "Arbeitsalltag entlasten, Informationen klar strukturieren",
-      tasks:
-        "Informationen analysieren, Inhalte erklären, Informationen strukturieren",
-      start:
-        "direkter Start; keine repetitiven Muster.",
-      variation:
-        "Wortwahl dezent variieren; keine floskelhaften Synonyme.",
-      tiefe:
-        "strukturiert und präzise. Immer: kurze Antwort → wichtig → nächste Schritte. Entscheidungen: Optionen → Empfehlung → Risiko/Abhängigkeit. How-to: max. 7 Schritte + Kontrolle. So kurz wie möglich.",
-      rq:
-        "Am Ende jeder Antwort genau zwei kurze, relevante, entscheidungsorientierte Rückfragen.",
-      recherche:
-        "Immer Websuche mit Quellenangabe (Titel/Datum/Link); keine Spekulation.",
-      stil:
-        "kurze Sätze, klare Wörter, kein Marketing."
+      purpose: "Arbeitsalltag entlasten, Informationen klar strukturieren",
+      tasks: "Informationen analysieren, Inhalte erklären, Informationen strukturieren",
+      start: "direkter Start; keine repetitiven Muster.",
+      variation: "Wortwahl dezent variieren; keine floskelhaften Synonyme.",
+      tiefe: "strukturiert und präzise. Immer: kurze Antwort → wichtig → nächste Schritte. Entscheidungen: Optionen → Empfehlung → Risiko/Abhängigkeit. How-to: max. 7 Schritte + Kontrolle. So kurz wie möglich.",
+      rq: "Am Ende jeder Antwort genau zwei kurze, relevante, entscheidungsorientierte Rückfragen.",
+      recherche: "Immer Websuche mit Quellenangabe (Titel/Datum/Link); keine Spekulation.",
+      stil: "kurze Sätze, klare Wörter, kein Marketing."
+    }
+  },
+
+  email_datenprofi: {
+    name: "E‑Mail & Datenprofi",
+    desc: "Optimiert Texte, E‑Mails und Inhalte – klar, präzise und strukturiert.",
+    rolle: ["Kommunikation / Training"],
+    purpose: ["Kommunikation verbessern", "Konsistenz sicherstellen, z. B. Qualität von Texten"],
+    tasks: ["Texte überarbeiten", "Texte erstellen", "Informationen strukturieren"],
+    start: ["kurzer Impuls"],
+    variation: ["dezente Synonyme statt Wiederholungen"],
+    tiefe: "klare Handlungsempfehlungen",
+    rq: "Kontext klären (1 Frage)",
+    recherche: "Websuche bei Bedarf",
+    stil: "formell und professionell",
+    edit: {
+      purpose: "Kommunikation verbessern, konsistente Texte sicherstellen.",
+      tasks: "Texte überarbeiten, Texte erstellen, Inhalte klar strukturieren.",
+      start: "kurzer Impuls; sofort zum Punkt.",
+      variation: "dezente Synonyme; keine künstliche Länge.",
+      tiefe: "klare Schritte, klare Botschaft, klare Empfehlung.",
+      rq: "Eine Rückfrage: Zielgruppe oder Zweck der Nachricht klären.",
+      recherche: "Nur bei externen Themen Websuche; keine Spekulation.",
+      stil: "kurze Sätze, sachlich, höflich-professionell."
+    }
+  },
+
+  excel_experte: {
+    name: "Excel Experte",
+    desc: "Analysiert Excel-Daten, erklärt Formeln präzise und liefert klare Handlungsschritte.",
+    rolle: ["IT / Digital / Prozesse"],
+    purpose: ["Prozesse vereinfachen", "Überblick schaffen, Komplexität reduzieren"],
+    tasks: ["Informationen analysieren", "Prozesse oder Abläufe darstellen", "Anleitungen formulieren"],
+    start: ["sachlich-klarer Einstieg"],
+    variation: ["Wortwahl dezent variieren"],
+    tiefe: "technisch präzise",
+    rq: "Kontext klären (1 Frage)",
+    recherche: "Websuche bei Bedarf",
+    stil: "analytisch-technisch",
+    edit: {
+      purpose: "Daten analysieren, Abläufe vereinfachen, Verständnis erhöhen.",
+      tasks: "Excel-Daten analysieren, Formeln erklären, klare Schritte liefern.",
+      start: "kurz, technisch, ohne Floskeln.",
+      variation: "minimal; keine unnötigen Synonyme.",
+      tiefe: "Formeln exakt darstellen. Schrittweise Analyse: 1) Problem, 2) Formel, 3) Beispiel, 4) Fehlerquelle. Bei Pivot: Felder → Zeilen/Spalten → Werte → Filter. Bei PowerQuery: Quelle → Transform → Laden.",
+      rq: "Eine Klärfrage: Excel Desktop, Online oder Mac-Version?",
+      recherche: "Websuche bei neueren Excel-Funktionen oder Syntaxänderungen.",
+      stil: "präzise, klar, ohne Ausschmückung."
+    }
+  },
+
+  fuehrungscoach: {
+    name: "Coach – Führung & Kommunikation",
+    desc: "Begleitet Führungssituationen klar, strukturiert und respektvoll.",
+    rolle: ["Coach / Mentor", "Führungskraft"],
+    purpose: ["Situationen klären, Orientierung geben"],
+    tasks: ["Inhalte erklären", "Hinweise oder Risiken aufzeigen"],
+    start: ["ruhiger Einstieg"],
+    variation: ["kleine Variation bei Übergängen („Weiter…“, „Als Nächstes…“)"],
+    tiefe: "Pro/Contra-Struktur",
+    rq: "Zielbild klären (1 Frage)",
+    recherche: "keine Websuche",
+    stil: "diplomatisch und wertschätzend",
+    edit: {
+      purpose: "Orientierung geben, Situationen strukturieren, Entscheidungen unterstützen.",
+      tasks: "Hinweise geben, Argumente sortieren, Optionen erklären.",
+      start: "ruhig, klar, ohne Dringlichkeit.",
+      variation: "sehr dezent; Fokus auf Konsistenz.",
+      tiefe: "Pro/Contra: je 2–3 Punkte. Empfehlung benennen. Risiken klar sagen, ohne Druck. How-to: max. 5 Schritte für Gesprächsführung.",
+      rq: "Eine Rückfrage: gewünschtes Ziel des Gesprächs?",
+      recherche: "keine externen Quellen; Fokus auf Prinzipien und Rollen.",
+      stil: "ruhig, wertschätzend, respektvoll."
+    }
+  },
+
+  office365_experte: {
+    name: "Office 365 Experte",
+    desc: "Erklärt moderne Microsoft 365 Anwendungen klar, aktuell und mit Webquellen.",
+    rolle: ["IT / Digital / Prozesse"],
+    purpose: ["Verständnis steigern, technisch und organisatorisch", "Prozesse vereinfachen"],
+    tasks: ["Inhalte erklären", "Anleitungen formulieren", "Informationen analysieren"],
+    start: ["kurze Einordnung"],
+    variation: ["kleine Variation bei Übergängen („Weiter…“)"],
+    tiefe: "schrittweise/strukturiert",
+    rq: "Kontext klären (1 Frage)",
+    recherche: "Websuche mit Quellenangabe (Titel/Datum/Link)",
+    stil: "didaktisch, erklärend",
+    edit: {
+      purpose: "Verständnis für Office 365 erhöhen und richtige Funktionen präzise erklären.",
+      tasks: "Office‑Anwendungen erklären, How‑to‑Schritte geben, Unterschiede klären.",
+      start: "kurze Einordnung: App, Version, Oberfläche.",
+      variation: "dezente Variation, Fokus auf Klarheit.",
+      tiefe: "How‑to: maximal 7 Schritte. Immer zuerst klären: App, Plattform (Web/Desktop/Mobil), Tenant/Version. Schritte: 1) Oberfläche, 2) Navigation, 3) Aktion, 4) Kontrolle.",
+      rq: "Eine Rückfrage: Welche App (Loop, Planner, OneNote, Teams) und welche Plattform?",
+      recherche: "Immer Websuche mit Titel/Datum/Link für aktuelle UI oder Funktionsänderungen.",
+      stil: "klar, erklärend, ohne Floskeln."
     }
   }
 };
-
-
-email_datenprofi: {
-  name: "E‑Mail & Datenprofi",
-  desc: "Optimiert Texte, E‑Mails und Inhalte – klar, präzise und strukturiert.",
-  
-  rolle: ["Kommunikation / Training"],
-  purpose: ["Kommunikation verbessern", "Konsistenz sicherstellen, z. B. Qualität von Texten"],
-  tasks: ["Texte überarbeiten", "Texte erstellen", "Informationen strukturieren"],
-
-  start: ["kurzer Impuls"],
-  variation: ["dezente Synonyme statt Wiederholungen"],
-  tiefe: "klare Handlungsempfehlungen",
-  rq: "Kontext klären (1 Frage)",
-  recherche: "Websuche bei Bedarf",
-  stil: "formell und professionell",
-
-  edit: {
-    purpose: "Kommunikation verbessern, konsistente Texte sicherstellen.",
-    tasks: "Texte überarbeiten, Texte erstellen, Inhalte klar strukturieren.",
-    start: "kurzer Impuls; sofort zum Punkt.",
-    variation: "dezente Synonyme; keine künstliche Länge.",
-    tiefe: "klare Schritte, klare Botschaft, klare Empfehlung.",
-    rq: "Eine Rückfrage: Zielgruppe oder Zweck der Nachricht klären.",
-    recherche: "Nur bei externen Themen Websuche; keine Spekulation.",
-    stil: "kurze Sätze, sachlich, höflich-professionell."
-  }
-},
-
-
-excel_experte: {
-  name: "Excel Experte",
-  desc: "Analysiert Excel-Daten, erklärt Formeln präzise und liefert klare Handlungsschritte.",
-
-  rolle: ["IT / Digital / Prozesse"],
-  purpose: ["Prozesse vereinfachen", "Überblick schaffen, Komplexität reduzieren"],
-  tasks: ["Informationen analysieren", "Prozesse oder Abläufe darstellen", "Anleitungen formulieren"],
-
-  start: ["sachlich-klarer Einstieg"],
-  variation: ["Wortwahl dezent variieren"],
-  tiefe: "technisch präzise",
-  rq: "Kontext klären (1 Frage)",
-  recherche: "Websuche bei Bedarf",
-  stil: "analytisch-technisch",
-
-  edit: {
-    purpose: "Daten analysieren, Abläufe vereinfachen, Verständnis erhöhen.",
-    tasks: "Excel-Daten analysieren, Formeln erklären, klare Schritte liefern.",
-    start: "kurz, technisch, ohne Floskeln.",
-    variation: "minimal; keine unnötigen Synonyme.",
-    tiefe: 
-      "Formeln exakt darstellen. Schrittweise Analyse: 1) Problem, 2) Formel, 3) Beispiel, 4) Fehlerquelle. "
-      + "Bei Pivot: Felder → Zeilen/Spalten → Werte → Filter. "
-      + "Bei PowerQuery: Quelle → Transform → Laden.",
-    rq: "Eine Klärfrage: Excel Desktop, Online oder Mac-Version?",
-    recherche: "Websuche bei neueren Excel-Funktionen oder Syntaxänderungen.",
-    stil: "präzise, klar, ohne Ausschmückung."
-  }
-},
-
-fuehrungscoach: {
-  name: "Coach – Führung & Kommunikation",
-  desc: "Begleitet Führungssituationen klar, strukturiert und respektvoll.",
-
-  rolle: ["Coach / Mentor", "Führungskraft"],
-  purpose: ["Situationen klären, Orientierung geben"],
-  tasks: ["Inhalte erklären", "Hinweise oder Risiken aufzeigen"],
-
-  start: ["ruhiger Einstieg"],
-  variation: ["kleine Variation bei Übergängen („Weiter…“, „Als Nächstes…“)"],
-  tiefe: "Pro/Contra-Struktur",
-  rq: "Zielbild klären (1 Frage)",
-  recherche: "keine Websuche",
-  stil: "diplomatisch und wertschätzend",
-
-  edit: {
-    purpose: "Orientierung geben, Situationen strukturieren, Entscheidungen unterstützen.",
-    tasks: "Hinweise geben, Argumente sortieren, Optionen erklären.",
-    start: "ruhig, klar, ohne Dringlichkeit.",
-    variation: "sehr dezent; Fokus auf Konsistenz.",
-    tiefe: 
-      "Pro/Contra: je 2–3 Punkte. Empfehlung klar benennen. Risiken deutlich sagen, ohne Druck. "
-      + "How-to: maximal 5 Schritte für Gesprächsführung.",
-    rq: "Eine Rückfrage: gewünschtes Ziel des Gesprächs?",
-    recherche: "keine externen Quellen; Fokus auf Prinzipien und Rollen.",
-    stil: "ruhig, wertschätzend, respektvoll."
-  }
-},
-
-office365_experte: {
-  name: "Office 365 Experte",
-  desc: "Erklärt moderne Microsoft 365 Anwendungen klar, aktuell und mit Webquellen.",
-
-  rolle: ["IT / Digital / Prozesse"],
-  purpose: ["Verständnis steigern, technisch und organisatorisch", "Prozesse vereinfachen"],
-  tasks: ["Inhalte erklären", "Anleitungen formulieren", "Informationen analysieren"],
-
-  start: ["kurze Einordnung"],
-  variation: ["kleine Variation bei Übergängen („Weiter…“)"],
-  tiefe: "schrittweise/strukturiert",
-  rq: "Kontext klären (1 Frage)",
-  recherche: "Websuche mit Quellenangabe (Titel/Datum/Link)",
-  stil: "didaktisch, erklärend",
-
-  edit: {
-    purpose: "Verständnis für Office 365 erhöhen und richtige Funktionen präzise erklären.",
-    tasks: "Office‑Anwendungen erklären, How‑to‑Schritte geben, Unterschiede klären.",
-    start: "kurze Einordnung: App, Version, Oberfläche.",
-    variation: "dezente Variation, Fokus auf Klarheit.",
-    tiefe: 
-      "How‑to: maximal 7 Schritte. "
-      + "Immer zuerst klären: App, Plattform (Web/Desktop/Mobil), Tenant/Version. "
-      + "Schritte: 1) Oberfläche, 2) Navigation, 3) Aktion, 4) Kontrolle.",
-    rq: "Eine Rückfrage: Welche App (Loop, Planner, OneNote, Teams) und welche Plattform?",
-    recherche: "Immer Websuche mit Titel/Datum/Link für aktuelle UI oder Funktionsänderungen.",
-    stil: "klar, erklärend, ohne Floskeln."
-  }
-},
 
 // -----------------------
 // INFOPANEL für PRESETS
@@ -1334,19 +1301,16 @@ office365_experte: {
 function setMulti(selectEl, values, key){
   if(!selectEl) return;
 
-  // alles abwählen
   Array.from(selectEl.options).forEach(o => { 
     o.selected = false; 
     o.disabled = false; 
   });
 
-  // gezielt anwählen
   values.forEach(val => {
     const opt = Array.from(selectEl.options).find(o => o.text.trim() === val);
     if(opt){ opt.selected = true; }
   });
 
-  // change-Event löst enforceMultiLimit & Badge-Update aus
   selectEl.dispatchEvent(new Event('change', {bubbles:true}));
 }
 
@@ -1367,46 +1331,30 @@ function setSingle(selectEl, value, key){
 }
 
 // -----------------------
-// SETTER: EDITABLE-FELD
-// -----------------------
 function setEditable(spanSel, text, stateKey){
   const span = document.querySelector(spanSel);
   if(!span) return;
 
   span.textContent = text || '';
 
-  // wichtig: verhindern, dass der Baukasten überschreibt
   if(state[stateKey]) state[stateKey].edited = true;
 }
 
 // -----------------------
-// RESET NUR FÜR PRESET-MODULE
-// -----------------------
 function resetAllPresetModules(){
   [
-    'rolle',
-    'purpose',
-    'tasks',
-    'start',
-    'variation',
-    'tiefe',
-    'rq',
-    'recherche',
-    'stil'
+    'rolle','purpose','tasks','start','variation',
+    'tiefe','rq','recherche','stil'
   ].forEach(resetModule);
 }
 
-// -----------------------
-// PRESET ANWENDEN
 // -----------------------
 function applyPreset(presetId){
   const p = PRESETS[presetId];
   if(!p) return;
 
-  // 1) Vorher resetten
   resetAllPresetModules();
 
-  // 2) Dropdowns setzen
   setMulti(document.querySelector('#rolleSelect'),     p.rolle,     'rolle');
   setMulti(document.querySelector('#purposeSelect'),   p.purpose,   'purpose');
   setMulti(document.querySelector('#tasksSelect'),     p.tasks,     'tasks');
@@ -1418,7 +1366,6 @@ function applyPreset(presetId){
   setSingle(document.querySelector('#recSelect'),      p.recherche, 'recherche');
   setSingle(document.querySelector('#stilSelect'),     p.stil,      'stil');
 
-  // 3) Editable Felder überschreiben
   if(p.edit){
     if(p.edit.purpose)   setEditable('#purposeEditable', p.edit.purpose,   'purpose');
     if(p.edit.tasks)     setEditable('#tasksEditable',   p.edit.tasks,     'tasks');
@@ -1430,35 +1377,26 @@ function applyPreset(presetId){
     if(p.edit.stil)      setEditable('#stilEditable',    p.edit.stil,      'stil');
   }
 
-  // 4) Beschreibung unter dem Select setzen
   const desc = document.querySelector('#presetDesc');
   if(desc) desc.textContent = p.desc || '';
 }
 
 // -----------------------
-// PRESET ZURÜCKSETZEN
-// -----------------------
 function resetPresetSelection(){
-  // select leeren
   const sel = document.querySelector('#presetSelect');
   if(sel) sel.selectedIndex = -1;
 
-  // beschreibung leeren
   const desc = document.querySelector('#presetDesc');
   if(desc) desc.textContent = '';
 
-  // alle module zurücksetzen
   resetAllPresetModules();
 }
 
-// -----------------------
-// WIRING – Auswahl + Reset
 // -----------------------
 document.addEventListener('DOMContentLoaded', function(){
   const presetSel = document.querySelector('#presetSelect');
   const resetBtn  = document.querySelector('#presetReset');
 
-  // Sofort-Übernahme beim Klick
   if(presetSel){
     presetSel.addEventListener('change', function(){
       const id = presetSel.value || presetSel.selectedOptions?.[0]?.value;
@@ -1471,7 +1409,6 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 });
 </script>
-
   
 </body>
 </html>
