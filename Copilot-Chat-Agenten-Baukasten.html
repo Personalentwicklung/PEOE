@@ -238,6 +238,46 @@
   <p><strong>Viel Erfolg beim Erstellen!</strong></p>
 </div>
 
+
+<!-- MODUL: Muster Agents (neu) -->
+<div class="card" id="mod-presets">
+  <h2>Muster Agents</h2>
+
+  <div class="subcard" id="sub-presets" style="margin-top:0;">
+    <!-- Einleitung -->
+    <p>Wähle einen vordefinierten Agent.</p>
+
+    <!-- Auswahl (gleiches UI-Prinzip wie andere Boxen: select) -->
+    <select id="presetSelect" size="6" aria-label="Muster Agent auswählen">
+      <option value="klar_kurz">Klar & Kurz Agent</option>
+      <!-- Platzhalter für weitere Presets -->
+      <!-- <option value="...">...</option> -->
+    </select>
+
+    <!-- Erklärung (1 Satz) -->
+    <div class="preview">
+      <p id="presetDesc" class="muted">
+        Antwortet klar, kompakt und strukturiert – immer mit zwei kurzen Entscheidungsfragen am Ende.
+      </p>
+    </div>
+
+    <!-- Aktionen -->
+    <div class="actions-line">
+      <button type="button" class="info-btn" id="infoBtn_presets" aria-controls="infoPanel_presets" aria-expanded="false">ℹ️ Hinweise</button>
+      <button type="button" class="btn btn--sm" id="presetReset">Auswahl zurücksetzen</button>
+    </div>
+
+    <!-- Hinweis-Panel -->
+    <div class="info-panel" id="infoPanel_presets" role="region" aria-label="Hinweise zu Muster Agents">
+      <h4>Hinweise zu Muster Agents</h4>
+      <p><strong>Auswahl:</strong> Wähle einen vordefinierten Agent aus der Liste aus.</p>
+      <p><strong>Skript:</strong> Die Einstellungen werden hier im Baukasten automatisch eingetragen.</p>
+      <p><strong>Tipp:</strong> Die Auswahlen und Freitexte können nach Belieben angepasst werden.</p>
+      <button type="button" class="close-info">Verbergen</button>
+    </div>
+  </div>
+</div>
+
       
       <!-- MODUL: Rolle / Persona (unverändert) -->
       <div class="card" id="mod-rolle">
@@ -1072,5 +1112,167 @@ qs('#varEditable').addEventListener('input', () => {
       <button id="nextStep" class="btn btn--sm" type="button">Weiter</button>
     </div>
   </div>
+
+
+<script>
+/* === Preset-Engine (minimalinvasiv) =======================================
+   Greift nur auf vorhandene IDs/Funktionen zu, ändert keine Core-Logik.
+=========================================================================== */
+
+// ---- Daten: PRESETS -------------------------------------------------------
+const PRESETS = {
+  klar_kurz: {
+    name: "Klar & Kurz Agent",
+    desc: "Antwortet klar, kompakt und strukturiert – immer mit zwei kurzen Entscheidungsfragen am Ende.",
+    // Dropdown-Auswahlen
+    rolle: ["IT / Digital / Prozesse"],                      // max 3
+    purpose: ["Arbeitsalltag entlasten", "Informationen strukturieren"], // max 2
+    tasks: ["Informationen analysieren", "Inhalte erklären", "Informationen strukturieren"], // max 3
+    start: ["direkter Start"],                               // max 3
+    variation: ["Wortwahl dezent variieren"],                // max 3
+    tiefe: "strukturiert und präzise",                       // single
+    rq: "Rückfrage am Ende",                                  // single (Träger), Text unten präzisiert
+    recherche: "Websuche mit Quellenangabe (Titel/Datum/Link)", // single
+    stil: "direkt und kompakt",                               // single
+    // Grüne Freitexte (Editable-Overrides)
+    edit: {
+      purpose: "Arbeitsalltag entlasten, Informationen klar strukturieren",
+      tasks: "Informationen analysieren, Inhalte erklären, Informationen strukturieren",
+      start: "direkter Start; keine repetitiven Muster.",
+      variation: "Wortwahl dezent variieren; keine floskelhaften Synonyme.",
+      tiefe:
+        "strukturiert und präzise. Immer: kurze Antwort → wichtig → nächste Schritte. Entscheidungen: Optionen → Empfehlung → Risiko/Abhängigkeit. How-to: max. 7 Schritte + Kontrolle. So kurz wie möglich.",
+      rq: "Am Ende jeder Antwort genau zwei kurze, relevante, entscheidungsorientierte Rückfragen.",
+      recherche: "Immer Websuche mit Quellenangabe (Titel/Datum/Link); keine Spekulation.",
+      stil: "kurze Sätze, klare Wörter, kein Marketing."
+    }
+  }
+  // Weitere Presets können hier als reine Datenblöcke ergänzt werden.
+};
+
+// ---- Utility: Info-Panel-Wiring für Presets (gleich wie andere Panels) ----
+(function wirePresetInfoPanel(){
+  const btn = document.querySelector('#infoBtn_presets');
+  const panel = document.querySelector('#infoPanel_presets');
+  if(!btn || !panel) return;
+  const closeBtn = panel.querySelector('.close-info');
+  function open(){ panel.style.display='block'; btn.setAttribute('aria-expanded','true'); closeBtn && closeBtn.focus(); }
+  function close(){ panel.style.display='none'; btn.setAttribute('aria-expanded','false'); btn.focus(); }
+  btn.addEventListener('click', ()=>{ const openNow = panel.style.display==='block'; openNow?close():open(); });
+  closeBtn && closeBtn.addEventListener('click', close);
+  panel.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+})();
+
+// ---- Core-Setter: Multi-Select setzen & Change-Events auslösen ------------
+function setMulti(selectEl, values, key){
+  if(!selectEl) return;
+  // erst alles abwählen
+  Array.from(selectEl.options).forEach(o => { o.selected = false; o.disabled = false; });
+  // gezielt setzen
+  values.forEach(val => {
+    const opt = Array.from(selectEl.options).find(o => o.text.trim() === val);
+    if(opt){ opt.selected = true; }
+  });
+  // Change → Limit/Badge/Preview wie gewohnt
+  selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+  // Falls Limit greift, enforceMultiLimit kümmert sich darum
+}
+
+// ---- Core-Setter: Single-Select setzen ------------------------------------
+function setSingle(selectEl, value, key){
+  if(!selectEl) return;
+  const opt = Array.from(selectEl.options).find(o => o.text.trim() === value);
+  if(opt){
+    selectEl.value = opt.value || opt.text;
+  } else {
+    // Wenn nicht gefunden, leeren
+    selectEl.selectedIndex = -1;
+  }
+  selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+}
+
+// ---- Editable setzen + Edited-Flag true -----------------------------------
+function setEditable(spanSel, text, stateKey){
+  const span = document.querySelector(spanSel);
+  if(!span) return;
+  span.textContent = text || '';
+  if(state[stateKey]) state[stateKey].edited = true;
+}
+
+// ---- Reset nur für durch Preset berührte Module ---------------------------
+function resetAllPresetModules(){
+  ['rolle','purpose','tasks','start','variation','tiefe','rq','recherche','stil'].forEach(resetModule);
+}
+
+// ---- Preset anwenden -------------------------------------------------------
+function applyPreset(presetId){
+  const p = PRESETS[presetId];
+  if(!p) return;
+
+  // 1) Vorher löschen, damit Zustand sauber ist
+  resetAllPresetModules();
+
+  // 2) DROPDOWNS setzen
+  setMulti(document.querySelector('#rolleSelect'),     p.rolle,     'rolle');
+  setMulti(document.querySelector('#purposeSelect'),   p.purpose,   'purpose');
+  setMulti(document.querySelector('#tasksSelect'),     p.tasks,     'tasks');
+  setMulti(document.querySelector('#startSelect'),     p.start,     'start');
+  setMulti(document.querySelector('#varSelect'),       p.variation, 'variation');
+
+  setSingle(document.querySelector('#tiefeSelect'),    p.tiefe,     'tiefe');
+  setSingle(document.querySelector('#rqSelect'),       p.rq,        'rq');
+  setSingle(document.querySelector('#recSelect'),      p.recherche, 'recherche');
+  setSingle(document.querySelector('#stilSelect'),     p.stil,      'stil');
+
+  // 3) GRÜNE FELDER setzen + Flags
+  if(p.edit){
+    if(p.edit.purpose)   setEditable('#purposeEditable', p.edit.purpose,   'purpose');
+    if(p.edit.tasks)     setEditable('#tasksEditable',   p.edit.tasks,     'tasks');
+    if(p.edit.start)     setEditable('#startEditable',   p.edit.start,     'start');
+    if(p.edit.variation) setEditable('#varEditable',     p.edit.variation, 'variation');
+    if(p.edit.tiefe)     setEditable('#tiefeEditable',   p.edit.tiefe,     'tiefe');
+    if(p.edit.rq)        setEditable('#rqEditable',      p.edit.rq,        'rq');
+    if(p.edit.recherche) setEditable('#recEditable',     p.edit.recherche, 'recherche');
+    if(p.edit.stil)      setEditable('#stilEditable',    p.edit.stil,      'stil');
+  }
+
+  // 4) Beschreibung im Preset-Kasten
+  const desc = document.querySelector('#presetDesc');
+  if(desc) desc.textContent = p.desc || '';
+
+  // 5) Script/Preview intern aktualisieren (optional, für sofortiges Feedback)
+  // Die Previews hängen am DOM-Text; buildScript wird erst beim Kopieren gebraucht.
+  // Wenn du eine Live-Vorschau willst, könntest du hier zusätzlich buildScript() verwenden.
+  // (Kein Pflichtaufruf nötig, da der Baukasten Previews bereits füllt.)
+}
+
+// ---- Preset-Reset (Auswahl + gesetzte Werte zurücksetzen) -----------------
+function resetPresetSelection(){
+  const sel = document.querySelector('#presetSelect');
+  if(sel) sel.selectedIndex = -1;
+  const desc = document.querySelector('#presetDesc');
+  if(desc) desc.textContent = '';
+  resetAllPresetModules();
+}
+
+// ---- Wiring: Auswahl & Buttons -------------------------------------------
+document.addEventListener('DOMContentLoaded', function(){
+  const presetSel = document.querySelector('#presetSelect');
+  const resetBtn  = document.querySelector('#presetReset');
+
+  if(presetSel){
+    // Sofort-Übernahme per Einfachklick (wie gewünscht)
+    presetSel.addEventListener('change', function(){
+      const id = presetSel.value || presetSel.selectedOptions?.[0]?.value;
+      if(id) applyPreset(id);
+    });
+  }
+
+  if(resetBtn){
+    resetBtn.addEventListener('click', resetPresetSelection);
+  }
+});
+</script>
+  
 </body>
 </html>
