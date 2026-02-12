@@ -196,29 +196,28 @@
     /* === End Info-Modal === */
 
   
-  /* === Preset-Kasten: dezentes Highlight ================================== */
+ /* === Preset-Kasten (dezente Abhebung) ============================= */
 .card--preset {
-  border-color: var(--accent);
-  background: linear-gradient(0deg, #f7fcfd 0%, #ffffff 55%); /* sehr leichtes Tönchen */
+  background: #e7f3f8;      /* leicht dunkleres, sehr sanftes Blau */
+  border: 1px solid var(--border); /* gleiche Optik wie andere Cards */
 }
 
-/* Optional: Subcard innen noch sanfter abheben */
+/* Subcard im Preset-Kasten normalisieren */
 #sub-presets {
-  background: #f7fbfd; /* minimal heller als .subtle */
-  border-color: var(--accent);
+  background: #ffffff;      /* wieder weiß, damit nichts durchscheint */
+  border: 1px solid var(--border);
 }
 
-/* === Copy-Button: schneller Puls (in Blau) ============================== */
-/* bestehende soft-pulse belassen; wir definieren eine schnellere Variante */
+/* === Copy-Button: schneller Puls ================================ */
 @keyframes pulse-fast-primary {
-  0%   { box-shadow: 0 0 0 0 rgba(0,90,156,0.40); }
-  60%  { box-shadow: 0 0 0 10px rgba(0,90,156,0.00); }
-  100% { box-shadow: 0 0 0 0 rgba(0,90,156,0.00); }
+  0%   { box-shadow: 0 0 0 0 rgba(0,90,156,0.35); }
+  60%  { box-shadow: 0 0 0 10px rgba(0,90,156,0.0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,90,156,0.0); }
 }
+
 .btn--pulse-fast {
-  animation: pulse-fast-primary 1.6s infinite; /* schneller als info-pulse (3s) */
+  animation: pulse-fast-primary 1.6s infinite;
 }
-  
   
   </style>
 </head>
