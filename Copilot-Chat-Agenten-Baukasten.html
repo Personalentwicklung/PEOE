@@ -1,4 +1,4 @@
-<!doctype html>
+Muster Agents<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
@@ -223,7 +223,15 @@ card--preset {
 .btn--pulse-fast {
   animation: pulse-fast-primary 1.6s infinite;
 }
-  
+
+
+
+mod-presets {
+  background: var(--subtle) !important;
+}
+
+
+    
   </style>
 </head>
 <body>
@@ -276,7 +284,7 @@ card--preset {
 
   <div class="subcard" id="sub-presets" style="margin-top:0;">
     <!-- Einleitung mit fetter Fragezeile (konsistent) -->
-    <div class="subhint subhint--question" id="presetQuestion">Wähle einen vordefinierten Agent:</div>
+    <div class="subhint subhint--question" id="presetQuestion">Wähle einen vordefinierten Agents:</div>
 
     <!-- Auswahl (gleiches UI-Prinzip wie andere Boxen: select) -->
     <select id="presetSelect" size="6" aria-label="Muster Agent auswählen" aria-describedby="presetQuestion">
@@ -305,7 +313,7 @@ card--preset {
     <div class="info-panel" id="infoPanel_presets" role="region" aria-label="Hinweise zu Muster Agents">
       <h4>Hinweise zu Muster Agents</h4>
       <p><strong>Auswahl:</strong> Wähle einen vordefinierten Agent aus der Liste aus.</p>
-      <p><strong>Skript:</strong> Die Einstellungen werden hier im Baukasten automatisch eingetragen.</p>
+      <p><strong>Module:</strong> Die Einstellungen werden in den Modulen automatisch eingetragen.</p>
       <p><strong>Tipp:</strong> Die Auswahlen und Freitexte können nach Belieben angepasst werden.</p>
       <button type="button" class="close-info">Verbergen</button>
     </div>
