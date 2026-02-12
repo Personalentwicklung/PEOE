@@ -116,7 +116,6 @@
       line-height:1.6;
     }
 
-
 .demo-editable {
   display:inline-block;
   background:var(--edit-bg);
@@ -195,7 +194,33 @@
     .info-step ul { margin: 0; padding-left: 18px; }
     .step-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 16px; }
     /* === End Info-Modal === */
-</style>
+
+  
+  /* === Preset-Kasten: dezentes Highlight ================================== */
+.card--preset {
+  border-color: var(--accent);
+  background: linear-gradient(0deg, #f7fcfd 0%, #ffffff 55%); /* sehr leichtes Tönchen */
+}
+
+/* Optional: Subcard innen noch sanfter abheben */
+#sub-presets {
+  background: #f7fbfd; /* minimal heller als .subtle */
+  border-color: var(--accent);
+}
+
+/* === Copy-Button: schneller Puls (in Blau) ============================== */
+/* bestehende soft-pulse belassen; wir definieren eine schnellere Variante */
+@keyframes pulse-fast-primary {
+  0%   { box-shadow: 0 0 0 0 rgba(0,90,156,0.40); }
+  60%  { box-shadow: 0 0 0 10px rgba(0,90,156,0.00); }
+  100% { box-shadow: 0 0 0 0 rgba(0,90,156,0.00); }
+}
+.btn--pulse-fast {
+  animation: pulse-fast-primary 1.6s infinite; /* schneller als info-pulse (3s) */
+}
+  
+  
+  </style>
 </head>
 <body>
   <!-- START: Startscreen -->
@@ -226,24 +251,23 @@
       <h1>Baukasten für Copilot-Chat-Agenten</h1>
 
       <div class="card">
-        <h3>Hinweise zur Bedienung</h3>
-        <p class="muted">
+  <h3>Hinweise zur Bedienung</h3>
+<div class="muted">
   <p>Dieser Baukasten ist in logische Module unterteilt, die das Fundament für deinen Chat-Agenten bilden.</p>
-  <p>In allen Modulen außer dem ersten kannst du die Texte in den <span class="demo-editable"><strong>grünen Feldern</strong></span> nach Bedarf ändern.</p>
+  <p>In allen Modulen außer dem ersten kannst du die Texte in den <span class="demo-editable"><strong>grünen Feldern</strong></span> nach Bedarf anpassen.</p>
   
-  <p>Bitte achte darauf, dass die <strong>inhaltliche Richtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleibt.</p>
+  <p>Bitte achte darauf, dass die <strong>inhaltliche Ausrichtung</strong> und die <strong>maximale Auswahl</strong> erhalten bleiben.</p>
   
-  <p>Sobald dein Entwurf steht, lässt sich das Script mit einem Klick in die Zwischenablage kopieren. Unbearbeitete Module fließen nicht in das Agenten-Script ein.</p>
-  <p>Starte jetzt mit der Auswahl und nutze bei Unklarheiten die Hinweisbutton.</p>
+  <p>Sobald dein Entwurf steht, lässt sich das Script mit einem Klick in die Zwischenablage kopieren. Unbearbeitete Module werden nicht in das Agenten-Script übernommen.</p>
+  <p>Starte jetzt mit deiner persönlichen Auswahl oder nutze die Muster-Agents. Bei Unklarheiten klicke einfach auf die Hinweise-Buttons.</p>
+  
   <p><strong>Viel Erfolg beim Erstellen!</strong></p>
 </div>
 
-
-
-      
-
 <!-- MODUL: Muster Agents (neu) -->
-<div class="card" id="mod-presets">
+
+<div class="card card--preset" id="mod-presets">
+  
   <h2>Muster Agents</h2>
 
   <div class="subcard" id="sub-presets" style="margin-top:0;">
@@ -283,9 +307,7 @@
     </div>
   </div>
 </div>
-
-
-      
+   
       
       <!-- MODUL: Rolle / Persona (unverändert) -->
       <div class="card" id="mod-rolle">
@@ -638,7 +660,7 @@
       <!-- COPY -->
       <div class="card copy-area" id="copyArea">
         <div class="title-line">Kopiere nun das Agenten-Script in die Zwischenablage!</div>
-        <button class="btn" id="copyBtn">Kopieren in Zwischenablage</button>
+       <button class="btn btn--pulse-fast" id="copyBtn">Kopieren in Zwischenablage</button>
         <div class="copy-msg" id="copyMsg">Das Agent‑Skript wurde in die Zwischenablage kopiert!</div>
       </div>
 
