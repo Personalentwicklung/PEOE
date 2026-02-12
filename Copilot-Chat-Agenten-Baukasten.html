@@ -197,16 +197,21 @@
 
   
  /* === Preset-Kasten (dezente Abhebung) ============================= */
-.card--preset {
-  background: #e7f3f8;      /* leicht dunkleres, sehr sanftes Blau */
-  border: 1px solid var(--border); /* gleiche Optik wie andere Cards */
-}
 
-/* Subcard im Preset-Kasten normalisieren */
-#sub-presets {
-  background: #ffffff;      /* wieder weiß, damit nichts durchscheint */
+card--preset {
+  background: var(--card-bg);  /* exakt wie alle anderen Cards */
+  box-shadow: var(--shadow);   /* Standard */
   border: 1px solid var(--border);
 }
+
+
+/* Subcard im Preset-Kasten normalisieren */
+
+#sub-presets {
+  background: var(--subtle);   /* exakt wie alle anderen Inlay-Boxen */
+  border: 1px solid var(--border);
+}
+
 
 /* === Copy-Button: schneller Puls ================================ */
 @keyframes pulse-fast-primary {
