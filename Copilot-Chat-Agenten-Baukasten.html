@@ -1169,28 +1169,30 @@ qs('#varEditable').addEventListener('input', () => {
 // PRESET-DATEN
 // -----------------------
 const PRESETS = {
-  "klar_kurz": {
-    desc: "Antwortet klar, kompakt und strukturiert – immer mit zwei kurzen Entscheidungsfragen am Ende.",
-    rolle: ["Office / Administration", "Kommunikation / Training"],
-    purpose: ["Arbeitsalltag entlasten", "Informationen strukturieren"],
-    tasks: ["Informationen analysieren", "Inhalte erklären", "Informationen strukturieren"],
-    start: ["direkter Start"],
-    variation: ["Wortwahl dezent variieren"],
-    tiefe: "kompakt & direkt",
-    rq: "Rückfrage am Ende",
-    recherche: "Websuche mit Quellenangabe (Titel/Datum/Link)",
-    stil: "direkt und kompakt",
-    edit: {
-      purpose: "Arbeitsalltag entlasten, Informationen klar strukturieren",
-      tasks: "Informationen analysieren, Inhalte erklären, Informationen strukturieren",
-      start: "direkter Start; keine repetitiven Muster.",
-      variation: "Wortwahl dezent variieren; keine floskelhaften Synonyme.",
-      tiefe: "strukturiert und präzise. Immer: kurze Antwort → wichtig → nächste Schritte. Entscheidungen: Optionen → Empfehlung → Risiko/Abhängigkeit. How-to: max. 7 Schritte + Kontrolle. So kurz wie möglich.",
-      rq: "Am Ende jeder Antwort genau zwei kurze, relevante, entscheidungsorientierte Rückfragen.",
-      recherche: "Immer Websuche mit Quellenangabe (Titel/Datum/Link); keine Spekulation.",
-      stil: "kurze Sätze, klare Wörter, kein Marketing."
-    }
-  },
+ "klar_kurz": {
+  desc: "Antwortet klar, kompakt und strukturiert mit zwei sehr kurzen Entscheidungsfragen am Ende.",
+  rolle: ["Office / Administration", "Kommunikation / Training"],
+  purpose: ["Arbeitsalltag entlasten", "Informationen strukturieren"],
+  tasks: ["Informationen analysieren", "Inhalte erklären", "Informationen strukturieren"],
+  start: ["direkter Start"],
+  variation: ["Wortwahl dezent variieren"],
+  tiefe: "kompakt & direkt",
+  rq: "Rückfrage am Ende",
+  recherche: "Websuche mit Quellenangabe (Titel/Datum/Link)",
+  stil: "direkt und kompakt",
+  edit: {
+    purpose: "Arbeitsalltag entlasten und Informationen klar strukturieren.",
+    tasks: "Informationen analysieren, Inhalte erklären, Informationen klar strukturieren.",
+    start: "Direkter Start. Keine Einleitung. Keine Meta-Sätze.",
+    variation: "Dezente Variation. Keine Füllwörter, keine Floskeln.",
+    tiefe: "Antworten maximal 90 Wörter ODER genau 7 Stichpunkte (je ≤ 4 Wörter). Keine Erklärungen, keine Begründungen, keine Ausschmückung.",
+    rq: "Am Ende genau zwei sehr kurze Entscheidungsfragen (je ≤ 8 Wörter).",
+    recherche: "Websuche: immer mit Titel/Datum/Link. Keine Aussagen über angeblich fehlenden Zugriff.",
+    stil: "Kurze Sätze, klare Wörter, keine Ausschmückung, kein Marketing."
+  }
+},
+
+  
   "email_datenprofi": {
     desc: "Optimiert Texte, E‑Mails und Inhalte – klar, präzise und strukturiert.",
     rolle: ["Kommunikation / Training"],
