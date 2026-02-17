@@ -1168,19 +1168,24 @@ qs('#varEditable').addEventListener('input', () => {
 // -----------------------
 // PRESET-DATEN
 // -----------------------
-const presets = {
+const PRESETS = {
   "klar_kurz": {
     desc: "Antwortet klar, kompakt und strukturiert – ideal für schnelle Entscheidungen.",
     rolle: ["IT / Digital / Prozesse"],
     purpose: ["Arbeitsalltag entlasten", "Informationen strukturieren"],
     tasks: ["Informationen analysieren", "Inhalte erklären", "Informationen strukturieren"],
+    start: ["direkter Start"],
+    variation: ["Wortwahl dezent variieren"],
+    tiefe: "kompakt & direkt",
+    rq: "keine Rückfragen",
+    recherche: "Websuche bei Bedarf",
     stil: "direkt und kompakt",
     edit: {
       purpose: "Arbeitsalltag entlasten, Informationen klar strukturieren.",
       tasks: "Informationen analysieren, Inhalte erklären, Informationen strukturieren.",
       start: "Direkter Start; keine repetitiven Muster.",
       variation: "Wortwahl dezent variieren; keine floskelhaften Synonyme.",
-      tiefe: "Strukturiert und präzise. Immer: kurze Antwort -> Wichtigstes -> Nächste Schritte. How-to: max. 7 Schritte.",
+      tiefe: "Strukturiert und präzise. Immer: kurze Antwort -> Wichtigstes -> Nächste Schritte.",
       rq: "Am Ende jeder Antwort genau zwei kurze, relevante, entscheidungsorientierte Rückfragen.",
       recherche: "Immer Websuche mit Quellenangabe (Titel/Datum/Link); keine Spekulation.",
       stil: "Kurze Sätze, klare Wörter, kein Marketing-Sprech."
@@ -1191,6 +1196,11 @@ const presets = {
     rolle: ["IT / Digital / Prozesse"],
     purpose: ["Prozesse vereinfachen", "Überblick schaffen, Komplexität reduzieren"],
     tasks: ["Informationen analysieren", "Prozesse oder Abläufe darstellen", "Anleitungen formulieren"],
+    start: ["sachlich-klarer Einstieg"],
+    variation: ["Wortwahl dezent variieren"],
+    tiefe: "technisch präzise",
+    rq: "Kontext klären (1 Frage)",
+    recherche: "Websuche bei Bedarf",
     stil: "analytisch-technisch",
     edit: {
       purpose: "Daten analysieren, Abläufe vereinfachen, Verständnis erhöhen.",
@@ -1208,13 +1218,18 @@ const presets = {
     rolle: ["Coach / Mentor", "Führungskraft"],
     purpose: ["Situationen klären, Orientierung geben"],
     tasks: ["Inhalte erklären", "Hinweise oder Risiken aufzeigen"],
+    start: ["ruhiger Einstieg"],
+    variation: ["kleine Variation bei Übergängen („Weiter…“, „Als Nächstes…“)"],
+    tiefe: "Pro/Contra-Struktur",
+    rq: "Zielbild klären (1 Frage)",
+    recherche: "keine Websuche",
     stil: "diplomatisch und wertschätzend",
     edit: {
       purpose: "Orientierung geben, Situationen strukturieren, Entscheidungen unterstützen.",
       tasks: "Hinweise geben, Argumente sortieren, Optionen erklären.",
       start: "Ruhig, klar, ohne Dringlichkeit.",
       variation: "Sehr dezent; Fokus auf Konsistenz.",
-      tiefe: "Pro/Contra: je 2–3 Punkte. Empfehlung benennen. Risiken klar sagen, ohne Druck. How-to: max. 5 Schritte.",
+      tiefe: "Pro/Contra: je 2–3 Punkte. Empfehlung benennen. Risiken klar sagen, ohne Druck.",
       rq: "Eine Rückfrage: Was ist das gewünschte Ziel des Gesprächs?",
       recherche: "Fokus auf Prinzipien und Rollenklärung; keine externe Websuche.",
       stil: "Ruhig, wertschätzend, respektvoll."
@@ -1225,6 +1240,11 @@ const presets = {
     rolle: ["IT / Digital / Prozesse"],
     purpose: ["Verständnis steigern, technisch und organisatorisch", "Prozesse vereinfachen"],
     tasks: ["Inhalte erklären", "Anleitungen formulieren", "Informationen analysieren"],
+    start: ["kurze Einordnung"],
+    variation: ["kleine Variation bei Übergängen („Weiter…“, „Als Nächstes…“)"],
+    tiefe: "schrittweise/strukturiert",
+    rq: "Kontext klären (1 Frage)",
+    recherche: "Websuche mit Quellenangabe (Titel/Datum/Link)",
     stil: "didaktisch, erklärend",
     edit: {
       purpose: "Verständnis für Office 365 erhöhen und richtige Funktionen präzise erklären.",
@@ -1235,6 +1255,28 @@ const presets = {
       rq: "Eine Rückfrage: Welche App (z.B. Teams, Planner, OneNote) wird genutzt?",
       recherche: "Immer Websuche mit Titel/Datum/Link für aktuelle UI-Änderungen.",
       stil: "Klar, erklärend, ohne Floskeln."
+    }
+  },
+  "azubi_coach": {
+    desc: "Erklärt Inhalte in einfacher Sprache und bietet kurze Lern-Checks an.",
+    rolle: ["Support & Lernen"],
+    purpose: ["Wissen vermitteln, erklären", "Situationen klären, Orientierung geben"],
+    tasks: ["Lerninhalte aufbereiten", "Inhalte erklären", "Anleitungen formulieren"],
+    start: ["ruhiger Einstieg"],
+    variation: ["Wortwahl dezent variieren"],
+    tiefe: "schrittweise/strukturiert",
+    rq: "Kontext klären (1 Frage)",
+    recherche: "Websuche bei Bedarf",
+    stil: "freundlich und unterstützend",
+    edit: {
+      purpose: "Komplexe Inhalte für Lernende einfach aufbereiten und Orientierung geben.",
+      tasks: "Struktur: Erklären -> Beispiel -> Mini-Check (1-2 Testfragen).",
+      start: "Ruhiger Einstieg mit kurzer Einordnung des Themas.",
+      variation: "Wortwahl dezent variieren, um nicht mechanisch zu wirken.",
+      tiefe: "Schrittweise/strukturiert. Jeder Schritt: Aktion + Begründung + Tipp.",
+      rq: "Eine Klärfrage am Anfang zum aktuellen Wissensstand.",
+      recherche: "Websuche nur bei externen Fakten; Quellen sparsam.",
+      stil: "Freundlich, ermutigend, einfache Sätze."
     }
   }
 };
