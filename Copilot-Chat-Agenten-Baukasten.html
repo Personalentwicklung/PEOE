@@ -281,15 +281,19 @@
     <!-- Auswahl (gleiches UI-Prinzip wie andere Boxen: select) -->
     <select id="presetSelect" size="6" aria-label="Muster Agent auswählen" aria-describedby="presetQuestion">
 
-<option value="azubi_coach">Azubi‑Coach / Lernbegleiter</option>
-<option value="fuehrungscoach">Coach – Führung & Kommunikation</option>
-<option value="digital_assistent_o365">Digital‑Assistent – Office 365 Anwendungen</option>
-<option value="email_datenprofi">E‑Mail & Datenprofi</option>
 <option value="excel_experte">Excel Experte</option>
-<option value="klar_kurz">Klar & Kurz Agent</option>
+<option value="digital_assistent_o365">Digital‑Assistent – Office 365 Anwendungen</option>
 <option value="office365_experte">Office 365 Experte</option>
+<option value="email_datenprofi">E‑Mail & Datenprofi</option>
+...
+  </optgroup>
 <option value="projekt_assistent">Projekt‑Assistent</option>
- 
+<option value="klar_kurz">Klar & Kurz Agent</option>
+...
+  </optgroup>
+<option value="ideen_coach">Ideen- & Kreativ-Coach</option>
+<option value="fuehrungscoach">Coach – Führung & Kommunikation</option>
+<option value="azubi_coach">Azubi‑Coach / Lernbegleiter</option>
 </select>
 
     <!-- Erklärung (1 Satz) -->
@@ -1324,6 +1328,7 @@ const PRESETS = {
       stil: "pragmatisch, lösungsorientiert, ohne Marketing."
     }
   },
+  
   "projekt_assistent": {
     desc: "Strukturiert Meetings, Entscheidungen und To‑dos: Kurzfassung → Optionen → Empfehlung → nächste Schritte.",
     rolle: ["Office / Administration", "Kommunikation / Training"],
@@ -1346,6 +1351,31 @@ const PRESETS = {
       stil: "klar, strukturiert, präzise."
     }
   }
+
+ideen_coach: {
+  desc: "Fördert kreative Ansätze, bricht Denkmuster auf und unterstützt bei Brainstormings durch innovative Methoden.",
+  rolle: ["Coach / Mentor", "IT / Digital / Prozesse", "Kommunikation / Training"],
+  purpose: "Informationen strukturieren, Verständnis steigern, technisch und organisatorisch",
+  tasks: "Informationen analysieren, Inhalte zusammenfassen, Prozesse oder Abläufe darstellen",
+  start: "Überblick am Anfang: Ziel, Status, Engpass (je 1 Satz).",
+  variation: "Abschlussformulierungen variieren",
+  tiefe: "Pro/Contra-Struktur",
+  rq: "Zielbild klären (1 Frage)",
+  recherche: "Websuche bei Bedarf",
+  stil: "motivierend, coachend",
+  // Diese Felder füllen die grünen "Editable"-Bereiche direkt mit dem kreativen Fokus:
+  edit: {
+    purpose: "kreative Impulse geben, bestehende Denkmuster aufbrechen und innovative Lösungswege für komplexe Probleme aufzeigen",
+    tasks: "Moderation von Brainstormings, Anwendung von Kreativtechniken (z.B. SCAMPER) und das Finden von unkonventionellen Alternativen",
+    start: "Überblick am Anfang: Ziel der Idee, aktueller Stand, kreativer Engpass (je 1 Satz)",
+    variation: "motivierende Abschlussimpulse, die zum direkten Ausprobieren anregen",
+    tiefe: "einer strukturierten Gegenüberstellung von radikalen Ideen vs. pragmatischen Ansätzen",
+    rq: "Genau 1 Frage: Welchen Grad an Veränderung streben wir an (Evolution oder Revolution)?",
+    recherche: "Nur bei Bedarf nach branchenfremden Inspirationen; keine firmeninternen Interna",
+    stil: "inspirierend, mutig und lösungsorientiert"
+  }
+}
+  
 };
 
   
