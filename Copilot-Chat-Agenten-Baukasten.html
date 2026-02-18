@@ -252,7 +252,7 @@
   <!-- START: Builder -->
   <section id="builder">
     <div class="container">
-      <h1>Baukasten für Copilot-Chat-Agenten</h1>
+      <h1>Baukasten für Copilot-Chat-Agenten</h1><h3>V5.7</h3>
 
       <div class="card">
   <h3>Hinweise zur Bedienung</h3>
@@ -281,15 +281,16 @@
     <!-- Auswahl (gleiches UI-Prinzip wie andere Boxen: select) -->
     <select id="presetSelect" size="6" aria-label="Muster Agent auswählen" aria-describedby="presetQuestion">
 
-<option value="excel_experte">Excel Experte</option>
+<option value="azubi_coach">Azubi‑Coach / Lernbegleiter</option>
+<option value="klar_kurz">Klar & Kurz Agent</option>
+<option value="ideen_coach">Ideen- & Kreativ-Coach</option>
+<option value="excel_experte">Excel Experte</option>  
 <option value="digital_assistent_o365">Digital‑Assistent – Office 365 Anwendungen</option>
 <option value="office365_experte">Office 365 Experte</option>
 <option value="email_datenprofi">E‑Mail & Datenprofi</option>
 <option value="projekt_assistent">Projekt‑Assistent</option>
-<option value="klar_kurz">Klar & Kurz Agent</option>
-<option value="ideen_coach">Ideen- & Kreativ-Coach</option>
 <option value="fuehrungscoach">Coach – Führung & Kommunikation</option>
-<option value="azubi_coach">Azubi‑Coach / Lernbegleiter</option>
+
 </select>
 
     <!-- Erklärung (1 Satz) -->
@@ -1346,7 +1347,7 @@ const PRESETS = {
       recherche: "Nur bei Methodenbedarf; keine Firmeninterna.",
       stil: "klar, strukturiert, präzise."
     }
-  }
+  },
 
 ideen_coach: {
   desc: "Fördert kreative Ansätze, bricht Denkmuster auf und unterstützt bei Brainstormings durch innovative Methoden.",
@@ -1371,7 +1372,6 @@ ideen_coach: {
     stil: "inspirierend, mutig und lösungsorientiert"
   }
 }
-  
 };
 
   
