@@ -9,10 +9,7 @@
       /* Farben – angelehnt an PEOE-Seiten */
       --primary:#005A9C;
       --primary-600:#0a66a8;
-      
-      --accent:#e2e8f0;
-     /* --accent:#2FB1C5;/*
-      
+     --accent:#3CA4FF; /* Original-Türkis */
       --bg:#f5f7fa;
       --card-bg:#ffffff;
       --subtle:#eef2f5;
@@ -255,7 +252,7 @@
   <!-- START: Builder -->
   <section id="builder">
     <div class="container">
-      <h1>Baukasten für Copilot-Chat-Agenten<small>V5.7</small></h1>
+      <h1>Baukasten für Copilot-Chat-Agenten</h1>
 
       <div class="card">
   <h3>Hinweise zur Bedienung</h3>
@@ -1353,28 +1350,26 @@ const PRESETS = {
   },
 
 ideen_coach: {
-    desc: "Fördert kreative Ansätze, bricht Denkmuster auf und unterstützt bei Brainstormings durch innovative Methoden.",
-    rolle: ["Coach / Mentor", "IT / Digital / Prozesse", "Kommunikation / Training"],
-    // Diese Basis-Werte sind für die Checkboxen/Radiobuttons
-    purpose: "Entscheidungen vorbereiten", 
-    tasks: "Optionen strukturieren",
-    start: "Überblick am Anfang: Ziel, Status, Engpass (je 1 Satz).",
-    variation: "Abschlussformulierungen variieren",
-    tiefe: "Pro/Contra-Struktur",
-    rq: "Zielbild klären (1 Frage)",
-    recherche: "Websuche bei Bedarf",
-    stil: "motivierend, coachend",
-    // HIER lag der Fehler: Die Namen der Felder müssen exakt zu deinen Funktionen passen
-    edit: {
-        purpose: "kreative Impulse geben, bestehende Denkmuster aufbrechen und innovative Lösungswege aufzeigen",
-        tasks: "Moderation von Brainstormings, Anwendung von Kreativtechniken (z.B. SCAMPER) und Finden von Alternativen",
-        start: "Überblick am Anfang: Ziel der Idee, aktueller Stand, kreativer Engpass (je 1 Satz)",
-        variation: "motivierende Abschlussimpulse, die zum direkten Ausprobieren anregen",
-        tiefe: "einer strukturierten Gegenüberstellung von radikalen Ideen vs. pragmatischen Ansätzen",
-        rq: "Genau 1 Frage: Welchen Grad an Veränderung streben wir an (Evolution oder Revolution)?",
-        recherche: "Nur bei Bedarf nach branchenfremden Inspirationen; keine firmeninternen Interna",
-        stil: "inspirierend, mutig und lösungsorientiert"
-    }
+  desc: "Fördert kreative Ansätze, bricht Denkmuster auf und unterstützt bei Brainstormings durch innovative Methoden.",
+  rolle: ["Coach / Mentor", "Kommunikation / Training"],
+  purpose: "Entscheidungen vorbereiten",
+  tasks: "Optionen strukturieren",
+  start: "Überblick am Anfang: Ziel, Status, Engpass (je 1 Satz).",
+  variation: "Abschlussformulierungen variieren",
+  tiefe: "Pro/Contra-Struktur",
+  rq: "Zielbild klären (1 Frage)",
+  recherche: "Websuche bei Bedarf",
+  stil: "motivierend, coachend",
+  edit: {
+    purpose: "kreative Impulse geben, bestehende Denkmuster aufbrechen und innovative Lösungswege aufzeigen",
+    tasks: "Moderation von Brainstormings, Anwendung von Kreativtechniken (z.B. SCAMPER) und Finden von Alternativen",
+    start: "Überblick am Anfang: Ziel der Idee, aktueller Stand, kreativer Engpass (je 1 Satz)",
+    variation: "motivierende Abschlussimpulse, die zum direkten Ausprobieren anregen",
+    tiefe: "einer strukturierten Gegenüberstellung von radikalen Ideen vs. pragmatischen Ansätzen",
+    rq: "Genau 1 Frage: Welchen Grad an Veränderung streben wir an (Evolution oder Revolution)?",
+    recherche: "Nur bei Bedarf nach branchenfremden Inspirationen; keine firmeninternen Interna",
+    stil: "inspirierend, mutig und lösungsorientiert"
+  }
 }
 };
 
