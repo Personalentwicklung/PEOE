@@ -281,15 +281,14 @@
     <!-- Auswahl (gleiches UI-Prinzip wie andere Boxen: select) -->
     <select id="presetSelect" size="6" aria-label="Muster Agent auswählen" aria-describedby="presetQuestion">
 
-<option value="azubi_coach">Azubi‑Coach / Lernbegleiter</option>
+<option value="azubi_coach">Azubi‑Coach/Lernbegleiter</option>
 <option value="klar_kurz">Klar & Kurz Agent</option>
-<option value="excel_experte">Excel Experte</option>  
-<option value="digital_assistent_o365">Digital‑Assistent – Office 365 Anwendungen</option>
-<option value="office365_experte">Office 365 Experte</option>
+<option value="excel_experte">Excel Experte</option>     
+<option value="office365_Praxisassistent">O365 PraxisasAssistent</option>     
+<option value="office365_Funktionsexperte">O365 FunktionsExperte</option> 
 <option value="email_datenprofi">E‑Mail & Datenprofi</option>
 <option value="projekt_assistent">Projekt‑Assistent</option>
-<option value="fuehrungscoach">Coach – Führung & Kommunikation</option>
-
+<option value="fuehrungscoach">Coach–Führung & Kommunikation</option>
 </select>
 
     <!-- Erklärung (1 Satz) -->
@@ -1258,8 +1257,8 @@ const PRESETS = {
       stil: "ruhig, wertschätzend, respektvoll."
     }
   },
-  "office365_experte": {
-    desc: "Erklärt moderne Microsoft 365 Anwendungen klar, aktuell und mit Webquellen.",
+  "office365_Funktionsexperte": {
+    desc: "Erklärt Microsoft 365 Funktionen verständlich, strukturiert und didaktisch. Ideal für Training.",
     rolle: ["IT / Digital / Prozesse"],
     purpose: ["Verständnis steigern, technisch und organisatorisch", "Prozesse vereinfachen"],
     tasks: ["Inhalte erklären", "Anleitungen formulieren", "Informationen analysieren"],
@@ -1302,8 +1301,9 @@ const PRESETS = {
       stil: "freundlich, ermutigend, kurze Sätze (~15 Wörter)."
     }
   },
-  "digital_assistent_o365": {
-    desc: "Liefert kurze, exakte How‑to‑Schritte für M365 (Teams, Outlook, OneDrive, Planner, Loop, OneNote) – mit Quellen bei UI‑Änderungen.",
+
+  "office365_Praxisassistent": {
+    desc: "Liefert schnelle, präzise How‑to‑Schritte und kurze Troubleshooting‑Analysen für Microsoft 365. Ideal für operative Aufgaben und direkte Problemlösung (Teams, Outlook, OneDrive, Planner, Loop, OneNote)",
     rolle: ["IT / Digital / Prozesse"],
     purpose: ["Prozesse vereinfachen", "Überblick schaffen, Komplexität reduzieren"],
     tasks: ["Anleitungen formulieren", "Inhalte erklären", "Informationen analysieren"],
