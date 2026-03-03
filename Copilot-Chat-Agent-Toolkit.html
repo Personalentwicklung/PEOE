@@ -1,1 +1,1520 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toolkit for Copilot Chat Agents</title>
+  <style>
+    :root{
+      /* Colours – aligned with PEOE pages */
+      --primary:#005A9C;
+      --primary-600:#0a66a8;
+      --accent:#2FB1C5;
+      --bg:#f5f7fa;
+      --card-bg:#ffffff;
+      --subtle:#eef2f5;
+      --muted:#4a5568;
+      --text:#1a202c;
+      --border:#e2e8f0;
+      --shadow:0 4px 14px rgba(0,0,0,0.08);
+      --radius:10px;
+      --warning:#C05621;
+      --success:#2F855A;
+      --focus:#2FB1C5;
+      /* Light green for editable fields */
+      --edit-bg:#E8F5E9;
+      --edit-border:#81C784;
+      --edit-focus:#43A047;
+      /* Grey for non-editable badge (role) */
+      --badge-bg:#E5E7EB;
+      --badge-border:#D1D5DB;
+      /* Sizes */
+      --container:1024px;
+      --space-1:8px;
+      --space-2:12px;
+      --space-3:16px;
+      --space-4:20px;
+      --space-5:28px;
+      --space-6:36px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .container{max-width:var(--container);margin:0 auto;padding:24px;}
+    h1{font-size:28px;margin:0 0 var(--space-4);color:var(--primary);text-align:center}
+    h2{font-size:22px;margin:0 0 var(--space-3);color:var(--primary)}
+    h3{font-size:18px;margin:0 0 var(--space-2);color:var(--primary)}
+    p{margin:0 0 var(--space-3);color:var(--text)}
+    .card{
+      background:var(--card-bg);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:var(--space-5);
+      margin:0 0 var(--space-5);
+    }
+    .subcard{
+      background:var(--subtle);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:16px;
+      margin:var(--space-3) 0;
+    }
+    .btn{
+      background:var(--primary);
+      color:#fff;
+      border:none;
+      border-radius:999px;
+      padding:12px 20px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    .btn:hover{background:var(--primary-600)}
+    .btn:focus{outline:3px solid var(--focus);outline-offset:2px}
+    .btn--sm{padding:8px 14px;font-size:14px}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+    .grow{flex:1 1 320px}
+    /* Sub-hints: question bold, selection hint normal */
+    .subhint{font-size:14px;color:var(--muted);margin:0 0 6px;}
+    .subhint--question{font-weight:600;color:var(--text);} /* bold like label */
+    .subhint--choose{font-weight:400;} /* not bold */
+    /* Selects */
+    select{
+      width:100%;
+      min-width:280px;
+      max-width:100%;
+      padding:6px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:#fff;
+      color:var(--text);
+      font-size:14px;
+      line-height:1.4;
+    }
+    select option{font-size:14px;}
+    .meta{
+      display:flex;align-items:center;gap:12px;
+      margin-top:8px;color:var(--muted);font-size:14px;
+    }
+    .hint{color:var(--warning);font-size:14px;margin-top:6px}
+    .preview{
+      margin-top:12px;
+      padding:10px 12px;
+      border:1px dashed var(--border);
+      border-radius:8px;
+      background:#fcfcfd;
+    }
+    .editable{
+      display:inline-block;
+      min-width:160px;
+      min-height:1.4em;
+      background:var(--edit-bg);
+      border:1px dashed var(--edit-border);
+      border-radius:6px;
+      padding:2px 6px;
+      line-height:1.6;
+    }
+    .demo-editable {
+      display:inline-block;
+      background:var(--edit-bg);
+      border:1px dashed var(--edit-border);
+      border-radius:6px;
+      padding:2px 6px;
+      line-height:1.6;
+      font-size:14px;
+      cursor:default;
+      user-select:none;
+    }
+    .editable:focus{outline:2px solid var(--edit-focus);background:#E3F2E5}
+    .badge-gray{
+      display:inline-block;
+      min-width:160px;
+      min-height:1.4em;
+      background:var(--badge-bg);
+      border:1px solid var(--badge-border);
+      border-radius:6px;
+      padding:2px 6px;
+      line-height:1.6;
+    }
+    .copy-area .title-line{font-weight:700;margin-bottom:8px}
+    .copy-msg{margin-top:10px;color:var(--success);display:none}
+    /* Start screen / toggle */
+    #builder{display:none}
+    .centered{display:flex;min-height:100vh;align-items:center;justify-content:center}
+    .start-card{max-width:760px}
+    /* Notice box */
+    .top-note{
+      margin-bottom:var(--space-4);
+      padding:12px 14px;
+      border-left:4px solid var(--accent);
+      background:#f3fafc;
+      border-radius:6px;
+    }
+    .actions-line{
+      display:flex;justify-content:flex-end;gap:10px;margin-top:14px;flex-wrap:wrap;
+    }
+    .info-btn{
+      background:#ffffff;color:var(--primary);border:1px solid var(--border);border-radius:999px;padding:8px 12px;font-weight:600;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.06);
+    }
+    .info-btn:hover{background:#f7fafc}
+    .info-btn:focus{outline:3px solid var(--focus);outline-offset:2px}
+    .info-panel{
+      margin-top:12px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;box-shadow:var(--shadow);display:none;
+    }
+    .info-panel h4{margin:0 0 8px;font-size:16px;color:var(--primary);}
+    .info-panel p{margin:0 0 10px;color:var(--text)}
+    .info-panel .close-info{
+      background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:6px 10px;cursor:pointer;
+    }
+    .info-panel .close-info:hover{background:#f8fafc}
+    @media (max-width: 720px){.container{padding:16px;}h1{font-size:24px}}
+    /* === Info modal (optional info layer) === */
+    @keyframes soft-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(47, 177, 197, 0.40); }
+      70% { box-shadow: 0 0 0 10px rgba(47, 177, 197, 0.00); }
+      100% { box-shadow: 0 0 0 0 rgba(47, 177, 197, 0.00); }
+    }
+    .info-pulse { animation: soft-pulse 3s infinite; }
+    #infoModal {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-content {
+      background: var(--card-bg); padding: 40px; border-radius: var(--radius);
+      max-width: 700px; width: 100%; position: relative; box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .close-x { position: absolute; top: 10px; right: 14px; font-size: 32px; cursor: pointer; color: var(--muted); line-height: 1; }
+    .info-step { display: none; text-align: left; }
+    .info-step.active { display: block; }
+    .info-step ul { margin: 0; padding-left: 18px; }
+    .step-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 16px; }
+    /* === End info modal === */
+    /* Subcard in preset box normalised */
+    #sub-presets {
+      background: var(--subtle); /* exactly like all other inlay boxes */
+      border: 1px solid var(--border);
+    }
+    /* Copy box: buttons aligned left */
+    #copyArea .actions-line {
+      justify-content: flex-start; /* overrides global flex-end */
+    }
+    /* Dialog footer: buttons aligned left */
+    #scriptDialog .step-nav {
+      justify-content: flex-start; /* instead of space-between */
+    }
+    /* === Copy button: faster pulse ================================ */
+    @keyframes pulse-fast-primary {
+      0% { box-shadow: 0 0 0 0 rgba(0,90,156,0.35); }
+      60% { box-shadow: 0 0 0 10px rgba(0,90,156,0.0); }
+      100% { box-shadow: 0 0 0 0 rgba(0,90,156,0.0); }
+    }
+    .btn--pulse-fast {
+      animation: pulse-fast-primary 1.6s infinite;
+    }
+    /* Sample agents: outer like inlay (subtle), inner white */
+    #mod-presets.card.card--preset {
+      background: var(--subtle); /* outer = inlay colour */
+    }
+    #mod-presets #sub-presets {
+      background: #ffffff; /* inner = white */
+    }
+    /* Dialog: size & scroll behaviour for script preview */
+    #scriptDialog::backdrop { background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); }
+    /* --- FIX: remove outer scroll, reduce height --- */
+    #scriptDialog .modal-content {
+      max-width: 900px;
+      width: 80vw;
+      max-height: 70vh; /* laptop-friendly */
+      padding: 24px;
+      /* IMPORTANT: no outer scroll any more! */
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    /* --- FIX: inner area only scrolls --- */
+    .script-preview-area {
+      margin-top: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fcfcfd;
+      padding: 12px 14px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      /* ONLY scroll area */
+      flex: 1;
+      overflow-y: auto;
+      /* Stable height – enough space at the bottom */
+      max-height: calc(70vh - 90px);
+    }
+    .script-preview-area {
+      margin-top: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fcfcfd;
+      padding: 12px 14px;
+      /* Readability of long text */
+      white-space: pre-wrap; /* keeps line breaks, wraps long lines */
+      overflow-wrap: anywhere; /* breaks extremely long tokens */
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      /* Actual scroll height: reserves space for footer */
+      max-height: calc(70vh);
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- START: Start screen -->
+  <section id="start" class="centered">
+    <div class="card start-card">
+      <div class="container">
+        <h1>Toolkit for Copilot Chat Agents</h1>
+        <p>This toolkit helps you build a fully ready-to-use Copilot chat agent. Choose the properties you want, adjust the generated text where needed, and then copy the finished agent script into a new agent in Copilot.</p>
+        <p>All the best creating your agent.</p>
+        <div class="top-note" role="note" aria-label="Privacy notice">
+          <h3>Privacy notice</h3>
+          <p>The toolkit doesn’t store personal data. All inputs stay in your browser and aren’t sent to any server. Unsaved content is lost when you close the page.</p>
+        </div>
+        <div id="startButtons" style="display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:25px; width:100%">
+          <button id="startBtn" class="btn">Start toolkit</button>
+          <button id="mainInfoBtn" class="info-btn info-pulse" type="button">About the toolkit</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- END: Start screen -->
 
+  <!-- START: Builder -->
+  <section id="builder">
+    <div class="container">
+      <h1>Toolkit for Copilot Chat Agents</h1>
+
+      <div class="card">
+        <h3>How to use</h3>
+        <div class="muted">
+          <p>This toolkit is divided into logical modules that form the foundation of your chat agent.</p>
+          <p>In all modules except the first, you can adjust the texts in the <span class="demo-editable"><strong>green fields</strong></span> if needed.</p>
+          <p>Please keep the <strong>focus of the content</strong> and the <strong>maximum selection</strong> as given.</p>
+          <p>Once your draft is ready, copy the script to the clipboard with one click. Untouched modules aren’t included in the agent script.</p>
+          <p>Start with your own selection or use the sample agents. If anything is unclear, use the notes buttons.</p>
+          <p><strong>Good luck!</strong></p>
+        </div>
+
+        <!-- MODULE: Sample agents -->
+        <div class="card card--preset" id="mod-presets">
+          <h2>Sample agents</h2>
+          <div class="subcard" id="sub-presets" style="margin-top:0;">
+            <!-- Intro with bold question line (consistent) -->
+            <div class="subhint subhint--question" id="presetQuestion">Choose a predefined agent:</div>
+            <!-- Selection (same UI principle as other boxes: select) -->
+            <select id="presetSelect" size="6" aria-label="Select a sample agent" aria-describedby="presetQuestion">
+              <option value="azubi_coach">Apprentice coach / learning companion</option>
+              <option value="klar_kurz">Clear & concise agent</option>
+              <option value="excel_experte">Excel expert</option>
+              <option value="office365_Praxisassistent">O365 practical assistant</option>
+              <option value="office365_Funktionsexperte">O365 features expert</option>
+              <option value="email_datenprofi">Email & content specialist</option>
+              <option value="projekt_assistent">Project assistant</option>
+              <option value="fuehrungscoach">Coach – leadership & communication</option>
+            </select>
+            <!-- One-line explanation -->
+            <div class="preview">
+              <p id="presetDesc" class="muted"></p>
+            </div>
+            <!-- Actions -->
+            <div class="actions-line">
+              <button type="button" class="info-btn" id="infoBtn_presets" aria-controls="infoPanel_presets" aria-expanded="false">ℹ️ Notes</button>
+              <button type="button" class="btn btn--sm" id="presetReset">Reset selection</button>
+            </div>
+            <!-- Notes panel -->
+            <div class="info-panel" id="infoPanel_presets" role="region" aria-label="Notes on sample agents">
+              <h4>Notes on sample agents</h4>
+              <p><strong>Selection:</strong> Choose a predefined agent from the list.</p>
+              <p><strong>Modules:</strong> The settings are filled into the modules automatically.</p>
+              <p><strong>Tip:</strong> You can adjust the choices and free text as you like. To do this, click the “Reset selection” button inside the modules.</p>
+              <button type="button" class="close-info">Hide</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE: Role / persona -->
+      <div class="card" id="mod-rolle">
+        <h2>Role / persona</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Responsibility</h3>
+          <div class="subhint subhint--question">What should the agent be responsible for?</div>
+          <div class="subhint subhint--choose">Select up to 3 roles:</div>
+          <select id="rolleSelect" multiple size="8" aria-describedby="rolleCount rolleHint" aria-label="Select roles">
+            <option>Apprenticeship support, apprentice</option>
+            <option>Coach / mentor</option>
+            <option>Procurement / sales, CSC</option>
+            <option>Engineering</option>
+            <option>Chemical production specialist</option>
+            <option>Technical specialist</option>
+            <option>Maintenance / servicing specialist</option>
+            <option>Finance</option>
+            <option>Leader / manager</option>
+            <option>Health / nutrition</option>
+            <option>HSE / occupational safety</option>
+            <option>IT / digital / processes</option>
+            <option>Communication / training</option>
+            <option>Lab / QA</option>
+            <option>Office / administration</option>
+            <option>Process & process engineering</option>
+            <option>Legal / tax</option>
+            <option>Support & learning</option>
+            <option>Support & service</option>
+            <option>Administration, HR</option>
+          </select>
+          <div class="meta">
+            <span id="rolleCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="rolleHint" hidden>Maximum reached.</span>
+          </div>
+          <div class="preview">
+            <p>Your scope of work is <span id="rolleBadge" class="badge-gray"></span>. You act as a professional, human assistant for this context.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_rolle" aria-controls="infoPanel_rolle" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="rolleReset">Reset (Role/persona)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_rolle" role="region" aria-label="Notes on role / persona">
+            <h4>Notes on roles / persona</h4>
+            <p><strong>Purpose:</strong> The agent needs a clear area of work so answers fit. Tone and priorities follow from it.</p>
+            <p><strong>Not a status:</strong> The role describes the subject area as a job title.</p>
+            <p><strong>Recommendation:</strong> Choose 1–3 roles so the agent stays focused.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE: Purpose -->
+      <div class="card" id="mod-purpose">
+        <h2>Goal / purpose</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Purpose</h3>
+          <div class="subhint subhint--question">What overarching purpose should the agent serve?</div>
+          <div class="subhint subhint--choose">Select up to 2 purposes:</div>
+          <select id="purposeSelect" multiple size="8" aria-describedby="purposeCount purposeHint" aria-label="Select purposes">
+            <option>Reduce everyday workload</option>
+            <option>Prepare decisions</option>
+            <option>Structure information</option>
+            <option>Improve communication</option>
+            <option>Ensure consistency, e.g., text quality</option>
+            <option>Prepare learning content</option>
+            <option>Simplify processes</option>
+            <option>Identify risks and provide notes</option>
+            <option>Increase safety, avoid errors</option>
+            <option>Clarify situations, give orientation</option>
+            <option>Speed up standard tasks</option>
+            <option>Create overview, reduce complexity</option>
+            <option>Increase understanding, technical and organisational</option>
+            <option>Convey knowledge, explain</option>
+            <option>Support collaboration</option>
+          </select>
+          <div class="meta">
+            <span id="purposeCount" aria-live="polite">0 / 2</span>
+            <span class="hint" id="purposeHint" hidden>Maximum reached.</span>
+          </div>
+          <div class="preview">
+            <p>Your overarching purpose is to <span id="purposeEditable" class="editable" contenteditable="true"></span>. You align your entire way of working with this goal.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_purpose" aria-controls="infoPanel_purpose" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="purposeReset">Reset (Purpose)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_purpose" role="region" aria-label="Notes on goal / purpose">
+            <h4>Notes on goal / purpose</h4>
+            <p><strong>Function:</strong> The purpose states the main goal the agent should pursue.</p>
+            <p><strong>Focus:</strong> 1–2 goals are enough and keep the agent clear.</p>
+            <p><strong>Style:</strong> Keep it simple and general—no jargon or internal project names.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE: Tasks -->
+      <div class="card" id="mod-tasks">
+        <h2>Assignment / tasks</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Activities</h3>
+          <div class="subhint subhint--question">Which concrete activity/activities should the agent perform?</div>
+          <div class="subhint subhint--choose">Select up to 3 activities:</div>
+          <select id="tasksSelect" multiple size="8" aria-describedby="tasksCount tasksHint" aria-label="Select activities">
+            <option>Write instructions</option>
+            <option>Extract data or documents</option>
+            <option>Prepare decision bases</option>
+            <option>Answer questions</option>
+            <option>Show hints or risks</option>
+            <option>Analyse information</option>
+            <option>Structure information</option>
+            <option>Explain content</option>
+            <option>Summarise content</option>
+            <option>Prepare learning content</option>
+            <option>Describe processes or flows</option>
+            <option>Create texts</option>
+            <option>Edit texts</option>
+          </select>
+          <div class="meta">
+            <span id="tasksCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="tasksHint" hidden>Maximum reached.</span>
+          </div>
+          <div class="preview">
+            <p>Your assignment covers the following activities: <span id="tasksEditable" class="editable" contenteditable="true"></span>. You perform these tasks reliably, clearly structured, and user‑oriented.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_tasks" aria-controls="infoPanel_tasks" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="tasksReset">Reset (Tasks)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_tasks" role="region" aria-label="Notes on tasks">
+            <h4>Notes on activities</h4>
+            <p><strong>Core:</strong> Choose the main tasks the agent should reliably perform.</p>
+            <p><strong>Limit:</strong> 1–3 activities keep the agent focused.</p>
+            <p><strong>Tip:</strong> Pick tasks that actually occur in day‑to‑day work.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE: Communication style -->
+      <div class="card" id="mod-stil">
+        <h2>Communication style</h2>
+        <div class="subcard">
+          <h3 style="margin-top:0">Style</h3>
+          <div class="subhint subhint--question">Which tone/personality should the agent use?</div>
+          <div class="subhint subhint--choose">Select exactly one option:</div>
+          <select id="stilSelect" size="6" aria-label="Choose a communication style">
+            <option>analytical and technical</option>
+            <option>instructional, explanatory</option>
+            <option>diplomatic and respectful</option>
+            <option>direct and compact</option>
+            <option>formal and professional</option>
+            <option>friendly and supportive</option>
+            <option>collegial, like an experienced colleague</option>
+            <option>lightly ironic, respectful</option>
+            <option>motivating, coaching</option>
+            <option>neutral and factual</option>
+            <option>pragmatic and solution‑oriented</option>
+            <option>calm and clear</option>
+            <option>structured and precise</option>
+            <option>warm and human</option>
+          </select>
+          <div class="preview">
+            <p>Your communication style is: <span id="stilEditable" class="editable" contenteditable="true"></span>. Keep this style consistently in tone, structure, and wording.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_stil" aria-controls="infoPanel_stil" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="stilReset">Reset (Style)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_stil" role="region" aria-label="Notes on communication style">
+            <h4>Notes on style</h4>
+            <p><strong>Meaning:</strong> Sets how the agent “sounds”.</p>
+            <p><strong>Quality:</strong> A fixed style feels professional and predictable.</p>
+            <p><strong>Tip:</strong> Choose the style that fits the environment and users best. “calm & clear” + “structured & precise” is robust.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="mod-grundverhalten">
+        <h2><strong>Core behaviour / working logic</strong></h2>
+
+        <!-- 1) Opening behaviour (Multi, limit 3, size 8) -->
+        <div class="subcard" id="sub-startverhalten">
+          <h3 style="margin-top:0">Opening behaviour</h3>
+          <div class="subhint subhint--question">How should the agent begin answers?</div>
+          <div class="subhint subhint--choose">Select up to 3 options:</div>
+          <select id="startSelect" multiple size="8" aria-describedby="startCount startHint" aria-label="Choose opening behaviour">
+            <option>direct start</option>
+            <option>short prompt</option>
+            <option>neutral opening sentence</option>
+            <option>brief framing</option>
+            <option>brief summary of the input</option>
+            <option>overview at the beginning</option>
+            <option>factual, clear opening</option>
+            <option>calm opening</option>
+            <option>friendly opening</option>
+          </select>
+          <div class="meta">
+            <span id="startCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="startHint" hidden>Maximum reached.</span>
+          </div>
+          <!-- Preview: full script sentence with placeholder -->
+          <div class="preview">
+            <p>For the opening, use <span id="startEditable" class="editable" contenteditable="true"></span>, situationally and without repetitive patterns.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_start" aria-controls="infoPanel_start" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="startReset">Reset (Opening)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_start" role="region" aria-label="Help text opening behaviour">
+            <h4>Help – opening behaviour</h4>
+            <p><strong>Direct vs. orienting:</strong> Choose 1–3 opening types (for example, “direct”, “short prompt”, “overview”). They set only the start tone, not the dialogue logic.</p>
+            <p><strong>Natural:</strong> Openings are used situationally and not repeated identically in every answer.</p>
+            <p><strong>Separation:</strong> Follow‑up questions are controlled separately under “Clarifying‑questions logic”, not here.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+
+        <!-- 2) Variation / expression (Multi, limit 3, size 8) -->
+        <div class="subcard" id="sub-variation">
+          <h3 style="margin-top:0">Variation / expression</h3>
+          <div class="subhint subhint--question">How should the linguistic expression vary?</div>
+          <div class="subhint subhint--choose">Select up to 3 options:</div>
+          <select id="varSelect" multiple size="8" aria-describedby="variationCount variationHint" aria-label="Choose variation">
+            <option>slightly vary opening phrasing</option>
+            <option>small variation in transitions (“Next…”, “Then…”)</option>
+            <option>slightly vary word choice</option>
+            <option>subtle synonyms instead of repetition</option>
+            <option>slightly vary sentence structure</option>
+            <option>slightly vary answer length</option>
+            <option>vary closing phrases</option>
+          </select>
+          <div class="meta">
+            <span id="variationCount" aria-live="polite">0 / 3</span>
+            <span class="hint" id="variationHint" hidden>Maximum reached.</span>
+          </div>
+          <!-- Preview: full script sentence with placeholder -->
+          <div class="preview">
+            <p>Vary your expression slightly through <span id="varEditable" class="editable" contenteditable="true"></span>, so answers feel natural and not repetitive.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_variation" aria-controls="infoPanel_variation" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="varReset">Reset (Variation)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_variation" role="region" aria-label="Help text variation / expression">
+            <h4>Help – variation / expression</h4>
+            <p><strong>Effect:</strong> Ensures answers don’t always sound the same.</p>
+            <p><strong>Scope:</strong> Only small variations in wording and transitions.</p>
+            <p><strong>Priority:</strong> Clarity remains more important than variety.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+
+        <!-- 3) Answer style / specificity (Single, size 8) -->
+        <div class="subcard" id="sub-antwortstil">
+          <h3 style="margin-top:0">Answer style / specificity</h3>
+          <div class="subhint subhint--question">How should the agent structure answers?</div>
+          <div class="subhint subhint--choose">Select exactly one option:</div>
+          <select id="tiefeSelect" size="8" aria-label="Choose an answer style">
+            <option>compact & direct</option>
+            <option>detailed, explanatory</option>
+            <option>step‑by‑step/structured</option>
+            <option>technically precise</option>
+            <option>practical with examples</option>
+            <option>clear action recommendations</option>
+            <option>pros/cons structure</option>
+            <option>tabular presentation</option>
+          </select>
+          <!-- Preview: full script sentence with placeholder -->
+          <div class="preview">
+            <p>Your answers follow the style <span id="tiefeEditable" class="editable" contenteditable="true"></span> so content remains clear, comprehensible, and structured.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_tiefe" aria-controls="infoPanel_tiefe" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="tiefeReset">Reset (Answer style)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_tiefe" role="region" aria-label="Help text answer style / specificity">
+            <h4>Help – answer style / specificity</h4>
+            <p><strong>Goal:</strong> Defines how an answer is built (for example, compact, technical, step‑by‑step).</p>
+            <p><strong>Recommendation:</strong> Choose exactly one structure so answers stay stable and easy to follow.</p>
+            <p><strong>Tip:</strong> The style determines how understandable and usable the content is.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+
+        <!-- 4) Clarifying-questions logic (Single, size 8) -->
+        <div class="subcard" id="sub-rueckfragen">
+          <h3 style="margin-top:0">Clarifying‑questions logic</h3>
+          <div class="subhint subhint--question">How should the agent use follow‑up questions?</div>
+          <div class="subhint subhint--choose">Select exactly one option:</div>
+          <select id="rqSelect" size="8" aria-label="Choose clarifying-questions logic">
+            <option>no follow‑up questions</option>
+            <option>follow‑up question only if unclear (max. 1)</option>
+            <option>scope question if ambiguous</option>
+            <option>clarify context (1 question)</option>
+            <option>clarify the desired outcome (1 question)</option>
+            <option>optional confirmation question (“Shall I go into more detail?”)</option>
+            <option>follow‑up question at the end</option>
+          </select>
+          <!-- Preview: full script sentence with placeholder -->
+          <div class="preview">
+            <p>Your clarifying‑questions logic is: <span id="rqEditable" class="editable" contenteditable="true"></span>.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_rq" aria-controls="infoPanel_rq" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="rqReset">Reset (Clarifying questions)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_rq" role="region" aria-label="Help text clarifying-questions logic">
+            <h4>Help – clarifying‑questions logic</h4>
+            <p><strong>Purpose:</strong> Follow‑ups serve clarification, not avoidance.</p>
+            <p><strong>Selection:</strong> Set exactly one rule for when the agent should ask.</p>
+            <p><strong>Practice:</strong> “Only if unclear” is usually best unless something specific is required.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+
+        <!-- 5) Research & sources (Single, size 8) -->
+        <div class="subcard" id="sub-recherche">
+          <h3 style="margin-top:0">Research & sources</h3>
+          <div class="subhint subhint--question">How should the agent research and use sources?</div>
+          <div class="subhint subhint--choose">Select exactly one option:</div>
+          <select id="recSelect" size="8" aria-label="Choose research behaviour">
+            <option>no web search</option>
+            <option>web search only for external topics</option>
+            <option>web search as needed</option>
+            <option>ask one clarifying question before researching if unclear</option>
+            <option>research precisely, no guesswork</option>
+            <option>external information as bullet points</option>
+            <option>web search with source details (title/date/link)</option>
+          </select>
+          <!-- Preview: full script sentence with placeholder -->
+          <div class="preview">
+            <p>Your research and sourcing behaviour is: <span id="recEditable" class="editable" contenteditable="true"></span>.</p>
+          </div>
+          <div class="actions-line">
+            <button type="button" class="info-btn" id="infoBtn_recherche" aria-controls="infoPanel_recherche" aria-expanded="false">ℹ️ Notes</button>
+            <button type="button" class="btn btn--sm" id="recReset">Reset (Research)</button>
+          </div>
+          <div class="info-panel" id="infoPanel_recherche" role="region" aria-label="Help text research & sources">
+            <h4>Help – research & sources</h4>
+            <p><strong>Transparency:</strong> The rule defines whether and when the agent uses web search.</p>
+            <p><strong>Approach:</strong> Understand first, then research.</p>
+            <p><strong>Safety:</strong> No guesswork—use real facts or research only.</p>
+            <button type="button" class="close-info">Hide</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COPY -->
+      <div class="card copy-area" id="copyArea">
+        <div class="title-line">Copy the agent script to your clipboard</div>
+        <div class="actions-line">
+          <button class="btn btn--pulse-fast" id="copyBtn">Copy to clipboard</button>
+          <button class="info-btn" id="showScriptBtn" type="button">Show script</button>
+        </div>
+        <div class="copy-msg" id="copyMsg">The agent script has been copied to the clipboard.</div>
+      </div>
+
+      <!-- Guide (always visible) -->
+      <div class="card">
+        <h2>What’s next? — Quick guide</h2>
+        <ol class="guide">
+          <li><strong>Copy the script</strong><br/>
+            Click “Copy to clipboard”.</li>
+          <li><strong>Create a new agent</strong><br/>
+            In Copilot Chat, open “New agent” in the left navigation.</li>
+          <li><strong>Add a name</strong><br/>
+            Give your agent a short, clear name. Examples: Office assistant, Companion, Coach, Apprentice tutor.</li>
+          <li><strong>Add a description</strong><br/>
+            Describe in one or two sentences what the agent is for.<br/>
+            Example: “Supports daily tasks, explains content clearly, and delivers reliable answers.”</li>
+          <li><strong>Paste the agent script</strong><br/>
+            Paste the text copied from the toolkit into <strong>Instructions</strong> (right‑click: Paste or Ctrl+V).</li>
+          <li><strong>Save the agent</strong><br/>
+            Click <strong>Create</strong> (top right) to create and make the agent available.</li>
+          <li><strong>Test the agent</strong><br/>
+            Test the agent with typical questions from your day‑to‑day work and keep the toolkit open.</li>
+          <li><strong>Adjust the agent</strong><br/>
+            You can refine the agent at any time.<br/>
+            Click the three dots next to the agent icon and choose <strong>Edit</strong>.<br/>
+            As long as the toolkit with your selections is still open, you can adjust and paste the updated script again.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- END: Builder -->
+
+  <script>
+    // --- State ---
+    const state = {
+      rolle: { selected: [], limit: 3, edited:false },
+      purpose: { selected: [], limit: 2, edited:false },
+      tasks: { selected: [], limit: 3, edited:false },
+      // V5.2: Start & Variation as multi with limit 3
+      start: { selected: [], limit: 3, edited:false },
+      variation: { selected: [], limit: 3, edited:false },
+      tiefe: { selected: '', edited:false }, // "Answer style / specificity"
+      rq: { selected: '', edited:false },
+      recherche: { selected: '', edited:false },
+      stil: { selected: '', edited:false }
+    };
+    // --- Helpers ---
+    const qs = (sel, root=document) => root.querySelector(sel);
+    const joinList = (arr) => arr.join(', ');
+    const textOrEmpty = (selector) => (qs(selector)?.textContent || '').trim();
+    // Toggle multi without Ctrl/Cmd
+    function enableClickToggle(selectEl, key){
+      selectEl.addEventListener('mousedown', (e) => {
+        const opt = e.target;
+        if(opt && opt.tagName === 'OPTION'){
+          e.preventDefault();
+          opt.selected = !opt.selected;
+          selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+          selectEl.focus();
+        }
+      });
+    }
+    function enforceMultiLimit(selectEl, key){
+      const { limit } = state[key];
+      const current = Array.from(selectEl.options).filter(o=>o.selected).map(o=>o.text);
+      const prev = state[key].selected.slice();
+      const kept = prev.filter(x=>current.includes(x));
+      const added = current.filter(x=>!prev.includes(x));
+      const merged = kept.concat(added);
+      if(merged.length > limit){
+        const toDeselect = merged.slice(limit);
+        Array.from(selectEl.options).forEach(o => { if(toDeselect.includes(o.text)) o.selected = false; });
+        state[key].selected = merged.slice(0, limit);
+      } else {
+        state[key].selected = merged;
+      }
+      // Counter + hint + lock non-selected options
+      const idBase = key;
+      const countEl = qs(`#${idBase}Count`);
+      const hintEl = qs(`#${idBase}Hint`);
+      if(countEl) countEl.textContent = `${state[key].selected.length} / ${limit}`;
+      const atMax = state[key].selected.length >= limit;
+      if(hintEl) hintEl.hidden = !atMax;
+      Array.from(selectEl.options).forEach(o => { if(!o.selected) o.disabled = atMax; });
+      updateEditableFromSelection(key);
+    }
+    function updateEditableFromSelection(key){
+      // Role: not editable → fill badge
+      if (key === 'rolle') {
+        qs('#rolleBadge').textContent = joinList(state.rolle.selected);
+        return;
+      }
+      const map = {
+        purpose: { span: '#purposeEditable', value: joinList(state.purpose.selected) },
+        tasks: { span: '#tasksEditable', value: joinList(state.tasks.selected) },
+        start: { span: '#startEditable', value: joinList(state.start.selected) },
+        variation: { span: '#varEditable', value: joinList(state.variation.selected) },
+        tiefe: { span: '#tiefeEditable', value: state.tiefe.selected },
+        rq: { span: '#rqEditable', value: state.rq.selected },
+        recherche: { span: '#recEditable', value: state.recherche.selected },
+        stil: { span: '#stilEditable', value: state.stil.selected }
+      };
+      const target = map[key];
+      if (!target) return;
+      const span = qs(target.span);
+      const newVal = target.value ?? '';
+      const curVal = (span.textContent || '').trim();
+      // Overwrite if:
+      // - field is empty OR
+      // - field still equals the (last) joined selection OR
+      // - user hasn’t deliberately “decoupled” (edited=false)
+      if (!state[key]?.edited || curVal === '' || curVal === newVal) {
+        span.textContent = newVal;
+      }
+    }
+    function updateSingleSelect(selectEl, key){
+      const val = selectEl.value || '';
+      state[key].selected = val;
+      if(state[key].edited) return;
+      const spanId = ({ tiefe:'#tiefeEditable', rq:'#rqEditable', recherche:'#recEditable', stil:'#stilEditable' })[key];
+      if(spanId) qs(spanId).textContent = val;
+    }
+    function resetModule(key){
+      switch(key){
+        case 'rolle':{
+          const el = qs('#rolleSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.rolle.selected = []; qs('#rolleCount').textContent = `0 / ${state.rolle.limit}`; qs('#rolleHint').hidden = true; qs('#rolleBadge').textContent = ''; break;
+        }
+        case 'purpose':{
+          const el = qs('#purposeSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.purpose.selected = []; state.purpose.edited=false; qs('#purposeCount').textContent=`0 / ${state.purpose.limit}`; qs('#purposeHint').hidden=true; qs('#purposeEditable').textContent=''; break;
+        }
+        case 'tasks':{
+          const el = qs('#tasksSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.tasks.selected=[]; state.tasks.edited=false; qs('#tasksCount').textContent=`0 / ${state.tasks.limit}`; qs('#tasksHint').hidden=true; qs('#tasksEditable').textContent=''; break;
+        }
+        case 'start':{
+          const el = qs('#startSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.start.selected=[]; state.start.edited=false; qs('#startEditable').textContent=''; qs('#startCount').textContent=`0 / ${state.start.limit}`; qs('#startHint').hidden=true; break;
+        }
+        case 'variation':{
+          const el = qs('#varSelect'); Array.from(el.options).forEach(o=>{o.selected=false;o.disabled=false;});
+          state.variation.selected=[]; state.variation.edited=false; qs('#varEditable').textContent=''; qs('#variationCount').textContent=`0 / ${state.variation.limit}`; qs('#variationHint').hidden=true; break;
+        }
+        case 'tiefe':{ qs('#tiefeSelect').selectedIndex=-1; state.tiefe.selected=''; state.tiefe.edited=false; qs('#tiefeEditable').textContent=''; break; }
+        case 'rq':{ qs('#rqSelect').selectedIndex=-1; state.rq.selected=''; state.rq.edited=false; qs('#rqEditable').textContent=''; break; }
+        case 'recherche':{ qs('#recSelect').selectedIndex=-1; state.recherche.selected=''; state.recherche.edited=false; qs('#recEditable').textContent=''; break; }
+        case 'stil':{ qs('#stilSelect').selectedIndex=-1; state.stil.selected=''; state.stil.edited=false; qs('#stilEditable').textContent=''; break; }
+      }
+    }
+    function getModuleTextFromEditableOrSelection(spanSelector, selected){
+      const t = textOrEmpty(spanSelector);
+      if(t) return t;
+      if(Array.isArray(selected)) return selected.length ? joinList(selected) : '';
+      return selected || '';
+    }
+    // Build script – new order + new sentences (core behaviour only)
+    function buildScript(){
+      const parts = [];
+      // 1) Role/persona
+      if(state.rolle.selected.length){
+        const rolle = joinList(state.rolle.selected);
+        parts.push(`[Role / persona]
+Your scope of work is ${rolle}. You act as a professional, human assistant for this context.`);
+      }
+      // 2) Purpose
+      const purpose = getModuleTextFromEditableOrSelection('#purposeEditable', state.purpose.selected);
+      if(purpose){
+        parts.push(`[Goal / purpose]
+Your overarching purpose is to ${purpose}. You align your entire way of working with this goal.`);
+      }
+      // 3) Tasks
+      const tasks = getModuleTextFromEditableOrSelection('#tasksEditable', state.tasks.selected);
+      if(tasks){
+        parts.push(`[Assignment / tasks]
+Your assignment covers the following activities: ${tasks}. You perform these tasks reliably, clearly structured, and user‑oriented.`);
+      }
+      // 4) Core behaviour – only if fields are filled
+      const startSel = getModuleTextFromEditableOrSelection('#startEditable', state.start.selected);
+      const variationSel = getModuleTextFromEditableOrSelection('#varEditable', state.variation.selected);
+      const antwortstil = getModuleTextFromEditableOrSelection('#tiefeEditable', state.tiefe.selected);
+      const rueckfragen = getModuleTextFromEditableOrSelection('#rqEditable', state.rq.selected);
+      const rechercheSel = getModuleTextFromEditableOrSelection('#recEditable', state.recherche.selected);
+      const g = [];
+      if(startSel) g.push(`For the opening, use ${startSel}, situationally and without repetitive patterns.`);
+      if(variationSel) g.push(`Vary your expression slightly through ${variationSel}, so answers feel natural and not repetitive.`);
+      if(antwortstil) g.push(`Your answers follow the style ${antwortstil} so content remains clear, comprehensible, and structured.`);
+      if(rueckfragen) g.push(`Your clarifying‑questions logic is: ${rueckfragen}.`);
+      if(rechercheSel) g.push(`Your research and sourcing behaviour is: ${rechercheSel}.`);
+      if(g.length){
+        parts.push(`[Core behaviour / working logic]
+You work according to the following fixed logic:
+${g.join('\n\n')}`);
+      }
+      // 5) Communication style
+      const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected);
+      if(stil){
+        parts.push(`[Communication style]
+Your communication style is: ${stil}. Keep this style consistently in tone, structure, and wording.`);
+      }
+      // 6) Fixed blocks (unchanged logic)
+      const fixBlocks = [
+`[Formatting option (situational, after the first answer)]
+After the first answer, optionally offer to present the result in a desired format (for example, steps, variants, pros/cons, phrasings). Ask only if there’s a clear need for structure; otherwise decide situationally.`,
+`[Compliance: GDPR]
+Always follow data protection, confidentiality, safety, and professional boundaries. Don’t ask for diagnoses; clarify only work‑relevant limitations.`,
+`[Boundaries]
+No diagnoses or medical statements; no psychological interpretations; no legal advice. No guidance on children, family, or private causes.
+If private strains appear: stay friendly, clarify your role, and sort the professional frame (priorities, calm, ability to work).
+If health strains, noticeable absence issues, escalated conflicts, or topics beyond your role appear: note that HR/Occupational health/Works council should be involved. Always factual, respectful, neutral, with no personal devaluation.`,
+`[Out of scope]
+Communicate clearly if a request is outside the area of responsibility, and offer safe, professionally suitable alternatives.`,
+`[Universal error & clarity logic]
+If information is missing, unclear, or contradictory, ask once precisely, don’t make assumptions, and don’t guess. Stay fact‑based, offer options if needed, and be transparent when you can’t continue meaningfully without clarification.`,
+`[Consistency & gap management]
+Check user statements for consistency, avoid endless loops (max. one follow‑up), and keep boundaries clear: say openly if reliable information is missing or the request is beyond your remit.`,
+`[Communication escalation model]
+Work in four steps:
+(1) brief open clarification,
+(2) focus and make it concrete,
+(3) consequence after two unclear replies (“I can’t help further without clarification.”),
+(4) note that the topic may need formal review by the responsible bodies.`,
+`[Transparency requirement]
+State early and clearly which information you need to give a qualified answer.`,
+`[Values & company context]
+Values: safety, quality, respectful behaviour, challenge, winning. Mention values only when they provide orientation (“…so we ensure quality/safety.”). Name trade‑offs; prioritise safety and respect. Orientation: bold, clear, solutions‑oriented, without drama.`
+      ];
+      parts.push(...fixBlocks);
+      return parts.join('\n\n').trim();
+    }
+
+    // Info panels
+    function wireInfoPanel(key){
+      const btn = qs(`#infoBtn_${key}`);
+      const panel = qs(`#infoPanel_${key}`);
+      if(!btn || !panel) return;
+      const closeBtn = panel.querySelector('.close-info');
+      function open(){ panel.style.display='block'; btn.setAttribute('aria-expanded','true'); closeBtn && closeBtn.focus(); }
+      function close(){ panel.style.display='none'; btn.setAttribute('aria-expanded','false'); btn.focus(); }
+      btn.addEventListener('click', ()=>{ const openNow = panel.style.display==='block'; openNow?close():open(); });
+      closeBtn && closeBtn.addEventListener('click', close);
+      panel.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+    }
+
+    async function copyToClipboard(text){
+      try{
+        if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); }
+        else { const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px'; document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+        return true;
+      }catch(e){ console.error(e); return false; }
+    }
+
+    // Wiring
+    window.addEventListener('DOMContentLoaded', ()=>{
+      // --- Script dialog: elements
+      const showScriptBtn = qs('#showScriptBtn');
+      const scriptDialog = document.getElementById('scriptDialog');
+      const scriptDialogBody= qs('#scriptDialogBody');
+      const scriptDialogClose = qs('#scriptDialogClose');
+      const dialogCopyBtn = qs('#dialogCopyBtn');
+      const dialogCloseBtn = qs('#dialogCloseBtn');
+      let lastOpener = null;
+
+      // --- Open: generate script, insert, show dialog
+      if (showScriptBtn && scriptDialog && scriptDialogBody) {
+        showScriptBtn.addEventListener('click', () => {
+          const txt = buildScript(); // always the same source
+          scriptDialogBody.textContent = txt; // insert text (safe, without HTML)
+          lastOpener = showScriptBtn; // for return focus
+          scriptDialog.showModal(); // open modal (ESC closes)
+        });
+      }
+      // --- Copy in dialog: same logic as main button
+      if (dialogCopyBtn) {
+        dialogCopyBtn.addEventListener('click', async () => {
+          const txt = scriptDialogBody.textContent || '';
+          const ok = await copyToClipboard(txt);
+          // optional feedback
+        });
+      }
+      // --- Close (X & button) + return focus
+      function closeScriptDialog() {
+        if (scriptDialog && typeof scriptDialog.close === 'function') {
+          scriptDialog.close();
+        }
+        if (lastOpener) lastOpener.focus();
+      }
+      if (scriptDialogClose) scriptDialogClose.addEventListener('click', closeScriptDialog);
+      if (dialogCloseBtn) dialogCloseBtn.addEventListener('click', closeScriptDialog);
+      if (scriptDialog) {
+        scriptDialog.addEventListener('close', () => { if (lastOpener) lastOpener.focus(); });
+      }
+
+      // Start → builder
+      qs('#startBtn').addEventListener('click', () => {
+        qs('#start').style.display='none';
+        qs('#builder').style.display='block';
+        // NEW: scroll to top so H1 and the new box are visible
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        // NEW: focus first on the new preset select; fallback otherwise
+        const presetSel = qs('#presetSelect');
+        if (presetSel) { presetSel.focus(); }
+        else { qs('#rolleSelect').focus(); }
+      });
+
+      // Info panels
+      ['rolle','purpose','tasks','start','variation','tiefe','rq','recherche','stil'].forEach(wireInfoPanel);
+
+      // Multi-selects (incl. start/variation)
+      [
+        {sel:'#rolleSelect', key:'rolle'},
+        {sel:'#purposeSelect', key:'purpose'},
+        {sel:'#tasksSelect', key:'tasks'},
+        {sel:'#startSelect', key:'start'},
+        {sel:'#varSelect', key:'variation'}
+      ].forEach(d=>{
+        const el = qs(d.sel);
+        enableClickToggle(el, d.key);
+        el.addEventListener('change', e=>enforceMultiLimit(e.target, d.key));
+      });
+
+      // Single-selects
+      qs('#tiefeSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'tiefe'));
+      qs('#rqSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'rq'));
+      qs('#recSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'recherche'));
+      qs('#stilSelect').addEventListener('change', e=>updateSingleSelect(e.target, 'stil'));
+
+      // Editable flags
+      qs('#purposeEditable').addEventListener('input', ()=> state.purpose.edited = true);
+      qs('#tasksEditable').addEventListener('input', ()=> state.tasks.edited = true);
+      qs('#startEditable').addEventListener('input', () => {
+        const joined = joinList(state.start.selected);
+        state.start.edited = (qs('#startEditable').textContent || '').trim() !== joined;
+      });
+      qs('#varEditable').addEventListener('input', () => {
+        const joined = joinList(state.variation.selected);
+        state.variation.edited = (qs('#varEditable').textContent || '').trim() !== joined;
+      });
+      qs('#tiefeEditable').addEventListener('input', ()=> state.tiefe.edited = true);
+      qs('#rqEditable').addEventListener('input', ()=> state.rq.edited = true);
+      qs('#recEditable').addEventListener('input', ()=> state.recherche.edited = true);
+      qs('#stilEditable').addEventListener('input', ()=> state.stil.edited = true);
+
+      // Resets
+      qs('#rolleReset').addEventListener('click', ()=>resetModule('rolle'));
+      qs('#purposeReset').addEventListener('click', ()=>resetModule('purpose'));
+      qs('#tasksReset').addEventListener('click', ()=>resetModule('tasks'));
+      qs('#startReset').addEventListener('click', ()=>resetModule('start'));
+      qs('#varReset').addEventListener('click', ()=>resetModule('variation'));
+      qs('#tiefeReset').addEventListener('click', ()=>resetModule('tiefe'));
+      qs('#rqReset').addEventListener('click', ()=>resetModule('rq'));
+      qs('#recReset').addEventListener('click', ()=>resetModule('recherche'));
+      qs('#stilReset').addEventListener('click', ()=>resetModule('stil'));
+
+      // Copy
+      qs('#copyBtn').addEventListener('click', async ()=>{
+        const script = buildScript();
+        const ok = await copyToClipboard(script);
+        const msg = qs('#copyMsg');
+        msg.style.display = ok ? 'block' : 'none';
+        if(!ok) alert('Copying isn’t possible. Please copy manually.');
+        if(ok) setTimeout(()=> msg.style.display='none', 4000);
+      });
+    });
+
+    // === Info modal logic (DOMContentLoaded, isolated) ===
+    document.addEventListener('DOMContentLoaded', function() {
+      var modal = document.getElementById('infoModal');
+      var openBtn = document.getElementById('mainInfoBtn');
+      var closeX = document.getElementById('closeInfo');
+      var steps = modal ? modal.querySelectorAll('.info-step') : [];
+      var nextBtn = document.getElementById('nextStep');
+      var prevBtn = document.getElementById('prevStep');
+      var stepDots = document.getElementById('stepDots');
+      var current = 0;
+      function update() {
+        steps.forEach(function(s, i){ s.classList.toggle('active', i === current); });
+        if (prevBtn) prevBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+        if (nextBtn) nextBtn.textContent = current === steps.length - 1 ? 'Understood' : 'Next';
+        if (stepDots) stepDots.textContent = Array.from({length: steps.length}, function(_, i){ return i === current ? '●' : '○'; }).join(' ');
+      }
+      if (openBtn) openBtn.addEventListener('click', function(){ if(!modal) return; modal.style.display='flex'; current = 0; update(); });
+      if (closeX) closeX.addEventListener('click', function(){ if(!modal) return; modal.style.display='none'; });
+      if (nextBtn) nextBtn.addEventListener('click', function(){ if (current < steps.length - 1) { current++; update(); } else if (modal) { modal.style.display='none'; } });
+      if (prevBtn) prevBtn.addEventListener('click', function(){ if (current > 0) { current--; update(); } });
+      if (modal) modal.addEventListener('click', function(e){ if (e.target === modal) modal.style.display='none'; });
+    });
+    // === End info modal logic ===
+  </script>
+
+  <!-- Script dialog: optional info layer -->
+  <dialog id="scriptDialog" aria-labelledby="scriptDialogTitle" closedby="any">
+    <div class="modal-content">
+      <span class="close-x" id="scriptDialogClose" role="button" aria-label="Close">×</span>
+      <h3 id="scriptDialogTitle" style="margin-top:0;color:var(--primary)">Agent script (preview)</h3>
+      <!-- Scrollable content area -->
+      <div id="scriptDialogBody" class="script-preview-area" role="document" aria-label="Preview of the agent script">
+        <!-- Text is inserted via JS -->
+      </div>
+      <div class="step-nav">
+        <span class="muted"></span>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn--sm" id="dialogCloseBtn" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="infoModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <span id="closeInfo" class="close-x" role="button" aria-label="Close">×</span>
+
+      <!-- SCREEN 1 -->
+      <div class="info-step active" data-step="1">
+        <h3>What does this toolkit do?</h3>
+        <p>This toolkit creates Copilot agents that work reliably, clearly, and in a structured way.</p>
+        <p>With a few selections you decide:</p>
+        <ul>
+          <li>how an agent answers</li>
+          <li>how it communicates</li>
+          <li>how it handles follow‑up questions, research, and unclear situations</li>
+          <li>how it structures its tasks</li>
+        </ul>
+        <br>
+        <p>The focus is on behaviour, tone, and way of working.</p>
+        <p>The professional capabilities come from Copilot.</p>
+        <p>The toolkit ensures they’re used in a targeted, traceable, and consistent way.</p>
+      </div>
+
+      <!-- SCREEN 2 -->
+      <div class="info-step" data-step="2">
+        <h3>How does it work?</h3>
+        <p>You compose an agent by choosing five areas:</p>
+        <p><strong>Role / persona</strong><br>Which base style? (for example, factual, supportive, technical)</p>
+        <p><strong>Purpose (goal)</strong><br>What should the agent achieve in principle?<br>(for example, simplify processes, speed up tasks)</p>
+        <p><strong>Tasks (assignment)</strong><br>What does the agent typically do?<br>(for example, analyse, structure, explain)</p>
+        <p><strong>Communication style</strong><br>How does the agent sound?<br>(for example, calm & clear, analytical, compact)</p>
+        <p><strong>Core behaviour</strong><br>How does the agent work?</p>
+        <ul>
+          <li>How it opens</li>
+          <li>How deep it answers</li>
+          <li>When it asks follow‑ups</li>
+          <li>How it researches</li>
+          <li>How naturally it phrases itself</li>
+        </ul>
+        <br>
+        <p>These settings form a clear rule set that makes the agent stable, clear, and predictable.</p>
+      </div>
+
+      <!-- SCREEN 3 -->
+      <div class="info-step" data-step="3">
+        <h3>What happens behind the scenes?</h3>
+        <p>The toolkit turns all decisions into a structured rule set. This rule set controls:</p>
+        <ul>
+          <li>tone of voice</li>
+          <li>structure</li>
+          <li>answer depth</li>
+          <li>follow‑up question behaviour</li>
+          <li>research behaviour</li>
+          <li>variations in expression</li>
+          <li>handling unclear situations</li>
+          <li>boundaries (no diagnoses, no legal advice, etc.)</li>
+          <li>transparency and consistency</li>
+          <li>data‑protection notes</li>
+        </ul>
+        <br>
+        <p>The generated script is clear, consistent, and universal—which makes the agents reliable.</p>
+        <p>Fixed components are included, such as escalation steps and GDPR.</p>
+      </div>
+
+      <!-- SCREEN 4 -->
+      <div class="info-step" data-step="4">
+        <h3>How does the agent apply your settings?</h3>
+        <p>The selections in the toolkit form the agent’s top control logic.</p>
+        <p>These instructions take precedence over:</p>
+        <ul>
+          <li>custom Copilot settings</li>
+          <li>personal memories</li>
+          <li>spontaneous style changes</li>
+          <li>the model’s default behaviour</li>
+        </ul>
+        <br>
+        <p>Therefore, the agent consistently follows:</p>
+        <ul>
+          <li>the chosen tone</li>
+          <li>the defined way of working</li>
+          <li>the desired structure</li>
+          <li>the fixed clarifying‑questions and research logic</li>
+        </ul>
+        <br>
+        <p>At the same time, it uses all Copilot capabilities—within your defined rules: consistent, controlled, and without style breaks.</p>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="step-nav">
+        <button id="prevStep" class="btn btn--sm" type="button">Back</button>
+        <div id="stepDots" class="muted" aria-live="polite"></div>
+        <button id="nextStep" class="btn btn--sm" type="button">Next</button>
+      </div>
+    </div>
+
+    <script>
+/* ======================================================================
+   PRESET ENGINE – complete, minimally invasive, compatible
+   Inserts predefined agents and controls selection + reset.
+   NOTHING in the existing toolkit is overwritten.
+====================================================================== */
+// -----------------------
+// PRESET DATA
+// -----------------------
+const PRESETS = {
+  "klar_kurz": {
+    desc: "Compact, well‑structured answers with short headings and sensible sections.",
+    rolle: ["Office / administration", "Communication / training"],
+    purpose: ["Reduce everyday workload", "Structure information"],
+    tasks: ["Analyse information", "Explain content", "Structure information"],
+    start: ["direct start"],
+    variation: ["slightly vary word choice"],
+    tiefe: "compact & direct",
+    rq: "follow‑up question at the end",
+    recherche: "web search with source details (title/date/link)",
+    stil: "direct and compact",
+    edit: {
+      purpose: "Reduce everyday workload and structure information clearly.",
+      tasks: "Analyse information, explain content, and present it in a structured way.",
+      start: "Short opening in 1–2 sentences without meta comments.",
+      tiefe: "Compact and readable: short opening sentence, then clear short headings, each with one short paragraph and short lists with one explanatory sentence. No fillers.",
+      stil: "Clear, factual, modern. Short sentences, natural structure, no embellishment.",
+      rq: "Two short, useful follow‑ups at the end.",
+      recherche: "Web search with title/date/link; no statements about missing access."
+    }
+  },
+  "email_datenprofi": {
+    desc: "Optimises texts, emails, and content—clear, precise, and structured.",
+    rolle: ["Communication / training"],
+    purpose: ["Improve communication", "Ensure consistency, e.g., text quality"],
+    tasks: ["Edit texts", "Create texts", "Structure information"],
+    start: ["short prompt"],
+    variation: ["subtle synonyms instead of repetition"],
+    tiefe: "clear action recommendations",
+    rq: "clarify context (1 question)",
+    recherche: "web search as needed",
+    stil: "formal and professional",
+    edit: {
+      purpose: "Improve communication and ensure consistent texts.",
+      tasks: "Edit texts, create texts, structure content clearly.",
+      start: "Short prompt; get to the point.",
+      variation: "Subtle synonyms; no artificial length.",
+      tiefe: "Clear steps, clear message, clear recommendation.",
+      rq: "One follow‑up: clarify audience or purpose of the message.",
+      recherche: "Web search only for external topics; no speculation.",
+      stil: "Short sentences, factual, politely professional."
+    }
+  },
+  "excel_experte": {
+    desc: "Analyses Excel data, explains formulae precisely, and provides clear action steps.",
+    rolle: ["IT / digital / processes"],
+    purpose: ["Simplify processes", "Create overview, reduce complexity"],
+    tasks: ["Analyse information", "Describe processes or flows", "Write instructions"],
+    start: ["factual, clear opening"],
+    variation: ["slightly vary word choice"],
+    tiefe: "technically precise",
+    rq: "clarify context (1 question)",
+    recherche: "web search as needed",
+    stil: "analytical and technical",
+    edit: {
+      purpose: "Analyse data, simplify flows, increase understanding.",
+      tasks: "Analyse Excel data, explain formulae, provide clear steps.",
+      start: "Short, technical, without fillers.",
+      variation: "Minimal; no unnecessary synonyms.",
+      tiefe: "Show formulae exactly. Step‑by‑step analysis: 1) Problem, 2) Formula, 3) Example, 4) Error source. For Pivot: Fields → Rows/Columns → Values → Filters. For Power Query: Source → Transform → Load.",
+      rq: "One clarification: Excel Desktop, Online, or Mac version?",
+      recherche: "Web search for newer Excel features or syntax changes.",
+      stil: "Precise, clear, no embellishment."
+    }
+  },
+  "fuehrungscoach": {
+    desc: "Supports leadership situations clearly, structurally, and respectfully.",
+    rolle: ["Coach / mentor", "Leader / manager"],
+    purpose: ["Clarify situations, give orientation"],
+    tasks: ["Explain content", "Show hints or risks"],
+    start: ["calm opening"],
+    variation: ["small variation in transitions (“Next…”, “Then…”)"],
+    tiefe: "pros/cons structure",
+    rq: "clarify the desired outcome (1 question)",
+    recherche: "no web search",
+    stil: "diplomatic and respectful",
+    edit: {
+      purpose: "Provide orientation, structure situations, support decisions.",
+      tasks: "Provide hints, sort arguments, explain options.",
+      start: "Calm, clear, no urgency.",
+      variation: "Very subtle; focus on consistency.",
+      tiefe: "Pros/cons: 2–3 each. State recommendation. Name risks clearly, without pressure. How‑to: max. 5 steps for conversations.",
+      rq: "One follow‑up: desired outcome of the conversation?",
+      recherche: "No external sources; focus on principles and roles.",
+      stil: "Calm, respectful, considerate."
+    }
+  },
+  "office365_Funktionsexperte": {
+    desc: "Explains Office 365 features clearly and structurally. Provides orientation and eases understanding of suitable use and application options.",
+    rolle: ["IT / digital / processes"],
+    purpose: ["Increase understanding, technical and organisational", "Simplify processes"],
+    tasks: ["Explain content", "Write instructions", "Analyse information"],
+    start: ["brief framing"],
+    variation: ["small variation in transitions (“Next…”, “Then…”)"],
+    tiefe: "step‑by‑step/structured",
+    rq: "clarify context (1 question)",
+    recherche: "web search with source details (title/date/link)",
+    stil: "instructional, explanatory",
+    edit: {
+      purpose: "Increase understanding for Office 365 and explain the right features precisely.",
+      tasks: "Explain Office apps, give how‑to steps, clarify differences.",
+      start: "Brief framing: app, version, UI.",
+      variation: "Subtle variation, focus on clarity.",
+      tiefe: "How‑to: maximum 7 steps. Always clarify first: app, platform (Web/Desktop/Mobile), tenant/version. Steps: 1) UI, 2) Navigation, 3) Action, 4) Check.",
+      rq: "One follow‑up: which app (Loop, Planner, OneNote, Teams) and which platform?",
+      recherche: "Always web search with title/date/link for current UI or feature changes.",
+      stil: "Clear, explanatory, without fillers."
+    }
+  },
+  "azubi_coach": {
+    desc: "Explains in simple language, works step‑by‑step, and offers short mini‑checks.",
+    rolle: ["Apprenticeship support, apprentice", "Support & learning"],
+    purpose: ["Convey knowledge, explain", "Clarify situations, give orientation"],
+    tasks: ["Prepare learning content", "Explain content", "Write instructions"],
+    start: ["calm opening", "brief framing"],
+    variation: ["slightly vary word choice"],
+    tiefe: "step‑by‑step/structured",
+    rq: "clarify context (1 question)",
+    recherche: "web search as needed",
+    stil: "friendly and supportive",
+    edit: {
+      purpose: "Explain complex content in simple language; step‑by‑step; mini‑check (1–2 questions) at the end.",
+      tasks: "Explain → example → mini task (1 exercise) → hint for the solution. If unsure: one clarifying question.",
+      start: "Start calmly, 1‑sentence framing; then 3–5 clear steps.",
+      variation: "Very subtle; no fillers.",
+      tiefe: "Each step: 1 action + 1 reason + 1 tip. Explain terms briefly.",
+      rq: "Exactly 1 clarification at the start (topic/level). No others unless there’s a contradiction.",
+      recherche: "Research only for external facts; cite sources sparingly.",
+      stil: "Friendly, encouraging, short sentences (~15 words)."
+    }
+  },
+  "office365_Praxisassistent": {
+    desc: "Provides quick, precise how‑to steps and short troubleshooting analyses for Office 365 apps. Ideal for operative tasks and direct problem‑solving (Teams, Outlook, OneDrive, Planner, Loop, OneNote).",
+    rolle: ["IT / digital / processes"],
+    purpose: ["Simplify processes", "Create overview, reduce complexity"],
+    tasks: ["Write instructions", "Explain content", "Analyse information"],
+    start: ["brief framing"],
+    variation: ["small variation in transitions (“Next…”, “Then…”)"],
+    tiefe: "step‑by‑step/structured",
+    rq: "clarify context (1 question)",
+    recherche: "web search with source details (title/date/link)",
+    stil: "pragmatic and solution‑oriented",
+    edit: {
+      purpose: "Simplify M365 tasks, reduce complexity, avoid errors.",
+      tasks: "How‑to steps, short explanations, small analyses for troubleshooting.",
+      start: "First clarify: app + platform (Web/Desktop/Mobile) + account (personal/business). Then up to 7 steps + check.",
+      variation: "Small variation in transitions, no synonym loops.",
+      tiefe: "Standard: ≤7 steps. Troubleshooting: checklist. Comparison: table (option/advantage/disadvantage).",
+      rq: "Exactly 1 context question at the beginning (app & platform).",
+      recherche: "Always provide sources with title/date/link for UI changes; no guesswork.",
+      stil: "Pragmatic, solution‑oriented, no marketing."
+    }
+  },
+  "projekt_assistent": {
+    desc: "Structures meetings, decisions, and to‑dos: Short summary → options → recommendation → next steps.",
+    rolle: ["Office / administration", "Communication / training"],
+    purpose: ["Create overview, reduce complexity", "Prepare decisions"],
+    tasks: ["Structure information", "Summarise content", "Prepare decision bases"],
+    start: ["overview at the beginning"],
+    variation: ["slightly vary word choice"],
+    tiefe: "step‑by‑step/structured",
+    rq: "clarify the desired outcome (1 question)",
+    recherche: "web search as needed",
+    stil: "structured and precise",
+    edit: {
+      purpose: "Create overview, prepare decisions, make next steps clear.",
+      tasks: "Summarise, structure options, to‑dos with owners/dates (if available).",
+      start: "Overview at the beginning: goal, status, bottleneck (one sentence each).",
+      variation: "Closing varies as needed: decision template, to‑do list, risks.",
+      tiefe: "Standard format: 1) Short summary (≤5 sentences) 2) Options (max. 3) 3) Recommendation 4) Next steps.",
+      rq: "Exactly one question: Which goal do we prioritise (time/cost/quality)?",
+      recherche: "Only for methods; no company internals.",
+      stil: "Clear, structured, precise."
+    }
+  }
+};
+
+// -----------------------
+// PRESET INFO PANEL
+// -----------------------
+(function wirePresetInfoPanel(){
+  const btn = document.querySelector('#infoBtn_presets');
+  const panel = document.querySelector('#infoPanel_presets');
+  if(!btn || !panel) return;
+  const closeBtn = panel.querySelector('.close-info');
+  function open(){
+    panel.style.display='block';
+    btn.setAttribute('aria-expanded','true');
+    closeBtn && closeBtn.focus();
+  }
+  function close(){
+    panel.style.display='none';
+    btn.setAttribute('aria-expanded','false');
+    btn.focus();
+  }
+  btn.addEventListener('click', () => {
+    const isOpen = panel.style.display === 'block';
+    isOpen ? close() : open();
+  });
+  closeBtn && closeBtn.addEventListener('click', close);
+  panel.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') close();
+  });
+})();
+
+// -----------------------
+// SETTER: MULTI
+// -----------------------
+function setMulti(selectEl, values, key){
+  if(!selectEl) return;
+  Array.from(selectEl.options).forEach(o => {
+    o.selected = false;
+    o.disabled = false;
+  });
+  values.forEach(val => {
+    const opt = Array.from(selectEl.options).find(o => o.text.trim() === val);
+    if(opt){ opt.selected = true; }
+  });
+  selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+}
+
+// -----------------------
+// SETTER: SINGLE
+// -----------------------
+function setSingle(selectEl, value, key){
+  if(!selectEl) return;
+  const opt = Array.from(selectEl.options).find(o => o.text.trim() === value);
+  if(opt){
+    selectEl.value = opt.value || opt.text;
+  } else {
+    selectEl.selectedIndex = -1;
+  }
+  selectEl.dispatchEvent(new Event('change', {bubbles:true}));
+}
+
+// -----------------------
+function setEditable(spanSel, text, stateKey){
+  const span = document.querySelector(spanSel);
+  if(!span) return;
+  span.textContent = text || '';
+  if(state[stateKey]) state[stateKey].edited = true;
+}
+
+// -----------------------
+function resetAllPresetModules(){
+  [
+    'rolle','purpose','tasks','start','variation',
+    'tiefe','rq','recherche','stil'
+  ].forEach(resetModule);
+}
+
+// -----------------------
+function applyPreset(presetId){
+  const p = PRESETS[presetId];
+  if(!p) return;
+  resetAllPresetModules();
+  setMulti(document.querySelector('#rolleSelect'), p.rolle, 'rolle');
+  setMulti(document.querySelector('#purposeSelect'), p.purpose, 'purpose');
+  setMulti(document.querySelector('#tasksSelect'), p.tasks, 'tasks');
+  setMulti(document.querySelector('#startSelect'), p.start, 'start');
+  setMulti(document.querySelector('#varSelect'), p.variation, 'variation');
+  setSingle(document.querySelector('#tiefeSelect'), p.tiefe, 'tiefe');
+  setSingle(document.querySelector('#rqSelect'), p.rq, 'rq');
+  setSingle(document.querySelector('#recSelect'), p.recherche, 'recherche');
+  setSingle(document.querySelector('#stilSelect'), p.stil, 'stil');
+
+  if(p.edit){
+    if(p.edit.purpose) setEditable('#purposeEditable', p.edit.purpose, 'purpose');
+    if(p.edit.tasks) setEditable('#tasksEditable', p.edit.tasks, 'tasks');
+    if(p.edit.start) setEditable('#startEditable', p.edit.start, 'start');
+    if(p.edit.variation) setEditable('#varEditable', p.edit.variation, 'variation');
+    if(p.edit.tiefe) setEditable('#tiefeEditable', p.edit.tiefe, 'tiefe');
+    if(p.edit.rq) setEditable('#rqEditable', p.edit.rq, 'rq');
+    if(p.edit.recherche) setEditable('#recEditable', p.edit.recherche, 'recherche');
+    if(p.edit.stil) setEditable('#stilEditable', p.edit.stil, 'stil');
+  }
+  const desc = document.querySelector('#presetDesc');
+  if(desc) desc.textContent = p.desc || '';
+}
+
+// -----------------------
+function resetPresetSelection(){
+  const sel = document.querySelector('#presetSelect');
+  if(sel) sel.selectedIndex = -1;
+  const desc = document.querySelector('#presetDesc');
+  if(desc) desc.textContent = '';
+  resetAllPresetModules();
+}
+
+// -----------------------
+document.addEventListener('DOMContentLoaded', function(){
+  const presetSel = document.querySelector('#presetSelect');
+  const resetBtn = document.querySelector('#presetReset');
+  if(presetSel){
+    presetSel.addEventListener('change', function(){
+      const id = presetSel.value || presetSel.selectedOptions?.[0]?.value;
+      if(id) applyPreset(id);
+    });
+  }
+  if(resetBtn){
+    resetBtn.addEventListener('click', resetPresetSelection);
+  }
+});
+    </script>
+  </div>
+</body>
+</html>
