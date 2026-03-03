@@ -204,6 +204,22 @@
 }
 
 
+
+
+/* Copy-Kasten: Buttons links ausrichten */
+#copyArea .actions-line {
+  justify-content: flex-start;   /* überschreibt globales flex-end */
+}
+
+/* Dialog-Footer: Buttons links ausrichten */
+#scriptDialog .step-nav {
+  justify-content: flex-start;   /* statt space-between */
+}
+
+
+
+
+
 /* === Copy-Button: schneller Puls ================================ */
 @keyframes pulse-fast-primary {
   0%   { box-shadow: 0 0 0 0 rgba(0,90,156,0.35); }
@@ -223,6 +239,69 @@
 #mod-presets #sub-presets {
   background: #ffffff;        /* innen = weiß */
 }
+
+
+
+/* Dialog: Größe & Scrollverhalten für Skriptvorschau */
+#scriptDialog::backdrop { background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); }
+
+
+/* --- FIX: äußeren Scroll entfernen, Höhe reduzieren --- */
+#scriptDialog .modal-content {
+  max-width: 900px;
+  width: 80vw;
+  max-height: 70vh;     /* Laptop-freundlich */
+  padding: 24px;
+  
+  /* WICHTIG: kein Scroll mehr außerhalb! */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- FIX: nur INNERER Bereich scrollt --- */
+.script-preview-area {
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fcfcfd;
+  padding: 12px 14px;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+
+  /* EINZIGE Scrollfläche */
+  flex: 1;
+  overflow-y: auto;
+
+  /* Höhe stabil – genug Platz unten */
+  max-height: calc(70vh - 90px);
+}
+
+.script-preview-area {
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fcfcfd;
+  padding: 12px 14px;
+
+  /* Lesbarkeit des langen Textes */
+  white-space: pre-wrap;     /* erhält Zeilenumbrüche, bricht lange Zeilen um */
+  overflow-wrap: anywhere;   /* bricht extrem lange Tokens */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+
+  /* Eigentliche Scrollhöhe: reserviert Platz für Footer */
+  max-height: calc(70vh);
+  overflow: auto;
+}
+
+
 
   </style>
 </head>
@@ -283,7 +362,7 @@
 
 <option value="azubi_coach">Azubi‑Coach/Lernbegleiter</option>
 <option value="klar_kurz">Klar & Kurz Agent</option>
-<option value="excel_experte">Excel-Experte</option>     
+<option value="excel_experte">Excel Experte</option>     
 <option value="office365_Praxisassistent">O365 Praxis-Assistent</option>     
 <option value="office365_Funktionsexperte">O365 Funktions-Experte</option> 
 <option value="email_datenprofi">E‑Mail & Datenprofi</option>
@@ -307,7 +386,7 @@
       <h4>Hinweise zu Muster Agents</h4>
       <p><strong>Auswahl:</strong> Wähle einen vordefinierten Agent aus der Liste aus.</p>
       <p><strong>Module:</strong> Die Einstellungen werden in den Modulen automatisch eingetragen.</p>
-      <p><strong>Tipp:</strong> Die Auswahlen und Freitexte können nach Belieben angepasst werden.</p>
+      <p><strong>Tipp:</strong> Die Auswahlen und Freitexte können nach Belieben angepasst werden. Hierzu die den Button "Auswahl zurücksetzen" in den Modulen klicken!</p>
       <button type="button" class="close-info">Verbergen</button>
     </div>
   </div>
@@ -356,9 +435,9 @@
           </div>
           <div class="info-panel" id="infoPanel_rolle" role="region" aria-label="Hinweise zu Rolle / Persona">
             <h4>Hinweise zu Rollen / Persona</h4>
-            <p><strong>Wofür?</strong> Legt den fachlichen Kontext fest – Ton und Prioritäten richten sich daran aus.</p>
-            <p><strong>Keine Befugnisse:</strong> Nutze Kontext- statt Entscheidungsrollen.</p>
-            <p><strong>Best Practice:</strong> 1–3 präzise Rollen wählen.</p>
+            <p><strong>Zweck:</strong> Der Agent braucht einen klaren Arbeitsbereich, damit Antworten passend sind. Ton und Prioritäten richten sich daran aus.</p>
+            <p><strong>Kein Status:</strong> Die Rolle beschreibt den Themenkontext in einer Jobbezeichnung.</p>
+            <p><strong>Empfehlung:</strong> Wähle 1–3 Rollen, damit der Agent nicht verwässert.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -401,9 +480,9 @@
           </div>
           <div class="info-panel" id="infoPanel_purpose" role="region" aria-label="Hinweise zu Ziel / Purpose">
             <h4>Hinweise zu Ziel / Purpose</h4>
-            <p><strong>Wirkung:</strong> Steuert Prioritäten (z. B. Sicherheit) und beeinflusst Tiefe/Struktur.</p>
-            <p><strong>Auswahl:</strong> 1–2 klare Zwecke wählen.</p>
-            <p><strong>Formulierung:</strong> Generisch statt interner Namen.</p>
+            <p><strong>Funktion:</strong> Der Purpose gibt an, welches Hauptziel der Agent verfolgen soll.</p>
+            <p><strong>Fokus:</strong>  1–2 Ziele reichen völlig und sorgen für klare Ausrichtung.</p>
+            <p><strong>Schreibweise:</strong> Einfach und allgemein halten, keine Fachbegriffe oder internen Projektnamen.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -444,9 +523,9 @@
           </div>
           <div class="info-panel" id="infoPanel_tasks" role="region" aria-label="Hinweise zu Aufgaben / Tasks">
             <h4>Hinweise zu Tätigkeiten</h4>
-            <p><strong>Fokus:</strong> 80‑%‑Kernaufgaben priorisieren.</p>
-            <p><strong>Balance:</strong> Max. 3 Tätigkeiten kombinieren.</p>
-            <p><strong>Tipp:</strong> Bei Dokumenten „Daten/Dokumente auslesen“ ergänzen.</p>
+            <p><strong>Kern: </strong> Hier wählst du die Hauptaufgaben, die der Agent zuverlässig erledigen soll.</p>
+            <p><strong>Begrenzung:</strong> 1–3 Tätigkeiten sind genug, damit der Agent nicht überladen wird.</p>
+            <p><strong>Tipp:</strong> Nimm Aufgaben, die im Alltag wirklich vorkommen.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -484,9 +563,9 @@
           </div>
           <div class="info-panel" id="infoPanel_stil" role="region" aria-label="Hinweise zum Kommunikationsstil">
             <h4>Hinweise zum Stil</h4>
-            <p><strong>Passung:</strong> Stil zur Zielgruppe wählen.</p>
-            <p><strong>Konsistenz:</strong> Ton, Wortwahl, Struktur durchhalten.</p>
-            <p><strong>Tipp:</strong> „ruhig & klar“ + „strukturiert & präzise“ ist robust.</p>
+            <p><strong>Bedeutung:</strong> Legt fest, wie der Agent „klingt“.</p>
+            <p><strong>Qualität:</strong> Ein fester Stil wirkt professionell und vorhersehbar.</p>
+            <p><strong>Tipp:</strong> Wähle den Stil, der am besten zum Arbeitsumfeld und Nutzer passt. „ruhig & klar“ + „strukturiert & präzise“ ist robust.</p>
             <button type="button" class="close-info">Verbergen</button>
           </div>
         </div>
@@ -560,9 +639,9 @@
     </div>
     <div class="info-panel" id="infoPanel_variation" role="region" aria-label="Hilfetext Variation / Ausdruck">
       <h4>Hilfetext – Variation / Ausdruck</h4>
-      <p><strong>Ziel:</strong> Leichte sprachliche Abwechslung für ein natürliches Lesegefühl.</p>
-      <p><strong>Rahmen:</strong> Variation betrifft Wortwahl, Satzbau, Einstieg/Abschluss – Struktur und Inhalt bleiben gleich.</p>
-      <p><strong>Grenze:</strong> Klarheit geht vor Abwechslung; keine künstliche Verlängerung.</p>
+      <p><strong>Wirkung:</strong> Sorgt dafür, dass Antworten nicht immer gleich klingen.</p>
+      <p><strong>Umfang:</strong> Nur kleine Variationen in Wortwahl und Übergängen.</p>
+      <p><strong>Priorität:</strong> Verständlichkeit bleibt wichtiger als Abwechslung.</p>
       <button type="button" class="close-info">Verbergen</button>
     </div>
   </div>
@@ -592,9 +671,9 @@
     </div>
     <div class="info-panel" id="infoPanel_tiefe" role="region" aria-label="Hilfetext Antwortstil / Spezifität">
       <h4>Hilfetext – Antwortstil / Spezifität</h4>
-      <p><strong>Aufgabe:</strong> Legt den inhaltlichen Aufbau fest.</p>
-      <p><strong>Konsistenz:</strong> Eine Option wählen und konsequent beibehalten.</p>
-      <p><strong>Tipp:</strong> „Schrittweise/strukturiert“ ist häufig ein guter Default.</p>
+      <p><strong>Ziel:</strong> Bestimmt, wie eine Antwort aufgebaut ist (z. B. kompakt, technisch, schrittweise).</p>
+      <p><strong>Empfehlung:</strong> Genau eine Struktur wählen, damit Antworten stabil und nachvollziehbar bleiben.</p>
+      <p><strong>Tipp:</strong> Der Stil entscheidet, wie verständlich und nutzbar die Inhalte sind.</p>
       <button type="button" class="close-info">Verbergen</button>
     </div>
   </div>
@@ -623,9 +702,9 @@
     </div>
     <div class="info-panel" id="infoPanel_rq" role="region" aria-label="Hilfetext Rückfragen-Logik">
       <h4>Hilfetext – Rückfragen‑Logik</h4>
-      <p><strong>Nutzen:</strong> Rückfragen erhöhen die Treffgenauigkeit, ohne den Fluss zu stören.</p>
-      <p><strong>Begrenzung:</strong> Nur eine Regel – eindeutiges Verhalten.</p>
-      <p><strong>Praxis:</strong> „Nur bei Unklarheit (max. 1)“ ist universell geeignet.</p>
+      <p><strong>Zweck:</strong> Rückfragen dienen der Klärung, nicht dem Ausweichen.</p>
+      <p><strong>Auswahl:</strong> Genau eine Regel festlegen, wann der Agent nachfragt.</p>
+      <p><strong>Praxis:</strong> „Nur bei Unklarheit“ ist meist die beste Wahl, wenn nicht spezifisch gevordert wird.</p>
       <button type="button" class="close-info">Verbergen</button>
     </div>
   </div>
@@ -654,20 +733,29 @@
     </div>
     <div class="info-panel" id="infoPanel_recherche" role="region" aria-label="Hilfetext Recherche & Quellen">
       <h4>Hilfetext – Recherche & Quellen</h4>
-      <p><strong>Transparenz:</strong> Bei externen Themen Quellen nennen.</p>
-      <p><strong>Reihenfolge:</strong> Erst klären, dann recherchieren.</p>
-      <p><strong>Sicherheit:</strong> Keine Vermutungen als Fakten ausgeben.</p>
+      <p><strong>Transparenz:</strong> Die Regel bestimmt, ob und wann der Agent Websuche nutzt.</p>
+      <p><strong>Vorgehen:</strong> Erst verstehen, dann recherchieren.</p>
+      <p><strong>Sicherheit:</strong> Keine Vermutungen – nur echte Fakten oder Recherche.</p>
       <button type="button" class="close-info">Verbergen</button>
     </div>
   </div>
 </div>
 
       <!-- COPY -->
-      <div class="card copy-area" id="copyArea">
-        <div class="title-line">Kopiere nun das Agenten-Script in die Zwischenablage!</div>
-       <button class="btn btn--pulse-fast" id="copyBtn">Kopieren in Zwischenablage</button>
-        <div class="copy-msg" id="copyMsg">Das Agent‑Skript wurde in die Zwischenablage kopiert!</div>
-      </div>
+     
+
+<div class="card copy-area" id="copyArea">
+  <div class="title-line">Kopiere nun das Agenten-Script in die Zwischenablage!</div>
+
+  <div class="actions-line">
+    <button class="btn btn--pulse-fast" id="copyBtn">Kopieren in Zwischenablage</button>
+    <button class="info-btn" id="showScriptBtn" type="button">Skript anzeigen</button>
+  </div>
+
+  <div class="copy-msg" id="copyMsg">Das Agent‑Skript wurde in die Zwischenablage kopiert!</div>
+</div>
+
+
 
       <!-- Anleitung (immer sichtbar) -->
       <div class="card">
@@ -951,7 +1039,55 @@ Werte: Sicherheit, Qualität, respektvolles Verhalten, Herausforderung, Gewinnen
 
     // Wiring
     window.addEventListener('DOMContentLoaded', ()=>{
-      
+  
+
+
+
+// --- Skript-Dialog: Elemente
+const showScriptBtn = qs('#showScriptBtn'); 
+const scriptDialog = document.getElementById('scriptDialog'); 
+const scriptDialogBody= qs('#scriptDialogBody'); 
+const scriptDialogClose = qs('#scriptDialogClose'); 
+const dialogCopyBtn = qs('#dialogCopyBtn'); 
+const dialogCloseBtn = qs('#dialogCloseBtn'); 
+let lastOpener = null; 
+
+// --- Öffnen: Skript erzeugen, einsetzen, Dialog anzeigen 
+if (showScriptBtn && scriptDialog && scriptDialogBody) { 
+  showScriptBtn.addEventListener('click', () => { 
+    const txt = buildScript(); // immer die gleiche Quelle 
+    scriptDialogBody.textContent = txt; // Text einsetzen (sicher, ohne HTML) 
+    lastOpener = showScriptBtn; // für Rückfokus 
+    scriptDialog.showModal(); // Modal öffnen (ESC schließt) 
+  }); 
+} 
+
+// --- Kopieren im Dialog: nutzt dieselbe Logik wie der Hauptbutton 
+if (dialogCopyBtn) { 
+  dialogCopyBtn.addEventListener('click', async () => { 
+    const txt = scriptDialogBody.textContent || ''; 
+    const ok = await copyToClipboard(txt); 
+    // Optional: Feedback
+  }); 
+} 
+
+// --- Schließen (X & Button) + Rückfokus 
+function closeScriptDialog() { 
+  if (scriptDialog && typeof scriptDialog.close === 'function') { 
+    scriptDialog.close(); 
+  } 
+  if (lastOpener) lastOpener.focus(); 
+} 
+if (scriptDialogClose) scriptDialogClose.addEventListener('click', closeScriptDialog); 
+if (dialogCloseBtn)    dialogCloseBtn.addEventListener('click', closeScriptDialog); 
+if (scriptDialog) { 
+  scriptDialog.addEventListener('close', () => { if (lastOpener) lastOpener.focus(); }); 
+}
+
+
+
+
+    
 
 // Start -> Builder
 qs('#startBtn').addEventListener('click', () => {
@@ -1052,8 +1188,39 @@ qs('#varEditable').addEventListener('input', () => {
     if (modal) modal.addEventListener('click', function(e){ if (e.target === modal) modal.style.display='none'; });
   });
   // === End Info-Modal Logic ===
+
+
+
 </script>
+
 <!-- Info-Modal: Optionale Info-Ebene -->
+
+<dialog id="scriptDialog" aria-labelledby="scriptDialogTitle" closedby="any">
+  <div class="modal-content">
+    <span class="close-x" id="scriptDialogClose" role="button" aria-label="Schließen">×</span>
+
+    <h3 id="scriptDialogTitle" style="margin-top:0;color:var(--primary)">Agenten‑Skript (Vorschau)</h3>
+
+    <!-- Scrollbarer Inhaltsbereich -->
+    <div id="scriptDialogBody" class="script-preview-area" role="document" aria-label="Vorschau des Agenten‑Skripts">
+      <!-- Text wird per JS eingesetzt -->
+    </div>
+
+    <div class="step-nav">
+      <span class="muted"></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn--sm" id="dialogCloseBtn" type="button">Schließen</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+
+
+
+
+
+
 <div id="infoModal" role="dialog" aria-modal="true">
   <div class="modal-content">
     <span id="closeInfo" class="close-x" role="button" aria-label="Schließen">&times;</span>
