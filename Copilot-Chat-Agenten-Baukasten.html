@@ -140,9 +140,6 @@
       line-height:1.6;
     }
 
-
-
-
 .editable-block{
   display:block;
   width:100%;
@@ -168,6 +165,14 @@
 }
 
 
+.info-panel ul {
+  margin: 0 0 12px;
+  padding-left: 22px;
+}
+
+.info-panel li {
+  margin-bottom: 8px;
+}
 
 
     .copy-area .title-line{font-weight:700;margin-bottom:8px}
@@ -323,7 +328,25 @@
   overflow: auto;
 }
 
+/* === FIX: Info-Modal mit fester Navigation und scrollbarem Inhalt === */
+#infoModal .modal-content {
+  max-height: 82vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
+#infoModal .info-step {
+  overflow-y: auto;
+  padding-right: 8px;
+  max-height: calc(82vh - 120px);
+}
+
+#infoModal .step-nav {
+  flex-shrink: 0;
+  background: var(--card-bg);
+  margin-top: 16px;
+}
   </style>
 </head>
 <body>
@@ -791,17 +814,16 @@
 
       <p><strong>Formulierung:</strong> Schreibe klare, konkrete Anweisungen statt allgemeiner Wünsche.</p>
 
-      <p><strong>Beispiel:</strong> „Verwende bei Antwortvorschlägen keine Emojis.“</p>
+      <p><strong>Beispiele:</strong></p>
 
-      <p><strong>Beispiel:</strong> „Nutze bei internen Texten immer die Begriffe ‚Mitarbeitende‘ und ‚Team‘ statt ‚Kollegen‘.“</p>
-
-      <p><strong>Beispiel:</strong> „Wenn ich deutsche und englische Begriffe mische, ändere Fachbegriffe wie ‚Ticket‘, ‚Dashboard‘ oder ‚Workflow‘ nicht ins Deutsche.“</p>
-
-      <p><strong>Beispiel:</strong> „Wenn ich eine Vorlage erstelle, füge immer Platzhalter in eckigen Klammern ein, zum Beispiel [Name], [Datum], [Thema].“</p>
-
-      <p><strong>Beispiel:</strong> „Vermeide in meinen Texten konsequent Ausrufezeichen, außer ich fordere sie ausdrücklich an.“</p>
-
-      <p><strong>Beispiel:</strong> „Wenn ich eine E-Mail formuliere, verwende immer die Anrede ‚Guten Tag‘ statt ‚Hallo‘.“</p>
+<ul>
+  <li>Verwende bei Antwortvorschlägen keine Emojis.</li>
+  <li>Nutze bei internen Texten immer die Begriffe ‚Mitarbeitende‘ und ‚Team‘ statt ‚Kollegen‘.</li>
+  <li>Wenn ich deutsche und englische Begriffe mische, ändere Fachbegriffe wie ‚Ticket‘, ‚Dashboard‘ oder ‚Workflow‘ nicht ins Deutsche.</li>
+  <li>Wenn ich eine Vorlage erstelle, füge immer Platzhalter in eckigen Klammern ein, zum Beispiel [Name], [Datum], [Thema].</li>
+  <li>Vermeide in meinen Texten konsequent Ausrufezeichen, außer ich fordere sie ausdrücklich an.“</li>
+  <li>Wenn ich eine E-Mail formuliere, verwende immer die Anrede ‚Guten Tag‘ statt ‚Hallo‘.</li>
+</ul>
 
       <button type="button" class="close-info">Verbergen</button>
     </div>
@@ -1053,21 +1075,21 @@ Du arbeitest nach folgender festen Logik:
 ${g.join('\n\n')}`);
 }
 
-// 5) Spezifische Anweisungen
-const spezifisch = textOrEmpty('#specificInstructionsEditable');
-if(spezifisch){
-  parts.push(`[Spezifische Anweisungen]
-${spezifisch}`);
-}
-
-// 6) Kommunikationsstil
+// 5) Kommunikationsstil
 const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected);
 if(stil){
   parts.push(`[Kommunikationsstil]
 Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`);
 }
 
-      // 6) Feste Blöcke (unverändert)
+// 6) Spezifische Anweisungen
+const spezifisch = textOrEmpty('#specificInstructionsEditable');
+if(spezifisch){
+  parts.push(`[Spezifische Anweisungen]
+${spezifisch}`);
+}
+
+      // 7) Feste Blöcke (unverändert)
       const fixBlocks = [
 `[Formatoption (situativ nachgelagert)]
 Biete nach der ersten Antwort optional an, das Ergebnis in einem gewünschten Format darzustellen (z. B. Schritte, Varianten, Pro/Contra, Formulierungen). Frag nur bei erkennbarem Strukturbedarf; sonst entscheide situativ.`,
