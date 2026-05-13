@@ -139,6 +139,37 @@
       padding:2px 6px;
       line-height:1.6;
     }
+
+
+
+
+.editable-block{
+  display:block;
+  width:100%;
+  min-width:100%;
+  min-height:110px;
+  background:var(--edit-bg);
+  border:1px dashed var(--edit-border);
+  border-radius:6px;
+  padding:10px 12px;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+
+.editable-block:focus{
+  outline:2px solid var(--edit-focus);
+  background:#E3F2E5;
+}
+
+.editable-block:empty::before{
+  content:attr(data-placeholder);
+  color:var(--muted);
+  pointer-events:none;
+}
+
+
+
+
     .copy-area .title-line{font-weight:700;margin-bottom:8px}
     .copy-msg{margin-top:10px;color:var(--success);display:none}
     /* Startscreen / Umschaltung */
@@ -728,11 +759,56 @@
       <p><strong>Sicherheit:</strong> Keine Vermutungen – nur echte Fakten oder Recherche.</p>
       <button type="button" class="close-info">Verbergen</button>
     </div>
+  
+
+</div>
+</div>
+
+<!-- MODUL: Spezifische Anweisungen -->
+<div class="card" id="mod-spezifisch">
+  <h2>Spezifische Anweisungen</h2>
+
+  <div class="subcard">
+    <h3 style="margin-top:0">Freitext-Anweisungen</h3>
+
+    <div class="subhint subhint--question">
+      Gebe hier spezielle Anweisungen für den Agenten ein:
+    </div>
+
+    <div class="preview">
+      <div id="specificInstructionsEditable" class="editable editable-block" contenteditable="true" role="textbox" aria-label="Spezifische Freitext-Anweisungen" data-placeholder="Trage hier individuelle Regeln für den Agenten ein."></div>
+    </div>
+
+    <div class="actions-line">
+      <button type="button" class="info-btn" id="infoBtn_spezifisch" aria-controls="infoPanel_spezifisch" aria-expanded="false">ℹ️ Hinweise</button>
+      <button type="button" class="btn btn--sm" id="spezifischReset">Zurücksetzen (Spezifische Anweisungen)</button>
+    </div>
+
+    <div class="info-panel" id="infoPanel_spezifisch" role="region" aria-label="Hilfetext Freitext-Anweisungen">
+      <h4>Hilfetext – Freitext-Anweisungen</h4>
+
+      <p><strong>Zweck:</strong> Ergänzt den Agenten um individuelle Regeln, die nicht über die Auswahlfelder gesteuert werden.</p>
+
+      <p><strong>Formulierung:</strong> Schreibe klare, konkrete Anweisungen statt allgemeiner Wünsche.</p>
+
+      <p><strong>Beispiel:</strong> „Verwende bei Antwortvorschlägen keine Emojis.“</p>
+
+      <p><strong>Beispiel:</strong> „Nutze bei internen Texten immer die Begriffe ‚Mitarbeitende‘ und ‚Team‘ statt ‚Kollegen‘.“</p>
+
+      <p><strong>Beispiel:</strong> „Wenn ich deutsche und englische Begriffe mische, ändere Fachbegriffe wie ‚Ticket‘, ‚Dashboard‘ oder ‚Workflow‘ nicht ins Deutsche.“</p>
+
+      <p><strong>Beispiel:</strong> „Wenn ich eine Vorlage erstelle, füge immer Platzhalter in eckigen Klammern ein, zum Beispiel [Name], [Datum], [Thema].“</p>
+
+      <p><strong>Beispiel:</strong> „Vermeide in meinen Texten konsequent Ausrufezeichen, außer ich fordere sie ausdrücklich an.“</p>
+
+      <p><strong>Beispiel:</strong> „Wenn ich eine E-Mail formuliere, verwende immer die Anrede ‚Guten Tag‘ statt ‚Hallo‘.“</p>
+
+      <button type="button" class="close-info">Verbergen</button>
+    </div>
   </div>
 </div>
 
-      <!-- COPY -->
-     
+      <!-- COPY -->     
 
 <div class="card copy-area" id="copyArea">
   <div class="title-line">Kopiere nun das Agenten-Script in die Zwischenablage!</div>
@@ -786,19 +862,23 @@
   <!-- END: Builder -->
 
   <script>
-    // --- State ---
-    const state = {
-      rolle:   { selected: [], limit: 3, edited:false },
-      purpose: { selected: [], limit: 2, edited:false },
-      tasks:   { selected: [], limit: 3, edited:false },
-      // V5.2: Start & Variation als Multi mit Limit 3
-      start:     { selected: [], limit: 3, edited:false },
-      variation: { selected: [], limit: 3, edited:false },
-      tiefe:     { selected: '', edited:false },     // "Antwortstil / Spezifität"
-      rq:        { selected: '', edited:false },
-      recherche: { selected: '', edited:false },
-      stil:      { selected: '', edited:false }
-    };
+
+// --- State ---
+const state = {
+  rolle:   { selected: [], limit: 3, edited:false },
+  purpose: { selected: [], limit: 2, edited:false },
+  tasks:   { selected: [], limit: 3, edited:false },
+  // V5.2: Start & Variation als Multi mit Limit 3
+  start:     { selected: [], limit: 3, edited:false },
+  variation: { selected: [], limit: 3, edited:false },
+  tiefe:     { selected: '', edited:false },
+  rq:        { selected: '', edited:false },
+  recherche: { selected: '', edited:false },
+  stil:      { selected: '', edited:false },
+  spezifisch:{ edited:false }
+};
+
+
 
     // --- Helpers ---
     const qs = (sel, root=document) => root.querySelector(sel);
@@ -911,7 +991,13 @@
         case 'rq':{ qs('#rqSelect').selectedIndex=-1; state.rq.selected=''; state.rq.edited=false; qs('#rqEditable').textContent=''; break; }
         case 'recherche':{ qs('#recSelect').selectedIndex=-1; state.recherche.selected=''; state.recherche.edited=false; qs('#recEditable').textContent=''; break; }
         case 'stil':{ qs('#stilSelect').selectedIndex=-1; state.stil.selected=''; state.stil.edited=false; qs('#stilEditable').textContent=''; break; }
-      }
+        case 'spezifisch':{
+          state.spezifisch.edited = false;
+          qs('#specificInstructionsEditable').textContent = '';
+          break;
+         }
+
+}
     }
 
     function getModuleTextFromEditableOrSelection(spanSelector, selected){
@@ -960,19 +1046,26 @@ Dein Auftrag umfasst folgende Tätigkeiten: ${tasks}. Du führst diese Aufgaben 
       if(rueckfragen)  g.push(`Deine Rückfragenlogik lautet: ${rueckfragen}.`);
       if(rechercheSel) g.push(`Dein Recherche- und Quellenverhalten ist: ${rechercheSel}.`);
 
-      if(g.length){
-        parts.push(`[Grundverhalten / Arbeitslogik]
+  if(g.length){
+  parts.push(`[Grundverhalten / Arbeitslogik]
 Du arbeitest nach folgender festen Logik:
 
 ${g.join('\n\n')}`);
-      }
+}
 
-      // 5) Kommunikationsstil
-      const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected);
-      if(stil){
-        parts.push(`[Kommunikationsstil]
+// 5) Spezifische Anweisungen
+const spezifisch = textOrEmpty('#specificInstructionsEditable');
+if(spezifisch){
+  parts.push(`[Spezifische Anweisungen]
+${spezifisch}`);
+}
+
+// 6) Kommunikationsstil
+const stil = getModuleTextFromEditableOrSelection('#stilEditable', state.stil.selected);
+if(stil){
+  parts.push(`[Kommunikationsstil]
 Dein Kommunikationsstil ist: ${stil}. Du hältst diesen Stil in Tonfall, Struktur und Wortwahl konsistent ein.`);
-      }
+}
 
       // 6) Feste Blöcke (unverändert)
       const fixBlocks = [
@@ -1094,7 +1187,7 @@ qs('#startBtn').addEventListener('click', () => {
 });
 
       // Info-Panels
-      ['rolle','purpose','tasks','start','variation','tiefe','rq','recherche','stil'].forEach(wireInfoPanel);
+     ['rolle','purpose','tasks','start','variation','tiefe','rq','recherche','stil','spezifisch'].forEach(wireInfoPanel);
 
       // Multi-Selects (inkl. Start/Variation)
       [
@@ -1131,6 +1224,10 @@ qs('#varEditable').addEventListener('input', () => {
       qs('#rqEditable').addEventListener('input',    ()=> state.rq.edited      = true);
       qs('#recEditable').addEventListener('input',   ()=> state.recherche.edited = true);
       qs('#stilEditable').addEventListener('input',  ()=> state.stil.edited    = true);
+      qs('#specificInstructionsEditable').addEventListener('input', () => {
+      state.spezifisch.edited = true;
+});
+
 
       // Resets
       qs('#rolleReset').addEventListener('click',   ()=>resetModule('rolle'));
@@ -1142,6 +1239,7 @@ qs('#varEditable').addEventListener('input', () => {
       qs('#rqReset').addEventListener('click',      ()=>resetModule('rq'));
       qs('#recReset').addEventListener('click',     ()=>resetModule('recherche'));
       qs('#stilReset').addEventListener('click',    ()=>resetModule('stil'));
+      qs('#spezifischReset').addEventListener('click', () => resetModule('spezifisch'));
 
       // Copy
       qs('#copyBtn').addEventListener('click', async ()=>{
@@ -1256,6 +1354,9 @@ qs('#varEditable').addEventListener('input', () => {
         <li>Wie natürlich er formuliert</li>
       </ul>
 <br>
+
+      <p><strong>Spezifische Anweisungen</strong><br>Welche individuellen Regeln soll der Agent zusätzlich beachten?<br>(z. B. keine Emojis verwenden, bestimmte Begriffe beibehalten oder feste Anreden nutzen)</p>
+
       <p>Durch diese Einstellungen entsteht ein klar definiertes Regelwerk, das den Agenten stabil, klar und vorhersehbar macht.</p>
     </div>
 
@@ -1264,18 +1365,21 @@ qs('#varEditable').addEventListener('input', () => {
       <h3>Was passiert im Hintergrund?</h3>
 
       <p>Der Baukasten setzt alle Entscheidungen in ein strukturiertes Regelwerk um. Dieses Regelwerk steuert:</p>
-      <ul>
-        <li>Tonfall</li>
-        <li>Struktur</li>
-        <li>Antwort-Niveau</li>
-        <li>Rückfragenverhalten</li>
-        <li>Recherche‑Verhalten</li>
-        <li>Variationen im Ausdruck</li>
-        <li>Umgang mit unklaren Situationen</li>
-        <li>Grenzen (keine Diagnosen, keine Rechtsauskünfte usw.)</li>
-        <li>Transparenz, Konsistenz</li>
-        <li>Datenschutz‑Hinweise</li>
-      </ul>
+     
+<ul>
+  <li>Tonfall</li>
+  <li>Struktur</li>
+  <li>Antwort-Niveau</li>
+  <li>Rückfragenverhalten</li>
+  <li>Recherche‑Verhalten</li>
+  <li>Variationen im Ausdruck</li>
+  <li>spezifische Freitext-Anweisungen</li>
+  <li>Umgang mit unklaren Situationen</li>
+  <li>Grenzen (keine Diagnosen, keine Rechtsauskünfte usw.)</li>
+  <li>Transparenz, Konsistenz</li>
+  <li>Datenschutz‑Hinweise</li>
+</ul>
+
 <br>
       <p>Das erzeugte Script ist klar, konsistent und universell – und genau das macht die Agenten verlässlich.</p>
       <p>Zusätzlich werden feste Bestandteile in das Script eingebaut. So z. B. Eskalationsstufen und DSGVO.</p>
@@ -1590,7 +1694,7 @@ function setEditable(spanSel, text, stateKey){
 function resetAllPresetModules(){
   [
     'rolle','purpose','tasks','start','variation',
-    'tiefe','rq','recherche','stil'
+    'tiefe','rq','recherche','stil','spezifisch'
   ].forEach(resetModule);
 }
 
